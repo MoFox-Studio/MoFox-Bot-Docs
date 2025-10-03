@@ -94,7 +94,7 @@ const members = [
   {
     avatar: 'https://avatars.githubusercontent.com/u/189647097?v=4',
     name: '阿范',
-    title: '1.项目发起人之一<br/>2.核心开发者<br/>3.音游领域大神',
+    title: '1.项目发起人之一(因个人原因已淡坑)<br/>2.核心开发者<br/>3.音游领域大神',
     links: [
       { icon: 'github', link: 'https://github.com/Furina-1013-create' }
     ]

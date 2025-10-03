@@ -118,7 +118,7 @@ const members = [
   {
     avatar: 'https://avatars.githubusercontent.com/u/212194964?v=4',
     name: '雅诺狐',
-    title: '1.项目发起人之一<br/>2.核心开发者<br/>3.技术"猛"新',
+    title: '1.项目发起人之一<br/>2.核心开发者<br/>3.技术萌新',
     links: [
       { icon: 'github', link: 'https://github.com/foxcyber907' }
     ]

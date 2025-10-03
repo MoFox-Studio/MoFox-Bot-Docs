@@ -75,7 +75,7 @@ uv 是一个速度极快的 Python 包管理器，可以把它看作是 `pip` �
 1.  **安装**:
     *   在终端中，输入以下命令并回车：
         ```bash
-        pip3 install uv --break-system-packages
+        pip3 install uv --break-system-packages -i https://repo.huaweicloud.com/repository/pypi/simple
         ```
     *   为了让系统能找到 `uv` 命令，需要将它所在的路径添加到环境变量中。执行以下命令：
         ```bash

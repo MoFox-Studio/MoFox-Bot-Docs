@@ -12,24 +12,28 @@
 
 在项目根目录的 `plugins/` 文件夹下，创建一个新的目录，命名为 `hello_world_plugin`。
 
-### 2. 创建清单文件 `_manifest.json`
-
-每个插件都需要一个清单文件来描述它的基本信息。在 `hello_world_plugin` 目录下创建 `_manifest.json` 文件，并填入以下内容：
-
-```json
-{
-  "manifest_version": 1,
-  "name": "Hello World 插件",
-  "version": "1.0.1",
-  "description": "一个包含四大核心组件的入门示例插件。",
-  "author": {
-    "name": "你的名字"
-  }
-}
+### 2. 创建元数据文件 `__init__.py`
+ 
+每个插件都需要一个 `__init__.py` 文件来定义其元数据。这取代了旧的 `_manifest.json` 系统。在 `hello_world_plugin` 目录下创建 `__init__.py` 文件，并填入以下内容：
+ 
+```python
+from src.plugin_system import PluginMetadata
+ 
+# 导入你的插件主类
+from .plugin import HelloWorldPlugin
+ 
+# 定义插件元数据
+metadata = PluginMetadata(
+    name="Hello World 插件",
+    description="一个包含四大核心组件的入门示例插件。",
+    usage="这是一个示例插件，展示了如何使用Action、Command、Tool和Event Handler。",
+    author="你的名字",
+    version="1.0.1",
+)
 ```
-
-这个文件告诉 MoFox_Bot 你的插件叫什么、版本号以及它的功能。
-
+ 
+这个文件告诉 MoFox_Bot 你的插件叫什么、功能是什么以及如何使用它。
+ 
 ### 3. 创建主文件 `plugin.py`
 
 这是插件的灵魂所在。在 `hello_world_plugin` 目录下创建 `plugin.py` 文件。我们先写一个最基础的框架：
@@ -45,15 +49,21 @@ from src.plugin_system import (
 @register_plugin
 class HelloWorldPlugin(BasePlugin):
     """一个包含四大核心组件的入门示例插件。"""
-
+ 
     # --- 插件基础信息 ---
+    # 插件名称，必须与插件目录名一致
     plugin_name = "hello_world_plugin"
+    # 默认是否启用插件
     enable_plugin = True
+    # 插件依赖
     dependencies = []
+    # Python包依赖
     python_dependencies = []
+    # 配置文件名称
     config_file_name = "config.toml"
+    # 配置文件结构定义
     config_schema = {}
-
+ 
     def get_plugin_components(self) -> List[Tuple[ComponentInfo, Type]]:
         """注册插件的所有功能组件。"""
         return []

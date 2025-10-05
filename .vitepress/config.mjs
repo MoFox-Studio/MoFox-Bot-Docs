@@ -35,7 +35,7 @@ const devSidebar = [
     items: [
       { text: '插件概述', link: '/docs/development/plugins/' },
       { text: '快速开始', link: '/docs/development/plugins/quick-start' },
-      { text: '插件清单指南', link: '/docs/development/plugins/manifest-guide' },
+      { text: '元数据指南', link: '/docs/development/plugins/metadata-guide' },
       { text: '依赖管理', link: '/docs/development/plugins/dependency-management' },
       { text: '配置指南', link: '/docs/development/plugins/configuration-guide' },
       { text: '可用范围控制', link: '/docs/development/plugins/command-scope' },

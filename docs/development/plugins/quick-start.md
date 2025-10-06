@@ -19,9 +19,6 @@
 ```python
 from src.plugin_system import PluginMetadata
  
-# 导入你的插件主类
-from .plugin import HelloWorldPlugin
- 
 # 定义插件元数据
 metadata = PluginMetadata(
     name="Hello World 插件",
@@ -41,9 +38,10 @@ metadata = PluginMetadata(
 ```python
 from typing import List, Tuple, Type
 from src.plugin_system import (
-    BasePlugin, 
-    register_plugin, 
-    ComponentInfo
+    BasePlugin,
+    register_plugin,
+    ComponentInfo,
+    PermissionNodeField,
 )
 
 @register_plugin
@@ -63,6 +61,14 @@ class HelloWorldPlugin(BasePlugin):
     config_file_name = "config.toml"
     # 配置文件结构定义
     config_schema = {}
+
+    # --- 权限节点定义 ---
+    permission_nodes = [
+        PermissionNodeField(
+            node_name="can_say_hello",
+            description="允许用户使用 /hello 命令。"
+        ),
+    ]
  
     def get_plugin_components(self) -> List[Tuple[ComponentInfo, Type]]:
         """注册插件的所有功能组件。"""
@@ -143,7 +149,12 @@ class GetSystemInfoTool(BaseTool):
 这里我们使用更现代的 `PlusCommand`。将以下代码添加到 `GetSystemInfoTool` 类的下方：
 
 ```python
-from src.plugin_system import PlusCommand, CommandArgs, ChatType
+from src.plugin_system import (
+    PlusCommand,
+    CommandArgs,
+    ChatType,
+    require_permission,
+)
 from typing import Tuple, Optional
 
 # ... (其他类定义)
@@ -162,6 +173,7 @@ class HelloCommand(PlusCommand):
     # - ChatType.PRIVATE: 仅在私聊中可用。
     chat_type_allow = ChatType.ALL
 
+    @require_permission("hello_world_plugin.can_say_hello", "你没有权限说 hello！") # 使用权限装饰器,检测触发命令的用户有没有hello_world_plugin.can_say_hello权限
     async def execute(self, args: CommandArgs) -> Tuple[bool, Optional[str], bool]:
         await self.send_text("Hello, World! 我是一个由 MoFox_Bot 驱动的插件。")
         return True, "成功发送问候", True

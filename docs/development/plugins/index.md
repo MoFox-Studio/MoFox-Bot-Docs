@@ -13,6 +13,7 @@
 - [🔧 Tool组件详解](tool_guide.md) - 了解如何扩展信息获取能力
 - [🧬 插件元数据系统指南](metadata-guide.md) - 学习如何定义插件的元数据
 - [⚙️ 配置文件系统指南](configuration-guide.md) - 学会使用自动生成的插件配置文件
+- [🔑 权限系统使用指南](PERMISSION_GUIDE.md) - 学习如何使用声明式API来注册插件的权限节点
 
 Command vs Action 选择指南
 

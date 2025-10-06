@@ -38,6 +38,7 @@ const devSidebar = [
       { text: '元数据指南', link: '/docs/development/plugins/metadata-guide' },
       { text: '依赖管理', link: '/docs/development/plugins/dependency-management' },
       { text: '配置指南', link: '/docs/development/plugins/configuration-guide' },
+      { text: '权限系统', link: '/docs/development/plugins/PERMISSION_GUIDE' },
       { text: '可用范围控制', link: '/docs/development/plugins/command-scope' },
       { text: '插件可用组件', 
         items: [

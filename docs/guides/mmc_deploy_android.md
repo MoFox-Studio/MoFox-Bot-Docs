@@ -76,7 +76,7 @@
         ```
     *   **验证**: 输入 `uv --version` 并回车，如果显示出版本号，则证明安装成功。
 
-### 1.4 Napcat QQ 客户端 (Android App)
+### 1.4 Napcat QQ 客户端
 
 Napcat QQ 是一个 QQ 客户端，也是 MoFox_Bot 与 QQ 平台沟通的桥梁。
 

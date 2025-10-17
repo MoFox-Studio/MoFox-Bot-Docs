@@ -181,7 +181,7 @@ MoFox_Bot 通常会有不同的开发分支，例如 `master` (主分支，相�
     **警告：这个操作会丢弃你本地的所有未提交的修改，请谨慎操作！**
 
     ```bash
-    git reset --hard &lt;你要回退到的版本号&gt;
+    git reset --hard 你要回退到的版本号
     ```
     例如:
     ```bash

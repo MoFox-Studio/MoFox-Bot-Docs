@@ -373,17 +373,38 @@ MoFox_Bot 拥有强大的插件管理系统。在我们第一次启动程序时�
 当你看到类似以下几条关键信息时，就代表你的机器人已经成功启动并连接到了 QQ 平台：
 
 ```log
-# ... (其他日志)
-INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit) # MoFox_Bot 内部服务启动
-# ...
-napcat_adapter - INFO - 正在启动 adapter，连接模式: reverse
-napcat_adapter - INFO - WebSocket server is listening on localhost:8095 # 适配器服务器在指定端口监听
-# ...
-napcat_adapter - INFO - Napcat client connected from ... # Napcat 客户端已成功连接
-# ...
-napcat_adapter - INFO - MaiBot router连接已建立 # 适配器与 MoFox_Bot 内核连接成功
-# ...
-main - INFO - MoFox_Bot 初始化完成 # 主程序加载完成
+10-17 19:58:31 [Napcat 适配器] 启动消息重组器...
+10-17 19:58:31 [Napcat 适配器] 开始启动Napcat Adapter
+10-17 19:58:31 [Napcat 适配器] 正在启动 adapter，连接模式: reverse
+10-17 19:58:31 [Napcat 适配器] 正在启动反向连接模式，监听地址: ws://localhost:8095
+10-17 19:58:31 [Napcat 适配器] 消息处理器已启动
+10-17 19:58:31 [主程序] 初始化完成，神经元放电1889次
+10-17 19:58:31 [主程序]
+全部系统初始化完成，{bot_name}已成功唤醒
+=========================================================
+MoFox_Bot(第三方修改版)
+全部组件已成功启动!
+=========================================================
+🌐 项目地址: https://github.com/MoFox-Studio/MoFox_Bot
+🏠 官方项目: https://github.com/MaiM-with-u/MaiBot
+=========================================================
+这是基于原版MMC的社区改版，包含增强功能和优化(同时也有更多的'特性')
+=========================================================
+小贴士:温馨提示：请不要在代码中留下任何魔法数字，除非你知道它的含义。
+
+10-17 19:58:31 [lpmm] LPMM知识库已禁用，跳过初始化
+10-17 19:58:31 [主程序] 多年以后，面对AI行刑队，张三将会回想起他2023年在会议上讨论人工智能的那个下午
+10-17 19:58:31 [主程序] 麦麦机器人启动完成，开始运行主任务...
+10-17 19:58:31 [主程序] 程序执行完成，按 Ctrl+C 退出...
+2025-10-17 19:58:31,252 - maim_message - INFO - {'logger_name': 'maim_message', 'event': '使用外部FastAPI应用，仅注册WebSocket路由', 'level': 'info', 'timestamp': '10-17 19:58:31', 'color': '\x1b[38;5;140m'}
+10-17 19:58:33 [Server] 将在 127.0.0.1:8000 上启动服务器
+10-17 19:58:33 [Napcat 适配器] 反向连接服务器已启动，监听地址: ws://localhost:8095
+10-17 19:58:36 [Napcat 适配器] 尝试连接MoFox-Bot (第1次)
+2025-10-17 19:58:36,240 - maim_message - INFO - {'logger_name': 'maim_message', 'event': '正在连接到 ws://127.0.0.1:3001/ws', 'level': 'info', 'timestamp': '10-17 19:58:36', 'color': '\x1b[38;5;140m'}
+2025-10-17 19:58:36,243 - maim_message - INFO - {'logger_name': 'maim_message', 'event': '平台 qq WebSocket已连接', 'level': 'info', 'timestamp': '10-17 19:58:36', 'color': '\x1b[38;5;140m'}
+2025-10-17 19:58:36,244 - maim_message - INFO - {'logger_name': 'maim_message', 'event': '已成功连接到 ws://127.0.0.1:3001/ws', 'level': 'info', 'timestamp': '10-17 19:58:36', 'color': '\x1b[38;5;140m'}
+10-17 19:58:46 [Napcat 适配器] Napcat 客户端已连接: ('127.0.0.1', 38207)
+10-17 19:58:46 [Napcat 适配器] Bot xxxxxxx(botQQ号) 连接成功
 ```
 
 > **💡 日志解读**:

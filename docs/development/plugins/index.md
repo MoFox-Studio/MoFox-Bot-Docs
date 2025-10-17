@@ -81,3 +81,25 @@ Command vs Action 选择指南
 我们在`__init__.py`中定义了一个`__all__`变量，包含了所有需要导出的类和函数。
 这样在其他地方导入时，可以直接使用 `from src.plugin_system import *` 来导入所有插件相关的类和函数。
 或者你可以直接使用 `from src.plugin_system import BasePlugin, register_plugin, ComponentInfo` 之类的方式来导入你需要的部分。
+
+### 另一个“隐藏”的设计：`on_plugin_loaded` 钩子
+
+除了常规的事件，插件主类 (`BasePlugin`) 还可以实现一个特殊的钩子方法：`on_plugin_loaded`。
+
+```python
+from src.plugin_system import BasePlugin, register_plugin
+
+@register_plugin
+class MyAwesomePlugin(BasePlugin):
+    plugin_name = "my_awesome_plugin"
+    
+    async def on_plugin_loaded(self):
+        # 在这里编写你的代码
+        print(f"插件 {self.plugin_name} 的所有组件都已加载完毕！")
+        # 例如，可以在这里执行一些依赖其他插件组件的初始化操作
+```
+
+- **执行时机**: 这个方法会在**所有插件的所有组件（Action, Command, Tool, Handler）都加载并注册完毕后**被调用。
+- **使用场景**: 它为你提供了一个“总览全局”的机会。当你需要执行一些依赖其他插件、或者需要确保所有功能都已就绪的初始化操作时，这个钩子非常有用。
+
+> **⚠️ 警告**: 请谨慎使用 `on_plugin_loaded`。滥用它很容易导致插件之间产生不必要的强耦合，使得代码难以维护和理解。**只有在你确实没有其他更好的办法时，才应该考虑使用它。**,如果可能的话，尽量通过事件系统等更优雅的方式来实现你的需求。

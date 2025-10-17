@@ -16,7 +16,7 @@
 :::
 
 
-## 一、基础配置：机器人的“心脏与大脑”
+## 一、基础设定：机器人的“身份”与“大脑”
 
 这部分是让机器人跑起来的基础，没这些，后面都是空谈。
 
@@ -62,7 +62,7 @@
 ### [command] - 命令配置
 -   `command_prefixes`: 命令的起始符号。比如设成 `['/', '!']`，那 `/帮助` 和 `!帮助` 就都能用。
 
-## 二、核心人格：塑造独一无二的“TA”
+## 二、核心人格：注入“灵魂”
 
 这部分是拟人化的灵魂所在，决定了机器人“是谁”以及“它如何说话”。
 
@@ -103,27 +103,6 @@
 -   `dynamic_distribution_jitter_factor`: 来点随机性，让分发间隔不那么死板。
 -   `max_concurrent_distributions`: 最大能同时处理多少个聊天流。
 
-## 三、进阶功能：解锁机器人的“超能力”
-
-这部分是机器人的“隐藏技能”，开启后会让它变得更强大、更智能。
-
-### [message_receive] - 消息过滤
--   `ban_words`: 屏蔽词列表。
--   `ban_msgs_regex`: 屏蔽消息的正则表达式列表。
-
-### [anti_prompt_injection] - 人格防篡改系统
-用于防止机器人被恶意指令攻击，也就是“催眠”。
--   `enabled`: 是否启用。
--   `process_mode`: 处理模式，如 `"strict"` (严格), `"lenient"` (宽松)。
--   `whitelist`: 白名单，这些用户的消息将跳过检测。
--   其他均为高级配置，通常无需修改。
-
-### [normal_chat] - 普通聊天
--   `willing_mode`: 回复意愿模式，保持 `"classical"` 即可。
-
-### [tool] - 工具
--   `enable_tool`: 是否在普通聊天中启用工具（如网络搜索、看视频等）。
-
 ### [mood] - 情绪系统
 -   `enable_mood`: 让机器人拥有喜怒哀乐，并影响它的回复。
 -   `mood_update_threshold`: 情绪更新阈值，越高，情绪变化越慢，性格越稳定。
@@ -137,12 +116,13 @@
 -   `max_context_emojis`: 每次随机给大模型多少个表情备选。设为 `0` 就是把所有表情都给它看，可能会增加思考成本哦。
 -   其他均为高级配置，用于精细化管理表情包。
 
-### [memory] & [vector_db] - 记忆与向量数据库：机器人的“海马体”
-这是机器人的核心记忆系统，非常复杂，但效果拔群。
+## 三、核心记忆系统：机器人的“海马体”
 
--   `enable_memory`: **【核心功能】是否开启记忆**。开启后，机器人会记住对话内容，形成长期记忆。**强烈建议开启**。
+这是机器人的核心记忆系统，非常复杂，但效果拔群。**强烈建议全部开启**。
+
+-   `enable_memory`: **【核心功能】是否开启记忆**。开启后，机器人会记住对话内容，形成长期记忆。
 -   `enable_vector_memory_storage`: **【推荐开启】** 使用专业的向量数据库来存储记忆，性能和扩展性远超旧的存储方式。
--   `enable_llm_instant_memory`, `enable_vector_instant_memory`: **瞬时记忆**。让机器人能更好地记住刚刚说过的话。两者都很重要，**建议都开启**。
+-   `enable_llm_instant_memory`, `enable_vector_instant_memory`: **瞬时记忆**。让机器人能更好地记住刚刚说过的话。两者都很重要。
 
 #### 记忆采样系统：如何“记”
 -   `memory_sampling_mode`: 记忆采样模式。`'immediate'`(即时采样) 更快，`'hippocampus'`(海马体定时采样) 更智能，`'all'`(双模式) 兼顾两者。
@@ -161,27 +141,59 @@
     -   `[vector_db.settings]`: ChromaDB 的一些内部设置。
     -   `[vector_db.collections]`: 定义不同的数据集合，用于存放不同类型的记忆数据。
 
-### [voice] - 语音识别
--   `enable_asr`: 开启后，机器人可以“听懂”语音消息。需要额外配置语音识别模型。
+## 四、进阶能力：解锁更多“技能”
 
-### [lpmm_knowledge] - 知识库
+这部分是机器人的“隐藏技能”，开启后会让它变得更强大、更智能。
+
+### [message_receive] & [anti_prompt_injection] - 消息过滤与安全
+-   `[message_receive]`:
+    -   `ban_words`: 屏蔽词列表。
+    -   `ban_msgs_regex`: 屏蔽消息的正则表达式列表。
+-   `[anti_prompt_injection]`: **人格防篡改系统**，用于防止机器人被恶意指令攻击，也就是“催眠”。
+    -   `enabled`: 是否启用。
+    -   `process_mode`: 处理模式，如 `"strict"` (严格), `"lenient"` (宽松)。
+    -   `whitelist`: 白名单，这些用户的消息将跳过检测。
+    -   其他均为高级配置，通常无需修改。
+
+### [tool] & [web_search] - 工具与网络
+-   `[tool]`:
+    -   `enable_tool`: 是否在普通聊天中启用工具（如网络搜索、看视频等）。
+-   `[web_search]`: **上网冲浪**。
+    -   `enable_web_search_tool`: 让机器人可以搜索网络来回答你的问题。
+    -   `enable_url_tool`: 让机器人可以直接“阅读”链接内容。
+    -   `tavily_api_keys`, `exa_api_keys`, `searxng_instances`: 需要填入第三方搜索服务的 API Key 或实例地址。
+    -   `enabled_engines`: 启用的搜索引擎，可选 `"exa"`, `"tavily"`, `"ddg"`, `"bing"`。
+    -   `search_strategy`: 搜索策略，如 `"single"` (单个), `"parallel"` (并行), `"fallback"` (备用)。
+
+### [voice] & [video_analysis] - 视听能力
+-   `[voice]`:
+    -   `enable_asr`: 开启后，机器人可以“听懂”语音消息。需要额外配置语音识别模型。
+-   `[video_analysis]`: **看视频**。
+    -   `enable`: 开启后，你把视频发给它，它能“看懂”并告诉你视频内容。这是一个非常消耗资源的功能，并且需要正确配置FFmpeg。
+    -   `rust_keyframe_threshold`, `rust_use_simd`...: **Rust 模块性能配置**。这些是用于视频抽帧的底层优化，使用 Rust 编写，性能极高。**保持默认即可享受**。
+    -   `ffmpeg_path`: FFmpeg 可执行文件的路径。
+::: tip
+关于视频分析功能的详细配置和使用方法，请参考专门的 [视频识别功能配置指南](./video_recognition.md) 页面。
+:::
+
+### [lpmm_knowledge] - 本地知识库
 -   `enable`: 是否启用本地知识库功能。这是一个高级功能，用于构建机器人的专属知识体系。
 -   其他均为知识库的技术参数，**新手建议保持默认**。
 
-### [keyword_reaction] - 关键词/正则回复
--   `keyword_rules`: 设置关键词触发的固定回复。
--   `regex_rules`: 设置正则表达式触发的固定回复。
+### [keyword_reaction] & [custom_prompt] - 自定义回复
+-   `[keyword_reaction]`:
+    -   `keyword_rules`: 设置关键词触发的固定回复。
+    -   `regex_rules`: 设置正则表达式触发的固定回复。
+-   `[custom_prompt]`:
+    -   `image_prompt`: 用于图片描述的提示词。
+    -   `planner_custom_prompt_content`: 用于决策器的自定义提示词内容。
 
-### [custom_prompt] - 自定义提示词
--   `image_prompt`: 用于图片描述的提示词。
--   `planner_custom_prompt_content`: 用于决策器的自定义提示词内容。
-
-### [response_post_process] & [chinese_typo] & [response_splitter] - 回复后处理
+### [response_post_process] - 回复后处理
 -   `enable_response_post_process`: 总开关，启用下面的错别字和分割器。
 -   `[chinese_typo]`: 开启后，机器人回复时会模拟真⼈，产⽣⼀些随机的、合理的错别字。
 -   `[response_splitter]`: 开启后，会将过长的回复分割成多条消息发送。
 
-## 四、高级自动化与扩展
+## 五、高级自动化：让机器人“活”起来
 
 这部分是机器人的“全自动”和“可插拔”模块，让它更主动、更强大。
 
@@ -189,22 +201,6 @@
 -   `schedule_enable`: **日程生成**。开启后，机器人会为自己安排每天的日程。
 -   `monthly_plan_enable`: **月度计划**。开启后，机器人会为自己制定月度目标。
 -   其他均为详细参数，可按需调整。
-
-### [video_analysis] - 视频分析
--   `enable`: **看视频**。开启后，你把视频发给它，它能“看懂”并告诉你视频内容。这是一个非常消耗资源的功能，并且需要正确配置FFmpeg。
--   `rust_keyframe_threshold`, `rust_use_simd`...: **Rust 模块性能配置**。这些是用于视频抽帧的底层优化，使用 Rust 编写，性能极高。**保持默认即可享受**。
--   `ffmpeg_path`: FFmpeg 可执行文件的路径。
-
-::: tip
-关于视频分析功能的详细配置（如抽帧模式、分析质量、FFmpeg路径等）和使用方法，请参考专门的 [视频识别功能配置指南](./video_recognition.md) 页面。
-:::
-
-### [web_search] - 网络搜索
--   `enable_web_search_tool`: **上网冲浪**。让机器人可以搜索网络来回答你的问题。
--   `enable_url_tool`: 让机器人可以直接“阅读”链接内容。
--   `tavily_api_keys`, `exa_api_keys`: 需要填入第三方搜索服务的 API Key。
--   `enabled_engines`: 启用的搜索引擎，可选 `"exa"`, `"tavily"`, `"ddg"`, `"bing"`。
--   `search_strategy`: 搜索策略，如 `"single"` (单个), `"parallel"` (并行), `"fallback"` (备用)。
 
 ### [sleep_system] - 睡眠系统
 -   `enable`: 开启后，机器人会模拟人的作息，在设定的时间“睡觉”。
@@ -235,13 +231,15 @@
 -   `enabled_private_chats`, `enabled_group_chats`: 指定只在哪些聊天中启用，为空则不限制。
 -   `enable_cold_start`: 对于很久没聊过天的私聊对象，是否进行一次“冷启动”问候。
 
+## 六、扩展与开发：连接“外部世界”
+
 ### [[mcp_servers]] - MCP 工具服务器
 -   这是一个扩展功能，允许机器人连接外部的工具服务器，调用那里的工具来完成特定任务（比如操作文件、调用 Git 等）。
 -   `name`: 服务器名称。
 -   `url`: 服务器地址。
 -   `enabled`: 是否启用。
 
-## 五、系统与调试：幕后英雄
+## 七、系统与调试：幕后设定
 
 这部分通常保持默认即可，主要供开发者使用。
 

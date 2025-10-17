@@ -13,6 +13,30 @@ MoFox_Bot的插件系统采用了一种现代化的、基于代码的元数据�
 - **易于维护**：所有插件信息都集中在 `__init__.py` 文件中，一目了然。
 - **无需额外文件**：不再需要在插件目录中维护一个单独的 `_manifest.json` 文件。
 
+## 从 `_manifest.json` 迁移
+
+对于仍在使用旧版 `_manifest.json` 的插件，我们提供了一个便捷的迁移脚本，可以自动将其转换为新的 `PluginMetadata` 格式。
+
+### 使用方法
+
+1.  **定位脚本**:
+    该脚本位于项目根目录下的 `scripts/convert_manifest.py`。
+
+2.  **准备插件**:
+    将你需要转换的旧版插件（必须包含 `_manifest.json` 文件）完整地放入 `scripts/pending_plugins/` 目录下。如果该目录不存在，脚本首次运行时会自动创建。
+
+3.  **运行脚本**:
+    直接在你的IDE或终端中运行 `convert_manifest.py` 脚本。
+    ```bash
+    python scripts/convert_manifest.py
+    ```
+
+4.  **获取结果**:
+    转换成功后，新的、符合现代化元数据标准的插件目录将出现在 `scripts/completed_plugins/` 目录下。原有的 `_manifest.json` 会被移除，并自动生成包含 `PluginMetadata` 的 `__init__.py` 文件。
+
+5.  **完成迁移**:
+    将 `completed_plugins` 目录下的插件移动到你项目的正式插件目录中即可。
+
 ## `PluginMetadata` 类详解
 
 `PluginMetadata` 是一个 `dataclass`，包含了定义一个插件所需的所有信息。它在 `src.plugin_system.base.plugin_metadata` 中定义。

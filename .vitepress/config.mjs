@@ -145,6 +145,7 @@ export default withMermaid(defineConfig({
                 { text: 'Windows部署指南', link: '/docs/guides/deployment_guide' },
                 { text: 'Linux部署指南', link: '/docs/guides/mmc_deploy_linux' },
                 { text: 'android部署指南', link: '/docs/guides/mmc_deploy_android' },
+                { text: 'docker部署指南', link: '/docs/guides/mmc_deploy_docker' },
               ]
              },
              { text: '最终用户许可协议', link: '/docs/guides/eula' },

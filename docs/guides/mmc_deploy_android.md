@@ -136,11 +136,14 @@ Napcat QQ 是一个 QQ 客户端，也是 MoFox_Bot 与 QQ 平台沟通的桥梁
     *   执行 `cp template/template.env .env`。
     *   编辑 `.env` 文件，将 `EULA_CONFIRMED` 修改为 `true`。
 
-2.  **`bot_config.toml` 文件**:
+2.  **创建文件夹**:
+    *   执行 `mkdir config`。
+
+3.  **`bot_config.toml` 文件**:
     *   执行 `cp template/bot_config_template.toml config/bot_config.toml`。
     *   编辑 `config/bot_config.toml` 文件，至少修改 `[bot]` 下的 `qq_account` (机器人QQ号) 和 `[permission]` 下的 `master_users` (主人QQ号)。
 
-3.  **`model_config.toml` 文件**:
+4.  **`model_config.toml` 文件**:
     *   执行 `cp template/model_config_template.toml config/model_config.toml`。
     *   参照 **[模型配置快速上手指南](./quick_start_model_config.md)**，编辑 `config/model_config.toml` 文件，至少配置一个可用的大语言模型。
 

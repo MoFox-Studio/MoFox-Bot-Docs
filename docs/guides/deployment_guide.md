@@ -247,12 +247,16 @@ Napcat QQ 是一个 QQ 客户端，也是 MoFox_Bot 与 QQ 平台沟通的桥梁
 
 这个文件定义了机器人的基本身份信息和主人。
 
-1.  **定位与复制**:
+1. **创建文件夹**:
+    * 进入 `MoFox_Bot` 文件夹。
+    * 创建 `config` 文件夹。
+
+2.  **定位与复制**:
     *   进入 `MoFox_Bot/template` 文件夹。
     *   将 `bot_config_template.toml` 文件复制到 `MoFox_Bot/config` 文件夹中。
     *   将复制到 `config` 文件夹里的新文件重命名为 `bot_config.toml`。
 
-2.  **修改内容 (至少修改以下两项)**:
+3.  **修改内容 (至少修改以下两项)**:
     *   用编辑器打开 `config/bot_config.toml` 文件。
     *   **机器人 QQ 号**: 找到 `[bot]` 配置节下的 `qq_account`，将其值修改为你准备用于运行机器人的 QQ 号。
         ```toml

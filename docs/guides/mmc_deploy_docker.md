@@ -169,8 +169,8 @@ wget https://raw.githubusercontent.com/MoFox-Studio/MoFox_Bot/dev/docker-compose
 3.  **配置 WebSocket 连接**:
     *   在 Napcat 的设置中，找到 `OneBot v11` 相关设置。
     *   添加一个**正向 WebSocket** 连接。
-    *   地址填写为：`ws://MoFox-Bot:8000/ws`
-        > **💡 解析**: `MoFox-Bot` 是我们在 `docker-compose.yml` 中为核心服务定义的名字，Docker 的内部网络会自动解析它。`8000` 是核心服务监听的端口。
+    *   地址填写为：`ws://MoFox-Bot:8095/ws`
+        > **💡 解析**: `MoFox-Bot` 是我们在 `docker-compose.yml` 中为核心服务定义的名字，Docker 的内部网络会自动解析它。`8095` 是核心服务监听的端口。
 
 ### 4.4 测试机器人
 
@@ -209,7 +209,7 @@ wget https://raw.githubusercontent.com/MoFox-Studio/MoFox_Bot/dev/docker-compose
 
 *   **检查模型配置**: 确认 `model_config.toml` 里的 API Key 是**有效且可用**的。检查模型服务商后台，看看 Key 是否填错、账户是否欠费。
 *   **查看核心日志**: `docker compose logs -f core`，当你给机器人发消息时，看看日志是否刷新。`ERROR` 级别的红色错误信息通常能定位到问题所在。
-*   **检查 Napcat 连接**: 确认 Napcat 中的 WebSocket 地址 `ws://MoFox-Bot:8000/ws` 填写正确且连接成功。
+*   **检查 Napcat 连接**: 确认 Napcat 中的 WebSocket 地址 `ws://MoFox-Bot:8095/ws` 填写正确且连接成功。
 
 </details>
 

@@ -143,6 +143,19 @@ const org = [
     ]
   }
 ]
+
+### 美术
+const artists = [
+  {
+    avatar: 'https://raw.githubusercontent.com/MoFox-Studio/MoFox-Bot-Docs/master/public/artist-avatar.png',
+    name: '参片炒米粉',
+    title: '1. MoFox项目美术Q版角色美术设计<br/>2. 暂时保密喵~！',
+    links: [
+      { icon: 'mihuashi', link: 'https://www.mihuashi.com/profiles/7564773?role=painter&utm_source=direct&utm_campaign=userpage&utm_medium=share&utm_content=ordinary' }
+    ]
+  }
+]
+
 </script>
 
 <!-- <VPTeamMembers size="small" :members="members" /> -->
@@ -150,3 +163,5 @@ const org = [
 <MoFoxTeamCard :members="members" size="medium" />
 <br/>
 <MoFoxTeamCard :members="org" size="large" />
+<br/>
+<MoFoxTeamCard :members="artists" size="large" />

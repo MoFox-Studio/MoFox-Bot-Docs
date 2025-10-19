@@ -40,9 +40,10 @@ const devSidebar = [
       { text: '配置指南', link: '/docs/development/plugins/configuration-guide' },
       { text: '权限系统', link: '/docs/development/plugins/PERMISSION_GUIDE' },
       { text: '可用范围控制', link: '/docs/development/plugins/command-scope' },
-      { text: '插件可用组件', 
+      { text: '插件可用组件',
         items: [
-          { text: 'Action Components', link: '/docs/development/plugins/action-components' },
+          { text: 'Action指南', link: '/docs/development/plugins/action-components' },
+          { text: 'Prompt指南', link: '/docs/development/plugins/prompt-components' },
           { text: '工具指南', link: '/docs/development/plugins/tool_guide' },
           { text: '命令指南', link: '/docs/development/plugins/PLUS_COMMAND_GUIDE' },
           { text: '事件系统', link: '/docs/development/plugins/event-system-guide' },

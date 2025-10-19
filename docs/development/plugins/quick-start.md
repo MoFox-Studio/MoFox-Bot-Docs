@@ -1,6 +1,6 @@
 # 🚀 快速开始：创建你的第一个全功能插件
 
-欢迎来到 MoFox_Bot 插件开发的世界！本指南将带你从零开始，创建一个包含 **Action**、**Command**、**Tool** 和 **Event Handler** 四大核心组件的 `hello_world` 插件。
+欢迎来到 MoFox_Bot 插件开发的世界！本指南将带你从零开始，创建一个包含 **Prompt**、**Action**、**Command**、**Tool** 和 **Event Handler** 五大核心组件的 `hello_world` 插件。
 
 通过这个过程，你将掌握插件系统的基本结构和开发流程。
 
@@ -80,7 +80,7 @@ class HelloWorldPlugin(BasePlugin):
 
 ---
 
-## 🛠️ 步骤二：逐一添加四大组件
+## 🛠️ 步骤二：逐一添加五大组件
 
 现在，让我们开始为插件添加真正的功能。我们将在 `plugin.py` 文件中添加代码。
 
@@ -219,11 +219,46 @@ class RandomEmojiAction(BaseAction):
 - `action_require`: 告诉 LLM 在什么情境下**选择**使用这个动作。
 - `execute`: 当 LLM 最终决定使用这个动作时，这里的代码会被执行。
 
+### 5. 添加 Prompt (提示词注入)
+
+**功能**：我们希望机器人在回复时，能根据当前的情绪状态，微调自己的语气。
+
+将以下代码添加到 `RandomEmojiAction` 类的下方：
+
+```python
+from src.plugin_system import BasePrompt
+from src.chat.utils.prompt_params import PromptParameters
+
+# ... (其他类定义)
+
+class MoodBasedPrompt(BasePrompt):
+    """根据机器人当前情绪调整语气的Prompt组件。"""
+    prompt_name = "mood_based_prompt"
+    prompt_description = "根据当前心情微调回复语气。"
+    
+    # 注入到核心的风格Prompt中
+    injection_point = ["s4u_style_prompt", "normal_style_prompt"]
+
+    async def execute(self) -> str:
+        # 在实际应用中，我们会从一个情绪管理器中获取当前情绪
+        # 这里为了简化，我们随机模拟一个情绪
+        moods = ["开心", "平静", "有点小激动"]
+        current_mood = random.choice(moods)
+        
+        return f"请注意：你当前的心情是'{current_mood}'，请在回复中 subtly (巧妙地) 体现出这种感觉。"
+
+```
+
+- `BasePrompt`: 所有提示词注入组件的父类。
+- `injection_point`: 定义了这段文本要注入到哪个核心 `Prompt` 中。`s4u_style_prompt` 是负责定义机器人风格的核心 `Prompt` 之一。
+- `execute`: 返回的字符串会被拼接到目标 `Prompt` 的最前面，从而影响最终的生成风格。
+- 想要了解更多关于 `Prompt` 组件的知识，请阅读[《Prompt组件开发指南》](./prompt-components.md)。
+
 ---
 
 ## ✅ 步骤三：注册所有组件
 
-现在我们已经定义好了四个组件，最后一步是告诉插件主类它们的存在。
+现在我们已经定义好了五个组件，最后一步是告诉插件主类它们的存在。
 
 回到 `HelloWorldPlugin` 类，修改 `get_plugin_components` 方法，将所有组件注册进去。
 
@@ -251,6 +286,7 @@ class HelloWorldPlugin(BasePlugin):
             (GetSystemInfoTool.get_tool_info(), GetSystemInfoTool),
             (HelloCommand.get_command_info(), HelloCommand),
             (RandomEmojiAction.get_action_info(), RandomEmojiAction),
+            (MoodBasedPrompt.get_prompt_info(), MoodBasedPrompt),
         ]
 ```
 
@@ -267,6 +303,7 @@ class HelloWorldPlugin(BasePlugin):
 2.  可以向机器人发送 `/hello` 或 `!你好`，并收到回复。
 3.  在与机器人聊天时，偶尔会收到一个随机的表情符号。
 4.  虽然 `get_system_info` 工具不会被直接触发，但它已经作为一项能力被注册到了系统中。
+5.  机器人的回复风格会根据模拟的“心情”产生微小的变化，这正是 `Prompt` 组件在起作用！
 
 现在，你已经掌握了插件开发的基础。可以尝试修改这个插件，或者创建属于你自己的全新插件了！
 

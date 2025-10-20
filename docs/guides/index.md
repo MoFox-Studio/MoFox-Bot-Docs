@@ -36,7 +36,7 @@ const members = [
   {
     avatar: 'https://avatars.githubusercontent.com/u/189647097?v=4',
     name: '阿范',
-    title: '1.项目发起人之一(因个人原因已淡坑)<br/>2.核心开发者<br/>3.音游领域大神',
+    title: '1.项目发起人之一(因个人原因已淡坑)<br/>2.核心开发者<br/>3. 搞美术去了<br/>4.音游领域大神',
     links: [
       { icon: 'github', link: 'https://github.com/Furina-1013-create' }
     ]
@@ -90,7 +90,7 @@ const artists = [
   {
     avatar: 'https://raw.githubusercontent.com/MoFox-Studio/MoFox-Bot-Docs/master/public/artist-avatar.png',
     name: '参片炒米粉',
-    title: '1. MoFox项目Q版角色美术设计<br/>2. 暂时保密喵~！',
+    title: '1. MoFox项目Q版角色美术设计<br/>2. 其它的暂时保密喵~！',
     links: [
       { icon: 'mihuashi', link: 'https://www.mihuashi.com/profiles/7564773?role=painter&utm_source=direct&utm_campaign=userpage&utm_medium=share&utm_content=ordinary' }
     ]
@@ -154,7 +154,6 @@ const artists = [
 
 ### 核心贡献者
 
-### 美术
 
 <!-- <VPTeamMembers size="small" :members="members" /> -->
 

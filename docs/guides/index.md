@@ -131,6 +131,7 @@ const members = [
       { icon: 'github', link: 'https://github.com/Windpicker-owo' }
     ]
   }
+
 ]
 
 const org = [
@@ -143,8 +144,10 @@ const org = [
     ]
   }
 ]
+</script>
 
 ### 美术
+<script>
 const artists = [
   {
     avatar: 'https://raw.githubusercontent.com/MoFox-Studio/MoFox-Bot-Docs/master/public/artist-avatar.png',

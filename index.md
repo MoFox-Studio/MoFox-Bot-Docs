@@ -8,8 +8,8 @@ hero:
   image:
     src: /logo.png
     alt: MoFox_Bot Logo
-    width: 400
-    height: 400
+    width: 700
+    height: 700
   actions:
     - theme: brand
       text: 快速开始

@@ -6,31 +6,6 @@
 
 ## 选择您的部署平台
 
-<script setup>
-// 在这里定义一个数组，用来存放卡片的数据
-const myGuides = [
-  {
-    avatar: '🪟', // 卡片左侧的图标，可以是 Emoji 或者字符
-    name: 'Windows 部署指南', // 卡片的标题
-    title: '为 Windows 用户准备的图形化界面部署教程...', // 卡片的详细描述
-    link: './deployment_guide' // 点击卡片后跳转的链接
-  },
-  {
-    avatar: '🐧',
-    name: 'Linux 部署指南',
-    title: '为 Linux 用户准备的命令行部署教程...',
-    link: './mmc_deploy_linux'
-  },
-  {
-    avatar: '🤖',
-    name: 'Android 部署指南',
-    title: '为 Android 用户准备的部署教程...',
-    link: './mmc_deploy_android'
-  },
-  // ... 你可以根据需要添加任意多个卡片对象
-]
-</script>
-
 <!-- 像这样调用组件，并把你的数据通过 :guides 属性传给它 -->
 <GuideCards :guides="myGuides" />
 
@@ -81,6 +56,29 @@ const myGuides = [
 
 <script>
 import { VPTeamMembers } from 'vitepress/theme'
+
+// 在这里定义一个数组，用来存放卡片的数据
+const myGuides = [
+  {
+    avatar: '🪟', // 卡片左侧的图标，可以是 Emoji 或者字符
+    name: 'Windows 部署指南', // 卡片的标题
+    title: '为 Windows 用户准备的图形化界面部署教程...', // 卡片的详细描述
+    link: './deployment_guide' // 点击卡片后跳转的链接
+  },
+  {
+    avatar: '🐧',
+    name: 'Linux 部署指南',
+    title: '为 Linux 用户准备的命令行部署教程...',
+    link: './mmc_deploy_linux'
+  },
+  {
+    avatar: '🤖',
+    name: 'Android 部署指南',
+    title: '为 Android 用户准备的部署教程...',
+    link: './mmc_deploy_android'
+  },
+  // ... 你可以根据需要添加任意多个卡片对象
+]
 
 const members = [
   {
@@ -144,10 +142,7 @@ const org = [
     ]
   }
 ]
-</script>
 
-### 美术
-<script>
 const artists = [
   {
     avatar: 'https://raw.githubusercontent.com/MoFox-Studio/MoFox-Bot-Docs/master/public/artist-avatar.png',
@@ -158,8 +153,9 @@ const artists = [
     ]
   }
 ]
-
 </script>
+
+### 美术
 
 <!-- <VPTeamMembers size="small" :members="members" /> -->
 

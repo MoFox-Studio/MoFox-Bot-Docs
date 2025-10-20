@@ -147,7 +147,7 @@ const artists = [
   {
     avatar: 'https://raw.githubusercontent.com/MoFox-Studio/MoFox-Bot-Docs/master/public/artist-avatar.png',
     name: '参片炒米粉',
-    title: '1. MoFox项目美术Q版角色美术设计<br/>2. 暂时保密喵~！',
+    title: '1. MoFox项目Q版角色美术设计<br/>2. 暂时保密喵~！',
     links: [
       { icon: 'mihuashi', link: 'https://www.mihuashi.com/profiles/7564773?role=painter&utm_source=direct&utm_campaign=userpage&utm_medium=share&utm_content=ordinary' }
     ]

@@ -49,7 +49,7 @@ MoFox_Bot 设计得非常“聪明”，它会在第一次启动时，自动检�
 
 1.  **找到配置文件**:
     *   请打开以下路径的文件：
-        `config/plugins/napcat_adapter_plugin/config.toml`
+    `config/plugin_config/napcat_adapter_plugin/config.toml`
 
 2.  **启用插件 (关键)**:
     *   用你的代码编辑器打开该文件，找到 `[plugin]` 配置节，将 `enabled` 的值从 `false` 修改为 `true`。这是开启适配器的总开关。
@@ -132,7 +132,7 @@ MoFox_Bot 设计得非常“聪明”，它会在第一次启动时，自动检�
 这通常意味着 MoFox_Bot 和 Napcat QQ 客户端之间的“神经”没有接上。请按以下步骤排查：
 
 1.  **检查 Napcat QQ**: 确保 Napcat QQ 客户端本身已成功登录并处于在线状态。
-2.  **检查端口号**: 这是最常见的原因。请再次核对 `config/plugins/napcat_adapter_plugin/config.toml` 文件中 `[napcat_server]` 下的 `port` 值，是否与你 Napcat QQ 客户端里设置的**反向 WebSocket 端口**完全一致。
+2.  **检查端口号**: 这是最常见的原因。请再次核对 `config/plugin_config/napcat_adapter_plugin/config.toml` 文件中 `[napcat_server]` 下的 `port` 值，是否与你 Napcat QQ 客户端里设置的**反向 WebSocket 端口**完全一致。
 3.  **检查防火墙**: 确保防火墙或安全组没有阻止相应的端口。
 4.  **检查 IP 地址**: 确保 `config.toml` 中的 `host` (`localhost`) 和 Napcat 中的 IP (`127.0.0.1`) 是匹配的。
 
@@ -144,7 +144,7 @@ MoFox_Bot 设计得非常“聪明”，它会在第一次启动时，自动检�
 这通常是配置问题或napcat服务问题。
 
 1.  **检查 Napcat QQ**: 确保 Napcat QQ 客户端本身已成功登录并处于在线状态,以及有没有连接上内置的适配器。
-2.  **检查白名单**: 检查 `config/plugins/napcat_adapter_plugin/config.toml` 文件中 `[features]` 部分的 `group_list` 和 `private_list`。如果你开启了白名单，请确保你测试的群聊或私聊已经被加了进去。
+2.  **检查白名单**: 检查 `config/plugin_config/napcat_adapter_plugin/config.toml` 文件中 `[features]` 部分的 `group_list` 和 `private_list`。如果你开启了白名单，请确保你测试的群聊或私聊已经被加了进去。
 3.  **查看日志**: 观察机器人后台的命令行窗口。当你给机器人发消息时，看看日志是否刷新，是否有 `ERROR` 级别的红色错误信息。
 
 </details>

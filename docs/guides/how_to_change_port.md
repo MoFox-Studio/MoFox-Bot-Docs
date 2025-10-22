@@ -31,7 +31,7 @@ MoFox_Bot 主要涉及两个端口：
 
 由于内部服务端口发生了变化，我们还需要告诉 Napcat 适配器去哪里找核心服务。
 
-1.  打开 `config/plugins/napcat_adapter_plugin/config.toml` 文件。
+1.  打开 `config/plugin_config/napcat_adapter_plugin/config.toml` 文件。
 2.  找到 `[maibot_server]` 配置节。
 3.  将其中的 `port` 值修改为**与 `.env` 文件中 `PORT` 值相同**的新端口。
     ```toml
@@ -62,7 +62,7 @@ MoFox_Bot 主要涉及两个端口：
 
 ### 第二步：修改 MoFox_Bot 适配器插件配置
 
-1.  打开 `config/plugins/napcat_adapter_plugin/config.toml` 文件。
+1.  打开 `config/plugin_config/napcat_adapter_plugin/config.toml` 文件。
 2.  找到 `[napcat_server]` 配置节。
 3.  将其中的 `port` 值修改为**与 Napcat QQ 客户端中设置的新端口完全一致**。
     ```toml

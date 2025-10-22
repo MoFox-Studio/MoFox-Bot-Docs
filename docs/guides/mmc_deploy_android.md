@@ -156,7 +156,7 @@ Napcat QQ 是一个 QQ 客户端，也是 MoFox_Bot 与 QQ 平台沟通的桥梁
     *   等待程序初始化完成（日志停止滚动）后，按下 `Ctrl + C` 关闭程序。
 
 2.  **启用并配置插件**:
-    *   编辑 `config/plugins/napcat_adapter_plugin/config.toml` 文件。
+    *   编辑 `config/plugin_config/napcat_adapter_plugin/config.toml` 文件。
     *   将 `[plugin]` 下的 `enabled` 修改为 `true`。
     *   确认 `[napcat_server]` 下的 `port` 值（默认为 `8095`），与你在 **安卓 Napcat QQ 客户端** 中设置的**反向 WebSocket** 端口号**完全一致**。
 
@@ -200,7 +200,7 @@ Napcat QQ 是一个 QQ 客户端，也是 MoFox_Bot 与 QQ 平台沟通的桥梁
 这通常意味着 MoFox_Bot 和 Napcat QQ 客户端之间的“神经”没有接上。请按以下步骤排查：
 
 1.  **检查 Napcat QQ App**: 确保 Napcat QQ 客户端 App 本身已成功登录并处于在线状态，没有被系统后台杀死。
-2.  **检查端口号**: 这是最常见的原因。请再次核对 `config/plugins/napcat_adapter_plugin/config.toml` 文件中 `[napcat_server]` 下的 `port` 值，是否与你 Napcat QQ 客户端里设置的**反向 WebSocket 端口**完全一致。
+2.  **检查端口号**: 这是最常见的原因。请再次核对 `config/plugin_config/napcat_adapter_plugin/config.toml` 文件中 `[napcat_server]` 下的 `port` 值，是否与你 Napcat QQ 客户端里设置的**反向 WebSocket 端口**完全一致。
 3.  **检查 Termux 网络权限**: 确保 Termux 具有访问网络的权限。
 
 </details>
@@ -211,7 +211,7 @@ Napcat QQ 是一个 QQ 客户端，也是 MoFox_Bot 与 QQ 平台沟通的桥梁
 这通常是配置问题或模型服务问题。
 
 1.  **检查模型配置**: 确认 `config/model_config.toml` 里的 API Key 是**有效且可用**的。
-2.  **检查白名单**: 检查 `config/plugins/napcat_adapter_plugin/config.toml` 文件中 `[features]` 部分的 `group_list` 和 `private_list`。如果你开启了白名单，请确保你测试的群聊或私聊已经被加了进去。
+2.  **检查白名单**: 检查 `config/plugin_config/napcat_adapter_plugin/config.toml` 文件中 `[features]` 部分的 `group_list` 和 `private_list`。如果你开启了白名单，请确保你测试的群聊或私聊已经被加了进去。
 3.  **查看日志**: 使用 `screen -r mofox` 连接回后台，当你给机器人发消息时，看看日志是否刷新，是否有 `ERROR` 级别的红色错误信息。
 
 </details>

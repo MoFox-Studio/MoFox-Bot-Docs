@@ -35,7 +35,7 @@ MoFox_Bot的插件系统采用了一种现代化的、基于代码的元数据�
     转换成功后，新的、符合现代化元数据标准的插件目录将出现在 `scripts/completed_plugins/` 目录下。原有的 `_manifest.json` 会被移除，并自动生成包含 `PluginMetadata` 的 `__init__.py` 文件。
 
 5.  **完成迁移**:
-    将 `completed_plugins` 目录下的插件移动到你项目的正式插件目录中即可。
+    将 `completed_plugins` 目录下的插件移动到正式插件目录中即可。
 
 ## `PluginMetadata` 类详解
 
@@ -117,6 +117,14 @@ metadata = PluginMetadata(
   - **说明**: 插件所属的分类。
   - **示例**: `["工具", "娱乐"]`
 
+- `python_dependencies: list[str | PythonDependency]`
+  - **说明**: 插件所需的Python依赖列表。详细用法请参考[插件Python依赖管理](./dependency-management)文档。
+  - **示例**: `["requests", "beautifulsoup4>=4.9.0"]`
+
+- `dependencies: list[str]`
+  - **说明**: 插件所需的其他插件依赖列表
+  - **示例**: `["some_other_library"]`
+
 #### 其他字段
 
 - `type: str | None`
@@ -138,14 +146,11 @@ metadata = PluginMetadata(
 
 2.  **定义元数据**: 在 `__init__.py` 中创建并配置 `metadata` 变量。
 
-3.  **编写插件逻辑**: 在 `plugin.py` 中，像往常一样编写你的 `BasePlugin` 子类。你不再需要在插件类中定义 `plugin_name` 之外的任何元数据属性。
+3.  **编写插件逻辑**: 在 `plugin.py` 中，像往常一样编写你的 `BasePlugin` 子类。
 
 4.  **加载过程**: 当MoFox_Bot启动时，插件管理器会自动扫描插件目录，找到 `__init__.py` 文件，读取 `metadata` 对象，并将其传递给你的插件实例。
 
 ## 常见问题
-
-**Q: 我还需要在 `BasePlugin` 子类中定义 `plugin_name` 吗？**
-A: 是的。`plugin_name` 仍然需要在 `BasePlugin` 子类中定义，并且**必须**与你的插件目录名保持一致。这是系统用来在内部识别和引用插件的唯一ID。而 `metadata.name` 是用于向用户显示的名称。
 
 **Q: 如果我不提供可选字段会怎么样？**
 A: 不会有任何问题。系统会使用字段的默认值。但是，提供更完整的信息有助于其他用户（以及未来的你）更好地理解和使用你的插件。

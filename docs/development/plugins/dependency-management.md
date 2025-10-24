@@ -11,24 +11,29 @@
 
 ## 如何为插件配置依赖
 
-你有两种方式来声明插件所需的Python依赖。
+现在，你需要在插件的 `__plugin_meta__` 中通过 `python_dependencies` 属性来声明依赖。
 
 ### 方式1: 简单字符串列表 (适用于简单场景)
 
-这是最快捷的方式，兼容旧版，适合定义简单的依赖。
+这是最快捷的方式，适合定义简单的依赖。
 
 ```python
-from src.plugin_system import BasePlugin
+from src.plugin_system.base.plugin_metadata import PluginMetadata, PythonDependency
 from typing import List
 
-@register_plugin
-class MySimplePlugin(BasePlugin):
-    # 以字符串列表的形式定义依赖
-    python_dependencies: List[str] = [
-        "requests", 
+__plugin_meta__ = PluginMetadata(
+    name="My Simple Plugin",
+    # ... 其他元数据
+    python_dependencies=[
+        "requests",
         "beautifulsoup4>=4.9.0",
         "httpx[socks]"  # 支持 extras
     ]
+)
+
+# @register_plugin
+# class MySimplePlugin(BasePlugin):
+#     ...
 ```
 
 ### 方式2: 使用 `PythonDependency` 对象 (推荐)
@@ -36,12 +41,13 @@ class MySimplePlugin(BasePlugin):
 对于复杂的依赖场景，强烈推荐使用 `PythonDependency` 对象。它提供了更强的控制力和更清晰的定义，尤其是在包的 **安装名** 和 **导入名** 不一致时。
 
 ```python
-from src.plugin_system import BasePlugin, PythonDependency
+from src.plugin_system.base.plugin_metadata import PluginMetadata, PythonDependency
 from typing import List
 
-@register_plugin
-class MyAdvancedPlugin(BasePlugin):
-    python_dependencies: List[PythonDependency] = [
+__plugin_meta__ = PluginMetadata(
+    name="My Advanced Plugin",
+    # ... 其他元数据
+    python_dependencies=[
         PythonDependency(
             package_name="requests",
             version=">=2.25.0",
@@ -51,7 +57,7 @@ class MyAdvancedPlugin(BasePlugin):
         PythonDependency(
             package_name="bs4",  # 导入名是 bs4
             install_name="beautifulsoup4",  # 安装名是 beautifulsoup4
-            version=">=4.9.0", 
+            version=">=4.9.0",
             description="强大的HTML和XML解析库",
             optional=False
         ),
@@ -62,6 +68,11 @@ class MyAdvancedPlugin(BasePlugin):
             optional=True  # 标记为可选依赖
         )
     ]
+)
+
+# @register_plugin
+# class MyAdvancedPlugin(BasePlugin):
+#     ...
 ```
 
 ## `PythonDependency` 参数详解
@@ -76,7 +87,7 @@ class MyAdvancedPlugin(BasePlugin):
 
 依赖管理系统遵循以下步骤：
 
-1.  **插件初始化**: 当插件被加载时，系统开始检查其 `python_dependencies` 属性。
+1.  **插件初始化**: 当插件被加载时，系统会读取 `__plugin_meta__` 中的 `python_dependencies` 属性。
 2.  **依赖标准化**: 如果你使用了简单的字符串列表，系统会将其内部转换为 `PythonDependency` 对象。
 3.  **检查与验证**: 系统会尝试导入每个依赖包，并验证其版本是否满足要求。
 4.  **智能别名解析**: 如果通过 `package_name` 直接导入失败 (例如 `import beautifulsoup4` 失败)，系统会查询一个内置的别名映射表 (例如 `beautifulsoup4` -> `bs4`)，并尝试使用别名再次导入。

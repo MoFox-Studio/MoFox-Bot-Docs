@@ -1,4 +1,4 @@
-# 📝 Prompt 组件开发指南
+# 📝 Prompt 组件开发指南 (v2)
 
 ## 📖 什么是 Prompt 组件？
 
@@ -23,14 +23,7 @@ Prompt 组件是插件中用于动态增强和定制核心 Prompt 的一种强�
 
 -   `prompt_name: str`: **（必需）** 组件的唯一标识符。命名应清晰、简洁，并能反映其功能。
 -   `prompt_description: str`: **（推荐）** 对组件功能的简要描述，有助于其他开发者理解其用途。
--   `injection_point: str | list[str]`: **（必需）** 指定此组件要注入的目标核心 Prompt 的名称。
-    -   可以是一个字符串，如 `"planner_prompt"`，表示只注入到这一个目标。
-    -   也可以是一个字符串列表，如 `["s4u_style_prompt", "normal_style_prompt"]`，表示同时注入到多个目标中。
-    -   常见的目标有:
-        -   `planner_prompt`: 规划器的Prompt
-        -   `s4u_style_prompt`: S4U风格的回复Prompt
-        -   `normal_style_prompt`: 普通风格的回复Prompt
-        -   `change_mood_prompt`: 情绪改变时的Prompt
+-   `injection_rules: list[InjectionRule]`: **（必需）** 这是定义注入行为的核心。它是一个 `InjectionRule` 对象的列表，允许你精确控制注入的 **目标、方式、位置** 和 **优先级**。
 
 ### 代码框架示例
 
@@ -38,6 +31,7 @@ Prompt 组件是插件中用于动态增强和定制核心 Prompt 的一种强�
 
 ```python
 from src.plugin_system.base.base_prompt import BasePrompt
+from src.plugin_system.base.component_types import InjectionRule, InjectionType
 from src.chat.utils.prompt_params import PromptParameters
 
 class ExamplePrompt(BasePrompt):
@@ -45,11 +39,16 @@ class ExamplePrompt(BasePrompt):
     prompt_name = "example_prompt"
     prompt_description = "这是一个示例Prompt，用于向核心Prompt添加额外信息。"
     
-    # 2. 指定注入目标
-    # 可以是单个目标，也可以是多个目标的列表
-    injection_point = "planner_prompt" 
+    # 2. 定义注入规则 (核心)
+    injection_rules = [
+        InjectionRule(
+            target_prompt="planner_prompt", 
+            injection_type=InjectionType.PREPEND, 
+            priority=100
+        )
+    ]
 
-    # 3. 初始化 (通常无需修改，直接继承父类即可)
+    # 3. 初始化 (通常无需修改)
     def __init__(self, params: PromptParameters, plugin_config: dict | None = None):
         super().__init__(params, plugin_config)
 
@@ -57,7 +56,7 @@ class ExamplePrompt(BasePrompt):
     async def execute(self) -> str:
         """
         根据上下文动态生成要注入的文本。
-        返回的字符串将被拼接到目标Prompt的最前面。
+        返回的字符串将根据 injection_rules 的定义被注入到目标Prompt中。
         """
         # --- 在这里编写你的逻辑 ---
         user_name = self.params.user_nickname
@@ -70,125 +69,118 @@ class ExamplePrompt(BasePrompt):
 
 ---
 
-## 🛠️ 核心方法与属性详解
+## 🛠️ 核心概念：`InjectionRule` 详解
 
-### `execute(self) -> str`
+`injection_rules` 列表取代了旧的 `injection_point`，提供了更强大和灵活的注入控制能力。每个 `InjectionRule` 对象都定义了一条完整的注入规则。
 
-这是 Prompt 组件的灵魂所在，**所有子类都必须实现这个异步方法**。
+### `InjectionRule` 的参数
 
--   **职责**: 它的核心职责是根据当前的上下文信息，动态地生成一段文本字符串。
--   **数据来源**: 该方法内可以通过 `self.params` 访问到丰富的上下文信息，这是实现动态注入的关键。
--   **返回值**: 方法返回的字符串将 **被自动拼接到 `injection_point` 指定的目标 Prompt 内容的最前面**。这意味着你注入的内容将具有较高的优先级，能有效地引导模型的后续输出。
+-   `target_prompt: str`: **（必需）** 要注入的目标核心 Prompt 的名称。常见的有:
+    -   `planner_prompt`: 规划器的Prompt
+    -   `s4u_style_prompt`: S4U风格的回复Prompt
+    -   `normal_style_prompt`: 普通风格的回复Prompt
+    -   `change_mood_prompt`: 情绪改变时的Prompt
 
-### `self.params: PromptParameters`
+-   `injection_type: InjectionType`: **（可选，默认 `PREPEND`）** 注入的方式。这是一个枚举类型，可选值包括：
+    -   `InjectionType.PREPEND`: 在目标 Prompt 的 **最前面** 插入内容。
+    -   `InjectionType.APPEND`: 在目标 Prompt 的 **最后面** 追加内容。
+    -   `InjectionType.REPLACE`: **替换** 目标 Prompt 中的指定内容。
+    -   `InjectionType.REMOVE`: **移除** 目标 Prompt 中的指定内容。
+    -   `InjectionType.INSERT_AFTER`: 在目标 Prompt 的指定内容 **之后** 插入。
 
-`self.params` 是一个数据容器对象，它封装了构建 Prompt 所需的全部上下文信息。你可以通过它访问到：
+-   `priority: int`: **（可选，默认 `100`）** 注入的优先级。当多个组件注入到同一个目标时，**数字越小，优先级越高，越先执行**。
 
--   `self.params.user_id`: 当前用户的唯一ID。
--   `self.params.user_nickname`: 当前用户的昵称。
--   `self.params.chat_history`: 当前对话的详细历史记录。
--   `self.params.is_group`: 判断当前是否为群聊环境。
--   ... 以及更多其他有用的上下文信息。
+-   `target_content: str | None`: **（特定类型必需）** 当 `injection_type` 为 `REPLACE`, `REMOVE`, 或 `INSERT_AFTER` 时，此项为 **必需**。它指定了要操作的目标内容，支持正则表达式。
 
-在 `execute` 方法中，你应该充分利用这些信息来生成高度情境化的提示内容。
+### ⚠️ 关于旧的 `injection_point`
 
-### `get_config(self, key: str, default=None)`
+旧的 `injection_point: str | list[str]` 属性 **已被废弃**，但为了向后兼容，系统会自动将其转换为 `injection_rules`。
 
-这是一个非常实用的辅助方法，用于安全地从当前插件的配置文件中读取配置项。
-
--   **功能**: 避免了直接操作字典可能引发的 `KeyError`。
--   **嵌套访问**: 支持使用点号（`.`）来访问嵌套的配置值，例如 `self.get_config("api.weather.key")`。
-
-**用法示例:**
-
-```python
-# 假设插件配置文件 config.json 中有如下内容:
-# {
-#   "weather_api": {
-#     "api_key": "your_api_key_here",
-#     "city": "Beijing"
-#   }
-# }
-
-class WeatherPrompt(BasePrompt):
-    ...
-    async def execute(self) -> str:
-        # 使用 get_config 安全地读取配置
-        api_key = self.get_config("weather_api.api_key")
-        default_city = self.get_config("weather_api.city", "Shanghai") # 带默认值
-        
-        if not api_key:
-            return "（天气服务未配置，无法获取天气信息。）"
-        
-        # ...后续逻辑
-        return f"当前城市是{default_city}。"
-```
+-   `injection_point = "planner_prompt"` 会被自动转换为 `[InjectionRule(target_prompt="planner_prompt")]`。
+-   **强烈建议** 所有新的 Prompt 组件直接使用 `injection_rules` 来定义注入行为，以获得更强的控制力。
 
 ---
 
-## 🚀 实践示例：创建一个天气提示组件
+## 🚀 实践示例：创建一个高级天气提示组件
 
-让我们通过一个具体的例子来展示 Prompt 组件的用法。
+让我们通过一个具体的例子来展示 `injection_rules` 的强大之处。
 
-**场景**: 我们希望模型在为用户制定计划或提供建议时，能够主动考虑到当前的天气情况，让建议更加贴心和实用。
+**场景**: 我们希望模型在制定计划时能参考天气，但我们还想在最终回复时追加一条天气提醒。
 
 **实现步骤**:
 
-1.  **创建组件**: 创建一个名为 `WeatherPrompt` 的新组件。
-2.  **设定目标**: 将注入目标 `injection_point` 设置为 `planner_prompt`，因为我们希望在“计划”场景下生效。
-3.  **实现逻辑**: 在 `execute` 方法中，调用一个（伪）天气服务来获取天气信息。
-4.  **构建提示**: 将获取到的天气信息格式化为一段结构清晰的提示文本，并返回。
+1.  **创建组件** `AdvancedWeatherPrompt`。
+2.  **设定规则一**: 使用 `PREPEND` 在 `planner_prompt` 的开头注入详细天气信息，供模型规划时参考。
+3.  **设定规则二**: 使用 `APPEND` 在 `s4u_style_prompt` 和 `normal_style_prompt` 的末尾追加一句简短的天气提醒。
+4.  **实现逻辑**: 在 `execute` 方法中，根据不同的注入目标返回不同的内容。
 
 **完整代码示例:**
 
 ```python
 import random
 from src.plugin_system.base.base_prompt import BasePrompt
+from src.plugin_system.base.component_types import InjectionRule, InjectionType
 from src.chat.utils.prompt_params import PromptParameters
 
-class WeatherPrompt(BasePrompt):
-    prompt_name = "weather_info_prompt"
-    prompt_description = "向计划类Prompt注入当前的天气信息，让模型的规划更贴近现实。"
-    injection_point = "planner_prompt"
+class AdvancedWeatherPrompt(BasePrompt):
+    prompt_name = "advanced_weather_info_prompt"
+    prompt_description = "向规划Prompt注入详细天气，并向回复Prompt追加天气提醒。"
+    
+    injection_rules = [
+        # 规则1：为规划器提供详细天气信息
+        InjectionRule(
+            target_prompt="planner_prompt", 
+            injection_type=InjectionType.PREPEND, 
+            priority=50  # 较高优先级，确保在其他规划信息前
+        ),
+        # 规则2：为两种风格的回复追加一句提醒
+        InjectionRule(
+            target_prompt=["s4u_style_prompt", "normal_style_prompt"], 
+            injection_type=InjectionType.APPEND, 
+            priority=200 # 较低优先级
+        )
+    ]
 
     def __init__(self, params: PromptParameters, plugin_config: dict | None = None):
         super().__init__(params, plugin_config)
+        self.weather_data = None # 缓存天气数据
 
     async def _get_current_weather(self, city: str) -> dict:
-        """
-        一个模拟的天气API调用函数。
-        在实际应用中，这里应该是一个真实的HTTP请求。
-        """
+        """一个模拟的天气API调用函数。"""
+        if self.weather_data:
+            return self.weather_data
+        
         print(f"正在为城市 '{city}' 获取天气信息...")
-        # 伪代码：模拟API返回
         weathers = [
             {"condition": "晴朗", "temp": "25°C", "suggestion": "天气晴朗，适合户外活动。"},
-            {"condition": "多云", "temp": "22°C", "suggestion": "天气多云，可能会有零星小雨，出门建议带伞。"},
             {"condition": "小雨", "temp": "18°C", "suggestion": "正在下雨，请尽量安排室内活动。"},
         ]
-        return random.choice(weathers)
+        self.weather_data = random.choice(weathers)
+        return self.weather_data
 
-    async def execute(self) -> str:
+    async def execute(self, target_prompt_name: str) -> str:
         """
-        获取天气信息并构建注入的Prompt文本。
+        根据不同的注入目标，返回不同的内容。
         """
-        # 假设我们可以从用户配置或历史消息中获取城市信息
-        # 这里为了简化，我们使用插件配置中的城市
-        city = self.get_config("weather.city", "北京") # 从配置读取城市，默认为北京
-
+        city = self.get_config("weather.city", "北京")
         weather_data = await self._get_current_weather(city)
 
-        # 构建结构化的Prompt注入内容
-        prompt_injection = f"""
+        # 根据当前执行的注入规则的目标来决定返回内容
+        if target_prompt_name == "planner_prompt":
+            # 返回给规划器的详细信息
+            return f"""
 # 当前天气参考
 - 城市: {city}
 - 天气状况: {weather_data['condition']}
 - 温度: {weather_data['temp']}
 - 出行建议: {weather_data['suggestion']}
-
 请在制定下一步计划时，务必考虑到以上天气情况。
 """
-        return prompt_injection
+        elif target_prompt_name in ["s4u_style_prompt", "normal_style_prompt"]:
+            # 返回给回复模板的追加提醒
+            return f"\n\n[温馨提示：今天{city}天气{weather_data['condition']}，温度{weather_data['temp']}，请注意。]"
+        
+        return "" # 其他情况返回空字符串
 ```
 
-通过这个简单的组件，模型在执行任何与 `planner_prompt` 相关的任务时，都会首先看到我们注入的天气信息，从而做出更智能、更符合现实情况的规划。这就是 Prompt 组件的魅力所在！
+通过 `injection_rules`，我们用一个组件就实现了对不同 Prompt 的、不同方式的、精确的注入操作。这就是 Prompt 组件 v2 的强大之处！

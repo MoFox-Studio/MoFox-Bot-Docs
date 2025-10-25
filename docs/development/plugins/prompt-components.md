@@ -80,6 +80,8 @@ class ExamplePrompt(BasePrompt):
     -   `s4u_style_prompt`: S4U风格的回复Prompt
     -   `normal_style_prompt`: 普通风格的回复Prompt
     -   `change_mood_prompt`: 情绪改变时的Prompt
+    -   `proactive_thinker_decision`: 主动思考决策Prompt
+    -   `proactive_thinker_plan`: 主动思考回复规划Prompt
 
 -   `injection_type: InjectionType`: **（可选，默认 `PREPEND`）** 注入的方式。这是一个枚举类型，可选值包括：
     -   `InjectionType.PREPEND`: 在目标 Prompt 的 **最前面** 插入内容。

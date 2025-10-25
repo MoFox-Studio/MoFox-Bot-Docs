@@ -18,7 +18,6 @@ const devSidebar = [
   {
     text: '架构',
     items: [
-      { text: '权限系统', link: '/docs/development/architecture/PERMISSION_SYSTEM' },
       { text: '技术栈与聊天流分析', link: '/docs/development/architecture/tech_stack_and_chat_flow' }
     ]
   },

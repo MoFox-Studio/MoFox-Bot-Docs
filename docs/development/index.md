@@ -20,7 +20,7 @@ const devGuides = [
     avatar: '🏗️',
     name: '架构总览',
     title: '宏观地了解 MoFox_Bot 的核心设计理念、技术选型等。',
-    link: './architecture/PERMISSION_SYSTEM'
+    link: './architecture/tech_stack_and_chat_flow'
   },
   {
     avatar: '🤝',

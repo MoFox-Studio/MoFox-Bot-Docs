@@ -19,7 +19,7 @@ import {
 } from '@nolebase/vitepress-plugin-inline-link-preview/client'
 
 import '@nolebase/vitepress-plugin-inline-link-preview/client/style.css'
-
+import NotFound from './NotFound.vue'
 // 动态加载外部脚本的函数
 function loadScript(src) {
   return new Promise((resolve, reject) => {
@@ -35,6 +35,7 @@ export default {
   ...DefaultTheme,
   Layout() {
     return h(DefaultTheme.Layout, null, {
+      'not-found': () => h(NotFound),
       'doc-before': () => h(ReadingTime),
       'doc-after': () => h(Giscus),
       'nav-bar-content-after': () => h(NolebaseEnhancedReadabilitiesMenu),

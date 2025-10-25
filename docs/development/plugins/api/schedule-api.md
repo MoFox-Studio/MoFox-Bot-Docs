@@ -1,6 +1,6 @@
-# 日程表API
+# 日程与月度计划查询API
 
-日程表API模块专门负责日程和月度计划信息的查询与管理，帮助插件与MoFox-Bot的日程系统进行交互。
+本API模块提供了一系列用于查询日程和月度计划的 **只读** 接口，帮助插件与MoFox-Bot的日程系统进行交互。API经过重构，专注于提供灵活的数据查询能力。
 
 ## 导入方式
 
@@ -14,80 +14,105 @@ from src.plugin_system.apis import schedule_api
 
 所有对外接口均为异步函数，请在插件的异步环境中使用 `await` 进行调用。
 
-### 1. 获取今日日程
+### 1. 获取日程安排
+
+替代了旧的 `get_today_schedule()`，功能更强大。
 
 ```python
-async def get_today_schedule() -> Optional[List[Dict[str, Any]]]:
+async def get_schedule(
+    date: Optional[str] = None,
+    formatted: bool = False,
+    format_template: str = "{time_range}: {activity}"
+) -> Union[List[Dict[str, Any]], str, None]:
 ```
 
+**Args**:
+- `date` (Optional[str]): 目标日期，格式为 `"YYYY-MM-DD"`。如果省略，则默认为 **今天**。
+- `formatted` (bool): 若为 `True`，则返回根据模板格式化的字符串。默认为 `False`，返回原始数据列表。
+- `format_template` (str): `formatted` 为 `True` 时使用的格式化模板。
+
 **Returns**:
-- `Optional[List[Dict[str, Any]]]`：今天的日程列表。每个日程是一个字典，包含活动的详细信息。如果日程未生成或未启用，则返回 `None`。
+- `Union[List[Dict[str, Any]], str, None]`: 日程数据列表、格式化字符串或 `None`。
 
 ### 2. 获取当前活动
 
 ```python
-async def get_current_activity() -> Optional[str]:
-```
-
-**Returns**:
-- `Optional[str]`：当前正在进行的活动名称。如果没有正在进行的活动，则返回 `None`。
-
-### 3. 重新生成日程
-
-```python
-async def regenerate_schedule() -> bool:
-```
-
-**Details**:
-- 触发后台任务，为今天重新生成一份日程安排。这在需要根据最新情况（例如，新的月度计划）更新日程时非常有用。
-
-**Returns**:
-- `bool`：如果成功触发了重新生成任务，则返回 `True`，否则返回 `False`。
-
-### 4. 获取月度计划
-
-```python
-async def get_monthly_plans(target_month: Optional[str] = None) -> List[MonthlyPlan]:
+async def get_current_activity(
+    formatted: bool = False,
+    format_template: str = "{time_range}: {activity}"
+) -> Union[Dict[str, Any], str, None]:
 ```
 
 **Args**:
-- `target_month` (Optional[str])：目标月份，格式为 `"YYYY-MM"`。如果省略，则默认为当前月份。
+- `formatted` (bool): 若为 `True`，则返回格式化的字符串。默认为 `False`，返回包含活动详情的字典。
+- `format_template` (str): `formatted` 为 `True` 时使用的格式化模板。
 
 **Returns**:
-- `List[MonthlyPlan]`：指定月份的有效月度计划列表。`MonthlyPlan` 是一个数据库模型对象，包含了计划的详细信息。
+- `Union[Dict[str, Any], str, None]`: 当前活动的字典、格式化字符串或 `None`。
 
-### 5. 确保月度计划存在
+### 3. 获取时间段内的活动 (新增)
 
 ```python
-async def ensure_monthly_plans(target_month: Optional[str] = None) -> bool:
+async def get_activities_between(
+    start_time: str,
+    end_time: str,
+    date: Optional[str] = None,
+    formatted: bool = False,
+    format_template: str = "{time_range}: {activity}"
+) -> Union[List[Dict[str, Any]], str, None]:
 ```
 
-**Details**:
-- 检查指定月份是否存在月度计划。如果不存在，会自动触发生成过程。
-
 **Args**:
-- `target_month` (Optional[str])：目标月份，格式为 `"YYYY-MM"`。如果省略，则默认为当前月份。
+- `start_time` (str): 开始时间，格式为 `"HH:MM"`。
+- `end_time` (str): 结束时间，格式为 `"HH:MM"`。
+- `date` (Optional[str]): 目标日期，格式为 `"YYYY-MM-DD"`。默认为今天。
+- `formatted` (bool): 控制返回类型是列表还是格式化字符串。
 
 **Returns**:
-- `bool`：如果计划已存在或成功生成，则返回 `True`，否则返回 `False`。
+- `Union[List[Dict[str, Any]], str, None]`: 在指定时间范围内的活动列表、格式化字符串或 `None`。
 
-### 6. 归档月度计划
+### 4. 获取月度计划 (重构)
+
+查询月度计划的接口，功能大幅增强。
 
 ```python
-async def archive_monthly_plans(target_month: Optional[str] = None) -> bool:
+async def get_monthly_plans(
+    target_month: Optional[str] = None,
+    random_count: Optional[int] = None,
+    formatted: bool = False,
+    format_template: str = "- {plan_text}"
+) -> Union[List[MonthlyPlan], str, None]:
 ```
 
-**Details**:
-- 将指定月份的所有有效月度计划标记为“已归档”，使它们不再参与未来日程的生成。
-
 **Args**:
-- `target_month` (Optional[str])：目标月份，格式为 `"YYYY-MM"`。如果省略，则默认为当前月份。
+- `target_month` (Optional[str]): 目标月份，格式为 `"YYYY-MM"`。默认为当前月份。
+- `random_count` (Optional[int]): 如果设置，将从当月计划中 **随机** 返回指定数量的计划。如果忽略，则返回全部计划。
+- `formatted` (bool): 控制返回类型是 `MonthlyPlan` 对象列表还是格式化字符串。
 
 **Returns**:
-- `bool`：如果归档操作成功，则返回 `True`，否则返回 `False`。
+- `Union[List[MonthlyPlan], str, None]`: 月度计划对象列表、格式化字符串或 `None`。
+
+### 5. 统计月度计划数量 (新增)
+
+```python
+async def count_monthly_plans(target_month: Optional[str] = None) -> int:
+```
+
+**Args**:
+- `target_month` (Optional[str]): 目标月份，格式为 `"YYYY-MM"`。默认为当前月份。
+
+**Returns**:
+- `int`: 指定月份的有效月度计划总数。
+
+## 已移除的API
+
+为使API更加专注和清晰，以下与日程生成和状态管理相关的函数已被移除：
+- `regenerate_schedule()`
+- `ensure_monthly_plans()`
+- `archive_monthly_plans()`
 
 ## 注意事项
 
 1.  **异步调用**: 本API中的所有函数都是 `async` 函数，必须在异步上下文中使用 `await` 关键字进行调用。
-2.  **异常处理**: 尽管API内部已经进行了一定的错误处理，但在调用时，最好还是将它们包裹在 `try...except` 块中，以应对可能发生的意外情况。
-3.  **数据模型**: `get_monthly_plans` 返回的是 `MonthlyPlan` 对象列表，你可以直接访问其属性来获取计划的详细信息，例如 `.plan_text`。
+2.  **异常处理**: 建议将API调用包裹在 `try...except` 块中，以应对可能发生的意外情况。
+3.  **数据模型**: `get_monthly_plans` 在未格式化时返回的是 `MonthlyPlan` 对象列表，你可以直接访问其属性来获取计划的详细信息，例如 `.plan_text`。

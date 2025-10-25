@@ -41,6 +41,7 @@ const devSidebar = [
       { text: '可用范围控制', link: '/docs/development/plugins/command-scope' },
       { text: '插件可用组件',
         items: [
+          { text: 'Chatter指南', link: '/docs/development/plugins/chatter-components' },
           { text: 'Action指南', link: '/docs/development/plugins/action-components' },
           { text: 'Prompt指南', link: '/docs/development/plugins/prompt-components' },
           { text: '工具指南', link: '/docs/development/plugins/tool_guide' },

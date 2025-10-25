@@ -94,9 +94,11 @@ class HelloWorldPlugin(BasePlugin):
 # (放在 import 语句下方)
 from src.plugin_system import BaseEventHandler, EventType
 from src.plugin_system.base.base_event import HandlerResult
-import logging
+from src.common.logger import get_logger
 
 # ... (其他 import)
+
+logger = get_logger("hello_world_plugin")
 
 class StartupMessageHandler(BaseEventHandler):
     """启动时打印消息的事件处理器。"""
@@ -105,13 +107,20 @@ class StartupMessageHandler(BaseEventHandler):
     init_subscribe = [EventType.ON_START]  # 订阅启动事件
 
     async def execute(self, params: dict) -> HandlerResult:
-        logging.info("🎉 Hello World 插件已启动，准备就绪！")
+        logger.info("🎉 Hello World 插件已启动，准备就绪！")
         return HandlerResult(success=True, continue_process=True)
 ```
 
 - `BaseEventHandler`: 所有事件处理器的父类。
 - `init_subscribe`: 告诉系统我们关心哪个事件，这里是 `EventType.ON_START` (启动事件)。
 - `execute`: 事件发生时，这里的代码会被执行。
+
+> **💡 日志记录小贴士**
+>
+> 我们推荐使用 `logger = get_logger("...")` 的方式来获取日志记录器。
+> - **参数**: `get_logger` 的参数是日志记录器的名字，它会显示在控制台的日志输出中。
+> - **命名**: 你可以为它指定**任何名字**，但我们强烈建议使用**插件的名称** (例如 `"hello_world_plugin"`)。这样做的好处是，当你在查看日志时，可以非常清晰地知道这条日志信息是由哪个插件打印的，极大地提高了调试效率。
+> - **用法**: `logger.info()` 的效果与 `logging.info()` 类似，但通过我们自定义的 `logger`，系统可以更好地控制日志的格式和输出。
 
 ### 2. 添加 Tool (工具)
 

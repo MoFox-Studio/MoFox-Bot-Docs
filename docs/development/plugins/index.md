@@ -64,8 +64,8 @@ Command vs Action 选择指南
 - [📜 日志API](api/logging-api.md) - logger实例获取接口
 ### 工具API
 - [🔧 工具API](api/tool-api.md) - tool获取接口
-
-
+### 本地储存API
+- [🗄️ 本地储存API](api/storage-api.md) - 本地数据存储接口
 
 ## 支持
 

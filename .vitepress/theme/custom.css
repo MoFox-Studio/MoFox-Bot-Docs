@@ -157,3 +157,8 @@ blockquote {
 .sidebar-toggle-button {
   transition: all 0.3s ease;
 }
+
+.VPDocFooter .prev-next .link:hover {
+  transform: scale(1.05);
+  transition: transform 0.2s ease-in-out;
+}

@@ -76,11 +76,11 @@ const devSidebar = [
 
 // https://vitepress.dev/reference/site-config
 export default withMermaid(defineConfig({
-  markdown: { 
-      config(md) { 
+  markdown: {
+      config(md) {
         // other markdown-it configurations...
-        md.use(InlineLinkPreviewElementTransform) 
-      } 
+        md.use(InlineLinkPreviewElementTransform)
+      }
     },
   vite: {
     plugins: [
@@ -171,7 +171,7 @@ export default withMermaid(defineConfig({
               items: [
                 { text: '指令权限系统使用教程', link: '/docs/guides/permission_usage' },
                 { text: '视频识别功能', link: '/docs/guides/video_recognition' },
-                { text: '睡眠系统与计划系统介绍', link: '/docs/guides/schedule_and_planning_guide' },
+                { text: '计划系统介绍', link: '/docs/guides/schedule_and_planning_guide' },
                 { text: '主动思考器介绍', link: '/docs/guides/proactive_thinker_guide' },
                 { text: 'LPMM 知识库指南', link: '/docs/guides/lpmm_guide' },
               ]
@@ -209,6 +209,10 @@ export default withMermaid(defineConfig({
     footer: {
       message: 'Released under the GPL-3.0 License.',
       copyright: 'Copyright © 2025 MoFox Studio'
+    },
+    docFooter: {
+      prev: '← 上一页',
+      next: '下一页 →'
     },
     backToTop: true
   },

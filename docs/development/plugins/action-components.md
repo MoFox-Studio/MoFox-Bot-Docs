@@ -1,297 +1,272 @@
-# ⚡ Action组件详解
+# ⚡ Action 组件开发指南 (v2.0)
 
-## 📖 什么是Action
+## 📖 核心概念：什么是Action？
 
-Action是给MoFox_Bot在回复之外提供额外功能的智能组件，**由MoFox_Bot的决策系统自主选择是否使用**，具有随机性和拟人化的调用特点。Action不是直接响应用户命令，而是让MoFox_Bot根据聊天情境智能地选择合适的动作，使其行为更加自然和真实。
+Action 是 MoFox_Bot 插件系统中的核心组件之一，它赋予了 Bot 在常规回复之外执行**主动行为**的能力。
 
-### Action的特点
+不同于响应特定命令的函数，Action 由 MoFox_Bot 的**决策系统**根据当前的聊天情境、上下文乃至随机性，**自主选择**是否使用。这使得 Bot 的行为不再是简单的“一问一答”，而是充满了拟人化的、不可预测的、更贴近真人交流的动态交互。
 
-- 🧠 **智能激活**：MoFox_Bot根据多种条件智能判断是否使用
-- 🎲 **可随机性**：可以使用随机数激活，增加行为的不可预测性，更接近真人交流
-- 🤖 **拟人化**：让MoFox_Bot的回应更自然、更有个性
-- 🔄 **情境感知**：基于聊天上下文做出合适的反应
+### Action 的核心特点
+
+-   🧠 **智能决策**: Bot 根据复杂的内部逻辑，从众多可用的 Action 中“选择”最合适的一个来执行。
+-   🚀 **动态激活**: Action 可以根据特定条件（如关键词、随机概率、LLM判断）被动态地“激活”或“休眠”，减轻了决策系统的负担。
+-   🤖 **高度拟人化**: 通过引入随机性和情境感知，让 Bot 的行为更加自然、富有个性。
+-   🔧 **功能可扩展**: 开发者可以通过编写自定义 Action，无限扩展 Bot 的能力，例如发送图片、查询天气、控制智能家居等。
+
+
+## 🎯 现代激活机制 (v2.0 推荐)
+
+在新版插件系统中，我们强烈推荐通过重写 `go_activate()` 方法，来实现高度自定义和灵活的 Action 激活逻辑。
+
+### 核心方法：`go_activate()`
+
+`go_activate()` 是 Action 激活的唯一入口。插件加载时，系统会调用这个异步方法来判断该 Action 在当前情境下是否应该被“激活”（即加入到 Bot 的决策候选池中）。
+
+```python
+class MyAction(BaseAction):
+    # ... 其他定义 ...
+
+    async def go_activate(self, llm_judge_model: "LLMRequest | None" = None) -> bool:
+        """
+        自定义激活逻辑
+        返回 True 表示激活，False 则不激活。
+        """
+        # 在这里编写你的判断逻辑
+        return True
+```
+
+为了简化开发，`BaseAction` 提供了一系列内置的异步工具函数，你可以在 `go_activate()` 中直接调用它们。
+
+### 激活工具函数详解
+
+#### 1. `_keyword_match()` - 关键词匹配
+
+这是最常用的激活方式之一。它会自动获取当前消息内容，并检查是否包含指定的关键词。
+
+```python
+async def go_activate(self, llm_judge_model=None) -> bool:
+    # 当消息中包含 "你好" 或 "hello" (不区分大小写) 时激活
+    return await self._keyword_match(
+        keywords=["你好", "hello"],
+        case_sensitive=False  # case_sensitive 参数可选，默认为 False
+    )
+```
+
+#### 2. `_random_activation()` - 随机激活
+
+为你的 Bot 增加一点不可预测的“人性”。
+
+```python
+async def go_activate(self, llm_judge_model=None) -> bool:
+    # 有 30% 的概率激活这个 Action
+    return await self._random_activation(probability=0.3)
+```
+
+#### 3. `_llm_judge_activation()` - LLM 智能判断
+
+这是最强大、最智能的激活方式。它会利用一个（通常是较小的）LLM 模型来动态判断当前情境是否适合激活该 Action。
+
+你只需要提供核心的判断条件，方法会自动构建完整的 Prompt，并解析 LLM 的“是/否”回答。
+
+```python
+async def go_activate(self, llm_judge_model=None) -> bool:
+    # 利用 LLM 判断当前是否需要发送一个安慰的表情
+    return await self._llm_judge_activation(
+        judge_prompt="当用户在聊天中表现出悲伤、沮丧或失落的情绪时激活",
+        action_description="这是一个发送安慰表情的动作", # 可选，帮助 LLM 理解 Action 用途
+        action_require=["用户情绪低落"] # 可选，进一步提供场景说明
+    )
+```
+
+#### 组合使用
+
+`go_activate()` 的强大之处在于你可以自由组合这些工具函数，实现复杂的激活逻辑。
+
+```python
+async def go_activate(self, llm_judge_model=None) -> bool:
+    # 优先判断关键词
+    if await self._keyword_match(keywords=["发送表情"]):
+        return True
+    
+    # 如果没匹配到关键词，再进行 10% 的随机判断
+    if await self._random_activation(probability=0.1):
+        return True
+        
+    # 都不满足，则不激活
+    return False
+```
+
+
+## 🚀 Action 的高级用法
+
+### `call_action()` - 在 Action 中调用其他 Action
+
+你可以使用 `call_action()` 方法在一个 Action 内部触发另一个已注册的 Action，这对于逻辑复用和构建复杂的行为链条非常有用。
+
+```python
+class WeatherAction(BaseAction):
+    action_name = "get_weather"
+    action_description = "获取天气信息"
+    action_parameters = {"city": "城市名称"}
+    
+    async def execute(self) -> Tuple[bool, str]:
+        city = self.action_data.get("city", "北京")
+        # ... (获取天气的逻辑) ...
+        weather_info = f"{city}今天晴天"
+        
+        # 调用另一个 Action 来发送图片
+        await self.call_action(
+            action_name="send_image_action",
+            action_data={"description": weather_info}
+        )
+        return True, "天气信息已发送"
+
+class SendImageAction(BaseAction):
+    action_name = "send_image_action"
+    action_description = "根据描述生成并发送图片"
+    action_parameters = {"description": "图片描述"}
+
+    async def execute(self) -> Tuple[bool, str]:
+        desc = self.action_data.get("description")
+        # ... (根据描述生成图片的逻辑) ...
+        return True, "图片已发送"
+```
+
+### 二步 Action (Two-Step Action)
+
+对于需要用户二次确认或选择的复杂操作，可以使用“二步 Action”。
+
+1.  **设置标志位**: 在你的 Action 类中，设置 `is_two_step_action = True`。
+2.  **定义子操作**: 使用 `step_one_description` 和 `sub_actions` 描述第一步的功能和可选项。
+3.  **实现第二步逻辑**: 重写 `execute_step_two()` 方法来处理用户选择后的具体操作。
+
+当 Bot 决定使用这个 Action 时：
+-   **第一步**: 它会调用 `handle_step_one()`，自动向用户展示 `step_one_description` 和 `sub_actions` 列表，并等待 LLM 从用户的新回复中解析出选择的子操作。
+-   **第二步**: 当获取到用户的选择后，系统会自动调用 `execute_step_two()`，并将用户选择的 `sub_action_name` 传递进来。
+
+```python
+class FileManagerAction(BaseAction):
+    action_name = "file_manager"
+    is_two_step_action = True  # 开启二步 Action
+    step_one_description = "我有一个文件管理器，可以帮你操作文件。请问你想做什么？"
+    sub_actions = [
+        ("create_file", "创建一个新文件", {"filename": "文件名"}),
+        ("delete_file", "删除一个已存在的文件", {"filename": "文件名"}),
+        ("read_file", "读取一个文件的内容", {"filename": "文件名"}),
+    ]
+
+    async def execute(self) -> Tuple[bool, str]:
+        # 对于二步 Action，execute 方法通常不需要实现，因为逻辑会自动转到 handle_step_one
+        pass
+
+    async def execute_step_two(self, sub_action_name: str) -> tuple[bool, str]:
+        # 获取 LLM 为子操作解析出的参数
+        filename = self.action_data.get("filename")
+        if not filename:
+            return False, "我需要一个文件名才能操作哦。"
+
+        if sub_action_name == "create_file":
+            # ... 创建文件的逻辑 ...
+            return True, f"文件 '{filename}' 已经创建好了。"
+        elif sub_action_name == "delete_file":
+            # ... 删除文件的逻辑 ...
+            return True, f"文件 '{filename}' 已经被我删除了。"
+        elif sub_action_name == "read_file":
+            # ... 读取文件的逻辑 ...
+            return True, f"这是文件 '{filename}' 的内容：..."
+        
+        return False, "未知的文件操作。"
+```
 
 ---
 
-## 🎯 Action组件的基本结构
-首先，所有的Action都应该继承`BaseAction`类。
+## 🔧 Action 结构与核心属性/方法详解
 
-其次，每个Action组件都应该实现以下基本信息：
+### 基本结构
+
 ```python
 class ExampleAction(BaseAction):
-    action_name = "example_action" # 动作的唯一标识符
-    action_description = "这是一个示例动作" # 动作描述
-    activation_type = ActionActivationType.ALWAYS # 这里以 ALWAYS 为例
-    mode_enable = ChatMode.ALL # 一般取ALL，表示在所有聊天模式下都可用
-    associated_types = ["text", "emoji", ...] # 关联类型
-    parallel_action = False # 是否允许与其他Action并行执行
-    action_parameters = {"param1": "参数1的说明", "param2": "参数2的说明", ...}
-    # Action使用场景描述 - 帮助LLM判断何时"选择"使用
-    action_require = ["使用场景描述1", "使用场景描述2", ...]
+    # --- 核心定义 ---
+    action_name = "example_action"
+    action_description = "这是一个示例动作"
+    
+    # --- LLM决策辅助信息 ---
+    # 定义该 Action 需要的参数，LLM 会尝试从对话中提取这些参数
+    action_parameters = {"param1": "参数1的说明", "param2": "参数2的说明"}
+    # Action 使用场景描述，帮助 LLM 判断何时“选择”使用
+    action_require = ["当用户想要...时使用", "在...场景下比较合适"]
+    
+    # --- 激活逻辑 (v2.0 推荐) ---
+    async def go_activate(self, llm_judge_model=None) -> bool:
+        return await self._keyword_match(["示例"])
 
+    # --- 执行逻辑 ---
     async def execute(self) -> Tuple[bool, str]:
         """
-        执行Action的主要逻辑
+        执行 Action 的主要逻辑
         
         Returns:
-            Tuple[bool, str]: (是否成功, 执行结果描述)
+            Tuple[bool, str]: (是否成功, 执行结果的简单描述，主要用于日志)
         """
-        # ---- 执行动作的逻辑 ----
+        # ---- 在这里编写你的动作逻辑 ----
         return True, "执行成功"
 ```
-#### associated_types: 该Action会发送的消息类型，例如文本、表情等。
 
-这部分由Adapter传递给处理器。
+### 核心实例属性
 
-以 MoFox-bot-Napcat-Adapter 为例，可选项目如下：
-| 类型 | 说明 | 格式 |
-| --- | --- | --- |
-| text | 文本消息 | str |
-| emoji | 表情消息 | str: 表情包的无头base64|
-| image | 图片消息 | str: 图片的无头base64 |
-| reply | 回复消息 | str: 回复的消息ID |
-| voice | 语音消息 | str: wav格式语音的无头base64 |
-| command | 命令消息 | 参见Adapter文档 |
-| voiceurl | 语音URL消息 | str: wav格式语音的URL |
-| music | 音乐消息 | str: 这首歌在网易云音乐的音乐id |
-| videourl | 视频URL消息 | str: 视频的URL |
-| file | 文件消息 | str: 文件的路径 |
+你可以在 `execute()` 方法中通过 `self` 访问这些非常有用的属性：
 
-**请知悉，对于不同的处理器，其支持的消息类型可能会有所不同。在开发时请注意。**
+-   `self.action_data` (dict): **(极其重要)** 这是一个字典，包含了 LLM 决策后传递给该 Action 的所有数据。**你定义的 `action_parameters` 参数值就在这里面！**
+-   `self.chat_stream` (ChatStream): 当前的聊天流对象，包含了完整的上下文信息。
+-   `self.chat_id` (str): 当前聊天流的唯一 ID。
+-   `self.is_group` (bool): 当前是否为群聊。
+-   `self.user_id` (str): 发送消息的用户 ID。
+-   `self.user_nickname` (str): 发送消息的用户昵称。
+-   `self.group_id` (str): 当前群聊的 ID (如果是群聊)。
+-   `self.action_message` (dict | DatabaseMessages): 触发本次思考的原始消息数据。
+-   `self.plugin_config` (dict): 该 Action 所属插件的配置信息。
 
-#### action_parameters: 该Action的参数说明。
-这是一个字典，键为参数名，值为参数说明。这个字段可以帮助LLM理解如何使用这个Action，并由LLM返回对应的参数，最后传递到 Action 的 **`action_data`** 属性中。其格式与你定义的格式完全相同 **（除非LLM哈气了，返回了错误的内容）**。
+#### **重点：如何获取动作参数**
 
----
+假设你定义了 `action_parameters = {"city": "需要查询天气的城市名"}`。当 LLM 决定使用你的 Action 时，它会从用户的消息（比如“帮我查查上海的天气”）中提取出 `city` 的值。
 
-## 🎯 Action 调用的决策机制
-
-Action采用**两层决策机制**来优化性能和决策质量：
-
-> 设计目的：在加载许多插件的时候降低LLM决策压力，避免让MoFox-Bot在过多的选项中纠结。
-
-**第一层：激活控制（Activation Control）**
-
-激活决定MoFox-Bot是否 **“知道”** 这个Action的存在，即这个Action是否进入决策候选池。不被激活的ActionMoFox-Bot永远不会选择。
-
-**第二层：使用决策（Usage Decision）**
-
-在Action被激活后，使用条件决定MoFox-Bot什么时候会 **“选择”** 使用这个Action。
-
-### 决策参数详解 🔧
-
-#### 第一层：ActivationType 激活类型说明
-
-| 激活类型 | 说明 | 使用场景 |
-| ----------- | ---------------------------------------- | ---------------------- |
-| [`NEVER`](#never-激活)     | 从不激活，Action对MoFox-Bot不可见               | 临时禁用某个Action      |
-| [`ALWAYS`](#always-激活)    | 永远激活，Action总是在MoFox-Bot的候选池中        | 核心功能，如回复、不回复 |
-| [`LLM_JUDGE`](#llm_judge-激活) | 通过LLM智能判断当前情境是否需要激活此Action | 需要智能判断的复杂场景   |
-| `RANDOM`    | 基于随机概率决定是否激活                   | 增加行为随机性的功能     |
-| `KEYWORD`   | 当检测到特定关键词时激活                   | 明确触发条件的功能       |
-
-#### `NEVER` 激活
-
-`ActionActivationType.NEVER` 会使得 Action 永远不会被激活
+在 `execute()` 方法中，你可以这样获取它：
 
 ```python
-class DisabledAction(BaseAction):
-    activation_type = ActionActivationType.NEVER  # 永远不激活
+async def execute(self) -> Tuple[bool, str]:
+    # 使用 .get() 方法安全地获取参数，如果 LLM 没有提供，则使用默认值
+    city_to_query = self.action_data.get("city", "北京")
     
-    async def execute(self) -> Tuple[bool, str]:
-        # 这个Action永远不会被执行
-        return False, "这个Action被禁用"
+    if not city_to_query:
+        await self.send_text("你需要告诉我查询哪个城市哦。")
+        return False, "缺少城市参数"
+        
+    # ... 使用 city_to_query 进行后续操作 ...
+    return True, f"查询了 {city_to_query} 的天气"
 ```
 
-#### `ALWAYS` 激活
+### 核心实例方法
 
-`ActionActivationType.ALWAYS` 会使得 Action 永远会被激活，即一直在 Action 候选池中
-
-这种激活方式常用于核心功能，如回复或不回复。
-
-```python
-class AlwaysActivatedAction(BaseAction):
-    activation_type = ActionActivationType.ALWAYS  # 永远激活
-    
-    async def execute(self) -> Tuple[bool, str]:
-        # 执行核心功能
-        return True, "执行了核心功能"
-```
-
-#### `LLM_JUDGE` 激活
-
-`ActionActivationType.LLM_JUDGE`会使得这个 Action 根据 LLM 的判断来决定是否加入候选池。
-
-而 LLM 的判断是基于代码中预设的`llm_judge_prompt`和自动提供的聊天上下文进行的。
-
-因此使用此种方法需要实现`llm_judge_prompt`属性。
-
-```python
-class LLMJudgedAction(BaseAction):
-    activation_type = ActionActivationType.LLM_JUDGE  # 通过LLM判断激活
-    # LLM判断提示词
-    llm_judge_prompt = (
-    "判定是否需要使用这个动作的条件：\n"
-    "1. 用户希望调用XXX这个动作\n"
-    "...\n"
-    "请回答\"是\"或\"否\"。\n"
-    )
-
-    async def execute(self) -> Tuple[bool, str]:
-        # 根据LLM判断是否执行
-        return True, "执行了LLM判断功能"
-```
-
-#### `RANDOM` 激活
-
-`ActionActivationType.RANDOM`会使得这个 Action 根据随机概率决定是否加入候选池。
-
-概率则由代码中的`random_activation_probability`控制。在内部实现中我们使用了`random.random()`来生成一个0到1之间的随机数，并与这个概率进行比较。
-
-因此使用这个方法需要实现`random_activation_probability`属性。
-
-```python
-class SurpriseAction(BaseAction):
-    activation_type = ActionActivationType.RANDOM  # 基于随机概率激活
-    # 随机激活概率
-    random_activation_probability = 0.1  # 10%概率激活
-  
-    async def execute(self) -> Tuple[bool, str]:
-        # 执行惊喜动作
-        return True, "发送了惊喜内容"
-```
-
-#### `KEYWORD` 激活
-
-`ActionActivationType.KEYWORD`会使得这个 Action 在检测到特定关键词时激活。
-
-关键词由代码中的`activation_keywords`定义，而`keyword_case_sensitive`则控制关键词匹配时是否区分大小写。在内部实现中，我们使用了`in`操作符来检查消息内容是否包含这些关键词。
-
-因此，使用此种方法需要实现`activation_keywords`和`keyword_case_sensitive`属性。
-
-```python
-class GreetingAction(BaseAction):
-    activation_type = ActionActivationType.KEYWORD  # 关键词激活
-    activation_keywords = ["你好", "hello", "hi", "嗨"] # 关键词配置
-    keyword_case_sensitive = False  # 不区分大小写
-  
-    async def execute(self) -> Tuple[bool, str]:
-        # 执行问候逻辑
-        return True, "发送了问候"
-```
-
-一个完整的使用`ActionActivationType.KEYWORD`的例子请参考`plugins/hello_world_plugin`中的`ByeAction`。
-
-#### 第二层：使用决策
-
-**在Action被激活后，使用条件决定MoFox-Bot什么时候会"选择"使用这个Action**。
-
-这一层由以下因素综合决定：
-
-- `action_require`：使用场景描述，帮助LLM判断何时选择
-- `action_parameters`：所需参数，影响Action的可执行性
-- 当前聊天上下文和MoFox-Bot的决策逻辑
+-   `async def send_text(content: str, ...)`: 发送一条文本消息。
+-   `async def send_image(image_base64: str)`: 发送一张图片（Base64 格式）。
+-   `async def send_emoji(emoji_base64: str)`: 发送一个表情（Base64 格式）。
+-   `async def send_custom(message_type: str, content: str, ...)`: 发送自定义类型的消息（如 `voiceurl`, `videourl` 等）。
+-   `async def send_command(command_name: str, args: dict)`: 向适配器发送一个命令。
+-   `async def wait_for_new_message(timeout: int)`: 等待指定时间，直到有新消息或超时。
+-   `def get_config(key: str, default=None)`: 从插件配置中安全地获取一个值，支持点分嵌套访问（如 `get_config("database.host")`）。
+-   `async def call_action(action_name: str, ...)`: 调用另一个 Action。
 
 ---
 
-### 决策流程示例
+## 📜 附录：旧的激活机制 (已废弃)
 
-```python
-class EmojiAction(BaseAction):
-    # 第一层：激活控制
-    activation_type = ActionActivationType.RANDOM  # 随机激活
-    random_activation_probability = 0.1  # 10%概率激活
+在 v2.0 之前，Action 的激活依赖于在类中定义一系列特定的属性。**虽然该机制仍然兼容，但我们强烈建议你使用 `go_activate()` 的方式，因为它更加灵活和强大。**
 
-    # 第二层：使用决策
-    action_require = [
-        "表达情绪时可以选择使用",
-        "增加聊天趣味性",
-        "不要连续发送多个表情"
-    ]
-```
+如果你在阅读旧插件代码时遇到以下属性，它们的作用如下：
 
-**决策流程**：
+-   `activation_type` (ActionActivationType): 激活类型，可选值为 `ALWAYS`, `NEVER`, `RANDOM`, `KEYWORD`, `LLM_JUDGE`。
+-   `random_activation_probability` (float): 当 `activation_type` 为 `RANDOM` 时，指定激活概率。
+-   `activation_keywords` (list[str]): 当 `activation_type` 为 `KEYWORD` 时，指定关键词列表。
+-   `llm_judge_prompt` (str): 当 `activation_type` 为 `LLM_JUDGE` 时，指定 LLM 判断的提示词。
 
-1. **第一层激活判断**：
-
-    - 使用随机数进行决策，当`random.random() < self.random_activation_probability`时，MoFox-Bot才"知道"可以使用这个Action
-2. **第二层使用决策**：
-
-   - 即使Action被激活，MoFox-Bot还会根据 `action_require` 中的条件判断是否真正选择使用
-   - 例如：如果刚刚已经发过表情，根据"不要连续发送多个表情"的要求，MoFox-Bot可能不会选择这个Action
-
----
-
-## Action 内置属性说明
-```python
-class BaseAction:
-    def __init__(self):
-        # 消息相关属性
-        self.log_prefix: str          # 日志前缀
-        self.group_id: str            # 群组ID
-        self.group_name: str          # 群组名称
-        self.user_id: str             # 用户ID
-        self.user_nickname: str       # 用户昵称
-        self.platform: str            # 平台类型 (qq, telegram等)
-        self.chat_id: str             # 聊天ID
-        self.chat_stream: ChatStream  # 聊天流对象
-        self.is_group: bool           # 是否群聊
-
-        # 消息体
-        self.action_message: dict     # 消息数据
-
-        # Action相关属性
-        self.action_data: dict        # Action执行时的数据
-        self.thinking_id: str         # 思考ID
-```
-action_message为一个字典，包含的键值对如下（省略了不必要的键值对）
-
-```python
-{
-    "message_id": "1234567890",  # 消息id，str
-    "time": 1627545600.0,  # 时间戳，float
-    "chat_id": "abcdef123456",  # 聊天ID，str
-    "reply_to": None,  # 回复消息id，str或None
-    "interest_value": 0.85,  # 兴趣值，float
-    "is_mentioned": True,  # 是否被提及，bool
-    "chat_info_last_active_time": 1627548600.0,  # 最后活跃时间，float
-    "processed_plain_text": None,  # 处理后的文本，str或None
-    "additional_config": None,  # Adapter传来的additional_config，dict或None
-    "is_emoji": False,  # 是否为表情，bool
-    "is_picid": False,  # 是否为图片ID，bool
-    "is_command": False  # 是否为命令，bool
-}
-```
-
-部分值的格式请自行查询数据库。
-
----
-
-## Action 内置方法说明
-```python
-class BaseAction:
-    def get_config(self, key: str, default=None):
-        """获取插件配置值，使用嵌套键访问"""
-    
-    async def wait_for_new_message(self, timeout: int = 1200) -> Tuple[bool, str]:
-        """等待新消息或超时"""
-
-    async def send_text(self, content: str, reply_to: str = "", reply_to_platform_id: str = "", typing: bool = False) -> bool:
-        """发送文本消息"""
-
-    async def send_emoji(self, emoji_base64: str) -> bool:
-        """发送表情包"""
-
-    async def send_image(self, image_base64: str) -> bool:
-        """发送图片"""
-
-    async def send_custom(self, message_type: str, content: str, typing: bool = False, reply_to: str = "") -> bool:
-        """发送自定义类型消息"""
-
-    async def store_action_info(self, action_build_into_prompt: bool = False, action_prompt_display: str = "", action_done: bool = True) -> None:
-        """存储动作信息到数据库"""
-
-    async def send_command(self, command_name: str, args: Optional[dict] = None, display_message: str = "", storage_message: bool = True) -> bool:
-        """发送命令消息"""
-```
-具体参数与用法参见`BaseAction`基类的定义。
+`BaseAction` 的默认 `go_activate()` 实现会读取这些旧属性，并调用对应的 `_keyword_match()` 等新版工具函数，以实现向后兼容。

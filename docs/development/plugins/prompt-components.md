@@ -13,7 +13,6 @@ Prompt 组件是插件中用于动态增强和定制核心 Prompt 的一种强�
 -   **⚡ Action 组件**：决定模型 **“做什么”**。它为模型提供了回复之外的额外能力，如发送图片、调用工具等。这是一个行为层面的扩展。
 -   **📝 Prompt 组件**：决定模型 **“说什么”** 和 **“怎么说”**。它通过影响输入给模型的上下文，来改变模型生成文本的风格和内容。这是一个内容和风格层面的扩展。
 
----
 
 ## 🎯 Prompt 组件的基本结构
 
@@ -67,8 +66,6 @@ class ExamplePrompt(BasePrompt):
         return custom_prompt
 ```
 
----
-
 ## 🛠️ 核心概念：`InjectionRule` 详解
 
 `injection_rules` 列表取代了旧的 `injection_point`，提供了更强大和灵活的注入控制能力。每个 `InjectionRule` 对象都定义了一条完整的注入规则。
@@ -101,7 +98,6 @@ class ExamplePrompt(BasePrompt):
 -   `injection_point = "planner_prompt"` 会被自动转换为 `[InjectionRule(target_prompt="planner_prompt")]`。
 -   **强烈建议** 所有新的 Prompt 组件直接使用 `injection_rules` 来定义注入行为，以获得更强的控制力。
 
----
 
 ## 🚀 实践示例：创建一个高级天气提示组件
 

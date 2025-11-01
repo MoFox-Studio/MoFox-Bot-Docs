@@ -162,3 +162,42 @@ blockquote {
   transform: scale(1.05);
   transition: transform 0.2s ease-in-out;
 }
+
+/* 代码块样式增强 - 为复制按钮留出空间 */
+div[class*="language-"] {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+div[class*="language-"] > button.copy {
+  display: none; /* 隐藏VitePress默认的复制按钮 */
+}
+
+/* 确保代码块在移动端也有良好的显示 */
+@media (max-width: 640px) {
+  div[class*="language-"] {
+    border-radius: 6px;
+  }
+}
+
+/* 优化代码块hover效果 */
+div[class*="language-"]:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.3s ease;
+}
+
+.dark div[class*="language-"]:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* 阅读进度条在移动端的优化 */
+@media (max-width: 768px) {
+  .reading-progress-bar {
+    height: 2px;
+  }
+}
+
+/* 确保进度条在所有页面顶部显示 */
+.reading-progress-bar {
+  pointer-events: none; /* 不阻止下方元素的交互 */
+}

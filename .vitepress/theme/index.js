@@ -8,6 +8,8 @@ import { h } from 'vue'
 import ReadingTime from './ReadingTime.vue'
 import BackToTop from './BackToTop.vue'
 import CollapsibleSidebar from './CollapsibleSidebar.vue'
+import ReadingProgress from './ReadingProgress.vue'
+import CodeCopyEnhancer from './CodeCopyEnhancer.vue'
 import { NolebaseEnhancedReadabilitiesMenu, NolebaseEnhancedReadabilitiesScreenMenu, NolebaseEnhancedReadabilitiesPlugin } from '@nolebase/vitepress-plugin-enhanced-readabilities/client'
 import '@nolebase/vitepress-plugin-enhanced-readabilities/client/style.css'
 import { 
@@ -40,6 +42,7 @@ export default {
       'doc-after': () => h(Giscus),
       'nav-bar-content-after': () => h(NolebaseEnhancedReadabilitiesMenu),
       'nav-screen-content-after': () => h(NolebaseEnhancedReadabilitiesScreenMenu),
+      'layout-top': () => [h(ReadingProgress), h(CodeCopyEnhancer)],
       'layout-bottom': () => [h(BackToTop), h(CollapsibleSidebar)],
     })
   },

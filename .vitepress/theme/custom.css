@@ -201,3 +201,8 @@ div[class*="language-"]:hover {
 .reading-progress-bar {
   pointer-events: none; /* 不阻止下方元素的交互 */
 }
+
+/* 为插件的背景设置一个与主题匹配的颜色 */
+.vp-nolebase-git-changelog-history-container {
+  background-color: var(--vp-c-bg-soft) !important;
+}

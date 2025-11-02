@@ -1,0 +1,250 @@
+/* 链接 */
+.vp-doc a:not([href^='https://img.shields.io/']) {
+  &[target='_blank'],
+  &[href^='./'],
+  &[href^='../'] {
+    &::before {
+      content: "";
+      background-image: url(https://api.iconify.design/heroicons-solid:link.svg?color=%23409eff);
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+      vertical-align: middle;
+      position: relative;
+      background-size: cover;
+      top: -2px;
+      margin-right: 2px;
+    }
+  }
+
+  &[href^='https://weizwz.com']::before,
+  &[href^='https://www.weizwz.com']::before {
+    background-image: url("https://p.weizwz.com/home_bc2e3ce7f2e00827.webp");
+  }
+
+  &[href^='./']::before,
+  &[href^='../']::before,
+
+  &[href^='https://docs.mofox-sama.com']::before {
+    background-image: url("https://api.iconify.design/noto-v1:fox.svg");
+  }
+
+  &[href^='https://vitepress.dev']::before {
+    background-image: url("https://vitepress.dev/vitepress-logo-mini.svg");
+  }
+
+  &[href^='https://hexo.io']::before {
+    width: 16px;
+    height: 18px;
+    margin-left: 2px;
+    margin-right: 4px;
+    background-image: url(https://api.iconify.design/logos:hexo.svg);
+  }
+
+  &[href^='https://git-scm.com']::before {
+    width: 18px;
+    height: 18px;
+    margin-left: 1px;
+    margin-right: 3px;
+    background-image: url(https://api.iconify.design/logos:git.svg);
+  }
+
+  &[href^='https://github.com']::before {
+    background-image: url(https://api.iconify.design/mdi:github.svg);
+  }
+
+  &[href^='https://gitee.com']::before {
+    width: 18px;
+    height: 18px;
+    margin-left: 1px;
+    margin-right: 3px;
+    background-image: url(https://api.iconify.design/simple-icons:gitee.svg?color=%23C71E23);
+  }
+
+  &[href^='https://developer.mozilla.org']::before {
+    width: 16px;
+    height: 16px;
+    margin-left: 2px;
+    margin-right: 4px;
+    background-image: url(https://api.iconify.design/logos/mdn.svg);
+  }
+
+  &[href^='https://cn.vite.dev']::before,
+  &[href^='https://vite.dev']::before {
+    width: 18px;
+    height: 18px;
+    margin-left: 1px;
+    margin-right: 3px;
+    background-image: url(https://api.iconify.design/logos:vitejs.svg);
+  }
+
+  &[href^='https://webpack.js']::before {
+    background-image: url(https://api.iconify.design/devicon:webpack.svg);
+  }
+
+  &[href^='https://vuejs.org']::before,
+  &[href^='https://cn.vuejs.org']::before {
+    width: 18px;
+    height: 16px;
+    margin: 2px 3px 0 1px;
+    background-image: url(https://api.iconify.design/logos/vue.svg);
+  }
+
+  &[href^='https://twikoo.js.org']::before {
+    width: 16px;
+    height: 16px;
+    margin-left: 2px;
+    margin-right: 4px;
+    background-image: url("https://twikoo.js.org/twikoo-logo-mini.png");
+  }
+
+  &[href^='https://element-plus.org']::before,
+  &[href^='https://element.eleme.cn']::before {
+    width: 16px;
+    height: 18px;
+    margin-left: 2px;
+    margin-right: 4px;
+    background-image: url(https://api.iconify.design/logos:element.svg);
+  }
+
+  &[href^='https://nodejs.org']::before {
+    width: 16px;
+    height: 18px;
+    margin-left: 2px;
+    margin-right: 4px;
+    background-image: url(https://api.iconify.design/logos:nodejs-icon.svg);
+  }
+
+  &[href^='https://npmjs.com']::before,
+  &[href^='https://www.npmjs.com']::before {
+    width: 16px;
+    height: 16px;
+    margin-left: 2px;
+    margin-right: 4px;
+    background-image: url(https://api.iconify.design/logos:npm-icon.svg);
+  }
+
+
+  &[href^='https://pnpm.io']::before {
+    width: 16px;
+    height: 16px;
+    margin-left: 2px;
+    margin-right: 4px;
+    background-image: url(https://api.iconify.design/logos:pnpm.svg);
+  }
+
+  &[href^='https://napcat.napneko.icu/']::before {
+    width: 16px;
+    height: 16px;
+    margin-left: 2px;
+    margin-right: 4px;
+    background-image: url(https://raw.githubusercontent.com/NapNeko/NapCatDocs/refs/heads/main/src/public/favicon.ico);
+  }
+
+  &[href^='https://www.python.org']::before {
+    width: 16px;
+    height: 16px;
+    margin-left: 2px;
+    margin-right: 4px;
+    background-image: url(https://api.iconify.design/logos:python.svg);
+  }
+
+  &[href^='https://react.dev']::before {
+    width: 20px;
+    height: 18px;
+    background-image: url(https://api.iconify.design/logos:react.svg);
+  }
+
+  &[href^='https://typescriptlang.org']::before {
+    width: 16px;
+    height: 16px;
+    margin-left: 2px;
+    margin-right: 4px;
+    background-image: url(https://api.iconify.design/logos:typescript-icon.svg);
+  }
+
+  &[href^='https://uniapp.dcloud.net.cn']::before {
+    background-image: url(https://api.iconify.design/mynaui/letter-u-square-solid.svg?color=%232D8E3B);
+  }
+
+  &[href*='https://siliconflow.cn']::before,
+  &[href*='https://cloud.siliconflow.cn']::before,
+  &[href*='https://docs.siliconflow.cn']::before {
+    width: 16px;
+    height: 16px;
+    margin-left: 2px;
+    margin-right: 4px;
+    background-image: url(https://static01.siliconflow.cn/f/static/cn/logo.svg);
+  }
+
+  &[href*='https://www.deepseek.com']::before,
+  &[href*='https://platform.deepseek.com']::before,
+  &[href*='https://chat.deepseek.com']::before,
+  &[href*='https://api-docs.deepseek.com']::before {
+    width: 18px;
+    height: 14px;
+    margin-left: 1px;
+    margin-right: 3px;
+    background-image: url(https://cdn.deepseek.com/logo.png?x-image-process=image%2Fresize%2Cw_1920);
+  }
+
+  &[href^='https://code.visualstudio.com']::before {
+    width: 16px;
+    height: 16px;
+    margin-left: 2px;
+    margin-right: 4px;
+    background-image: url(https://api.iconify.design/logos:visual-studio-code.svg);
+  }
+
+  &[href^='https://marketplace.visualstudio.com']::before,
+  &[href^='https://learn.microsoft.com']::before,
+  &[href^='https://www.microsoft.com']::before,
+  &[href^='https://support.microsoft.com']::before,
+  &[href^='https://microsoftedge.microsoft.com']::before {
+    width: 16px;
+    height: 16px;
+    margin-left: 2px;
+    margin-right: 4px;
+    background-image: url(https://api.iconify.design/logos:microsoft-icon.svg);
+  }
+
+  &[href^='https://support.google.com']::before,
+  &[href^='https://www.google.com']::before  {
+    width: 16px;
+    height: 16px;
+    margin-left: 2px;
+    margin-right: 4px;
+    background-image: url(https://api.iconify.design/logos:google-icon.svg);
+  }
+
+  &[href^='https://chromewebstore.google.com']::before,
+  &[href^='https://chrome.google.com']::before,
+  &[href^='https://www.google.com/chrome']::before  {
+    width: 18px;
+    height: 18px;
+    margin-right: 4px;
+    background-image: url(https://api.iconify.design/logos:chrome.svg);
+  }
+  
+  &[href^='https://mp.weixin.qq.com']::before,
+  &[href^='https://open.weixin.qq.com']::before,
+  &[href^='https://developers.weixin.qq.com']::before {
+    width: 18px;
+    height: 18px;
+    margin-right: 4px;
+    background-image: url(https://api.iconify.design/simple-icons:wechat.svg?color=%231AAD1A);
+  }
+}
+
+.dark .vp-doc a {
+  &[target='_blank'],
+  &[href^='./'],
+  &[href^='../'] {
+    &::before {
+      filter: brightness(.8);
+    }
+  }
+  &[href^='https://github.com']::before {
+    background-image: url(https://api.iconify.design/mdi/github.svg?color=%23fff);
+  }
+}

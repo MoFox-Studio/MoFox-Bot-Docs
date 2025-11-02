@@ -1,4 +1,4 @@
-# MoFox_Bot Linux 部署指南 (内置适配器版)
+# <span class="iconify" data-icon="mdi:linux"></span>MoFox_Bot Linux 部署指南 (内置适配器版)
 
 ## 概述
 

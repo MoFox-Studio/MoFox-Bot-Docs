@@ -1,4 +1,4 @@
-# 📱 MoFox_Bot Android 部署指南 (内置适配器版)
+# <span class="iconify" data-icon="material-symbols:android"></span> MoFox_Bot Android 部署指南 (内置适配器版)
 
 ## 概述
 

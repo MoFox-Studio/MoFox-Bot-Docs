@@ -21,6 +21,12 @@ const myGuides = [
     title: '为 Android 用户准备的部署教程...',
     link: './mmc_deploy_android'
   },
+  {
+    avatar: '<span class="iconify" data-icon="mdi:docker"></span>',
+    name: 'Docker 部署指南',
+    title: '为 Docker 用户准备的部署教程...',
+    link: './mmc_deploy_docker'
+  },
   // ... 你可以根据需要添加任意多个卡片对象
 ]
 

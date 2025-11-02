@@ -4,19 +4,19 @@ import { VPTeamMembers } from 'vitepress/theme'
 // 在这里定义一个数组，用来存放卡片的数据
 const myGuides = [
   {
-    avatar: '🪟', // 卡片左侧的图标，可以是 Emoji 或者字符
+    avatar: '<span class="iconify" data-icon="material-symbols:window-sharp"></span>', // 卡片左侧的图标，可以是 Emoji 或者字符
     name: 'Windows 部署指南', // 卡片的标题
     title: '为 Windows 用户准备的图形化界面部署教程...', // 卡片的详细描述
     link: './deployment_guide' // 点击卡片后跳转的链接
   },
   {
-    avatar: '🐧',
+    avatar: '<span class="iconify" data-icon="mdi:linux"></span>',
     name: 'Linux 部署指南',
     title: '为 Linux 用户准备的命令行部署教程...',
     link: './mmc_deploy_linux'
   },
   {
-    avatar: '🤖',
+    avatar: '<span class="iconify" data-icon="material-symbols:android"></span>',
     name: 'Android 部署指南',
     title: '为 Android 用户准备的部署教程...',
     link: './mmc_deploy_android'
@@ -153,7 +153,6 @@ const artists = [
 我们是 MoFox Studio，一个由充满激情和创造力的开发者组成的团队。我们致力于探索 AI 的无限可能性，并将其融入实用、有趣的产品中。MoFox_Bot 是我们精心打造的作品，希望能为您带来前所未有的智能体验。
 
 ### 核心贡献者
-
 
 <!-- <VPTeamMembers size="small" :members="members" /> -->
 

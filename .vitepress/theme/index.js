@@ -47,6 +47,9 @@ export default {
     })
   },
   enhanceApp({ app }) {
+    const iconifyScript = document.createElement('script');
+    iconifyScript.src = 'https://code.iconify.design/3/3.1.0/iconify.min.js';
+    document.head.appendChild(iconifyScript);
     app.use(NolebaseEnhancedReadabilitiesPlugin)
     app.use(NolebaseGitChangelogPlugin)
     app.component('GuideCards', GuideCards)

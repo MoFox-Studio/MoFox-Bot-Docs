@@ -2,7 +2,7 @@
   <div class="guide-cards-container">
     <a v-for="guide in guides" :key="guide.name" :href="guide.link" class="card-link">
       <div class="card">
-        <div class="card-icon">{{ guide.avatar }}</div>
+        <div class="card-icon" v-html="guide.avatar"></div>
         <div class="card-content">
           <h3 class="card-title">{{ guide.name }}</h3>
           <p class="card-details">{{ guide.title }}</p>

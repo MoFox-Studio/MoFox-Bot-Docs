@@ -1,5 +1,6 @@
 {
   "devDependencies": {
+    "@iconify/vue": "^5.0.0",
     "@mermaid-js/mermaid-mindmap": "^9.3.0",
     "@nolebase/vitepress-plugin-enhanced-readabilities": "^2.18.2",
     "@nolebase/vitepress-plugin-git-changelog": "^2.18.2",

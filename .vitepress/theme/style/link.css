@@ -1,5 +1,4 @@
 /* 链接 */
-.vp-doc a[target='_blank']:not([href^='https://img.shields.io/']),
 .vp-doc .VPNolebaseInlinePreviewLink:not([href^='https://img.shields.io/']) {
   &[target='_blank'],
   &[href^='./'],

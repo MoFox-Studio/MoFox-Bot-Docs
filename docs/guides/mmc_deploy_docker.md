@@ -1,4 +1,4 @@
-# <span class="iconify" data-icon="mdi:docker"></span> MoFox_Bot Linux & Docker 部署指南
+# <iconify-icon icon="mdi:docker" height="36"></iconify-icon> MoFox_Bot Linux & Docker 部署指南
 
 ## 概述
 

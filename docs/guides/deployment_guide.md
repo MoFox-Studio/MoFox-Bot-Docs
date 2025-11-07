@@ -1,4 +1,4 @@
-# <span class="iconify" data-icon="material-symbols:window-sharp"></span> MoFox_Bot Windows 部署指南 (内置适配器版)
+# <iconify-icon icon="material-symbols:window-sharp" height="36"></iconify-icon> MoFox_Bot Windows 部署指南 (内置适配器版)
 
 ## 概述
 

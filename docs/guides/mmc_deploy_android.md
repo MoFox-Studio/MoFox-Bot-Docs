@@ -1,4 +1,4 @@
-# <span class="iconify" data-icon="material-symbols:android"></span> MoFox_Bot Android 部署指南 (内置适配器版)
+# <iconify-icon icon="material-symbols:android" height="36"></iconify-icon> MoFox_Bot Android 部署指南 (内置适配器版)
 
 ## 概述
 

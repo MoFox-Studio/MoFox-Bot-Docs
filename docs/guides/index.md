@@ -4,25 +4,25 @@ import { VPTeamMembers } from 'vitepress/theme'
 // 在这里定义一个数组，用来存放卡片的数据
 const myGuides = [
   {
-    avatar: '<span class="iconify" data-icon="material-symbols:window-sharp"></span>', // 卡片左侧的图标，可以是 Emoji 或者字符
+    avatar: '<iconify-icon icon="material-symbols:window-sharp"></iconify-icon>', // 卡片左侧的图标，可以是 Emoji 或者字符
     name: 'Windows 部署指南', // 卡片的标题
     title: '为 Windows 用户准备的图形化界面部署教程...', // 卡片的详细描述
     link: './deployment_guide' // 点击卡片后跳转的链接
   },
   {
-    avatar: '<span class="iconify" data-icon="mdi:linux"></span>',
+    avatar: '<iconify-icon icon="mdi:linux"></iconify-icon>',
     name: 'Linux 部署指南',
     title: '为 Linux 用户准备的命令行部署教程...',
     link: './mmc_deploy_linux'
   },
   {
-    avatar: '<span class="iconify" data-icon="material-symbols:android"></span>',
+    avatar: '<iconify-icon icon="material-symbols:android"></iconify-icon>',
     name: 'Android 部署指南',
     title: '为 Android 用户准备的部署教程...',
     link: './mmc_deploy_android'
   },
   {
-    avatar: '<span class="iconify" data-icon="mdi:docker"></span>',
+    avatar: '<iconify-icon icon="mdi:docker"></iconify-icon>',
     name: 'Docker 部署指南',
     title: '为 Docker 用户准备的部署教程...',
     link: './mmc_deploy_docker'

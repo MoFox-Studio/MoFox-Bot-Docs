@@ -51,7 +51,7 @@ export default {
   enhanceApp({ app }) {
     if (!import.meta.env.SSR) {
       const iconifyScript = document.createElement('script');
-      iconifyScript.src = 'https://code.iconify.design/3/3.1.0/iconify.min.js';
+      iconifyScript.src = 'https://code.iconify.design/iconify-icon/3.0.0/iconify-icon.min.js';
       document.head.appendChild(iconifyScript);
     }
     app.use(NolebaseEnhancedReadabilitiesPlugin)

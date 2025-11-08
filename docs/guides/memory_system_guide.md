@@ -147,7 +147,7 @@ graph TD
 WebUI 提供了一个可交互的、动态的图谱界面，您可以像探索星图一样探索 AI 的记忆世界。
 
 
-![WebUI 界面截图](./memory_webui.png)
+![WebUI 界面截图](/memory_webui.png)
 
 
 #### 功能概览

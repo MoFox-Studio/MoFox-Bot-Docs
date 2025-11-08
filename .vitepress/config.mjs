@@ -74,9 +74,17 @@ const devSidebar = [
     ]
   }
 ];
-
 // https://vitepress.dev/reference/site-config
 export default withMermaid(defineConfig({
+  vue: {
+    template: {
+      compilerOptions: {
+        isCustomElement: (tag) => {
+          return tag.startsWith('iconify-icon')
+        }
+      }
+    }
+  },
   markdown: {
       config(md) {
         // other markdown-it configurations...

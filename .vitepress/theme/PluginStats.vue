@@ -42,7 +42,7 @@ import { ref, onMounted, defineCustomElement } from 'vue';
 
 // 镜像站列表，哼，我就不信你们还能全都挂掉！
 const mirrorUrls = [
-  'https://raw.githubusercontent.com/MoFox-Studio/MoFox-Plugin-Repo/refs/heads/main/plugin_details.json',
+  'https://cdn.jsdelivr.net/gh/MoFox-Studio/MoFox-Plugin-Repo@main/plugin_details.json',
   'https://ghproxy.com/https://raw.githubusercontent.com/MoFox-Studio/MoFox-Plugin-Repo/refs/heads/main/plugin_details.json',
   'https://mirror.ghproxy.com/https://raw.githubusercontent.com/MoFox-Studio/MoFox-Plugin-Repo/refs/heads/main/plugin_details.json',
   'https://raw.githubusercontent.com/MoFox-Studio/MoFox-Plugin-Repo/refs/heads/main/plugin_details.json',

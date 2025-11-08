@@ -47,7 +47,7 @@
 import { ref, onMounted, computed, watch } from 'vue';
 
 const mirrorUrls = [
-  'https://raw.githubusercontent.com/MoFox-Studio/MoFox-Plugin-Repo/main/plugins.json',
+  'https://cdn.jsdelivr.net/gh/MoFox-Studio/MoFox-Plugin-Repo@main/plugins.json',
   'https://ghproxy.com/https://raw.githubusercontent.com/MoFox-Studio/MoFox-Plugin-Repo/main/plugins.json',
   'https://mirror.ghproxy.com/https://raw.githubusercontent.com/MoFox-Studio/MoFox-Plugin-Repo/main/plugins.json',
 ];

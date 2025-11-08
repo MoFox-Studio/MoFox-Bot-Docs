@@ -15,7 +15,6 @@
 模板文件里有所有必需的配置项，别自作主张乱删东西，尤其是你看不懂的。不然机器人闹脾气罢工了，可别怪我没提醒你。
 :::
 
-
 ## 一、基础设定：机器人的“身份”与“大脑”
 
 这部分是让机器人跑起来的基础，没这些，后面都是空谈。
@@ -26,32 +25,31 @@
 -   `database_type`: 数据库类型。
     -   `"sqlite"`: **强烈推荐新手使用**。简单、方便、开箱即用，就像个外置硬盘。数据库文件会放在 `sqlite_path` 指定的位置。
     -   `"mysql"`: 如果你有专业的服务器，想让机器人处理海量数据，那就选这个。当然，你得自己先去把 MySQL/MariaDB 服务器搭好。
--   `batch_action_storage_enabled`: **批量动作记录存储**。默认 `true`。开启后，机器人会将多个动作记录打包一次性写入数据库，而不是写一次就存一次。简单来说，就是提升性能，减少硬盘读写压力，**保持开启就对了**。
 
 #### SQLite 配置 (当 `database_type = "sqlite"`)
 -   `sqlite_path`: 数据库文件的路径。默认是 `"data/MaiBot.db"`，**通常你不需要动它**。
 
 #### MySQL 配置 (当 `database_type = "mysql"`)
-只有选择了 `mysql`，这部分才需要你来操心。
--   `mysql_host`, `mysql_port`: 你的 MySQL 服务器地址和端口。
--   `mysql_database`, `mysql_user`, `mysql_password`: 数据库名、用户名和密码。
--   `mysql_charset`: 字符集，默认 `"utf8mb4"`，支持 emoji。
--   `mysql_unix_socket`: Unix 套接字路径，一般用不上，留空就行。
+这部分只有在你选择 `mysql` 时才需要关心。
+-   `mysql_host`, `mysql_port`, `mysql_database`, `mysql_user`, `mysql_password`, `mysql_charset`: 基础连接信息。
 -   `mysql_ssl_mode`, `mysql_ssl_ca`, `mysql_ssl_cert`, `mysql_ssl_key`: SSL 加密连接相关的配置，有需要再研究。
--   `mysql_autocommit`: 是否自动提交事务，默认 `true`。
--   `mysql_sql_mode`: SQL 模式，默认 `"TRADITIONAL"`。
+-   `mysql_autocommit`, `mysql_sql_mode`: 高级配置，通常保持默认。
 -   `connection_pool_size`: 连接池大小，简单来说就是性能优化，默认 `10` 够用了。
 -   `connection_timeout`: 连接超时时间（秒）。
+
+#### 数据库性能与缓存
+-   `batch_action_storage_enabled`: **批量动作记录存储**。默认 `true`。开启后，机器人会将多个动作记录打包一次性写入数据库，提升性能，**保持开启就对了**。
+-   `enable_database_cache`: **数据库查询缓存**。默认 `true`。开启后可以显著提升常用数据的读取速度，降低数据库压力。除非你的内存真的非常紧张，否则**强烈建议开启**。
+-   `cache_l1_max_size`, `cache_l2_max_size`: L1（热数据）和 L2（温数据）缓存的大小。
+-   `cache_max_memory_mb`: 缓存系统最大能占多少内存。
 
 ### [permission] - 权限系统：谁是主人？
 -   `master_users`: **机器人管理员**列表。把你的账号加进去，你就能在机器人的权限系统“为所欲为”了。
     -   格式: `[["平台", "你的ID"]]`
     -   示例: `master_users = [["qq", "123456789"]]`
-:::tip
-1. 这里的用户 ID 必须是字符串格式，哪怕是数字也要加引号。平台名称目前支持 `"qq"`。
-2. 如果你想获取更多关于权限系统的信息,请参阅[权限系统使用指南](./permission_usage.md)。
-:::
-
+-   `[permission.master_prompt]`: **主人身份提示词**。
+    -   `enable`: 开启后，LLM会根据对话的是不是主人，接收到不同的隐藏提示词。
+    -   `master_hint`, `non_master_hint`: 分别是与主人和非主人对话时的提示。
 
 ### [bot] - 机器人身份信息
 -   `platform`: **【必填】** 机器人运行的平台，比如 `"qq"`。
@@ -72,88 +70,81 @@
 -   `personality_side`: **人格侧面**。对核心的补充，让性格更丰满。例如：“偶尔有点小迷糊，但对朋友非常真诚”。
 -   `identity`: **身份信息**。更具体的设定，比如外貌、年龄、职业等。例如：“年龄19岁,是女孩子,身高为160cm,有黑色的短发”。
 -   `background_story`: **世界观背景**。为机器人设定一个独特的背景故事，这部分内容会成为它的背景知识，但它不会主动复述。
--   `reply_style`: **说话风格**。描述它说话的习惯，例如：“回复可以简短一些。可以参考贴吧，知乎和微博的回复风格”。
+-   `reply_style`: **说话风格**。描述它说话的习惯。
 -   `safety_guidelines`: **安全与互动底线**。机器人必须遵守的原则，这是最高指令，任何情况下都不能违背。
 -   `prompt_mode`: Prompt 模式，保持 `"s4u"` 即可，这是为本项目优化的模式。
 -   `compress_personality`, `compress_identity`: **人格压缩**。开启后可以节省一点点资源，但可能会丢失人设细节。如果你的模型性能不错，建议都设为 `false` 以获得最佳拟人效果。
 
 ### [expression] - 表达学习：近朱者赤
 让机器人模仿特定聊天对象的说话风格，变得更“接地气”。
+-   `mode`: 表达学习的模式，`"classic"` 是经典随机模式，`"exp_model"` 使用机器学习模型，更智能。
+-   `expiration_days`: 一个学到的表达方式如果太久没用，就会被忘掉。
 -   `rules`: 一个学习规则列表，可以为不同的聊天（私聊/群聊）设置独立的规则。
-    -   `chat_stream_id`: 聊天ID。格式为 `"platform:id:type"`，例如 `"qq:123456:private"`。留空 `""` 表示全局配置。
+    -   `chat_stream_id`: 聊天ID。格式为 `"platform:id:type"`。留空 `""` 表示全局配置。
     -   `use_expression`: 是否**使用**学到的表达。
     -   `learn_expression`: 是否**学习**新的表达。
     -   `learning_strength`: 学习强度，数值越大，学得越快。
     -   `group`: 表达共享组。在同一个组内的聊天会共享学习到的表达方式。
 
+## 三、聊天交互：机器人的“情商”
+
 ### [chat] - 聊天通用设置
 -   `allow_reply_self`: 是否允许机器人回复自己发出的消息。一般没人会跟自己说话吧？默认 `false`。
 -   `max_context_size`: **记忆长度**。机器人能记住的最近对话数量。
--   `thinking_timeout`: **思考超时**（秒）。控制一次回复最长需要多久时间才会被放弃，免得它卡住不动。
+-   `thinking_timeout`: **思考超时**（秒）。
+-   `enable_message_cache`: **消息缓存**。开启后，正在处理消息时收到的新消息会先存起来，处理完再看，防止消息丢失。
 
 #### 消息打断系统
 -   `interruption_enabled`: **是否启用消息打断**。开启后，机器人在“思考”时如果收到新消息，有一定概率会放弃当前的回复，转而处理新消息。更像真人的反应，不是吗？
--   `interruption_max_limit`: 每个聊天里最多能打断多少次，免得它一直被打断，一句话都说不出来。
--   `interruption_min_probability`: 最低的打断概率。就算聊得再嗨，也总有那么一丝可能被打断。
+-   `allow_reply_interruption`: 是否允许在生成回复的过程中被打断。
 
 #### 动态消息分发系统
 -   `dynamic_distribution_enabled`: **是否启用动态消息分发**。开启后，系统会根据当前的聊天活跃度，智能地调整处理消息的频率，而不是傻乎乎地排队。可以提升高并发场景下的响应速度。
--   `dynamic_distribution_base_interval`: 基础的分发间隔（秒）。
--   `dynamic_distribution_min_interval`, `dynamic_distribution_max_interval`: 最小和最大的分发间隔。
--   `dynamic_distribution_jitter_factor`: 来点随机性，让分发间隔不那么死板。
 -   `max_concurrent_distributions`: 最大能同时处理多少个聊天流。
+-   `enable_decision_history`: **决策历史**。让语言模型能看到自己之前的决策过程，有助于做出更连贯的反应。
 
-### [mood] - 情绪系统
--   `enable_mood`: 让机器人拥有喜怒哀乐，并影响它的回复。
--   `mood_update_threshold`: 情绪更新阈值，越高，情绪变化越慢，性格越稳定。
+### [message_receive] - 消息接收与过滤
+-   `ban_words`: 屏蔽词列表。
+-   `ban_msgs_regex`: 屏蔽消息的正则表达式列表。
+-   `mute_group_list`: **静默群组**。在这些群里，只有被@或回复时，机器人オ会说话。
 
-### [emoji] - 表情包系统
--   `emoji_chance`: **发表情包的概率**。
--   `emoji_activate_type`: 推荐设为 `"llm"`，让机器人智能地判断何时该发表情包。
--   `steal_emoji`: **偷表情包**。开启后，它会把别人发的有趣表情包收藏起来自己用。
--   `max_reg_num`, `do_replace`: 收藏表情包的最大数量，以及满了之后是否替换旧的。
--   `emoji_selection_mode`: **表情选择模式**。`"emotion"` 模式让大模型根据情感标签选，`"description"` 模式让大模型根据详细描述选。前者更自由，后者更精准。
--   `max_context_emojis`: 每次随机给大模型多少个表情备选。设为 `0` 就是把所有表情都给它看，可能会增加思考成本哦。
--   其他均为高级配置，用于精细化管理表情包。
+### [notice] - 系统通知消息处理
+-   `enable_notice_trigger_chat`: 是否让戳一戳、拍一拍这类通知消息也和文字消息一样触发聊天。
+-   `notice_in_prompt`: 是否在提示词里告诉机器人最近发生的通知事件。
 
-## 三、核心记忆系统：机器人的“海马体”
+### [anti_prompt_injection] - 人格防篡改系统
+用于防止机器人被恶意指令攻击，也就是“催眠”。
+-   `enabled`: 是否启用。
+-   `process_mode`: 处理模式，`"strict"` (严格), `"lenient"` (宽松), `"auto"` (自动), `"counter_attack"` (反击)。
+-   `whitelist`: 白名单，这些用户的消息将跳过检测。
 
-这是机器人的核心记忆系统，非常复杂，但效果拔群。**强烈建议全部开启**。
+### [mood] & [emoji] - 情绪与表情包
+-   `[mood]`:
+    -   `enable_mood`: 让机器人拥有喜怒哀乐，并影响它的回复。
+    -   `mood_update_threshold`: 情绪更新阈值，越高，情绪变化越慢，性格越稳定。
+-   `[emoji]`:
+    -   `emoji_chance`: **发表情包的概率**。
+    -   `emoji_activate_type`: 推荐设为 `"llm"`，让机器人智能地判断何时该发表情包。
+    -   `steal_emoji`: **偷表情包**。
+    -   `emoji_selection_mode`: **表情选择模式**。`"emotion"` 模式让大模型根据情感标签选，`"description"` 模式让大模型根据详细描述选。前者更自由，后者更精准。
+    -   `max_reg_num`, `do_replace`: 收藏表情包的最大数量，以及满了之后是否替换旧的。
+    -   `max_context_emojis`: 每次随机给大模型多少个表情备选。设为 `0` 就是把所有表情都给它看，可能会增加思考成本哦。
+    -   其他均为高级配置，用于精细化管理表情包。    
 
--   `enable_memory`: **【核心功能】是否开启记忆**。开启后，机器人会记住对话内容，形成长期记忆。
--   `enable_vector_memory_storage`: **【推荐开启】** 使用专业的向量数据库来存储记忆，性能和扩展性远超旧的存储方式。
--   `enable_llm_instant_memory`, `enable_vector_instant_memory`: **瞬时记忆**。让机器人能更好地记住刚刚说过的话。两者都很重要。
+## 四、核心记忆系统：机器人的“海马体”
 
-#### 记忆采样系统：如何“记”
--   `memory_sampling_mode`: 记忆采样模式。`'immediate'`(即时采样) 更快，`'hippocampus'`(海马体定时采样) 更智能，`'all'`(双模式) 兼顾两者。
--   `enable_hippocampus_sampling`, `hippocampus_sample_interval`...: 海马体双峰采样策略的详细配置，它会模拟生物大脑，在不同时间尺度上回顾和巩固记忆。**新手保持默认**。
--   `precision_memory_reply_threshold`: 精准记忆回复阈值。高于这个值的对话会被立即记下来。
+新一代基于知识图谱和向量的混合记忆架构，**强烈建议全部开启**。
 
-#### 智能遗忘机制：如何“忘”
--   `enable_memory_forgetting`: **【推荐开启】** 模拟生物大脑的遗忘曲线，让机器人忘记不重要、不常用的信息，避免记忆库无限膨胀。
--   `base_forgetting_days`, `min_forgetting_days`, `max_forgetting_days`: 基础、最小和最大的遗忘天数。
--   `critical_importance_bonus`, `verified_confidence_bonus`, `activation_frequency_weight`...: 各种影响遗忘的权重，比如重要的、确信的、经常被想起来的记忆会保存得更久。**新手保持默认**。
+### [memory] - 记忆图系统
+-   `enable`: **【核心功能】是否开启记忆**。
+-   `search_top_k`: 检索记忆时返回的数量。
+-   `search_similarity_threshold`: 相似度阈值，决定了哪些记忆是相关的。
+-   `enable_query_optimization`: **查询优化**。使用小模型分析对话，生成更精准的搜索请求。
+-   `consolidation_enabled`: **记忆整合**。自动去重合并相似记忆，并建立记忆之间的关联，让记忆形成网络。
+-   `forgetting_enabled`: **自动遗忘**。模拟生物大脑的遗忘曲线，让机器人忘记不重要、不常用的信息。
+-   `activation_decay_rate`: **激活度衰减**。记忆和人一样，不经常回想就会慢慢淡忘。
 
-#### Vector DB 配置
--   `[vector_db]`: 向量数据库的具体配置。目前支持 `chromadb`。
-    -   `type`: 数据库类型，目前是 `"chromadb"`。
-    -   `path`: 数据库文件存放路径。
-    -   `[vector_db.settings]`: ChromaDB 的一些内部设置。
-    -   `[vector_db.collections]`: 定义不同的数据集合，用于存放不同类型的记忆数据。
-
-## 四、进阶能力：解锁更多“技能”
-
-这部分是机器人的“隐藏技能”，开启后会让它变得更强大、更智能。
-
-### [message_receive] & [anti_prompt_injection] - 消息过滤与安全
--   `[message_receive]`:
-    -   `ban_words`: 屏蔽词列表。
-    -   `ban_msgs_regex`: 屏蔽消息的正则表达式列表。
--   `[anti_prompt_injection]`: **人格防篡改系统**，用于防止机器人被恶意指令攻击，也就是“催眠”。
-    -   `enabled`: 是否启用。
-    -   `process_mode`: 处理模式，如 `"strict"` (严格), `"lenient"` (宽松)。
-    -   `whitelist`: 白名单，这些用户的消息将跳过检测。
-    -   其他均为高级配置，通常无需修改。
+## 五、进阶能力：解锁更多“技能”
 
 ### [tool] & [web_search] - 工具与网络
 -   `[tool]`:
@@ -161,15 +152,16 @@
 -   `[web_search]`: **上网冲浪**。
     -   `enable_web_search_tool`: 让机器人可以搜索网络来回答你的问题。
     -   `enable_url_tool`: 让机器人可以直接“阅读”链接内容。
-    -   `tavily_api_keys`, `exa_api_keys`, `searxng_instances`: 需要填入第三方搜索服务的 API Key 或实例地址。
-    -   `enabled_engines`: 启用的搜索引擎，可选 `"exa"`, `"tavily"`, `"ddg"`, `"bing"`。
+    -   `tavily_api_keys`, `exa_api_keys`, `metaso_api_keys`, `searxng_instances`, `serper_api_keys`: 需要填入第三方搜索服务的 API Key 或实例地址。
+    -   `enabled_engines`: 启用的搜索引擎。
     -   `search_strategy`: 搜索策略，如 `"single"` (单个), `"parallel"` (并行), `"fallback"` (备用)。
 
 ### [voice] & [video_analysis] - 视听能力
 -   `[voice]`:
-    -   `enable_asr`: 开启后，机器人可以“听懂”语音消息。需要额外配置语音识别模型。
+    -   `enable_asr`: 开启后，机器人可以“听懂”语音消息。
+    -   `asr_provider`: 语音识别提供商，可选 `"api"` 或 `"local"`。
 -   `[video_analysis]`: **看视频**。
-    -   `enable`: 开启后，你把视频发给它，它能“看懂”并告诉你视频内容。这是一个非常消耗资源的功能，并且需要正确配置FFmpeg。
+    -   `enable`: 开启后，你把视频发给它，它能“看懂”并告诉你视频内容。
     -   `rust_keyframe_threshold`, `rust_use_simd`...: **Rust 模块性能配置**。这些是用于视频抽帧的底层优化，使用 Rust 编写，性能极高。**保持默认即可享受**。
     -   `ffmpeg_path`: FFmpeg 可执行文件的路径。
 ::: tip
@@ -178,12 +170,10 @@
 
 ### [lpmm_knowledge] - 本地知识库
 -   `enable`: 是否启用本地知识库功能。这是一个高级功能，用于构建机器人的专属知识体系。
--   其他均为知识库的技术参数，**新手建议保持默认**。
 
-### [keyword_reaction] & [custom_prompt] - 自定义回复
--   `[keyword_reaction]`:
-    -   `keyword_rules`: 设置关键词触发的固定回复。
-    -   `regex_rules`: 设置正则表达式触发的固定回复。
+### [[reaction.rules]] & [custom_prompt] - 自定义回复
+-   `[[reaction.rules]]`:
+    -   可以定义多个规则块，基于 `keyword` (关键词) 或 `regex` (正则表达式) 触发固定回复。
 -   `[custom_prompt]`:
     -   `image_prompt`: 用于图片描述的提示词。
     -   `planner_custom_prompt_content`: 用于决策器的自定义提示词内容。
@@ -193,51 +183,29 @@
 -   `[chinese_typo]`: 开启后，机器人回复时会模拟真⼈，产⽣⼀些随机的、合理的错别字。
 -   `[response_splitter]`: 开启后，会将过长的回复分割成多条消息发送。
 
-## 五、高级自动化：让机器人“活”起来
-
-这部分是机器人的“全自动”和“可插拔”模块，让它更主动、更强大。
+## 六、高级自动化：让机器人“活”起来
 
 ### [planning_system] - 规划系统
 -   `schedule_enable`: **日程生成**。开启后，机器人会为自己安排每天的日程。
 -   `monthly_plan_enable`: **月度计划**。开启后，机器人会为自己制定月度目标。
 -   其他均为详细参数，可按需调整。
 
-### [sleep_system] - 睡眠系统
--   `enable`: 开启后，机器人会模拟人的作息，在设定的时间“睡觉”。
--   `wakeup_threshold`: 控制机器人被“吵醒”的阈值。
--   `angry_prompt`: 被吵醒后生气时的人设。
--   `enable_insomnia_system`: **失眠系统**。机器人可能会因为“压力”等原因失眠。
--   `enable_flexible_sleep`: **弹性睡眠**。机器人不会到点就睡，会根据“睡眠压力”稍微推迟一会。
--   `enable_pre_sleep_notification`: **睡前晚安**。准备睡觉时会发一条消息。
--   其他均为睡眠和失眠系统的详细参数。
-
 ### [cross_context] - 跨上下文共享
--   `enable`: 开启后，可以让机器人在不同的群聊/私聊之间共享上下文。
--   `groups`: **共享组模式**。定义共享组，在同一个组内的聊天会共享上下文。
+-   `enable`: 总开关。
 -   `s4u_mode`: **S4U 用户中心模式**。不再依赖于固定的共享组，而是以“用户”为中心，自动检索该用户在其他聊天中的发言作为上下文。更智能，更强大。
--   `maizone_context_group`: 定义QQ空间互通组，用于生成更相关的说说。
+-   `[[cross_context.groups]]`: **共享组模式**。定义共享组，在同一个组内的聊天会共享上下文，主要供插件使用。
 
-### [affinity_flow] - 兴趣流与关系追踪
-这是一个复杂的系统，用于模拟机器人的“兴趣”和“人际关系”，决定了它对不同话题和用户的反应。
+### [affinity_flow] - 兴趣流系统
+这是一个复杂的系统，用于模拟机器人的“兴趣”，决定了它对不同话题的反应热度。
+-   `enable_normal_mode`: **普通聊天模式**。启用后，机器人会根据兴趣度决定是否回复，实现更快速的响应。
 -   `reply_action_interest_threshold`...: 一系列兴趣阈值和权重，决定了机器人对什么样的话题“更感兴趣”。
--   `enable_relationship_tracking`: **【推荐开启】** 是否启用关系追踪系统。开启后，机器人会分析对话，尝试理解并记录它与每个人的关系。
--   其他均为高级参数，**新手保持默认**。
+-   `enable_post_reply_boost`: **回复后连续对话**。让bot在回复后的一小段时间内更容易进行连续对话。
 
-### [proactive_thinking] - 主动思考
+### [proactive_thinking] - 主动思考（主动发起对话）
 -   `enable`: **【核心功能】主动找话题**。开启后，机器人在冷场时会自己找话题聊天，让聊天氛围不再尴尬。
--   `interval`, `interval_sigma`: 主动说话的基础间隔和随机浮动范围。
--   `talk_frequency_adjust`: **分时段活跃度**。可以设置机器人在不同时间段有不同的活跃度，实现“早C晚A”般的作息。
--   `enable_in_private`, `enable_in_group`: 分别控制是否在私聊和群聊中启用。
--   `enabled_private_chats`, `enabled_group_chats`: 指定只在哪些聊天中启用，为空则不限制。
--   `enable_cold_start`: 对于很久没聊过天的私聊对象，是否进行一次“冷启动”问候。
-
-## 六、扩展与开发：连接“外部世界”
-
-### [[mcp_servers]] - MCP 工具服务器
--   这是一个扩展功能，允许机器人连接外部的工具服务器，调用那里的工具来完成特定任务（比如操作文件、调用 Git 等）。
--   `name`: 服务器名称。
--   `url`: 服务器地址。
--   `enabled`: 是否启用。
+-   `base_interval`: 主动说话的基础间隔。
+-   `whitelist_mode`, `blacklist_mode`: 可以设置只对某些群/人主动，或者不对某些群/人主动。
+-   `topic_throw_cooldown`: 主动发言后的冷却时间（秒），期间暂停主动思考，等待用户回复。
 
 ## 七、系统与调试：幕后设定
 

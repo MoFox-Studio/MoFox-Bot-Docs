@@ -27,6 +27,12 @@ const myGuides = [
     title: '为 Docker 用户准备的部署教程...',
     link: './mmc_deploy_docker'
   },
+  {
+    avatar: '<iconify-icon icon="material-symbols:package-2"></iconify-icon>',
+    name: '一键包部署指南',
+    title: '为一键包用户准备的部署教程...',
+    link: './OneKey-Plus-Usage-Guide'
+  },
   // ... 你可以根据需要添加任意多个卡片对象
 ]
 

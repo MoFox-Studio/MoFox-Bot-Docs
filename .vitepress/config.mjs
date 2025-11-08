@@ -157,6 +157,7 @@ export default withMermaid(defineConfig({
                 { text: 'Linux部署指南', link: '/docs/guides/mmc_deploy_linux' },
                 { text: 'android部署指南', link: '/docs/guides/mmc_deploy_android' },
                 { text: 'docker部署指南', link: '/docs/guides/mmc_deploy_docker' },
+                { text: '一件包部署指南', link: '/docs/guides/OneKey-Plus-Usage-Guide' },
               ]
              },
              { text: '最终用户许可协议', link: '/docs/guides/eula' },

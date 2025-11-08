@@ -33,6 +33,7 @@ const devSidebar = [
     text: '插件',
     items: [
       { text: '插件概述', link: '/docs/development/plugins/' },
+      { text: '如何贡献插件', link: '/docs/development/plugins/how-to-contribute-plugins' },
       { text: '快速开始', link: '/docs/development/plugins/quick-start' },
       { text: '元数据指南', link: '/docs/development/plugins/metadata-guide' },
       { text: '依赖管理', link: '/docs/development/plugins/dependency-management' },

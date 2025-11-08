@@ -23,7 +23,7 @@ import {
 
 import '@nolebase/vitepress-plugin-inline-link-preview/client/style.css'
 import NotFound from './NotFound.vue'
-import './style/link.css'
+import './style/link.scss'
 
 // 动态加载外部脚本的函数
 function loadScript(src) {

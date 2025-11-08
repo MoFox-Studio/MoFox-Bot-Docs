@@ -1,5 +1,5 @@
 /* 链接 */
-.vp-doc .VPNolebaseInlinePreviewLink:not([href^='https://img.shields.io/']) {
+.vp-doc .VPNolebaseInlinePreviewLink:not([href^='https://img.shields.io/']) {  
   &[target='_blank'],
   &[href^='./'],
   &[href^='../'] {
@@ -26,11 +26,11 @@
   &[href^='../']::before,
 
   &[href^='https://docs.mofox-sama.com']::before {
-    background-image: url("https://api.iconify.design/noto-v1:fox.svg");
+    content: none;
   }
 
   &[href^='https://vitepress.dev']::before {
-    background-image: url("https://vitepress.dev/vitepress-logo-mini.svg");
+    background-image: url(https://api.iconify.design/logos:vitepress.svg);
   }
 
   &[href^='https://hexo.io']::before {

@@ -13,7 +13,7 @@ ps：如果你[点击这里注册](https://cloud.siliconflow.cn/i/0ww8zcOn)，�
 ### 操作步骤
 
 1.  **创建配置文件**:
-    *   在 `mmc` 文件夹中, 找到 `template/model_config_template.toml` 文件。
+    *   在 `mofox-bot` 文件夹中, 找到 `template/model_config_template.toml` 文件。
     *   复制它，并粘贴到 `config/` 目录下，重命名为 `model_config.toml`。
 
 2.  **找到并修改 API Key**:

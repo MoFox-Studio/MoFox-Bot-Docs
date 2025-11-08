@@ -10,7 +10,7 @@ Master 用户是机器人的**最高管理员**，拥有所有权限，可以执
 
 ### 为什么必须先配置 Master 用户？
 
-*   **初始授权**：权限管理指令（例如 `/permission grant`）本身是需要权限才能使用的。如果没有一个初始的最高权限用户，就没人能够分配权限，整个权限系统就无法启动。
+*   **初始授权**：权限管理指令（例如 `/system permission grant`）本身是需要权限才能使用的。如果没有一个初始的最高权限用户，就没人能够分配权限，整个权限系统就无法启动。
 *   **安全保障**：Master 用户是管理机器人的最终保障，确保你永远不会因为错误的权限配置而失去对机器人的控制。
 
 在你完成 Master 用户的配置之前，请**不要**尝试使用任何权限管理指令，否则你只会收到“权限不足”的提示。
@@ -46,47 +46,47 @@ Master 用户是机器人的**最高管理员**，拥有所有权限，可以执
 
 ## 权限管理指令详解
 
-作为 Master 用户，或已被授予权限的管理员，你可以通过 `/permission` 系列指令来管理权限。
+作为 Master 用户，或已被授予权限的管理员，你可以通过 `/system permission` 系列指令来管理权限。
 
 ### 1. 授予与撤销权限
 
 - **授予权限 (grant)**: 让某个用户可以使用特定功能。
-  - **格式**: `/permission grant <@用户或用户ID> <权限节点>`
-  - **示例**: `/permission grant @小明 plugin.music.play`
+  - **格式**: `/system permission grant <@用户或用户ID> <权限节点>`
+  - **示例**: `/system permission grant @小明 plugin.music.play`
 
 - **撤销权限 (revoke)**: 取消某个用户使用特定功能的权限。
-  - **格式**: `/permission revoke <@用户或用户ID> <权限节点>`
-  - **示例**: `/permission revoke @小明 plugin.music.play`
+  - **格式**: `/system permission revoke <@用户或用户ID> <权限节点>`
+  - **示例**: `/system permission revoke @小明 plugin.music.play`
 
 ### 2. 查询与检查权限
 
 - **查看权限 (list)**: 查看自己或他人拥有的所有权限。
-  - **格式**: `/permission list [@用户或用户ID]`
-  - **示例**: 查看自己的权限 `/permission list`，查看小明的权限 `/permission list @小明`。
+  - **格式**: `/system permission list [@用户或用户ID]`
+  - **示例**: 查看自己的权限 `/system permission list`，查看小明的权限 `/system permission list @小明`。
 
 - **检查特定权限 (check)**: 检查某个用户是否拥有特定的权限节点。
-  - **格式**: `/permission check <@用户或用户ID> <权限节点>`
-  - **示例**: `/permission check @小明 plugin.music.play`
+  - **格式**: `/system permission check <@用户或用户ID> <权限节点>`
+  - **示例**: `/system permission check @小明 plugin.music.play`
 
 ### 3. 工具指令
 
 - **查看所有权限节点 (nodes)**: 查看机器人中所有可用的“钥匙”。
-  - **格式**: `/permission nodes [插件名]`
-  - **示例**: 查看所有权限 `/permission nodes`，只看音乐插件的 `/permission nodes music`。
+  - **格式**: `/system permission nodes [插件名]`
+  - **示例**: 查看所有权限 `/system permission nodes`，只看音乐插件的 `/system permission nodes music`。
 
 - **获取帮助 (help)**: 忘记指令时寻求帮助。
-  - **格式**: `/permission help`
+  - **格式**: `/system permission help`
 
 ## 常见问题
 
 **Q: 我输入了指令，但机器人提示我“权限不足”，怎么办？**
-A: 这意味着你没有执行该操作所需的“钥匙”（权限节点）。如果你是机器人的主人，请先检查是否已在配置文件中将自己设为 Master 用户。如果不是，你需要联系机器人的管理员，让他使用 `/permission grant` 指令授予你相应的权限。
+A: 这意味着你没有执行该操作所需的“钥匙”（权限节点）。如果你是机器人的主人，请先检查是否已在配置文件中将自己设为 Master 用户。如果不是，你需要联系机器人的管理员，让他使用 `/system permission grant` 指令授予你相应的权限。
 
 **Q: 我是管理员，该如何找到我需要的权限节点名称？**
-A: 你可以使用 `/permission nodes` 指令来查看所有可用的权限节点及其描述。通常，权限节点的名称都很有规律，例如 `plugin.插件名.功能名`。
+A: 你可以使用 `/system permission nodes` 指令来查看所有可用的权限节点及其描述。通常，权限节点的名称都很有规律，例如 `plugin.插件名.功能名`。
 
 **Q: 我不小心给错了权限怎么办？**
-A: 不用担心，立即使用 `/permission revoke` 指令将错误的权限撤销即可。
+A: 不用担心，立即使用 `/system permission revoke` 指令将错误的权限撤销即可。
 ## 推荐权限配置流程
 
 为了帮助你更好地理解和使用权限系统，这里提供一个推荐的操作流程：
@@ -100,7 +100,7 @@ graph TD
     E --> F[保存配置文件并重启机器人];
     B -->|是| G[机器人正常启动];
     F --> G;
-    G --> H[使用 /permission 指令为其他管理员授权];
+    G --> H[使用 /system permission 指令为其他管理员授权];
     H --> I[根据需要为普通用户授予特定功能权限];
     I --> J[完成权限配置];
     J --> K[结束：权限系统配置完成];

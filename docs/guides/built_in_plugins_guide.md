@@ -133,7 +133,6 @@ graph TD
     -   **功能**: 恢复一个已暂停的定时任务。
     -   **用法**: `/system schedule resume <任务ID>`
 
----
 
 ## 2. 内置插件：MaiZone (麦麦空间)
 
@@ -213,7 +212,6 @@ graph TD
 -   **[cookie]**: Cookie 获取配置
     -   `http_fallback_host`/`port`: 备用 Cookie 获取服务的主机和端口，需要你的NapCat有对应主机端口的HTTP服务器。
 
----
 
 ## 3. 内置插件：Web Search (联网搜索)
 

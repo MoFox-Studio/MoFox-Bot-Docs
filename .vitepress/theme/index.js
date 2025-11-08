@@ -4,6 +4,7 @@ import Giscus from './Giscus.vue'
 import GuideCards from './GuideCards.vue'
 import BibleDisplay from './BibleDisplay.vue'
 import MoFoxTeamCard from './MoFoxTeamCard.vue'
+import PluginStats from './PluginStats.vue'
 import { h } from 'vue'
 import ReadingTime from './ReadingTime.vue'
 import BackToTop from './BackToTop.vue'
@@ -59,6 +60,7 @@ export default {
     app.component('GuideCards', GuideCards)
     app.component('BibleDisplay', BibleDisplay)
     app.component('ReadingTime', ReadingTime)
+    app.component('PluginStats', PluginStats)
     app.component('MoFoxTeamCard', MoFoxTeamCard)
     app.component('BackToTop', BackToTop)
     app.component('CollapsibleSidebar', CollapsibleSidebar)

@@ -169,6 +169,7 @@ export default withMermaid(defineConfig({
             {
               text: '功能使用',
               items: [
+                { text: '插件安装指南', link: '/docs/guides/plugin-installation-guide' },
                 { text: '指令权限系统使用教程', link: '/docs/guides/permission_usage' },
                 { text: '视频识别功能', link: '/docs/guides/video_recognition' },
                 { text: '计划系统介绍', link: '/docs/guides/schedule_and_planning_guide' },

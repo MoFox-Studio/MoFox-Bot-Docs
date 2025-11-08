@@ -50,6 +50,11 @@
 
     > [!WARNING]
     > `plugin_details.json` 是程序自动生成的文件，请**不要手动修改**它。
+    
+> [!TIP]
+> 嫌手动修改 JSON 容易出错？试试我们为您准备的**插件贡献助手**吧！只需填写您的用户名和仓库名，即可一键生成并复制完整的 `plugins.json` 内容。
+
+<ContributePluginGuide />
 
 3.  **提交您的更改**
     -   编辑完成后，滚动到页面下方。
@@ -91,6 +96,10 @@
     ```
     *(请将 `your-github-username` 和 `your-plugin-repo-name` 替换为您自己的信息)*
 
+> [!TIP]
+> 嫌手动修改 JSON 容易出错？试试我们为您准备的**插件贡献助手**吧！只需填写您的用户名和仓库名，即可一键生成并复制完整的 `plugins.json` 内容。
+
+<ContributePluginGuide />
 
 4.  **提交并推送更改**
     ```bash
@@ -103,7 +112,6 @@
     -   回到您在 GitHub 上的 Fork 仓库页面，点击 **"Compare & pull request"** 按钮。
     -   仔细阅读并填写 PR 模板中的所有内容后，提交即可。
 
----
 
 ## 提交之后
 

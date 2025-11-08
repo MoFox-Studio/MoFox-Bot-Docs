@@ -5,6 +5,7 @@ import GuideCards from './GuideCards.vue'
 import BibleDisplay from './BibleDisplay.vue'
 import MoFoxTeamCard from './MoFoxTeamCard.vue'
 import PluginStats from './PluginStats.vue'
+import ContributePluginGuide from './ContributePluginGuide.vue'
 import { h } from 'vue'
 import ReadingTime from './ReadingTime.vue'
 import BackToTop from './BackToTop.vue'
@@ -62,6 +63,7 @@ export default {
     app.component('ReadingTime', ReadingTime)
     app.component('PluginStats', PluginStats)
     app.component('MoFoxTeamCard', MoFoxTeamCard)
+    app.component('ContributePluginGuide', ContributePluginGuide)
     app.component('BackToTop', BackToTop)
     app.component('CollapsibleSidebar', CollapsibleSidebar)
     app.use(NolebaseInlineLinkPreviewPlugin) 

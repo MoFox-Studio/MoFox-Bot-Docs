@@ -183,7 +183,7 @@ export default withMermaid(defineConfig({
                 { text: '如何高效提问', link: '/docs/guides/how-to-ask-questions-efficiently' },
                 { text: '模型配置FAQ', link: '/docs/guides/model_config_faq' },
                 { text: '如何更换端口', link: '/docs/guides/how_to_change_port' },
-                { text: '更新指南', link: '/docs/guides/update_guide' },
+                { text: '维护指南', link: '/docs/guides/maintenance_guide' },
               ]
             }
           ]

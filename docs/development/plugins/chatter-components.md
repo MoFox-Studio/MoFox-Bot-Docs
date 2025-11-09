@@ -11,7 +11,6 @@ Chatter 是 MoFox_Bot 中用于实现主动式对话（Proactive Chat）的智�
 - **专注对话流**：每个 Chatter 实例都与一个特定的对话流（`stream_id`）绑定。
 - **高度灵活**：可以与 `ActionManager` 结合，执行发送消息、调用工具等复杂操作。
 
----
 
 ## 🎯 Chatter 组件的基本结构
 

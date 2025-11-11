@@ -78,7 +78,7 @@ class HelloWorldPlugin(BasePlugin):
 
 到这里，你的插件已经可以被系统加载了，虽然它现在还什么都做不了。
 
----
+
 
 ## 🛠️ 步骤二：逐一添加五大组件
 

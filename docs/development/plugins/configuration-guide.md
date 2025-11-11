@@ -40,7 +40,7 @@ class ConfigField:
     choices: list[Any] | None = field(default_factory=list) # 可选值列表 (可选)
 ```
 
----
+
 
 ## 智能的配置生命周期
 
@@ -85,7 +85,7 @@ graph TD
 - **移除废弃项**: 如果你从 `schema` 中删除了一个字段，系统会在用户的配置文件中也将其移除，并打印一条警告日志。
 - **自动备份**: 在执行任何覆盖写操作之前，系统都会在配置所在目录的 `backup/` 子文件夹下，创建一个带时间戳的备份文件。你再也不用担心用户的配置会意外丢失。
 
----
+
 
 ## 配置访问
 
@@ -108,7 +108,7 @@ class MyCommand(PlusCommand):
         non_existent = self.get_config("a.b.c", None)
 ```
 
----
+
 
 ## 完整示例：PluginManagementPlugin
 
@@ -151,7 +151,7 @@ class PluginManagementPlugin(BasePlugin):
 enabled = true
 ```
 
----
+
 
 ## 最佳实践
 

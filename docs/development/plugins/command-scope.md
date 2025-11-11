@@ -107,7 +107,7 @@ class HelloCommand(PlusCommand):
 
 通过灵活运用 `chat_type_allow`，你可以设计出行为得体、功能边界清晰的强大插件。
 
----
+
 
 ## 扩展到 Action (动作)
 

@@ -87,7 +87,6 @@ onekey-plus/
 .\python_embedded\python.exe -m pip install requests
 ```
 
----
 
 ## 常见问题 (FAQ)
 

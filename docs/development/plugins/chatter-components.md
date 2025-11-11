@@ -62,7 +62,7 @@ class MyChatter(BaseChatter):
 - **`chatter_description` (str)**: 对 Chatter 功能的描述，帮助理解其用途。
 - **`chat_types` (list[ChatType])**: 一个列表，定义了此 Chatter 可以在哪些类型的对话中运行（`ChatType.PRIVATE` 或 `ChatType.GROUP`）。
 
----
+
 
 ## 🚀 `execute` 方法
 
@@ -101,7 +101,7 @@ class MyChatter(BaseChatter):
   - **`error_message` (str, optional)**: 如果执行失败，提供错误信息。
   - 其他字段可以根据 Chatter 的具体逻辑自定义，以提供更丰富的上下文信息。
 
----
+
 
 ## 💡 完整示例：`GreetingChatter`
 
@@ -170,7 +170,6 @@ class GreetingChatter(BaseChatter):
     - 如果匹配成功，它会打印一条日志并返回 `executed` 状态。在实际应用中，这里可以调用 `self.action_manager` 来发送回复。
     - 如果不匹配或消息无效，则返回 `skipped` 状态。
 
----
 
 ## 🔧 Chatter 的内置属性和方法
 
@@ -183,7 +182,6 @@ class GreetingChatter(BaseChatter):
 
 - **`get_chatter_info() -> ChatterInfo`**: 一个类方法，它会自动从类属性（`chatter_name`, `chatter_description` 等）生成一个 `ChatterInfo` 对象，用于在系统中注册和展示 Chatter。
 
----
 
 ## 📚 高级示例与进一步学习
 

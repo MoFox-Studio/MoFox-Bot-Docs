@@ -241,7 +241,7 @@ enabled_engines = ["ddg", "tavily"]
 # 搜索策略
 # "single": 只使用列表里的第一个可用引擎
 # "fallback": 依次尝试列表里的引擎，直到成功为止
-# "parallel": (暂未实现) 同时使用所有引擎
+# "parallel": 同时使用所有引擎
 search_strategy = "fallback"
 ```
 

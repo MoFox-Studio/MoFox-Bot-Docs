@@ -65,6 +65,7 @@ const devSidebar = [
           { text: 'Message API', link: '/docs/development/plugins/api/message-api' },
           { text: 'Person API', link: '/docs/development/plugins/api/person-api' },
           { text: 'Plugin Manage API', link: '/docs/development/plugins/api/plugin-manage-api' },
+          { text: 'Prompt Component Manage API', link: '/docs/development/plugins/api/prompt-component-manage-api' },
           { text: 'Send API', link: '/docs/development/plugins/api/send-api' },
           { text: 'Schedule API', link: '/docs/development/plugins/api/schedule-api' },
           { text: 'Storage API', link: '/docs/development/plugins/api/storage-api' },

@@ -14,7 +14,7 @@ from src.plugin_system import person_api
 
 ### 1. Person ID 获取
 ```python
-def get_person_id(platform: str, user_id: int) -> str:
+def get_person_id(platform: str, user_id: int | str) -> str:
 ```
 根据平台和用户ID获取person_id
 
@@ -32,48 +32,63 @@ person_id = person_api.get_person_id("qq", 123456)
 
 ### 2. 用户信息查询
 ```python
-async def get_person_value(person_id: str, field_name: str, default: Any = None) -> Any:
+async def get_person_info(person_id: str) -> dict[str, Any]:
 ```
-查询单个用户信息字段值
+获取用户的核心基础信息
 
 **Args:**
 - `person_id`：用户的唯一标识ID
-- `field_name`：要获取的字段名
-- `default`：字段值不存在时的默认值
 
 **Returns:**
-- `Any`：字段值或默认值
+- `dict[str, Any]`：包含用户基础信息的字典，例如 `person_name`, `nickname`, `know_times`, `attitude` 等。如果用户不存在则返回空字典。
 
 #### 示例
 ```python
-nickname = await person_api.get_person_value(person_id, "nickname", "未知用户")
-impression = await person_api.get_person_value(person_id, "impression")
+info = await person_api.get_person_info(person_id)
+if info:
+    print(f"用户昵称: {info.get('nickname', '未知')}")
 ```
 
-### 3. 批量用户信息查询
+### 3. 获取用户印象
 ```python
-async def get_person_values(person_id: str, field_names: list, default_dict: Optional[dict] = None) -> dict:
+async def get_person_impression(person_id: str, short: bool = False) -> str:
 ```
-批量获取用户信息字段值
+获取对用户的印象。
 
 **Args:**
 - `person_id`：用户的唯一标识ID
-- `field_names`：要获取的字段名列表
-- `default_dict`：默认值字典，键为字段名，值为默认值
+- `short`：是否获取简短版印象，默认为`False`获取长篇印象
 
 **Returns:**
-- `dict`：字段名到值的映射字典
+- `str`：一段描述性的文本。
 
 #### 示例
 ```python
-values = await person_api.get_person_values(
-    person_id,
-    ["nickname", "impression", "know_times"],
-    {"nickname": "未知用户", "know_times": 0}
-)
+impression = await person_api.get_person_impression(person_id)
+short_impression = await person_api.get_person_impression(person_id, short=True)
 ```
 
-### 4. 判断用户是否已知
+### 4. 获取用户记忆点
+```python
+async def get_person_points(person_id: str, limit: int = 5) -> list[tuple]:
+```
+获取关于用户的'记忆点'，这些是与用户交互中产生的关键信息。
+
+**Args:**
+- `person_id`：用户的唯一标识ID
+- `limit`：返回的记忆点数量上限，默认为5
+
+**Returns:**
+- `list[tuple]`：一个列表，每个元素是一个包含记忆点内容、权重和时间的元组。
+
+#### 示例
+```python
+points = await person_api.get_person_points(person_id, limit=3)
+for point, weight, time in points:
+    print(f"记忆点: {point} (重要性: {weight})")
+```
+
+### 5. 判断用户是否已知
 ```python
 async def is_person_known(platform: str, user_id: int) -> bool:
 ```
@@ -86,9 +101,9 @@ async def is_person_known(platform: str, user_id: int) -> bool:
 **Returns:**
 - `bool`：是否认识该用户
 
-### 5. 根据用户名获取Person ID
+### 6. 根据用户名获取Person ID
 ```python
-def get_person_id_by_name(person_name: str) -> str:
+async def get_person_id_by_name(person_name: str) -> str:
 ```
 根据用户名获取person_id
 
@@ -98,22 +113,43 @@ def get_person_id_by_name(person_name: str) -> str:
 **Returns:**
 - `str`：person_id，如果未找到返回空字符串
 
+### 7. 生成关系报告
+```python
+async def get_full_relationship_report(person_id: str) -> str:
+```
+生成一份关于你和用户的完整'关系报告'，综合了基础信息、印象、记忆点和关系分。
+
+**Args:**
+- `person_id`：用户的唯一标识ID
+
+**Returns:**
+- `str`：格式化的关系报告文本。
+
+#### 示例
+```python
+report = await person_api.get_full_relationship_report(person_id)
+print(report)
+```
+
 ## 常用字段说明
 
-### 基础信息字段
+### 基础信息字段 (通过 `get_person_info` 获取)
+- `person_name`: 用户名
 - `nickname`：用户昵称
-- `platform`：平台信息
-- `user_id`：用户ID
+- `know_times`: 认识次数
+- `know_since`: 初次认识时间
+- `last_know`: 最近一次认识时间
+- `attitude`: 对用户的态度
 
-### 关系信息字段
-- `impression`：对用户的印象
-- `points`: 用户特征点
+### 关系信息字段 (通过专用函数获取)
+- **印象**: 通过 `get_person_impression` 获取
+- **记忆点**: 通过 `get_person_points` 获取
 
-其他字段可以参考`PersonInfo`类的属性（位于`src.common.database.database_model`）
+其他字段可以参考`PersonInfo`类的属性（位于`src/person_info/person_info.py`）
 
 ## 注意事项
 
-1. **异步操作**：部分查询函数都是异步的，需要使用`await`
-2. **性能考虑**：批量查询优于单个查询
+1. **异步操作**：大部分查询函数都是异步的，需要使用`await`
+2. **性能考虑**：批量查询优于单个查询（虽然当前版本API暂未提供批量接口，但设计上应有此意识）
 3. **隐私保护**：确保用户信息的使用符合隐私政策
 4. **数据一致性**：person_id是用户的唯一标识，应妥善保存和使用

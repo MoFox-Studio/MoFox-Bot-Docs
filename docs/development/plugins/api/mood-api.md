@@ -44,9 +44,14 @@ def set_mood(chat_id: str, new_mood: str):
 - `chat_id (str)`: 聊天ID(通常是 stream_id)
 - `new_mood (str)`: 新的情绪状态
 
+**Returns**:
+- `bool`: 操作是否成功
+
 #### 示例：
 ```python
-mood_api.set_mood(chat_id, "感到很开心")
+sucess = mood_api.set_mood(chat_id, "感到很开心")
+if sucess:
+    print("情绪设置成功。")
 ```
 
 ### 3. 锁定情绪
@@ -60,14 +65,16 @@ async def lock_mood(chat_id: str, duration: float | None = None):
 **Args**:
 - `chat_id (str)`: 聊天ID(通常是 stream_id)
 - `duration (Optional[float])`: 锁定时长（秒）。如果为 None，则永久锁定直到手动解锁。
+**Returns**:
+- `bool`: 操作是否成功
 
 #### 示例：
 ```python
 # 锁定情绪3分钟
-await mood_api.lock_mood(chat_id, duration=180)
+sucess = await mood_api.lock_mood(chat_id, duration=180)
 
 # 永久锁定
-await mood_api.lock_mood(chat_id)
+sucess = await mood_api.lock_mood(chat_id)
 ```
 
 ### 4. 解锁情绪
@@ -81,9 +88,16 @@ async def unlock_mood(chat_id: str):
 **Args**:
 - `chat_id (str)`: 聊天ID(通常是 stream_id)
 
+**Returns**:
+- `bool`: 如果成功解锁则返回 True，如果情绪未被锁定则返回 False。
+
 #### 示例：
 ```python
-await mood_api.unlock_mood(chat_id)
+sucess = await mood_api.unlock_mood(chat_id)
+if sucess:
+    print("情绪已成功解锁。")
+else:
+    print("情绪未被锁定。")
 ```
 
 ### 5. 检查情绪是否锁定

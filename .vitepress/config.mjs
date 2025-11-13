@@ -63,6 +63,7 @@ const devSidebar = [
           { text: 'LLM API', link: '/docs/development/plugins/api/llm-api' },
           { text: 'Logging API', link: '/docs/development/plugins/api/logging-api' },
           { text: 'Message API', link: '/docs/development/plugins/api/message-api' },
+          { text: 'Mood API', link: '/docs/development/plugins/api/mood-api' },
           { text: 'Person API', link: '/docs/development/plugins/api/person-api' },
           { text: 'Plugin Manage API', link: '/docs/development/plugins/api/plugin-manage-api' },
           { text: 'Prompt Component Manage API', link: '/docs/development/plugins/api/prompt-component-manage-api' },

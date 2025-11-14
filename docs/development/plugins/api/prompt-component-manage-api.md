@@ -54,7 +54,24 @@ async def add_injection_rule(
 **Returns:**
 -   `bool`: 如果成功添加或更新，则返回 `True`。
 
-#### 2. `remove_injection_rule`
+#### 2. `add_rule_for_component`
+
+```python
+async def add_rule_for_component(self, prompt_name: str, rule: InjectionRule) -> bool:
+```
+
+为一个已存在的组件添加单条注入规则，并自动复用其已有的 `content_provider` 和 `source`。
+
+这是一个便捷方法，特别适用于当一个组件已经注册后，你只想为其增加新的注入目标，而无需重新提供其内容生成逻辑和来源信息。
+
+**Args:**
+-   `prompt_name` (str): 已存在的注入组件的名称。
+-   `rule` (InjectionRule): 要为该组件添加的新注入规则。
+
+**Returns:**
+-   `bool`: 如果成功添加规则，则返回 `True`；如果未找到该组件的任何现有规则（因此无法复用 provider 和 source），则返回 `False`。
+
+#### 3. `remove_injection_rule`
 
 ```python
 async def remove_injection_rule(self, prompt_name: str, target_prompt: str) -> bool:
@@ -69,7 +86,7 @@ async def remove_injection_rule(self, prompt_name: str, target_prompt: str) -> b
 **Returns:**
 -   `bool`: 如果成功移除，则返回 `True`；如果规则不存在，则返回 `False`。
 
-#### 3. `remove_all_rules_by_component_name`
+#### 4. `remove_all_rules_by_component_name`
 
 ```python
 async def remove_all_rules_by_component_name(self, prompt_name: str) -> bool:
@@ -85,7 +102,7 @@ async def remove_all_rules_by_component_name(self, prompt_name: str) -> bool:
 
 ### 核心注入与预览
 
-#### 4. `preview_prompt_injections`
+#### 5. `preview_prompt_injections`
 
 ```python
 async def preview_prompt_injections(
@@ -104,7 +121,7 @@ async def preview_prompt_injections(
 
 ### 状态观测与查询
 
-#### 5. `get_injection_info`
+#### 6. `get_injection_info`
 
 ```python
 async def get_injection_info(
@@ -130,7 +147,7 @@ async def get_injection_info(
     -   摘要模式: `[{"name": str, "priority": int, "source": str}]`
     -   详细模式: `[{"name": str, "priority": int, "source": str, "injection_type": str, "target_content": str | None}]`
 
-#### 6. `get_injection_rules`
+#### 7. `get_injection_rules`
 
 ```python
 def get_injection_rules(
@@ -153,7 +170,7 @@ def get_injection_rules(
 **Returns:**
 -   `dict[str, dict[str, InjectionRule]]`: 嵌套字典，结构为 `{ "target_prompt": { "component_name": InjectionRule } }`。
 
-#### 7. `get_registered_prompt_component_info`
+#### 8. `get_registered_prompt_component_info`
 
 ```python
 def get_registered_prompt_component_info(self) -> list[PromptInfo]:
@@ -166,7 +183,7 @@ def get_registered_prompt_component_info(self) -> list[PromptInfo]:
 
 ### 辅助查询 API
 
-#### 8. `get_core_prompts`
+#### 9. `get_core_prompts`
 
 ```python
 def get_core_prompts(self) -> list[str]:
@@ -177,7 +194,7 @@ def get_core_prompts(self) -> list[str]:
 **Returns:**
 -   `list[str]`: 核心提示词名称的列表。
 
-#### 9. `get_core_prompt_contents`
+#### 10. `get_core_prompt_contents`
 
 ```python
 def get_core_prompt_contents(self, prompt_name: str | None = None) -> list[list[str]]:

@@ -70,9 +70,23 @@ async def remove_injection_rule(self, prompt_name: str, target_prompt: str) -> b
 **Returns:**
 -   `bool`: 如果成功移除，则返回 `True`；如果规则不存在，则返回 `False`。
 
+#### 3. `remove_all_rules_by_component_name`
+
+```python
+async def remove_all_rules_by_component_name(self, prompt_name: str) -> bool:
+```
+
+按组件名称移除其**所有**相关的注入规则。此方法会遍历管理器中所有的目标提示词，并移除所有与给定的 `prompt_name` 相关联的注入规则。这对于一次性清理或禁用某个组件的所有注入行为非常有用。
+
+**Args:**
+-   `prompt_name` (str): 要移除规则的组件的名称。
+
+**Returns:**
+-   `bool`: 如果至少移除了一条规则，则返回 `True`；否则返回 `False`。
+
 ### 核心注入与预览
 
-#### 3. `preview_prompt_injections`
+#### 4. `preview_prompt_injections`
 
 ```python
 async def preview_prompt_injections(
@@ -91,7 +105,7 @@ async def preview_prompt_injections(
 
 ### 状态观测与查询
 
-#### 4. `get_injection_info`
+#### 5. `get_injection_info`
 
 ```python
 async def get_injection_info(
@@ -117,7 +131,7 @@ async def get_injection_info(
     -   摘要模式: `[{"name": str, "priority": int, "source": str}]`
     -   详细模式: `[{"name": str, "priority": int, "source": str, "injection_type": str, "target_content": str | None}]`
 
-#### 5. `get_injection_rules`
+#### 6. `get_injection_rules`
 
 ```python
 def get_injection_rules(
@@ -140,7 +154,7 @@ def get_injection_rules(
 **Returns:**
 -   `dict[str, dict[str, InjectionRule]]`: 嵌套字典，结构为 `{ "target_prompt": { "component_name": InjectionRule } }`。
 
-#### 6. `get_registered_prompt_component_info`
+#### 7. `get_registered_prompt_component_info`
 
 ```python
 def get_registered_prompt_component_info(self) -> list[PromptInfo]:
@@ -153,7 +167,7 @@ def get_registered_prompt_component_info(self) -> list[PromptInfo]:
 
 ### 辅助查询 API
 
-#### 7. `get_core_prompts`
+#### 8. `get_core_prompts`
 
 ```python
 def get_core_prompts(self) -> list[str]:
@@ -164,7 +178,7 @@ def get_core_prompts(self) -> list[str]:
 **Returns:**
 -   `list[str]`: 核心提示词名称的列表。
 
-#### 8. `get_core_prompt_contents`
+#### 9. `get_core_prompt_contents`
 
 ```python
 def get_core_prompt_contents(self, prompt_name: str | None = None) -> list[list[str]]:

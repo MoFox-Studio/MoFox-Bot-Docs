@@ -24,7 +24,6 @@
 from src.chat.utils.prompt_component_manager import prompt_component_manager
 ```
 
----
 
 ## API 详解
 

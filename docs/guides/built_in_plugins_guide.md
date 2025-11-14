@@ -8,6 +8,7 @@ graph TD
         A["/system 命令"] --> B{权限管理<br>permission};
         A --> C{插件管理<br>plugin};
         A --> D{定时任务<br>schedule};
+        A --> P2{提示词管理<br>prompt};
 
         E[MaiZone 插件] --> F[发送说说<br>/send_feed];
         E --> G[读取说说<br>/read_feed];
@@ -34,6 +35,7 @@ graph TD
 -   `permission` (权限管理)
 -   `plugin` (插件管理)
 -   `schedule` (定时任务管理)
+-   `prompt` (提示词管理)
 
 你可以通过 `/system help` 来随时查看帮助信息。
 
@@ -132,6 +134,42 @@ graph TD
 -   **恢复任务 (`resume`)**
     -   **功能**: 恢复一个已暂停的定时任务。
     -   **用法**: `/system schedule resume <任务ID>`
+
+### 1.5. 提示词管理 (`prompt`)
+
+提示词管理是一项专为高级用户和开发者设计的强大功能。它允许你深入洞察和调试 MoFox-bot 内部的提示词（Prompt）注入系统，了解机器人最终生成的文本是如何构成的。
+
+**注意：** 提示词管理相关操作需要 `system.prompt.view` 权限。
+
+-   **查看注入关系图 (`map`)**
+    -   **功能**: 显示一个全局的提示词注入关系图，清晰地展示了哪些“提示词组件”注入到了哪个“核心提示词”中。
+    -   **用法**: `/system prompt map`
+
+-   **列出注入目标 (`targets`)**
+    -   **功能**: 列出所有可以被注入的“核心提示词”。这些是系统中定义的基础提示词模板。
+    -   **用法**: `/system prompt targets`
+
+-   **列出组件 (`components`)**
+    -   **功能**: 列出所有已注册的、可用于注入的“提示词组件”。
+    -   **用法**: `/system prompt components`
+
+-   **查看注入详情 (`info`)**
+    -   **功能**: 查看某个特定的核心提示词被注入的详细情况，包括来源、优先级等。
+    -   **用法**: `/system prompt info <目标名>`
+    -   **示例**: `/system prompt info core_prompt`
+
+-   **查看组件信息 (`component_info`)**
+    -   **功能**: 查看某个特定提示词组件的详细信息，包括它定义的注入规则。
+    -   **用法**: `/system prompt component_info <组件名>`
+
+-   **查看原始内容 (`raw`)**
+    -   **功能**: 查看一个核心提示词在注入任何内容之前的原始模板。
+    -   **用法**: `/system prompt raw <目标名>`
+
+-   **预览最终效果 (`preview`)**
+    -   **功能**: 预览一个核心提示词在经过所有注入和变量替换后，最终生成的文本内容。这对于调试非常有用。
+    -   **用法**: `/system prompt preview <目标名>`
+    -   **示例**: 你也可以提供可选的参数来模拟真实情景，例如 `/system prompt preview core_prompt '{"input": "你好"}'`。
 
 
 ## 2. 内置插件：MaiZone (麦麦空间)

@@ -188,6 +188,7 @@ export default withMermaid(defineConfig({
                 { text: '计划系统介绍', link: '/docs/guides/schedule_and_planning_guide' },
                 { text: '主动思考器介绍', link: '/docs/guides/proactive_thinker_guide' },
                 { text: '记忆系统介绍', link: '/docs/guides/memory_system_guide' },
+                { text: 'WebUI 使用指南', link: '/docs/guides/webui_guide' },
                 { text: 'LPMM 知识库指南', link: '/docs/guides/lpmm_guide' },
               ]
             },

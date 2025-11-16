@@ -84,6 +84,38 @@ const members = [
     links: [
       { icon: 'github', link: 'https://github.com/Windpicker-owo' }
     ]
+  },
+  {
+    avatar: 'https://avatars.githubusercontent.com/Chiya-mt?v=4',
+    name: 'Chiya-mt',
+    title: '1.雅诺狐的小猫猫<br/>2.墨狐主程序开发',
+    links: [
+      { icon: 'github', link: 'https://github.com/Chiya-mt' }
+    ]
+  },
+  {
+    avatar: 'https://avatars.githubusercontent.com/fuilyha56-wq?v=4',
+    name: 'Lycoris-flower',
+    title: '1.webui后端开发<br/>2.学生',
+    links: [
+      { icon: 'github', link: 'https://github.com/fuilyha56-wq' }
+    ]
+  },
+  {
+    avatar: 'https://avatars.githubusercontent.com/LuisKlee?v=4',
+    name: 'LuiKlee',
+    title: '1.步步高开发者，哪里缺人写哪里（bushi）',
+    links: [
+      { icon: 'github', link: 'https://github.com/LuisKlee' }
+    ]
+  },
+  {
+    avatar: 'https://avatars.githubusercontent.com/sunbiz1024?v=4',
+    name: 'sunbiz',
+    title: '1.学生<br/>2.webui前端开发<br/>3.文档开发（只有一点）',
+    links: [
+      { icon: 'github', link: 'https://github.com/sunbiz1024' }
+    ]
   }
 ]
 

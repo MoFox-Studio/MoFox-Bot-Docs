@@ -4,39 +4,39 @@ import { VPTeamMembers } from 'vitepress/theme'
 // 美术支持者名单
 const artSupporters = [
   {
-    avatar: '/assets/avatars/HoshiKyu.jpg',
+    avatar: 'https://raw.githubusercontent.com/MoFox-Studio/MoFox-Bot-Docs/master/public/avatars/HoshiKyu.jpg',
     name: 'HoshiKyu',
-    // title: '为项目提供美术支持',
+    title: '  ',
     links: []
   },
   {
-    avatar: '/assets/avatars/不到人.jpg',
+    avatar: 'https://raw.githubusercontent.com/MoFox-Studio/MoFox-Bot-Docs/master/public/avatars/不到人.jpg',
     name: '不到人',
-    // title: '为项目提供美术支持',
+    title: '  ',
     links: []
   },
   {
-    avatar: '/assets/avatars/与.jpg',
+    avatar: 'https://raw.githubusercontent.com/MoFox-Studio/MoFox-Bot-Docs/master/public/avatars/与.jpg',
     name: '与',
-    // title: '为项目提供美术支持',
+    title: '  ',
     links: []
   },
   {
-    avatar: '/assets/avatars/叶尘之雨.jpg',
+    avatar: 'https://raw.githubusercontent.com/MoFox-Studio/MoFox-Bot-Docs/master/public/avatars/叶尘之雨.jpg',
     name: '叶尘之雨',
-    // title: '为项目提供美术支持',
+    title: '  ',
     links: []
   },
   {
-    avatar: '/assets/avatars/慕容昀泽.jpg',
+    avatar: 'https://raw.githubusercontent.com/MoFox-Studio/MoFox-Bot-Docs/master/public/avatars/慕容昀泽.jpg',
     name: '慕容昀泽',
-    // title: '为项目提供美术支持',
+    title: '  ',
     links: []
   },
   {
-    avatar: '/assets/avatars/明天好像没什么.jpg',
+    avatar: 'https://raw.githubusercontent.com/MoFox-Studio/MoFox-Bot-Docs/master/public/avatars/明天好像没什么.jpg',
     name: '明天好像没什么',
-    // title: '为项目提供美术支持',
+    title: '  ',
     links: []
   }
 ]
@@ -44,7 +44,7 @@ const artSupporters = [
 
 # 致谢名单
 
-美术支持贡献者名单
+感谢以下伙伴为 MoFox_Bot 项目提供的美术支持！
 
 ## 美术支持者
 

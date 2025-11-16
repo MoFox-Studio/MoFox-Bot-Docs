@@ -43,7 +43,7 @@ const devSidebar = [
       { text: '插件可用组件',
         items: [
           { text: 'Chatter指南', link: '/docs/development/plugins/chatter-components' },
-          { text: 'HTTP 组件', link: '/docs/development/plugins/http-components' },
+          { text: 'HTTP 组件指南', link: '/docs/development/plugins/http-components' },
           { text: 'Action指南', link: '/docs/development/plugins/action-components' },
           { text: 'Prompt指南', link: '/docs/development/plugins/prompt-components' },
           { text: '工具指南', link: '/docs/development/plugins/tool_guide' },

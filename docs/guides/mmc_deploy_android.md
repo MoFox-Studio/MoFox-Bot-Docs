@@ -182,6 +182,30 @@ Napcat QQ 是一个 QQ 客户端，也是 MoFox_Bot 与 QQ 平台沟通的桥梁
         ```
     *   当你在日志中看到成功连接的信息后，可以按下 `Ctrl + A` 然后再按 `D` 键，将此会话分离到后台。程序将继续运行。
 
+### 每次启动时要输的命令
+
+为了方便每次启动 MoFox_Bot，你只需要在 Termux 的 Ubuntu 环境中执行以下命令即可喵～★
+
+```bash
+# 1. 登录 Ubuntu 环境
+proot-distro login ubuntu
+
+# 2. 进入 MoFox_Bot 项目目录
+cd ~/MoFox_Bot_Deployment/MoFox_Bot
+
+# 3. 激活虚拟环境
+source .venv/bin/activate
+
+# 4. 启动 MoFox_Bot (在 screen 会话中)
+screen -dmS mofox bash -c "uv run python bot.py; exec bash"
+
+# 5.启动napcat
+自行启动
+```
+
+*   **查看日志**: 如果你想查看 MoFox_Bot 的实时日志，可以使用 `screen -r mofox` 命令重新连接到 `mofox` 会话哦喵～★
+*   **关闭机器人**: 在 `screen` 会话中，按下 `Ctrl + C` 就可以关闭机器人程序了喵～★
+
 3.  **测试机器人**:
     *   现在，打开你的 QQ，向你的机器人账号发送一条消息。如果它回复了你，那么……
     *   **恭喜你，部署成功！**

@@ -1,0 +1,1 @@
+来CodeQL你要的JS

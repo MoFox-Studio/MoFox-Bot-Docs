@@ -59,7 +59,7 @@ npm run docs:build
 
 ## 🔗 相关链接
 
-- **MoFox_Bot GitHub**: [https://github.com/MoFox-Studio/MoFox_Bot](https://github.com/MoFox-Studio/MoFox_Bot)
+- **MoFox_Bot GitHub**: [https://github.com/MoFox-Studio/MoFox-Core](https://github.com/MoFox-Studio/MoFox-Core)
 - **MoFox_Docs GitHub**: [https://github.com/MoFox-Studio/MoFox-Bot-Docs](https://github.com/MoFox-Studio/MoFox-Bot-Docs)
 - **MoFox-Bot QQ 交流群**: [169850076](https://qm.qq.com/q/jfeu7Dq7VS)
 

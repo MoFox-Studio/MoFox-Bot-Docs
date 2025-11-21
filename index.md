@@ -16,7 +16,7 @@ hero:
       link: /docs/guides/
     - theme: alt
       text: 在 GitHub 上查看
-      link: https://github.com/MoFox-Studio/MoFox_Bot
+      link: https://github.com/MoFox-Studio/MoFox-Core
 
 features:
   - title: 核心功能保留与增强 🔧

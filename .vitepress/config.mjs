@@ -141,7 +141,7 @@ export default withMermaid(defineConfig({
         text: '相关链接',
         items: [
           { text: 'MoFox-Studio', link: 'https://github.com/MoFox-Studio' },
-          { text: 'MoFox_Bot', link: 'https://github.com/MoFox-Studio/MoFox_Bot' },
+          { text: 'MoFox_Bot', link: 'https://github.com/MoFox-Studio/MoFox-Core' },
           { text: 'MoFox_Docs', link: 'https://github.com/MoFox-Studio/MoFox-Bot-Docs' },
           { text: 'MoFox-Bot-QQ群', link: 'https://qm.qq.com/q/jfeu7Dq7VS'},
         ]
@@ -215,7 +215,7 @@ export default withMermaid(defineConfig({
     },
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/MoFox-Studio/MoFox_Bot' },
+      { icon: 'github', link: 'https://github.com/MoFox-Studio/MoFox-Core' },
     ],
 
     lastUpdated: true,

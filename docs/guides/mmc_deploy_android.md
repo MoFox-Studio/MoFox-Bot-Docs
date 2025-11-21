@@ -98,10 +98,10 @@ Napcat QQ 是一个 QQ 客户端，也是 MoFox_Bot 与 QQ 平台沟通的桥梁
 2.  **`git clone` 神威**:
     *   在终端中，粘贴并执行以下命令：
         ```bash
-        git clone https://github.com/MoFox-Studio/MoFox_Bot.git
+        git clone https://github.com/MoFox-Studio/MoFox-Core.git
         ```
     *   > **🌐 网络小贴士**:
-    *   > 如果你发现下载速度极慢或连接失败，可以尝试使用备用镜像地址，例如 `https://kgithub.com/MoFox-Studio/MoFox_Bot.git`。
+    *   > 如果你发现下载速度极慢或连接失败，可以尝试使用备用镜像地址，例如 `https://kgithub.com/MoFox-Studio/MoFox-Core.git`。
 
 ## 第三章：激活环境——注入灵魂
 

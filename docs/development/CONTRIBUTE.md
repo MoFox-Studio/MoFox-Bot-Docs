@@ -18,7 +18,7 @@
 
 ### 报告问题
 
-如果您在使用中发现了 Bug 或其他问题，请通过 [GitHub Issues](https://github.com/MoFox-Studio/MoFox_Bot/issues) 报告给我们。
+如果您在使用中发现了 Bug 或其他问题，请通过 [GitHub Issues](https://github.com/MoFox-Studio/MoFox-Core/issues) 报告给我们。
 
 在提交 Issue 之前，请：
 
@@ -34,7 +34,7 @@
 
 ### 提出功能建议
 
-我们欢迎您为 MoFox_Bot 提出新的功能建议。您可以通过 [GitHub Issues](https://github.com/MoFox-Studio/MoFox_Bot/issues) 提交您的想法。
+我们欢迎您为 MoFox_Bot 提出新的功能建议。您可以通过 [GitHub Issues](https://github.com/MoFox-Studio/MoFox-Core/issues) 提交您的想法。
 
 在提交建议时，请：
 

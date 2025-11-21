@@ -120,16 +120,16 @@ Napcat QQ 是一个 QQ 客户端，也是 MoFox_Bot 与 QQ 平台沟通的桥梁
 
 *   在终端中，粘贴并执行以下命令：
     ```bash
-    git clone https://github.com/MoFox-Studio/MoFox_Bot.git
+    git clone https://github.com/MoFox-Studio/MoFox-Core.git
     ```
 
 > **🌐 网络小贴士**:
 > 如果你发现下载速度极慢或连接失败，这通常是由于网络问题。可以尝试使用以下备用镜像地址：
 > ```bash
 > # 备用地址1
-> git clone https://kgithub.com/MoFox-Studio/MoFox_Bot.git
+> git clone https://kgithub.com/MoFox-Studio/MoFox-Core.git
 > # 备用地址2
-> git clone https://xget.xi-xu.me/gh/MoFox-Studio/MoFox_Bot.git
+> git clone https://xget.xi-xu.me/gh/MoFox-Studio/MoFox-Core.git
 > ```
 
 执行命令后，Git 会开始下载项目文件。当克隆完成后，你的 `MoFox_Bot_Deployment` 文件夹里会多出一个名为 `MoFox_Bot` 的新文件夹。恭喜，你已经成功获取了机器人的“素体”！
@@ -354,7 +354,7 @@ MoFox_Bot 会在第一次启动时，自动为所有内置插件创建默认的�
 MoFox_Bot(第三方修改版)
 全部组件已成功启动!
 =========================================================
-🌐 项目地址: https://github.com/MoFox-Studio/MoFox_Bot
+🌐 项目地址: https://github.com/MoFox-Studio/MoFox-Core
 🏠 官方项目: https://github.com/MaiM-with-u/MaiBot
 =========================================================
 这是基于原版MMC的社区改版，包含增强功能和优化(同时也有更多的'特性')

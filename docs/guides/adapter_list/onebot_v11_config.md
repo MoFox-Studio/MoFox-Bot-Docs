@@ -99,7 +99,7 @@ MoFox_Bot 设计得非常“聪明”，它会在第一次启动时，自动检�
         MoFox_Bot(第三方修改版)
         全部组件已成功启动!
         =========================================================
-        🌐 项目地址: https://github.com/MoFox-Studio/MoFox_Bot
+        🌐 项目地址: https://github.com/MoFox-Studio/MoFox-Core
         🏠 官方项目: https://github.com/MaiM-with-u/MaiBot
         =========================================================
         这是基于原版MMC的社区改版，包含增强功能和优化(同时也有更多的'特性')

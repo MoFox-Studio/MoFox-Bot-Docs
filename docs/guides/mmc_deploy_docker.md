@@ -66,13 +66,13 @@ mkdir -p mofox-bot/docker-config/core && cd mofox-bot
 
 ```bash
 # 从项目仓库下载 docker-compose.yml 文件
-wget https://raw.githubusercontent.com/MoFox-Studio/MoFox_Bot/dev/docker-compose.yml
+wget https://raw.githubusercontent.com/MoFox-Studio/MoFox-Core/dev/docker-compose.yml
 ```
 
 > **🌐 网络小贴士**:
 > 如果你发现从 GitHub 下载速度极慢或连接失败，可以尝试使用国内镜像源：
 > ```bash
-> wget https://ghproxy.com/https://raw.githubusercontent.com/MoFox-Studio/MoFox_Bot/dev/docker-compose.yml
+> wget https://ghproxy.com/https://raw.githubusercontent.com/MoFox-Studio/MoFox-Core/dev/docker-compose.yml
 > ```
 
 ## 第三章：核心配置——注入灵魂
@@ -85,9 +85,9 @@ wget https://raw.githubusercontent.com/MoFox-Studio/MoFox_Bot/dev/docker-compose
 
 1.  **获取 `.env` 模板 (基础环境配置)**:
     ```bash
-    wget https://raw.githubusercontent.com/MoFox-Studio/MoFox_Bot/dev/template/template.env -O docker-config/core/.env
+    wget https://raw.githubusercontent.com/MoFox-Studio/MoFox-Core/dev/template/template.env -O docker-config/core/.env
     ```
-    > **备用地址**: `https://ghproxy.com/https://raw.githubusercontent.com/MoFox-Studio/MoFox_Bot/dev/template/template.env`
+    > **备用地址**: `https://ghproxy.com/https://raw.githubusercontent.com/MoFox-Studio/MoFox-Core/dev/template/template.env`
 
 ### 3.2 修改核心配置
 

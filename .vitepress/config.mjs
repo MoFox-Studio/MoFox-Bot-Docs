@@ -129,7 +129,7 @@ export default withMermaid(defineConfig({
   title: "MoFox_Bot",
   description: "🚀 基于 MaiCore 的增强版智能体，提供更完善的功能和更好的使用体验",
   head: [
-    ['link', { rel: 'icon', href: 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦊</text></svg>' }]
+    ['link', { rel: 'icon', href: '/logos/logo-3.png' }]
   ],
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config

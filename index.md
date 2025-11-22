@@ -6,7 +6,7 @@ hero:
   text: "🚀 基于 MaiCore 的增强版智能体"
   tagline: 提供更完善的功能、更好的稳定性和更丰富的使用体验
   image:
-    src: /logo.png
+    src: /logos/logo.png
     alt: MoFox_Bot Logo
     width: 700
     height: 700

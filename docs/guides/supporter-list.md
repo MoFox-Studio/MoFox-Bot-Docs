@@ -44,7 +44,7 @@ const artSupporters = [
 
 # 致谢名单
 
-感谢以下伙伴为 MoFox_Bot 项目提供的美术支持！
+感谢以下伙伴为 MoFox-Core 项目提供的美术支持！
 
 ## 美术支持者
 

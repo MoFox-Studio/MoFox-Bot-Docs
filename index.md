@@ -2,12 +2,12 @@
 layout: home
 
 hero:
-  name: "MoFox_Bot"
+  name: "MoFox-Core"
   text: "🚀 基于 MaiCore 的增强版智能体"
   tagline: 提供更完善的功能、更好的稳定性和更丰富的使用体验
   image:
     src: /logos/logo.png
-    alt: MoFox_Bot Logo
+    alt: MoFox-Core Logo
     width: 700
     height: 700
   actions:

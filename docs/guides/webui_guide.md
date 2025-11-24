@@ -1,6 +1,6 @@
 # WebUI 使用指南
 
-本页介绍如何启动和使用 MoFox 的 WebUI（`MoFox-UI` 项目），通过图形化界面管理和监控 MoFox_Bot。
+本页介绍如何启动和使用 MoFox 的 WebUI（`MoFox-UI` 项目），通过图形化界面管理和监控 MoFox-Core。
 
 ## 1. WebUI 是什么？
 
@@ -88,7 +88,7 @@ npm run demo
 
 - 所有修改不会写回真实配置文件
 - 日志和状态数据是静态的
-- 无法与真实的 MoFox_Bot 交互
+- 无法与真实的 MoFox-Core 交互
 
 > 更详细的 Demo 模式说明，见 `MoFox-UI/DEMO_MODE.md`。
 

@@ -126,7 +126,7 @@ export default withMermaid(defineConfig({
     },
   },
   ignoreDeadLinks: true,
-  title: "MoFox_Bot",
+  title: "MoFox-Core",
   description: "🚀 基于 MaiCore 的增强版智能体，提供更完善的功能和更好的使用体验",
   head: [
     ['link', { rel: 'icon', href: '/logos/logo-3.png' }]
@@ -141,7 +141,7 @@ export default withMermaid(defineConfig({
         text: '相关链接',
         items: [
           { text: 'MoFox-Studio', link: 'https://github.com/MoFox-Studio' },
-          { text: 'MoFox_Bot', link: 'https://github.com/MoFox-Studio/MoFox-Core' },
+          { text: 'MoFox-Core', link: 'https://github.com/MoFox-Studio/MoFox-Core' },
           { text: 'MoFox_Docs', link: 'https://github.com/MoFox-Studio/MoFox-Bot-Docs' },
           { text: 'MoFox-Bot-QQ群', link: 'https://qm.qq.com/q/jfeu7Dq7VS'},
         ]

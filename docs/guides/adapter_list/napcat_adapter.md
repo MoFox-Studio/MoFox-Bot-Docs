@@ -1,10 +1,10 @@
 # Napcat Adapter (独立部署)
 
-本文档将指导你如何独立配置和使用 Napcat Adapter，使其能够连接到你的 NapCat 客户端，并将消息转发到 MoFox_Bot。
+本文档将指导你如何独立配置和使用 Napcat Adapter，使其能够连接到你的 NapCat 客户端，并将消息转发到 MoFox-Core。
 
 ## 什么是独立适配器？
 
-独立适配器意味着 Napcat Adapter 作为一个独立的进程运行，它通过 WebSocket 与 NapCat 和 MoFox_Bot 进行通信。这种部署方式提供了更好的灵活性和稳定性。
+独立适配器意味着 Napcat Adapter 作为一个独立的进程运行，它通过 WebSocket 与 NapCat 和 MoFox-Core 进行通信。这种部署方式提供了更好的灵活性和稳定性。
 
 ## 核心概念：WebSocket 连接模式
 

@@ -2,7 +2,7 @@
 
 ## 📖 什么是 Chatter
 
-Chatter 是 MoFox_Bot 中用于实现主动式对话（Proactive Chat）的智能组件。与被动响应用户指令的 Action 不同，Chatter 会持续分析对话流，并在满足特定条件时自主触发，让机器人能够发起互动、引导话题或在适当时机介入对话。
+Chatter 是 MoFox-Core 中用于实现主动式对话（Proactive Chat）的智能组件。与被动响应用户指令的 Action 不同，Chatter 会持续分析对话流，并在满足特定条件时自主触发，让机器人能够发起互动、引导话题或在适当时机介入对话。
 
 ### Chatter 的特点
 

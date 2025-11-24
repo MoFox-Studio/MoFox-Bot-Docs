@@ -1,10 +1,10 @@
-# <iconify-icon icon="mdi:docker" height="36"></iconify-icon> MoFox_Bot Linux & Docker 部署指南
+# <iconify-icon icon="mdi:docker" height="36"></iconify-icon> MoFox-Core Linux & Docker 部署指南
 
 ## 概述
 
-欢迎使用 MoFox_Bot，一个高度可定制化的 AI Bot 框架。
+欢迎使用 MoFox-Core，一个高度可定制化的 AI Bot 框架。
 
-本指南将引导您在 Linux 环境下，通过 Docker 和 Docker Compose 完成 MoFox_Bot 的全部署流程。该方式极大地简化了环境配置的复杂性，让你能快速启动并运行机器人。
+本指南将引导您在 Linux 环境下，通过 Docker 和 Docker Compose 完成 MoFox-Core 的全部署流程。该方式极大地简化了环境配置的复杂性，让你能快速启动并运行机器人。
 
 **核心优势**:
 *   **环境隔离**：所有依赖项均在 Docker 容器内，不污染你的宿主系统。
@@ -141,7 +141,7 @@ wget https://raw.githubusercontent.com/MoFox-Studio/MoFox-Core/dev/docker-compos
 
 1.  **第一步：启动并登录 Napcat QQ**
     *   Docker 部署会自动拉取并运行 Napcat 容器。你需要在启动后，通过浏览器访问 Napcat 的 WebUI 来登录 QQ。
-2.  **第二步：运行 MoFox_Bot**
+2.  **第二步：运行 MoFox-Core**
     *   在 `mofox-bot` 目录下，执行最终的启动命令：
         ```bash
         docker compose up -d
@@ -229,4 +229,4 @@ wget https://raw.githubusercontent.com/MoFox-Studio/MoFox-Core/dev/docker-compos
 
 ## 结语：你的冒险才刚刚开始
 
-至此，你已经成功走完了 MoFox_Bot 的 Docker 部署全程。但这仅仅是一个开始。MoFox_Bot 的真正魅力，在于其强大的插件系统和可塑性。现在，去探索和配置，打造一个独一无二的 AI 伙伴吧！
+至此，你已经成功走完了 MoFox-Core 的 Docker 部署全程。但这仅仅是一个开始。MoFox-Core 的真正魅力，在于其强大的插件系统和可塑性。现在，去探索和配置，打造一个独一无二的 AI 伙伴吧！

@@ -1,12 +1,12 @@
-# <iconify-icon icon="material-symbols:android" height="36"></iconify-icon> MoFox_Bot Android 部署指南 (内置适配器版)
+# <iconify-icon icon="material-symbols:android" height="36"></iconify-icon> MoFox-Core Android 部署指南 (内置适配器版)
 
 ## 概述
 
-欢迎使用 MoFox_Bot，一个高度可定制化的 AI Bot 框架。
+欢迎使用 MoFox-Core，一个高度可定制化的 AI Bot 框架。
 
-本指南将引导您在 Android (Termux) 环境下，使用项目**内置的 Napcat 适配器插件**完成 MoFox_Bot 的全部署流程。该方式是官方推荐的最佳实践，具有以下优势：
+本指南将引导您在 Android (Termux) 环境下，使用项目**内置的 Napcat 适配器插件**完成 MoFox-Core 的全部署流程。该方式是官方推荐的最佳实践，具有以下优势：
 
-*   **部署简化**：仅需下载和运行 MoFox_Bot 主项目。
+*   **部署简化**：仅需下载和运行 MoFox-Core 主项目。
 *   **操作便捷**：只需管理单个后台进程。
 *   **配置统一**：所有相关设置均在主项目的配置文件中完成。
 
@@ -24,7 +24,7 @@
 
 ### 1.2 Termux 环境 -> Ubuntu 虚拟机
 
-我们需要借助 `Termux` 这个强大的终端模拟器，并在其中安装一个 Ubuntu 系统，来为 MoFox_Bot 提供一个稳定、完整的运行环境。
+我们需要借助 `Termux` 这个强大的终端模拟器，并在其中安装一个 Ubuntu 系统，来为 MoFox-Core 提供一个稳定、完整的运行环境。
 
 1.  **安装 ZeroTermux**:
     *   前往 [ZeroTermux Github Releases](https://github.com/hanxinhao000/ZeroTermux/releases/tag/release) 下载并安装最新的 `ZeroTermux` 安装包。
@@ -78,20 +78,20 @@
 
 ### 1.4 Napcat QQ 客户端
 
-Napcat QQ 是一个 QQ 客户端，也是 MoFox_Bot 与 QQ 平台沟通的桥梁。
+Napcat QQ 是一个 QQ 客户端，也是 MoFox-Core 与 QQ 平台沟通的桥梁。
 
 在继续下一步之前，请**务必参考 [NapCatQQ 官方文档](https://napcat.napneko.icu/)，在你的安卓手机上完成客户端 App 的安装、配置，并确保你的 QQ 账号能够成功登录**。这是整个部署流程的重要前置条件。
 
 ## 第二章：获取核心——请君入瓮
 
-万事俱备，现在我们正式开始将 MoFox_Bot 的核心代码下载到你的手机中。
+万事俱备，现在我们正式开始将 MoFox-Core 的核心代码下载到你的手机中。
 
 1.  **创建并进入文件夹**:
-    *   在 Ubuntu 终端中，执行以下命令，这会在你的用户主目录下创建一个名为 `MoFox_Bot_Deployment` 的文件夹，并进入该目录。
+    *   在 Ubuntu 终端中，执行以下命令，这会在你的用户主目录下创建一个名为 `MoFox-Core_Deployment` 的文件夹，并进入该目录。
         ```bash
         cd ~
-        mkdir MoFox_Bot_Deployment
-        cd MoFox_Bot_Deployment
+        mkdir MoFox-Core_Deployment
+        cd MoFox-Core_Deployment
         ```
     *   > **⚠️ 重要提示**: 为了避免未来可能出现的奇怪问题，请确保文件夹的**完整路径中不包含任何中文、空格或特殊字符**。
 
@@ -108,7 +108,7 @@ Napcat QQ 是一个 QQ 客户端，也是 MoFox_Bot 与 QQ 平台沟通的桥梁
 我们已经有了机器人的“素体”（项目代码），现在需要为它创建一个纯净的生存空间（虚拟环境），并注入“灵魂”（安装所有必需的程序库）。
 
 1.  **进入项目目录**:
-    *   执行 `cd MoFox_Bot` 进入刚刚克隆下来的文件夹。
+    *   执行 `cd MoFox-Core` 进入刚刚克隆下来的文件夹。
 
 2.  **创建并激活虚拟环境**:
     *   我们将使用 `uv` 来完成环境的创建和激活。
@@ -118,7 +118,7 @@ Napcat QQ 是一个 QQ 客户端，也是 MoFox_Bot 与 QQ 平台沟通的桥梁
         # 激活虚拟环境 (核心步骤)
         source .venv/bin/activate
         ```
-    *   **观察变化！** 成功激活后，你会看到命令行提示符的最前面，多出了一个 `(.venv)` 的标记。这表示你已经成功进入了 MoFox_Bot 的专属环境。
+    *   **观察变化！** 成功激活后，你会看到命令行提示符的最前面，多出了一个 `(.venv)` 的标记。这表示你已经成功进入了 MoFox-Core 的专属环境。
     *   > **⚠️ 重要提示**: 之后所有的安装、运行操作，都**必须**在这个带有 `(.venv)` 标记的命令行窗口中进行。
 
 3.  **依赖安装：一行代码搞定**:
@@ -167,11 +167,11 @@ Napcat QQ 是一个 QQ 客户端，也是 MoFox_Bot 与 QQ 平台沟通的桥梁
 1.  **第一步：启动并登录 Napcat QQ App**
     *   打开你已经安装好的 Napcat QQ 客户端 App，并确保机器人 QQ 账号**成功登录**。
 
-2.  **第二步：运行 MoFox_Bot (后台运行)**
+2.  **第二步：运行 MoFox-Core (后台运行)**
     *   回到你的 Termux 终端窗口 (Ubuntu 环境内)。
     *   **检查两件事**:
         1.  确认命令行提示符最左边有 `(.venv)` 标记。
-        2.  确认当前路径在 `MoFox_Bot` 文件夹内。
+        2.  确认当前路径在 `MoFox-Core` 文件夹内。
     *   执行以下命令，创建并进入一个名为 `mofox` 的后台会话：
         ```bash
         screen -S mofox
@@ -184,26 +184,26 @@ Napcat QQ 是一个 QQ 客户端，也是 MoFox_Bot 与 QQ 平台沟通的桥梁
 
 ### 每次启动时要输的命令
 
-为了方便每次启动 MoFox_Bot，你只需要在 Termux 的 Ubuntu 环境中执行以下命令即可喵～★
+为了方便每次启动 MoFox-Core，你只需要在 Termux 的 Ubuntu 环境中执行以下命令即可喵～★
 
 ```bash
 # 1. 登录 Ubuntu 环境
 proot-distro login ubuntu
 
-# 2. 进入 MoFox_Bot 项目目录
-cd ~/MoFox_Bot_Deployment/MoFox_Bot
+# 2. 进入 MoFox-Core 项目目录
+cd ~/MoFox-Core_Deployment/MoFox-Core
 
 # 3. 激活虚拟环境
 source .venv/bin/activate
 
-# 4. 启动 MoFox_Bot (在 screen 会话中)
+# 4. 启动 MoFox-Core (在 screen 会话中)
 screen -dmS mofox bash -c "uv run python bot.py; exec bash"
 
 # 5.启动napcat
 自行启动
 ```
 
-*   **查看日志**: 如果你想查看 MoFox_Bot 的实时日志，可以使用 `screen -r mofox` 命令重新连接到 `mofox` 会话哦喵～★
+*   **查看日志**: 如果你想查看 MoFox-Core 的实时日志，可以使用 `screen -r mofox` 命令重新连接到 `mofox` 会话哦喵～★
 *   **关闭机器人**: 在 `screen` 会话中，按下 `Ctrl + C` 就可以关闭机器人程序了喵～★
 
 3.  **测试机器人**:
@@ -221,7 +221,7 @@ screen -dmS mofox bash -c "uv run python bot.py; exec bash"
 <details>
 <summary><b>Q1: 启动成功，但日志里迟迟没有 `Napcat client connected` 信息？</b></summary>
 
-这通常意味着 MoFox_Bot 和 Napcat QQ 客户端之间的“神经”没有接上。请按以下步骤排查：
+这通常意味着 MoFox-Core 和 Napcat QQ 客户端之间的“神经”没有接上。请按以下步骤排查：
 
 1.  **检查 Napcat QQ App**: 确保 Napcat QQ 客户端 App 本身已成功登录并处于在线状态，没有被系统后台杀死。
 2.  **检查端口号**: 这是最常见的原因。请再次核对 `config/plugin_config/napcat_adapter_plugin/config.toml` 文件中 `[napcat_server]` 下的 `port` 值，是否与你 Napcat QQ 客户端里设置的**反向 WebSocket 端口**完全一致。
@@ -243,7 +243,7 @@ screen -dmS mofox bash -c "uv run python bot.py; exec bash"
 <details>
 <summary><b>Q3: 我修改了配置文件，但好像没有生效？</b></summary>
 
-MoFox_Bot 在启动时会加载所有配置文件。如果你在机器人运行中修改了配置，需要**重启**才能生效。
+MoFox-Core 在启动时会加载所有配置文件。如果你在机器人运行中修改了配置，需要**重启**才能生效。
 
 *   使用 `screen -r mofox` 连接回后台。
 *   按下 `Ctrl + C` 关闭机器人。
@@ -253,4 +253,4 @@ MoFox_Bot 在启动时会加载所有配置文件。如果你在机器人运行�
 
 ## 结语：你的冒险才刚刚开始
 
-至此，你已经成功在安卓设备上走完了 MoFox_Bot 的部署全程。但这仅仅是一个开始。去探索、去定制，让你的专属 AI 伙伴在你的手机里大放异彩吧！
+至此，你已经成功在安卓设备上走完了 MoFox-Core 的部署全程。但这仅仅是一个开始。去探索、去定制，让你的专属 AI 伙伴在你的手机里大放异彩吧！

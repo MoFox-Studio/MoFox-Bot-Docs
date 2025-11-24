@@ -32,7 +32,7 @@
 
 1.  **你的目标是什么？**
     -   告诉别人你原本想做什么。
-    -   *例如：“我正在尝试启动 MoFox_Bot，但程序闪退了。”*
+    -   *例如：“我正在尝试启动 MoFox-Core，但程序闪退了。”*
 
 2.  **你遇到了什么问题？**
     -   清晰地描述你遇到的具体问题或错误现象。
@@ -42,7 +42,7 @@
 3.  **你的环境信息是什么？**
     -   提供你所使用的环境信息，这至关重要。
     -   **操作系统**：例如 `Windows 11`, `Ubuntu 22.04`。
-    -   **相关软件版本**：例如 `Python 3.10.4`, `MoFox_Bot v1.2.0`。
+    -   **相关软件版本**：例如 `Python 3.10.4`, `MoFox-Core v1.2.0`。
 
 4.  **你已经尝试过哪些方法？**
     -   说明你为了解决问题已经做了哪些尝试，以及这些尝试的结果。
@@ -64,21 +64,21 @@
 
 ### 好的提问 ✅
 
-> **标题**：MoFox_Bot 在 Windows Server 2022 上启动时报错 `ModuleNotFoundError`
+> **标题**：MoFox-Core 在 Windows Server 2022 上启动时报错 `ModuleNotFoundError`
 >
 > **正文**：
 > 大家好，
 >
-> 我正在尝试在我的 Windows Server 2022 服务器上部署 MoFox_Bot，但是在执行 `start.bat` 后程序报错退出了。
+> 我正在尝试在我的 Windows Server 2022 服务器上部署 MoFox-Core，但是在执行 `start.bat` 后程序报错退出了。
 >
-> **我的目标**：成功启动 MoFox_Bot 并让它保持在线。
+> **我的目标**：成功启动 MoFox-Core 并让它保持在线。
 >
 > **遇到的问题**：启动时，命令行窗口提示 `ModuleNotFoundError: No module named 'xxx'`，然后就自动关闭了。
 >
 > **环境信息**：
 > -   操作系统: Windows Server 2022
 > -   Python 版本: 3.11.2
-> -   MoFox_Bot 版本: v1.2.3
+> -   MoFox-Core 版本: v1.2.3
 >
 > **尝试过的操作**：
 > 1.  我已经根据文档，执行过 `pip install -r requirements.txt`，并且没有报错。

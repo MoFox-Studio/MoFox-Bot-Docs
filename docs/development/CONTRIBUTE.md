@@ -1,6 +1,6 @@
-# 参与 MoFox_Bot 项目贡献
+# 参与 MoFox-Core 项目贡献
 
-非常感谢您有兴趣为 MoFox_Bot 做出贡献！我们欢迎任何形式的贡献，无论是报告错误、提交功能请求，还是直接贡献代码和文档。
+非常感谢您有兴趣为 MoFox-Core 做出贡献！我们欢迎任何形式的贡献，无论是报告错误、提交功能请求，还是直接贡献代码和文档。
 
 为了确保项目健康发展和社区的良好氛围，我们希望您能花几分钟时间阅读以下指南。
 
@@ -23,18 +23,18 @@
 在提交 Issue 之前，请：
 
 1.  **搜索现有 Issue**：确保您的问题尚未被报告。
-2.  **使用最新版本**：确认您使用的是最新版本的 MoFox_Bot。
+2.  **使用最新版本**：确认您使用的是最新版本的 MoFox-Core。
 
 在提交 Issue 时，请提供以下信息：
 
 -   **清晰的标题**：简明扼要地描述问题。
 -   **详细的描述**：提供问题的复现步骤、期望的行为和实际表现。
--   **环境信息**：包括您的操作系统、Python 版本、MoFox_Bot 版本等。
+-   **环境信息**：包括您的操作系统、Python 版本、MoFox-Core 版本等。
 -   **相关的日志或截图**：这将帮助我们更快地定位问题。
 
 ### 提出功能建议
 
-我们欢迎您为 MoFox_Bot 提出新的功能建议。您可以通过 [GitHub Issues](https://github.com/MoFox-Studio/MoFox-Core/issues) 提交您的想法。
+我们欢迎您为 MoFox-Core 提出新的功能建议。您可以通过 [GitHub Issues](https://github.com/MoFox-Studio/MoFox-Core/issues) 提交您的想法。
 
 在提交建议时，请：
 
@@ -72,7 +72,7 @@
 ## 项目成员
 
 -   **核心开发者**: @foxcyber907, @Furina-1013-create, @tt-P607, @ikun-11451, @minecraft1024a, @Windpicker-owo
--   **Reviewer**: 核心开发者及 MoFox_Bot 主仓库的合作者。
+-   **Reviewer**: 核心开发者及 MoFox-Core 主仓库的合作者。
 -   **贡献者**: 所有为项目提交过贡献的用户。
 
 再次感谢您的贡献！

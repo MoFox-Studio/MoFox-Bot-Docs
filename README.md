@@ -1,8 +1,8 @@
-# MoFox_Bot Docs
+# MoFox-Core Docs
 
 🚀 基于 MaiCore 的增强版智能体，提供更完善的功能和更好的使用体验。
 
-本文档旨在帮助您了解 MoFox_Bot 的功能、部署和开发。
+本文档旨在帮助您了解 MoFox-Core 的功能、部署和开发。
 
 ## ✨ 功能
 
@@ -15,7 +15,7 @@
 
 ## 📚 文档
 
-有关完整文档，请访问 [MoFox_Bot Docs](https://mofox-studio.github.io/MoFox-Bot-Docs/)。
+有关完整文档，请访问 [MoFox-Core Docs](https://mofox-studio.github.io/MoFox-Bot-Docs/)。
 
 ## 🚀 快速开始
 
@@ -23,7 +23,7 @@
 
 ## 🤝 为此文档做出贡献
 
-感谢您有兴趣为 MoFox_Bot 文档做出贡献！我们欢迎所有形式的贡献，从修正拼写错误到撰写全新的章节。
+感谢您有兴趣为 MoFox-Core 文档做出贡献！我们欢迎所有形式的贡献，从修正拼写错误到撰写全新的章节。
 
 ### 本地开发
 
@@ -59,7 +59,7 @@ npm run docs:build
 
 ## 🔗 相关链接
 
-- **MoFox_Bot GitHub**: [https://github.com/MoFox-Studio/MoFox-Core](https://github.com/MoFox-Studio/MoFox-Core)
+- **MoFox-Core GitHub**: [https://github.com/MoFox-Studio/MoFox-Core](https://github.com/MoFox-Studio/MoFox-Core)
 - **MoFox_Docs GitHub**: [https://github.com/MoFox-Studio/MoFox-Bot-Docs](https://github.com/MoFox-Studio/MoFox-Bot-Docs)
 - **MoFox-Bot QQ 交流群**: [169850076](https://qm.qq.com/q/jfeu7Dq7VS)
 

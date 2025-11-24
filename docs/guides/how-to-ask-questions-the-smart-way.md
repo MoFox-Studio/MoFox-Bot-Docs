@@ -49,7 +49,7 @@
 
 **好的标题** ✅:
 > [Python][Requests] 在使用代理发送 HTTPS 请求时，出现 SSLError
-> [MoFox_Bot v1.2] 在 Docker 环境下无法加载插件，日志提示 "Permission Denied"
+> [MoFox-Core v1.2] 在 Docker 环境下无法加载插件，日志提示 "Permission Denied"
 > **“目标 — 差异”模式**：[目标] 在 [特定情况] 下 [出现问题]，而我期望的是 [预期结果]。
 
 一个好的标题能让专家快速判断这是否属于他擅长的领域，并决定是否要点开你的帖子。

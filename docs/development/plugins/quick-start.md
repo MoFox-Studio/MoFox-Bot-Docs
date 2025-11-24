@@ -1,6 +1,6 @@
 # 🚀 快速开始：创建你的第一个全功能插件
 
-欢迎来到 MoFox_Bot 插件开发的世界！本指南将带你从零开始，创建一个包含 **Prompt**、**Action**、**Command**、**Tool** 和 **Event Handler** 五大核心组件的 `hello_world` 插件。
+欢迎来到 MoFox-Core 插件开发的世界！本指南将带你从零开始，创建一个包含 **Prompt**、**Action**、**Command**、**Tool** 和 **Event Handler** 五大核心组件的 `hello_world` 插件。
 
 通过这个过程，你将掌握插件系统的基本结构和开发流程。
 
@@ -29,7 +29,7 @@ metadata = PluginMetadata(
 )
 ```
  
-这个文件告诉 MoFox_Bot 你的插件叫什么、功能是什么以及如何使用它。
+这个文件告诉 MoFox-Core 你的插件叫什么、功能是什么以及如何使用它。
  
 ### 3. 创建主文件 `plugin.py`
 
@@ -184,7 +184,7 @@ class HelloCommand(PlusCommand):
 
     @require_permission("hello_world_plugin.can_say_hello", "你没有权限说 hello！") # 使用权限装饰器,检测触发命令的用户有没有hello_world_plugin.can_say_hello权限
     async def execute(self, args: CommandArgs) -> Tuple[bool, Optional[str], bool]:
-        await self.send_text("Hello, World! 我是一个由 MoFox_Bot 驱动的插件。")
+        await self.send_text("Hello, World! 我是一个由 MoFox-Core 驱动的插件。")
         return True, "成功发送问候", True
 ```
 
@@ -306,7 +306,7 @@ class HelloWorldPlugin(BasePlugin):
 
 ## 🎉 恭喜！
 
-你已经成功创建了一个功能完整的 `hello_world` 插件！重启你的 MoFox_Bot，你将会：
+你已经成功创建了一个功能完整的 `hello_world` 插件！重启你的 MoFox-Core，你将会：
 
 1.  在控制台看到 "🎉 Hello World 插件已启动，准备就绪！" 的消息。
 2.  可以向机器人发送 `/hello` 或 `!你好`，并收到回复。
@@ -331,7 +331,7 @@ class HelloWorldPlugin(BasePlugin):
 
 1.  **定义 Schema**: 开发者在插件代码中通过 `config_schema` 来定义配置的结构、类型和默认值。这是配置的“蓝图”。
 
-2.  **自动生成配置文件**: 当 MoFox_Bot 首次加载插件时，它会读取 `config_schema` 并在 `config/plugins/<plugin_name>/config.toml` 路径下生成一个默认的配置文件。
+2.  **自动生成配置文件**: 当 MoFox-Core 首次加载插件时，它会读取 `config_schema` 并在 `config/plugins/<plugin_name>/config.toml` 路径下生成一个默认的配置文件。
 
 3.  **用户自定义配置**: 用户应仅修改 `config/plugins/` 目录下的 `config.toml` 文件来覆盖默认值。插件代码永远不应修改此文件。这确保了用户配置的持久性和唯一性。
 
@@ -383,7 +383,7 @@ class HelloCommand(PlusCommand):
 
     async def execute(self, args: CommandArgs) -> Tuple[bool, Optional[str], bool]:
         # 从配置文件读取问候语，如果找不到则使用默认值
-        greeting = str(self.get_config("greeting.message", "Hello, World! 我是一个由 MoFox_Bot 驱动的插件。"))
+        greeting = str(self.get_config("greeting.message", "Hello, World! 我是一个由 MoFox-Core 驱动的插件。"))
         await self.send_text(greeting)
         return True, "成功发送问候", True
 ```
@@ -393,7 +393,7 @@ class HelloCommand(PlusCommand):
 
 ### 3. 它是如何工作的？
 
-1.  **首次启动**: 当 MoFox_Bot 第一次加载你的插件时，它会检查 `config_schema`。
+1.  **首次启动**: 当 MoFox-Core 第一次加载你的插件时，它会检查 `config_schema`。
 2.  **生成文件**: 它会在 `config/plugins/hello_world_plugin/` 目录下自动生成一个 `config.toml` 文件，内容如下：
     ```toml
     # hello_world_plugin - 自动生成的配置文件

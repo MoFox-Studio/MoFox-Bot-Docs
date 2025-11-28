@@ -63,8 +63,9 @@ MoFox 一键包是一个集成了 Python 环境、数据库工具和 VS Code 编
 
 1.  待一键包中的服务完全启动后，访问 Napcat 的 WebUI,它的网址通常是127.0.0.1:6099,TOKEN是napcat。
 2.  在 WebUI 中找到并点击“网络配置”选项。
-3.  新建一个 **WebSocket 客户端** (正向 WebSocket)。
-4.  将端口号从默认的 `8082` 修改为 `8095` (或其他您指定的端口)。
+3.  新建一个 **WebSocket 客户端** (反向 WebSocket)。
+![点击新建 Websocket 客户端](/napcat_add_ws_client.png)
+4.  将端口号从默认的 `8082` 修改为 `8095` 。
 5.  保存配置并启动该客户端。
 
 ![Napcat WebUI 网络配置](/napcat_ws_config.png)

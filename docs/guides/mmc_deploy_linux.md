@@ -269,11 +269,11 @@ Napcat QQ 是一个 QQ 客户端，也是 MoFox-Core 与 QQ 平台沟通的桥�
 
 ## 第五章：连接世界——内置适配器插件配置
 
-现在，机器人的“身份证”和“大脑”都有了，我们需要为它接上“神经”，让它能够连接到 QQ 平台。这一步，我们通过配置官方内置的 **Napcat 适配器插件**来完成。
+现在，机器人的“身份证”和“大脑”都有了，但它还活在自己的世界里。我们需要为它接上“神经”，让它能够连接到 QQ 平台，接收和发送消息。这一步，我们通过配置官方内置的 **Napcat 适配器插件**来完成。
 
 ### 5.1 生成插件配置文件
 
-MoFox-Core 会在第一次启动时，自动为所有内置插件创建默认的配置文件。
+MoFox-Core 拥有强大的插件管理系统。在我们第一次启动程序时，它会自动检测所有内置插件，并为它们创建默认的配置文件。
 
 1.  **首次启动**:
     *   确保你的命令行终端**已激活虚拟环境** (前面带有 `(.venv)` 标记)。
@@ -282,38 +282,56 @@ MoFox-Core 会在第一次启动时，自动为所有内置插件创建默认的
         ```bash
         uv run python bot.py
         ```
-    *   程序启动后，你会看到大量的日志信息。当日志滚动停止，并且没有新的信息出现时，说明程序已经完成了初始化工作。
+    *   程序启动后，你会看到大量的日志信息在屏幕上滚动。当日志滚动停止，并且没有新的信息出现时，说明程序已经完成了初始化工作。
 
     > **💡 第一次启动就失败了怎么办？**
-    > 如果程序在启动过程中直接报错并退出了，**99% 的可能性是第四章的核心配置有误**。请回头仔细检查。
+    > 如果程序在启动过程中直接报错并退出了，**99% 的可能性是第四章的核心配置有误**。请回头仔细检查：
+    > *   `.env` 文件中的 `EULA_CONFIRMED` 是否为 `true`？
+    > *   `bot_config.toml` 中的 `qq_account` 和 `master_users` 是否已正确填写？
+    > *   `model_config.toml` 中是否至少配置好了一个**可用**的 API Key？
+    > 解决了这些问题后，再重新尝试启动。
 
 2.  **生成配置并关闭**:
-    *   当程序稳定运行后，这次启动的目的就已经达成。现在，请在命令行窗口中，按下 `Ctrl + C` 来关闭程序。
+    *   当程序稳定运行后，这次启动的主要目的——生成配置文件——就已经达成了。现在，请在命令行窗口中，按下 `Ctrl + C` 来关闭程序。程序会进行“优雅关闭”，请稍等片刻直至其完全退出。
 
 ### 5.2 启用并配置插件
 
 经过上一步，所有内置插件的默认配置文件都已经被自动创建好了。
 
 1.  **找到配置文件**:
-    *   配置文件位于 `config/plugin_config/napcat_adapter_plugin/config.toml`。
+    *   现在，请查看 `MoFox-Core/config/plugins/` 目录。你会发现里面出现了很多以插件名命名的文件夹。
+    *   我们当前的目标是找到 `napcat_adapter_plugin` 文件夹，并用你的文本编辑器打开其中的 `config.toml` 文件 (例如: `nano config/plugins/napcat_adapter_plugin/config.toml`)。
 
 2.  **启用插件 (第一步)**:
-    *   用编辑器打开该文件，找到 `[plugin]` 配置节，将 `enabled` 的值从 `false` 修改为 `true`。
+    *   在打开的 `config.toml` 文件中，找到 `[plugin]` 配置节，将 `enabled` 的值从 `false` 修改为 `true`。这是启动适配器的总开关。
         ```toml
         [plugin]
         enabled = true # < 修改这里
         ```
 
-3.  **配置 Napcat 连接 (核心)**:
-    *   找到 `[napcat_server]` 配置节。
-    *   确认 `port` 的值（默认为 `8095`）与你在 **Napcat QQ 客户端**的 `OneBot v11` 设置中，添加的**反向 WebSocket** 地址中的端口号**完全一致**。
-    *   如果不一致，请修改此处的 `port` 值。
+3.  **配置连接 (核心)**:
+    *   这是整个部署流程中最关键的一步，目的是让 MoFox-Core (服务端) 与 Napcat QQ (客户端) 能够互相通信。我们将分别配置两端，并确保它们的“接头”信息完全一致。
 
-    > **示例**: 如果你在 Napcat 客户端中设置的 URL 是 `ws://127.0.0.1:12345`，那么这里的 `port` 就应该修改为 `12345`。
+    *   **第一部分：配置 MoFox-Core 监听端口**
+        *   用你的文本编辑器打开 `MoFox-Core/config/plugins/napcat_adapter_plugin/config.toml` 文件。
+        *   找到 `[napcat_server]` 配置节，这里定义了 MoFox-Core 将在哪个端口上“监听”来自 Napcat 客户端的连接请求。
+            ```toml
+            [napcat_server]
+            # MoFox-Core 监听的端口
+            port = 8095
+            ```
+        *   **请记下这个 `port` 值 (默认为 `8095`)**。除非 `8095` 端口已被其他程序占用，否则我们推荐保持默认设置。如果需要修改，请确保选择一个未被占用的端口。
 
-4.  **检查内部服务连接**:
-    *   找到 `[maibot_server]` 配置节。
-    *   确认 `port` 的值（默认为 `8000`）与你在 `MoFox-Core` 根目录下的 `.env` 文件中设置的 `PORT` 值一致。通常无需修改。
+    *   **第二部分：配置 Napcat 客户端连接地址**
+        *   现在，回到你手机上的 Napcat QQ 客户端 App，我们将告诉它去连接 MoFox-Core 正在监听的端口。
+        *   在 Napcat 客户端的 `OneBot v11` 设置中，添加一个新的**反向 WebSocket** 连接。
+        ![点击新建 Websocket 客户端](/napcat_add_ws_client.png)
+        *   在 `URL` 地址栏中，填写 `ws://127.0.0.1:8095`。
+        *   **核心要点**：此处的 IP 地址 (`127.0.0.1` 代表本机) 和端口号 (`8095`) **必须**与你在**第一部分**中 MoFox-Core 配置文件里看到的 `port` 值**完全一致**。如果两边不一致，通信将百分之百失败。
+        ![配置反向 WebSocket](/napcat_ws_config.png)
+        *   保存设置。
+
+完成以上步骤，机器人的“神经系统”就已经成功搭建。它现在知道了该如何与 QQ 世界进行通信。
 
 ## 第六章：启动！——见证奇迹的时刻
 
@@ -390,7 +408,7 @@ MoFox-Core(第三方修改版)
 这通常意味着 MoFox-Core 和 Napcat QQ 客户端之间的“神经”没有接上。请按以下步骤排查：
 
 1.  **检查 Napcat QQ**: 确保 Napcat QQ 客户端本身已成功登录并处于在线状态。
-2.  **检查端口号**: 这是最常见的原因。请再次核对 `config/plugin_config/napcat_adapter_plugin/config.toml` 文件中 `[napcat_server]` 下的 `port` 值，是否与你 Napcat QQ 客户端里设置的**反向 WebSocket 端口**完全一致。
+2.  **检查端口号**: 这是最常见的原因。请再次核对 `config/plugins/napcat_adapter_plugin/config.toml` 文件中 `[napcat_server]` 下的 `port` 值，是否与你 Napcat QQ 客户端里设置的**反向 WebSocket 端口**完全一致。
 3.  **检查防火墙**: 确保防火墙或安全组没有阻止相应的端口。
 4.  **检查 IP 地址**: 确保 `config.toml` 中的 `host` (`localhost`) 和 Napcat 中的 IP (`127.0.0.1`) 是匹配的。
 
@@ -402,7 +420,7 @@ MoFox-Core(第三方修改版)
 这通常是配置问题或模型服务问题。
 
 1.  **检查模型配置**: 确认 `config/model_config.toml` 里的 API Key 是**有效且可用**的。
-2.  **检查白名单**: 检查 `config/plugin_config/napcat_adapter_plugin/config.toml` 文件中 `[features]` 部分的 `group_list` 和 `private_list`。如果你开启了白名单，请确保你测试的群聊或私聊已经被加了进去。
+2.  **检查白名单**: 检查 `config/plugins/napcat_adapter_plugin/config.toml` 文件中 `[features]` 部分的 `group_list` 和 `private_list`。如果你开启了白名单，请确保你测试的群聊或私聊已经被加了进去。
 3.  **查看日志**: 观察机器人后台的命令行窗口。当你给机器人发消息时，看看日志是否刷新，是否有 `ERROR` 级别的红色错误信息。
 
 </details>

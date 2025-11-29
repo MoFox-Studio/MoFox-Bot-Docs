@@ -11,18 +11,21 @@ import {
 const devSidebar = [
   {
     text: '开发',
+    collapsed: false,
     items: [
       { text: '开发主页', link: '/docs/development/' },
     ]
   },
   {
     text: '架构',
+    collapsed: false,
     items: [
       { text: '技术栈与聊天流分析', link: '/docs/development/architecture/tech_stack_and_chat_flow' }
     ]
   },
   {
     text: '贡献指南和开发帮助',
+    collapsed: false,
     items: [
       { text: '贡献指南', link: '/docs/development/CONTRIBUTE' },
       { text: '开发准则', link: '/docs/development/development_guidelines' },
@@ -31,6 +34,7 @@ const devSidebar = [
   },
   {
     text: '插件',
+    collapsed: false,
     items: [
       { text: '插件概述', link: '/docs/development/plugins/' },
       { text: '如何贡献插件', link: '/docs/development/plugins/how-to-contribute-plugins' },
@@ -41,6 +45,7 @@ const devSidebar = [
       { text: '权限系统', link: '/docs/development/plugins/PERMISSION_GUIDE' },
       { text: '可用范围控制', link: '/docs/development/plugins/command-scope' },
       { text: '插件可用组件',
+        collapsed: false,
         items: [
           { text: 'Chatter指南', link: '/docs/development/plugins/chatter-components' },
           { text: 'HTTP 组件指南', link: '/docs/development/plugins/http-components' },
@@ -53,6 +58,7 @@ const devSidebar = [
       },
       {
         text: '插件 API',
+        collapsed: false,
         items: [
           { text: 'Adapter Command API', link: '/docs/development/plugins/api/adapter-command-api' },
           { text: 'Chat API', link: '/docs/development/plugins/api/chat-api' },
@@ -178,6 +184,7 @@ export default withMermaid(defineConfig({
         },
         {
           text: '常见问题与帮助',
+          collapsed: false,
           items: [
             { text: '模型配置FAQ', link: '/docs/guides/model_config_faq' },
             { text: '如何更换端口', link: '/docs/guides/how_to_change_port' },
@@ -186,6 +193,7 @@ export default withMermaid(defineConfig({
         },
         {
           text: '功能使用',
+          collapsed: false,
           items: [
             { text: '插件安装指南', link: '/docs/guides/plugin-installation-guide' },
             { text: '内置插件使用指南', link: '/docs/guides/built_in_plugins_guide' },
@@ -200,6 +208,7 @@ export default withMermaid(defineConfig({
         },
         {
           text: '适配器',
+          collapsed: false,
           items: [
             { text: '适配器介绍', link: '/docs/guides/adapter_list' },
             { text: 'OneBot/Napcat 适配器(内置版)', link: '/docs/guides/adapter_list/onebot_v11_config' },
@@ -208,6 +217,7 @@ export default withMermaid(defineConfig({
         },
         {
           text: '其他',
+          collapsed: false,
           items: [
               { text: '最终用户许可协议', link: '/docs/guides/eula' },
               { text: '如何高效提问', link: '/docs/guides/how-to-ask-questions-efficiently' },

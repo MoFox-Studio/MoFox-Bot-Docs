@@ -1,5 +1,6 @@
 import DefaultTheme from 'vitepress/theme'
 import './custom.css'
+import './style/sidebar.css'
 import Giscus from './Giscus.vue'
 import GuideCards from './GuideCards.vue'
 import BibleDisplay from './BibleDisplay.vue'
@@ -9,7 +10,6 @@ import ContributePluginGuide from './ContributePluginGuide.vue'
 import { h } from 'vue'
 import ReadingTime from './ReadingTime.vue'
 import BackToTop from './BackToTop.vue'
-import CollapsibleSidebar from './CollapsibleSidebar.vue'
 import ReadingProgress from './ReadingProgress.vue'
 import { NolebaseEnhancedReadabilitiesMenu, NolebaseEnhancedReadabilitiesScreenMenu, NolebaseEnhancedReadabilitiesPlugin } from '@nolebase/vitepress-plugin-enhanced-readabilities/client'
 import '@nolebase/vitepress-plugin-enhanced-readabilities/client/style.css'
@@ -46,7 +46,7 @@ export default {
       'doc-after': () => h(Giscus),
       'nav-bar-content-after': () => h(NolebaseEnhancedReadabilitiesMenu),
       'nav-screen-content-after': () => h(NolebaseEnhancedReadabilitiesScreenMenu),
-      'layout-bottom': () => [h(BackToTop), h(CollapsibleSidebar), h(BackgroundLogo)],
+      'layout-bottom': () => [h(BackToTop), h(BackgroundLogo)],
     })
   },
   enhanceApp({ app }) {
@@ -64,7 +64,6 @@ export default {
     app.component('MoFoxTeamCard', MoFoxTeamCard)
     app.component('ContributePluginGuide', ContributePluginGuide)
     app.component('BackToTop', BackToTop)
-    app.component('CollapsibleSidebar', CollapsibleSidebar)
     app.component('BackgroundLogo', BackgroundLogo)
     app.use(NolebaseInlineLinkPreviewPlugin) 
   }

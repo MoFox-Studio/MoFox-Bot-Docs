@@ -27,7 +27,7 @@ Command vs Action 选择指南
 
 2. 使用Action的场景
 
-- ✅ 增强麦麦的智能行为
+- ✅ 增强MoFox的智能行为
 - ✅ 根据上下文自动触发
 - ✅ 情绪和表情表达
 - ✅ 智能建议和帮助
@@ -58,7 +58,6 @@ Command vs Action 选择指南
 
 ### 插件和组件管理API
 - [🔌 插件API](api/plugin-manage-api.md) - 插件加载和管理接口
-- [🧩 组件API](api/component-manage-api.md) - 组件注册和管理接口
 
 ### 日志API
 - [📜 日志API](api/logging-api.md) - logger实例获取接口

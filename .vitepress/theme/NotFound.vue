@@ -27,7 +27,7 @@
             <li>检查代理和防火墙</li>
             <li>运行 Windows 网络诊断</li>
           </ul>
-          <p class="error-code">ERR_CONNECTION_REFUSED</p>
+          <p class="error-code">WEBSITE_WAS_BROKEN</p>
           <button @click="reloadPage" class="reload-button">刷新</button>
         </div>
       </div>

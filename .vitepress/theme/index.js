@@ -24,6 +24,8 @@ import {
 import '@nolebase/vitepress-plugin-inline-link-preview/client/style.css'
 import NotFound from './NotFound.vue'
 import BackgroundLogo from './components/BackgroundLogo.vue'
+import KeyboardShortcuts from './components/KeyboardShortcuts.vue'
+import CodeCopyEnhancer from './CodeCopyEnhancer.vue'
 import './style/link.scss'
 
 // 动态加载外部脚本的函数
@@ -46,7 +48,7 @@ export default {
       'doc-after': () => h(Giscus),
       'nav-bar-content-after': () => h(NolebaseEnhancedReadabilitiesMenu),
       'nav-screen-content-after': () => h(NolebaseEnhancedReadabilitiesScreenMenu),
-      'layout-bottom': () => [h(BackToTop), h(BackgroundLogo)],
+      'layout-bottom': () => [h(BackToTop), h(BackgroundLogo), h(ReadingProgress), h(KeyboardShortcuts), h(CodeCopyEnhancer)],
     })
   },
   enhanceApp({ app }) {

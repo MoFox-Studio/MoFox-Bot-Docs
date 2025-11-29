@@ -162,6 +162,7 @@ export default withMermaid(defineConfig({
           text: '开始',
           items: [
             { text: '指南主页', link: '/docs/guides/' },
+            { text: '新功能演示', link: '/docs/guides/new-features-demo' },
           ]
         },
         {

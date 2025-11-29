@@ -23,6 +23,7 @@ import {
 
 import '@nolebase/vitepress-plugin-inline-link-preview/client/style.css'
 import NotFound from './NotFound.vue'
+import BackgroundLogo from './components/BackgroundLogo.vue'
 import './style/link.scss'
 
 // 动态加载外部脚本的函数
@@ -45,7 +46,7 @@ export default {
       'doc-after': () => h(Giscus),
       'nav-bar-content-after': () => h(NolebaseEnhancedReadabilitiesMenu),
       'nav-screen-content-after': () => h(NolebaseEnhancedReadabilitiesScreenMenu),
-      'layout-bottom': () => [h(BackToTop), h(CollapsibleSidebar)],
+      'layout-bottom': () => [h(BackToTop), h(CollapsibleSidebar), h(BackgroundLogo)],
     })
   },
   enhanceApp({ app }) {
@@ -64,6 +65,7 @@ export default {
     app.component('ContributePluginGuide', ContributePluginGuide)
     app.component('BackToTop', BackToTop)
     app.component('CollapsibleSidebar', CollapsibleSidebar)
+    app.component('BackgroundLogo', BackgroundLogo)
     app.use(NolebaseInlineLinkPreviewPlugin) 
   }
 }

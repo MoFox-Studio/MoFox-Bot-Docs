@@ -2,7 +2,7 @@
 
 本文档整理了用户在使用 MoFox_Bot 过程中最常遇到的问题和解决方案。
 
----
+
 
 ## 📋 目录
 
@@ -22,11 +22,14 @@
 - [数据库问题](#数据库问题)
   - [数据库连接失败](#数据库连接失败)
   - [数据库文件损坏](#数据库文件损坏)
+- [启动和运行问题](#启动和运行问题)
+  - [ModuleNotFoundError: No module named 'xxx'](#modulenotfounderror-no-module-named-xxx)
 - [其他常见问题](#其他常见问题)
   - [日志在哪里查看？](#日志在哪里查看)
+  - [如何使用日志查看器？](#如何使用日志查看器)
   - [如何重置 Bot 状态？](#如何重置-bot-状态)
 
----
+
 
 ## 配置相关问题
 
@@ -89,7 +92,7 @@
    cp template/template.env .env
    ```
 
----
+
 
 ## 消息收发问题
 
@@ -183,7 +186,7 @@
    - 如果使用国外 API（如 OpenAI），考虑配置代理
    - 国内推荐使用 DeepSeek、SiliconFlow 等国内平台
 
----
+
 
 ## 表情包相关问题
 
@@ -254,7 +257,7 @@
    filtration_prompt = "符合公序良俗"
    ```
 
----
+
 
 ## API 和模型问题
 
@@ -333,7 +336,7 @@
 如果你想知道更多请查看【[模型配置常见问题](./model_config_faq.md)】
 :::
 
----
+
 
 ## 数据库问题
 
@@ -392,7 +395,69 @@
    - Bot 会自动创建新数据库
    - 注意：这会丢失所有历史数据
 
----
+
+## 启动和运行问题
+
+### ModuleNotFoundError: No module named 'xxx'
+
+**症状**：启动时提示 `ModuleNotFoundError: No module named 'xxx'`，Bot 无法启动。
+
+**常见错误示例**：
+```
+ModuleNotFoundError: No module named 'aiohttp'
+ModuleNotFoundError: No module named 'pydantic'
+ModuleNotFoundError: No module named 'structlog'
+```
+
+**解决方案**：
+
+根据你使用的环境管理工具选择对应方案：
+**注意确认你的命令行工作路径在项目根目录下**
+
+
+::: tabs
+
+@tab UV 环境
+
+2. **激活虚拟环境**
+   ```shell
+   # Windows
+   .\venv\Scripts\activate
+   
+   # Linux/macOS
+   source venv/bin/activate
+   ```
+   检查命令行前是否显示 `(venv)` 前缀
+
+3. **同步依赖**
+   ```shell
+   # 同步依赖（会自动创建环境）
+   uv sync
+   ```
+
+2. **使用 UV 运行**
+   ```shell
+   uv run python bot.py
+   ```
+
+@tab 普通 venv 环境
+
+1. **激活虚拟环境**
+   ```shell
+   # Windows
+   .\venv\Scripts\activate
+   
+   # Linux/macOS
+   source venv/bin/activate
+   ```
+   检查命令行前是否显示 `(venv)` 前缀
+
+2. **安装依赖**
+   ```shell
+   # 确保在虚拟环境中执行
+   pip install -r requirements.txt
+   ```
+
 
 ## 其他常见问题
 
@@ -420,6 +485,36 @@ file_retention_days = 30    # 日志保留天数
 show_prompt = true  # 显示发送给模型的完整 prompt
 ```
 
+### 如何使用日志查看器？
+
+MoFox_Bot 内置了一个基于 Web 的日志查看器，可以更方便地查看和搜索日志。
+
+**启动日志查看器**：
+```shell
+# 在 MoFox_Bot 根目录下运行
+python -m scripts.log_viewer
+
+# 指定端口（默认 8765）
+python -m scripts.log_viewer --port 8080
+
+# 不自动打开浏览器
+python -m scripts.log_viewer --no-browser
+```
+
+**功能特性**：
+- 📁 **文件列表**：左侧显示所有日志文件，点击即可查看
+- 🔍 **关键词搜索**：支持普通文本和正则表达式搜索
+- 🏷️ **级别筛选**：按 DEBUG/INFO/WARNING/ERROR/CRITICAL 筛选
+- 📦 **模块筛选**：按日志来源模块筛选
+- 📊 **统计信息**：显示各级别日志数量
+- 🔄 **自动刷新**：实时查看最新日志
+- 📄 **分页显示**：大文件分页加载，避免卡顿
+
+**使用技巧**：
+1. 遇到错误时，先选择级别为 `ERROR` 或 `WARNING` 快速定位问题
+2. 使用模块筛选可以只看特定功能的日志（如 `Chat`、`API` 等）
+3. 开启自动刷新可以实时监控 Bot 运行状态
+
 ### 如何重置 Bot 状态？
 
 1. **重置记忆系统**
@@ -433,7 +528,7 @@ show_prompt = true  # 显示发送给模型的完整 prompt
    - 删除整个 `data/` 目录
    - 重新启动 Bot
 
----
+
 
 ## 📞 获取帮助
 

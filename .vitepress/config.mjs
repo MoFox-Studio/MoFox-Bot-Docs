@@ -62,7 +62,6 @@ const devSidebar = [
         items: [
           { text: 'Adapter Command API', link: '/docs/development/plugins/api/adapter-command-api' },
           { text: 'Chat API', link: '/docs/development/plugins/api/chat-api' },
-          { text: 'Component Manage API', link: '/docs/development/plugins/api/component-manage-api' },
           { text: 'Component State API', link: '/docs/development/plugins/api/component-state-api' },
           { text: 'Config API', link: '/docs/development/plugins/api/config-api' },
           { text: 'Database API', link: '/docs/development/plugins/api/database-api' },

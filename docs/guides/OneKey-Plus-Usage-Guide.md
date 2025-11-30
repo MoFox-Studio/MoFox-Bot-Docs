@@ -159,5 +159,28 @@ onekey-plus/
 -   **Q: 我不小心把主控面板关了，但 Bot 还在运行，如何关闭它？**
     A: Bot 的每个服务（如 `MoFox-Core 主程序`、`Napcat 服务`）都运行在独立的命令行窗口（通常是 PowerShell 或 CMD 窗口）中。要关闭某个服务，**直接关闭对应的那个命令行窗口**即可。
 
+-   **Q: 更新后启动时报错 `ModuleNotFoundError: No module named 'xxx'` 怎么办？**
+    A: 这是因为主程序更新后新增了依赖包，但本地环境还没有安装。请按以下步骤解决：
+    
+    **方法一：通过主控面板（推荐）**
+    1.  在主控面板选择 **`7. 安装/更新依赖包`**
+    2.  选择 **`1. 更新 / 重装 Bot本体依赖`** 或 **`3. 更新 / 重装 所有依赖`**
+    3.  等待依赖安装完成后，重新启动 Bot
+    
+    **方法二：手动命令行安装**
+    
+    如果知道缺少的具体包名（如报错 `No module named 'aiohttp'`），可以在一键包根目录下打开命令行，执行：
+    ```powershell
+    .\python_embedded\python.exe -m pip install aiohttp
+    ```
+    
+    或者直接重装所有依赖：
+    ```powershell
+    .\python_embedded\python.exe -m pip install -r .\core\Bot\requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+    ```
+
+    > [!TIP]
+    > 如果安装过程中遇到网络问题，程序会自动尝试多个国内镜像源（清华、阿里云、豆瓣等），请耐心等待。
+
 ---
 *感谢使用 MoFox 一键包，祝您使用愉快！*

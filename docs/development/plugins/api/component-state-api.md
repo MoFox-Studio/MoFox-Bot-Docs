@@ -24,7 +24,7 @@ from src.plugin_system.apis import component_state_api
 - **局部状态**: 针对特定会话（`stream_id`）的临时状态，会覆盖全局状态，仅在该会话中有效。
 - **Chatter 保护**: 系统会阻止禁用最后一个已启用的 Chatter 组件，以确保系统正常运行。
 
----
+
 
 ## 1. 组件状态管理
 
@@ -189,7 +189,7 @@ if state:
     print(f"描述: {state['description']}")
 ```
 
----
+
 
 ## 2. 批量组件状态管理
 
@@ -312,7 +312,7 @@ results = await component_state_api.batch_set_components_enabled(
 print(f"批量操作完成: {sum(results.values())}/{len(results)} 成功")
 ```
 
----
+
 
 ## 3. 组件状态查询与筛选
 
@@ -435,7 +435,7 @@ session_tool_count = component_state_api.get_component_count(
 print(f"会话中启用的工具数量: {session_tool_count}")
 ```
 
----
+
 
 ## 使用场景示例
 

@@ -283,7 +283,7 @@ plugin_api_valid_keys = ["your-super-secret-key-1", "another-secure-key-2"]
 
 机器人启动后，HTTP 服务器也会同时运行。你可以通过以下 URL 格式访问你的插件 API：
 
-`http://{host}:{port}/plugin-api/{plugin_name}/{component_name}{endpoint_path}`
+`http://{host}:{port}/plugins/{plugin_name}/{component_name}{endpoint_path}`
 
 -   `{host}` 和 `{port}`: 你在 `.env` 中配置的服务器主机`HOST`和端口`PORT`，默认为 `127.0.0.1` 和 `8000`。
 -   `{plugin_name}`: 你的插件名称（`BasePlugin` 子类中的 `plugin_name`）。
@@ -294,7 +294,7 @@ plugin_api_valid_keys = ["your-super-secret-key-1", "another-secure-key-2"]
 
 假设你的插件名为 `awesome_plugin`，组件名为 `awesome_api`，那么访问你在教程中创建的 `/secure-data` 端点的完整 URL 将是：
 
-`http://127.0.0.1:8000/plugin-api/awesome_plugin/awesome_api/secure-data`
+`http://127.0.0.1:8000/plugins/awesome_plugin/awesome_api/secure-data`
 
 #### 3. 使用工具进行测试
 

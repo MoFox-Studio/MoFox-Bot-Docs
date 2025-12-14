@@ -171,7 +171,7 @@ curl -O https://raw.githubusercontent.com/MoFox-Studio/MoFox-Core/dev/docker-com
         *   **[模型配置快速上手指南](quick_start_model_config.md)**
 
 3.  **修改 `config.toml` (Napcat 适配器插件)**:
-    *   打开 `docker-config/core/config/plugins/napcat_adapter_plugin/config.toml` 文件。
+    *   打开 `docker-config/core/config/plugins/napcat_adapter/config.toml` 文件。
     *   **启用插件**: 找到 `[plugin]` 配置节，将 `enabled` 修改为 `true`。
         ```toml
         [plugin]

@@ -321,7 +321,7 @@ MoFox-Core 拥有强大的插件管理系统。在我们第一次启动程序时
 1.  **找到配置文件**:
     *   现在，请打开 `MoFox-Core/config/plugins/` 文件夹。你会发现里面出现了很多以插件名命名的文件夹。
     *   这说明 MoFox-Core 的所有内置插件（如权限管理、戳一戳、Web搜索等）的配置文件都在这里生成了，方便你未来探索和开启更多功能。
-    *   我们当前的目标是找到 `napcat_adapter_plugin` 文件夹，进入后用你的代码编辑器打开 `config.toml` 文件。
+    *   我们当前的目标是找到 `napcat_adapter` 文件夹，进入后用你的代码编辑器打开 `config.toml` 文件。
 
 2.  **启用插件 (第一步)**:
     *   在打开的 `config.toml` 文件中，找到 `[plugin]` 配置节，将 `enabled` 的值从 `false` 修改为 `true`。这是启动适配器的总开关。
@@ -334,7 +334,7 @@ MoFox-Core 拥有强大的插件管理系统。在我们第一次启动程序时
     *   这是整个部署流程中最关键的一步，目的是让 MoFox-Core (服务端) 与 Napcat QQ (客户端) 能够互相通信。我们将分别配置两端，并确保它们的“接头”信息完全一致。
 
     *   **第一部分：配置 MoFox-Core 监听端口**
-        *   用你的代码编辑器打开 `MoFox-Core/config/plugins/napcat_adapter_plugin/config.toml` 文件。
+        *   用你的代码编辑器打开 `MoFox-Core/config/plugins/napcat_adapter/config.toml` 文件。
         *   找到 `[napcat_server]` 配置节，这里定义了 MoFox-Core 将在哪个端口上“监听”来自 Napcat 客户端的连接请求。
             ```toml
             [napcat_server]
@@ -452,7 +452,7 @@ MoFox-Core(第三方修改版)
 这通常意味着 MoFox-Core 和 Napcat QQ 客户端之间的“神经”没有接上。请按以下步骤排查：
 
 1.  **检查 Napcat QQ**: 确保 Napcat QQ 客户端本身已成功登录并处于在线状态。
-2.  **检查端口号**: 这是最常见的原因。请再次核对 `config/plugin_config/napcat_adapter_plugin/config.toml` 文件中 `[napcat_server]` 下的 `port` 值，是否与你 Napcat QQ 客户端里设置的**反向 WebSocket 端口**完全一致。
+2.  **检查端口号**: 这是最常见的原因。请再次核对 `config/plugin_config/napcat_adapter/config.toml` 文件中 `[napcat_server]` 下的 `port` 值，是否与你 Napcat QQ 客户端里设置的**反向 WebSocket 端口**完全一致。
 3.  **检查防火墙**: 确保 Windows 防火墙或任何第三方杀毒软件没有阻止 MoFox-Core 的网络连接。可以尝试暂时关闭防火墙进行测试。
 4.  **检查 IP 地址**: 确保 `config.toml` 中的 `host` (`localhost`) 和 Napcat 中的 IP (`127.0.0.1`) 是匹配的。通常保持默认即可。
 
@@ -465,7 +465,7 @@ MoFox-Core(第三方修改版)
 
 1.  **检查 Napcat QQ**: 确保 Napcat QQ 客户端本身已成功登录并处于在线状态。
 2.  **检查模型配置**: 确认 `config/model_config.toml` 里的 API Key 是**有效且可用**的。可以检查一下你的模型服务商后台，看看 Key 是否填错、账户是否欠费。
-3.  **检查白名单**: 检查 `config/plugin_config/napcat_adapter_plugin/config.toml` 文件中 `[features]` 部分的 `group_list` 和 `private_list`。如果你开启了白名单，请确保你测试的群聊或私聊已经被加了进去。
+3.  **检查白名单**: 检查 `config/plugin_config/napcat_adapter/config.toml` 文件中 `[features]` 部分的 `group_list` 和 `private_list`。如果你开启了白名单，请确保你测试的群聊或私聊已经被加了进去。
 4.  **查看日志**: 观察机器人后台的命令行窗口。当你给机器人发消息时，看看日志是否刷新。如果有 `ERROR` 级别的红色错误信息，通常能定位到问题所在。
 
 </details>

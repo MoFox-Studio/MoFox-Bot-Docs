@@ -303,14 +303,14 @@ plugin_api_valid_keys = ["your-super-secret-key-1", "another-secure-key-2"]
 **使用 cURL 测试受保护的 GET 端点：**
 
 ```bash
-curl -X GET "http://127.0.0.1:8000/plugin-api/awesome_plugin/awesome_api/secure-data" \
+curl -X GET "http://127.0.0.1:8000/plugins/awesome_plugin/awesome_api/secure-data" \
      -H "X-API-Key: your-super-secret-key-1"
 ```
 
 **使用 cURL 测试受保护的 POST 端点：**
 
 ```bash
-curl -X POST "http://127.0.0.1:8000/plugin-api/awesome_plugin/awesome_api/items" \
+curl -X POST "http://127.0.0.1:8000/plugins/awesome_plugin/awesome_api/items" \
      -H "X-API-Key: your-super-secret-key-1" \
      -H "Content-Type: application/json" \
      -d '{

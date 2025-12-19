@@ -104,7 +104,7 @@ const members = [
   {
     avatar: 'https://avatars.githubusercontent.com/LuisKlee?v=4',
     name: 'LuiKlee',
-    title: '1.步步高开发者，哪里缺人写哪里（bushi）',
+    title: '1.算法优化，哪里缺人写哪里（bushi）',
     links: [
       { icon: 'github', link: 'https://github.com/LuisKlee' }
     ]

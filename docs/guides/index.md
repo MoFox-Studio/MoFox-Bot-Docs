@@ -64,7 +64,7 @@ const members = [
   {
     avatar: 'https://avatars.githubusercontent.com/u/214268555?v=4',
     name: 'ikun',
-    title: '1.项目初期开发人之一<br/>2.文档单推人<br/>3.神秘猫娘',
+    title: '1.项目初期开发人之一<br/>2.核心（打杂）开发者喵<br/>3.神秘猫娘喵<br/>4.答疑高手喵',
     links: [
       { icon: 'github', link: 'https://github.com/ikun-11451' }
     ]

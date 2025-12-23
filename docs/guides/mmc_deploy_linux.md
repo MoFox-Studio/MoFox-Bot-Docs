@@ -300,7 +300,7 @@ MoFox-Core 拥有强大的插件管理系统。在我们第一次启动程序时
 
 1.  **找到配置文件**:
     *   现在，请查看 `MoFox-Core/config/plugins/` 目录。你会发现里面出现了很多以插件名命名的文件夹。
-    *   我们当前的目标是找到 `napcat_adapter` 文件夹，并用你的文本编辑器打开其中的 `config.toml` 文件 (例如: `nano config/plugins/napcat_adapter/config.toml`)。
+    *   我们当前的目标是找到 `napcat_adapter` 文件夹，并用你的文本编辑器打开其中的 `config.toml` 文件 (例如: `nano config/plugins/napcat_adapter_plugin/config.toml`)。
 
 2.  **启用插件 (第一步)**:
     *   在打开的 `config.toml` 文件中，找到 `[plugin]` 配置节，将 `enabled` 的值从 `false` 修改为 `true`。这是启动适配器的总开关。

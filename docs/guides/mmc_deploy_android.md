@@ -108,7 +108,7 @@ git clone https://github.com/MoFox-Studio/MoFox-Core.git
 ### 1.进入项目目录:
 - 输入并回车喵~
 ```
-cd MoFox_Core
+cd MoFox-Core
 ```
 ### 2.创建并激活虚拟环境:
 - 我们将使用 uv 来完成环境的创建和激活。

@@ -1,515 +1,403 @@
-# 🛠️ MPDT 插件开发工具指南
+# 🦊 MPDT 插件开发神器完全攻略
 
-## 📖 核心概念：什么是 MPDT？
+> 别慌，写插件没那么难！这份指南带你从零到一，轻松上手 MoFox-Bot 插件开发 ～
 
-**MPDT (MoFox Plugin Dev Toolkit)** 是一个类似于 Vite 的现代化 Python 开发工具，专为 MoFox-Bot 插件系统设计。它提供了从项目初始化、组件生成、代码检查到热重载开发的完整工具链，让插件开发变得更加高效和规范。
+## 🤔 等等，MPDT 是个啥？
 
-### MPDT 的核心特点
+**MPDT**，全称 **MoFox Plugin Dev Toolkit**（MoFox 插件开发工具箱），简单来说就是你开发 MoFox-Bot 插件的"瑞士军刀" 🔪
 
-- 🚀 **快速初始化** - 一键创建标准化的插件项目，告别繁琐的手动搭建
-- 🎨 **智能代码生成** - 自动生成规范的组件代码，所有方法自动异步化
-- 🔍 **完整的检查系统** - 6 层验证体系确保代码质量和规范性
-- 🔥 **热重载开发** - 文件保存即生效，无需重启主程序
-- 🤖 **高度自动化** - 自动注册组件、自动管理依赖、自动修复问题
+想象一下：
+- 不用自己从头搭项目框架 ❌
+- 不用手动写一堆模板代码 ❌  
+- 不用改一行代码就重启整个 Bot ❌
 
----
+有了 MPDT，这些烦恼通通拜拜！它能帮你快速搭建项目框架和生成组件模板，让你专注于业务逻辑的编写。
 
-## 🚀 安装与配置
+### ✨ MPDT 能帮你做什么？
 
-### 安装 MPDT
+| 功能 | 一句话解释 | 爽感指数 |
+|------|-----------|---------|
+| 🚀 **一键初始化** | 敲一行命令，项目框架就搭好了 | ⭐⭐⭐⭐⭐ |
+| 🎨 **模板生成器** | 生成组件框架代码，业务逻辑你来填 | ⭐⭐⭐⭐ |
+| 🔍 **7层质检系统** | 帮你揪出代码里的小毛病 | ⭐⭐⭐⭐ |
+| 🔥 **热重载开发** | Ctrl+S 保存，插件立刻更新 | ⭐⭐⭐⭐⭐ |
+| ⚙️ **配置管理** | 交互式配置，一键验证 | ⭐⭐⭐⭐ |
+
+## 📥 第一步：把 MPDT 装上
+
+### 安装只要一行命令
 
 ```bash
-# 从PyPi安装（推荐）
 pip install mofox-plugin-dev-toolkit
 ```
 
-### 首次配置（用于开发模式）
+装完之后，试试这个：
 
 ```bash
-# 启动开发模式会提示配置 MMC 主程序路径
-mpdt dev
-
-# 配置会保存到 ~/.mpdt/config.toml
-# 你也可以手动创建配置文件：
+mpdt --version
 ```
 
-```toml
-# ~/.mpdt/config.toml
-[mpdt]
-mmc_path = "E:/delveoper/mmc010"  # MoFox-Bot 主程序路径
+看到版本号了？恭喜你，MPDT 已经准备就绪！🎉
+
+### 🛠️ 首次配置（可选但推荐）
+
+如果你打算用热重载功能（强烈推荐！），需要告诉 MPDT 你的 MoFox-Bot 主程序在哪：
+
+```bash
+mpdt config init
 ```
 
----
+跟着交互式提示走就行。配置完成后可以验证：
 
-## 📦 快速开始：创建你的第一个插件
+```bash
+# 查看当前配置
+mpdt config show
 
-### 1. 初始化插件项目
+# 测试配置是否有效
+mpdt config test
+```
 
-MPDT 提供了交互式和命令行两种初始化方式。
+也可以单独设置某项配置：
 
-#### 方式一：交互式创建（推荐新手）
+```bash
+# 设置 MoFox 主程序路径
+mpdt config set-mofox "E:/你的路径/MoFox-Bot"
+
+# 设置虚拟环境
+mpdt config set-venv "E:/你的路径/venv" --type venv
+```
+
+## 🎬 开始表演！创建你的第一个插件
+
+### 方式一：问答式创建（新手友好 💚）
 
 ```bash
 mpdt init
 ```
 
-系统会依次询问：
-- **插件名称**: 例如 `my_awesome_plugin`
-- **模板类型**: 选择合适的模板（basic、action、tool、plus_command、full、adapter）
-- **作者名称**: 自动从 Git 配置获取，也可手动输入
-- **开源协议**: 选择 GPL-v3.0、MIT、Apache-2.0 或 BSD-3-Clause
-- **是否包含示例**: 推荐选择 Yes，可以参考示例代码
-- **是否创建文档**: 推荐选择 Yes
-- **是否初始化 Git**: 推荐选择 Yes
+然后 MPDT 会像个贴心小助手一样问你：
 
-#### 方式二：命令行创建（适合熟悉者）
-
-```bash
-# 创建基础插件
-mpdt init my_plugin -t basic -a "张三" -l GPL-v3.0
-
-# 创建带 Action 组件的插件
-mpdt init weather_plugin -t action --with-examples --with-docs
-
-# 创建完整功能的插件（包含多种组件示例）
-mpdt init full_plugin -t full --with-examples
+```
+🦊 插件名称叫啥？ my_first_plugin
+📦 选个模板呗？ action (Bot 主动行为类插件)
+👤 作者大名？ 你的名字
+📜 开源协议？ GPL-v3.0
+📁 要示例代码不？ Yes (强烈建议!)
+📝 创建文档？ Yes
+🔧 初始化 Git？ Yes
 ```
 
-#### 模板类型说明
+回答完毕，你的插件项目模板就诞生了！✨
 
-| 模板 | 说明 | 适用场景 |
-|------|------|---------|
-| `basic` | 最小化结构 | 想完全自定义结构 |
-| `action` | 包含 Action 组件 | 需要 Bot 主动执行操作 |
-| `tool` | 包含 Tool 组件 | 为 LLM 提供工具能力 |
-| `plus_command` | 包含 PlusCommand 组件 | 创建用户命令 |
-| `full` | 完整示例 | 学习所有组件用法 |
-| `adapter` | 适配器模板 | 创建平台适配器 |
-
-### 2. 查看生成的项目结构
+### 方式二：一行命令搞定（老司机专属 🏎️）
 
 ```bash
-cd my_plugin
-tree /F  # Windows
-# 或
-ls -R    # Linux/Mac
+# 最简单版本
+mpdt init my_plugin
+
+# 带点料的版本
+mpdt init weather_bot -t action --with-examples --with-docs
+
+# 豪华全家桶版本
+mpdt init super_plugin -t full --with-examples --with-docs -a "张三" -l MIT
 ```
 
-生成的标准结构：
+### 🎭 模板怎么选？看这个表就懂了
+
+| 模板 | 适合场景 | 复杂度 |
+|------|---------|-------|
+| `basic` | 我就要干净的空项目 | ⭐ |
+| `action` | Bot 主动做事（发消息、查数据等） | ⭐⭐ |
+| `tool` | 给 AI 提供新能力（工具函数） | ⭐⭐ |
+| `plus_command` | 做个用户命令（如 /天气） | ⭐⭐ |
+| `full` | 我全都要！学习用最佳 | ⭐⭐⭐ |
+| `adapter` | 对接新平台（QQ、微信等） | ⭐⭐⭐⭐ |
+
+> 💡 **小贴士**：新手建议从 `action` 模板开始，最实用！
+
+## 📁 生成的项目长啥样？
+
+跑完 `mpdt init` 后，你会得到这样一个目录结构：
 
 ```
 my_plugin/
-├── __init__.py              # ⭐ 插件元数据（必需）
-├── plugin.py                # ⭐ 插件主类（必需）
-├── config/
-│   └── config.toml          # ⭐ 配置文件（必需）
-├── components/              # 组件目录
-│   ├── actions/             # Action 组件
-│   ├── tools/               # Tool 组件
-│   ├── plus_commands/       # PlusCommand 组件
-│   └── ...                  # 其他组件类型
-├── tests/                   # 测试目录
-├── README.md               # 插件说明
-├── requirements.txt        # 依赖列表
-└── LICENSE                 # 许可证
+├── 📄 __init__.py          # 插件身份证（元数据）
+├── 📄 plugin.py            # 插件大脑（主类）
+├── 📁 components/          # 组件都住这里
+│   ├── 📁 actions/         # Action 组件
+│   ├── 📁 tools/           # Tool 组件
+│   └── 📁 plus_commands/   # 命令组件
+├── 📁 tests/               # 测试代码
+├── 📄 README.md            # 说明书
+└── 📄 LICENSE              # 版权声明
 ```
 
----
+**三个核心文件，必须有！**
+1. `__init__.py` - 告诉 MoFox-Bot "我是谁"
+2. `plugin.py` - 插件的主逻辑
 
-## 🎨 生成组件：快速添加功能
+其他的都是锦上添花 ～
 
-### 1. 交互式生成（最简单）
+## 🎨 组件模板生成器：省去重复的框架代码
+
+MPDT 可以帮你生成组件的基础框架代码，具体的业务逻辑还是需要你来实现 🌟
+
+### 交互式生成（推荐！）
 
 ```bash
-cd my_plugin
+cd my_plugin  # 先进入插件目录
 mpdt generate
 ```
 
-系统会询问：
-1. **选择组件类型**: 从 8 种组件中选择
-2. **组件名称**: 使用 PascalCase 命名（如 `SendMessage`）
-3. **组件描述**: 简要说明组件功能
+然后选择你要的组件类型，填个名字和描述，框架代码就自动生成了！
 
-### 2. 命令行生成（更快捷）
+### 命令行一步到位
 
 ```bash
-# 生成 Action 组件
+# 生成一个获取天气的 Action 模板
 mpdt generate action GetWeather -d "获取指定城市的天气信息"
 
-# 生成 Tool 组件
+# 生成一个计算器工具模板
 mpdt generate tool Calculator -d "执行数学计算"
 
-# 生成 PlusCommand 组件
-mpdt generate plus-command Help -d "显示帮助信息"
-
-# 生成其他组件
-mpdt generate event MessageReceived -d "处理消息接收事件"
-mpdt generate prompt SystemPrompt -d "系统提示词模板"
-mpdt generate router MessageRouter -d "消息路由器"
-mpdt generate chatter ChatHandler -d "对话处理器"
-mpdt generate adapter CustomAdapter -d "自定义平台适配器"
+# 生成一个查询天气的命令模板
+mpdt generate plus-command Weather -d "输入 /天气 城市名 查询"
 ```
 
-### 3. 组件类型详解
+### 🧩 8 种组件任你挑
 
-#### Action 组件
-用于 Bot 主动执行的操作（如发送消息、查询数据）。
+| 组件类型 | 干啥用的 | 生成命令示例 |
+|---------|---------|-------------|
+| `action` | Bot 主动行为模板 | `mpdt generate action SendGift` |
+| `tool` | AI 可调用的工具模板 | `mpdt generate tool WebSearch` |
+| `plus-command` | 用户命令模板 | `mpdt generate plus-command Help` |
+| `event` | 事件监听器模板 | `mpdt generate event OnMessage` |
+| `prompt` | 提示词模板 | `mpdt generate prompt SystemPrompt` |
+| `router` | 消息路由模板 | `mpdt generate router MainRouter` |
+| `chatter` | 对话处理器模板 | `mpdt generate chatter ChatHandler` |
+| `adapter` | 平台适配器模板 | `mpdt generate adapter Discord` |
 
-```python
-# 生成命令
-mpdt generate action SendImage -d "发送图片"
+### 看看生成的模板代码长啥样
 
-# 生成的代码 (components/actions/send_image.py)
-class SendImage(BaseAction):
-    action_name = "send_image"
-    action_description = "发送图片"
-    action_parameters = {}  # 定义需要的参数
-    
-    async def go_activate(self, llm_judge_model=None) -> bool:
-        """激活逻辑 - 决定何时可用"""
-        return await self._keyword_match(["图片", "发图"])
-    
-    async def execute(self) -> Tuple[bool, str]:
-        """执行逻辑 - 实际的操作"""
-        # 在这里实现你的逻辑
-        return True, "执行成功"
-```
-
-详细用法参见 [Action 组件开发指南](./action-components.md)。
-
-#### Tool 组件
-为 LLM 提供可调用的工具函数。
+比如生成一个 Action 模板：
 
 ```python
-# 生成命令
-mpdt generate tool SearchWeb -d "网页搜索工具"
-
-# 生成的代码
-class SearchWeb(BaseTool):
-    tool_name = "search_web"
-    tool_description = "搜索网页内容"
-    tool_parameters = {
-        "query": "搜索关键词"
+# components/actions/get_weather.py
+class GetWeather(BaseAction):
+    action_name = "get_weather"
+    action_description = "获取指定城市的天气信息"
+    action_parameters = {
+        "city": "城市名称"
     }
     
-    async def execute(self) -> str:
-        """工具执行逻辑"""
-        query = self.tool_data.get("query")
-        # 实现搜索逻辑
-        return f"搜索结果: {query}"
-```
-
-详细用法参见 [工具指南](./tool_guide.md)。
-
-#### PlusCommand 组件
-用户可以直接调用的命令。
-
-```python
-# 生成命令
-mpdt generate plus-command Weather -d "查询天气命令"
-
-# 生成的代码
-class Weather(BasePlusCommand):
-    command_name = "/天气"
-    command_description = "查询指定城市的天气"
+    async def go_activate(self, llm_judge_model=None) -> bool:
+        """啥时候激活这个 Action？需要你来实现判断逻辑"""
+        # TODO: 在这里实现你的激活条件
+        return await self._keyword_match(["天气", "温度", "下雨"])
     
-    async def execute(self) -> str:
-        """命令执行逻辑"""
-        # 实现命令逻辑
-        return "今天天气晴朗"
+    async def execute(self) -> Tuple[bool, str]:
+        """Action 的核心逻辑，需要你来实现"""
+        city = self.action_data.get("city", "北京")
+        # TODO: 在这里写你的业务逻辑
+        return True, f"查询了 {city} 的天气"
 ```
 
-详细用法参见 [命令指南](./PLUS_COMMAND_GUIDE.md)。
+> 🎯 **注意**：生成的只是框架代码，带 `TODO` 的地方需要你填入具体业务逻辑！所有方法都是 `async` 的，符合 MoFox-Bot 的异步架构。
 
-### 4. 自动注册
+### 🪄 自动注册
 
-生成组件后，MPDT 会自动在 `plugin.py` 中添加注册代码：
+生成组件后，MPDT 会自动帮你在 `plugin.py` 里添加注册代码，省去手动导入的麻烦。
 
-```python
-# plugin.py
-class MyPlugin(BasePlugin):
-    async def on_enable(self):
-        await super().on_enable()
-        
-        # 自动添加的注册代码
-        from .components.actions.get_weather import GetWeather
-        self.action_manager.register_action(GetWeather)
-```
+## 🔍 代码检查：揪出隐藏的 Bug
 
----
-
-## 🔍 代码检查：确保质量
-
-MPDT 提供了 6 层检查体系，全面保障代码质量。
-
-### 基础检查
+写完代码，让 MPDT 帮你做个"体检"：
 
 ```bash
-# 运行所有检查（推荐）
 mpdt check
+```
 
-# 自动修复可修复的问题
+### 7 层检查，全方位保障
+
+| 检查项 | 检查啥 | 能自动修吗 |
+|-------|-------|-----------|
+| 📂 **结构检查** | 文件夹对不对、必要文件有没有 | ❌ |
+| 🏷️ **元数据检查** | 插件信息填完整没 | ❌ |
+| 🧩 **组件检查** | 组件注册对不对、命名规范不 | ❌ |
+| ⚙️ **配置检查** | config.toml 语法对不对 | ❌ |
+| 🔤 **类型检查** | 类型标注正确不（用 mypy） | ❌ |
+| 🎨 **风格检查** | 代码风格好看不（用 ruff） | ✅ |
+| 🔧 **自动修复** | 智能分析可修复的问题 | ✅ |
+
+### 自动修复格式问题
+
+```bash
 mpdt check --fix
 ```
 
-### 检查器说明
+代码缩进乱了？import 顺序不对？空行太多？一键全搞定！
 
-| 检查器 | 检查内容 | 可自动修复 |
-|--------|---------|-----------|
-| **structure** | 目录结构、必需文件 | ❌ |
-| **metadata** | `__plugin_meta__` 完整性 | ❌ |
-| **component** | 组件注册、命名规范 | ❌ |
-| **config** | `config.toml` 语法 | ❌ |
-| **type** | 类型注解（mypy） | ❌ |
-| **style** | 代码风格（ruff） | ✅ |
-
-### 高级用法
+### 更多检查姿势
 
 ```bash
-# 只显示错误级别的问题
+# 只看错误，不看警告
 mpdt check --level error
 
-# 生成 Markdown 格式的检查报告
-mpdt check --report markdown -o check_report.md
+# 生成 Markdown 报告文件
+mpdt check --report markdown -o report.md
 
-# 跳过耗时的类型和风格检查
+# 生成 JSON 格式报告
+mpdt check --report json -o report.json
+
+# 跳过耗时的类型检查（赶时间用）
 mpdt check --no-type --no-style
 
-# 只运行特定检查器
-mpdt check --no-structure --no-metadata --no-component --no-config
-
-# 组合使用
-mpdt check --fix --level warning --report markdown -o report.md
+# 跳过其他检查
+mpdt check --no-structure --no-metadata --no-component
 ```
 
 ### 检查结果示例
 
 ```
-✅ StructureValidator: 通过
-✅ MetadataValidator: 通过
-⚠️  ComponentValidator: 发现 1 个警告
-    ⚠  SendMessage: 建议添加更详细的 action_description
-✅ ConfigValidator: 通过
-✅ TypeValidator: 通过
-✅ StyleValidator: 通过
+✅ 结构检查: 通过
+✅ 元数据检查: 通过
+⚠️  组件检查: 1 个警告
+    └─ GetWeather: 建议写个更详细的描述
+✅ 配置检查: 通过
+✅ 类型检查: 通过
+✅ 风格检查: 通过
+✅ 自动修复: 无需修复
 
-总结: 6 个检查器，5 个通过，1 个警告
+📊 总结: 7 项检查，6 项通过，1 个小建议
 ```
 
-### 自动修复说明
+## 🔥 热重载开发：改代码不用重启！
 
-使用 `--fix` 参数时，MPDT 会自动修复：
-- 代码格式问题（缩进、空行、引号等）
-- import 语句排序
-- 行长度问题
-- 尾随空格
+这是 MPDT 的王炸功能 💣
 
-不能自动修复的问题会给出详细的修复建议。
+以前改个代码要这样：
+1. 改代码
+2. 停止 Bot
+3. 重启 Bot
+4. 等待启动
+5. 测试
+6. 发现 bug，回到第 1 步...
 
----
+现在只需要：
+1. 改代码
+2. Ctrl+S 保存
+3. 测试
 
-## 🔥 热重载开发：极速迭代
+**没了，就这么简单！** 🎉
 
-MPDT 的热重载系统让你无需重启主程序即可测试插件修改。
-
-### 1. 启动开发模式
+### 启动开发模式
 
 ```bash
 cd my_plugin
 mpdt dev
+
+# 或者指定路径
+mpdt dev --mmc-path "E:/你的路径/MoFox-Bot"
+mpdt dev --plugin-path "E:/你的路径/my_plugin"
 ```
 
-首次运行会提示配置 MMC 主程序路径，之后会自动：
-1. ✅ 注入开发桥接插件到主程序
-2. ✅ 启动 MMC 主程序
-3. ✅ 建立 WebSocket 连接
-4. ✅ 开始监控文件变化
+### 工作原理
 
-### 2. 开发流程
+`mpdt dev` 启动时会：
+1. 将你的插件复制到主程序的 `plugins` 目录
+2. 注入 **DevBridge** 开发桥接插件
+3. 启动 MoFox-Bot 主程序
+4. DevBridge 使用 watchdog 监控文件变化
+5. 检测到变化时自动卸载旧版本、加载新版本
+6. 主程序退出时自动清理 DevBridge
 
-```
-┌─────────────────────────────────────────────┐
-│ 1. 修改代码并保存                           │
-│    (编辑 components/actions/weather.py)     │
-└────────────────┬────────────────────────────┘
-                 │
-                 ▼
-┌─────────────────────────────────────────────┐
-│ 2. MPDT 自动检测文件变化                    │
-│    ⚡ 检测到变化: weather.py               │
-└────────────────┬────────────────────────────┘
-                 │
-                 ▼
-┌─────────────────────────────────────────────┐
-│ 3. 通过 WebSocket 通知主程序                │
-│    📡 发送重载指令                          │
-└────────────────┬────────────────────────────┘
-                 │
-                 ▼
-┌─────────────────────────────────────────────┐
-│ 4. 主程序自动重载插件                       │
-│    🔄 卸载旧版本 → 加载新版本              │
-└────────────────┬────────────────────────────┘
-                 │
-                 ▼
-┌─────────────────────────────────────────────┐
-│ 5. 显示重载结果                             │
-│    ✅ 重载成功 (耗时: 0.5s)                │
-└─────────────────────────────────────────────┘
-```
-
-### 3. 实时反馈
+### 开发流程可视化
 
 ```
-🔥 开发服务器就绪！
-监控文件变化中... (Ctrl+C 退出)
-
-📝 [14:23:45] 检测到文件变化: components/actions/weather.py
-🔄 [14:23:45] 正在重载插件...
-✅ [14:23:45] 重载成功 (耗时: 0.5s)
-
-📝 [14:24:12] 检测到文件变化: plugin.py
-🔄 [14:24:12] 正在重载插件...
-✅ [14:24:12] 重载成功 (耗时: 0.6s)
+    ╭──────────────────────────────────────╮
+    │  � MPDT 启动开发模式                │
+    │     注入插件 + DevBridge 到主程序    │
+    ╰──────────────────┬───────────────────╯
+                       │
+                       ▼
+    ╭──────────────────────────────────────╮
+    │  📝 你在编辑器里改了代码             │
+    │     Ctrl+S 保存                      │
+    ╰──────────────────┬───────────────────╯
+                       │
+                       ▼
+    ╭──────────────────────────────────────╮
+    │  👀 DevBridge 插件检测到文件变化     │
+    │     "嘿！weather.py 被改了！"        │
+    ╰──────────────────┬───────────────────╯
+                       │
+                       ▼
+    ╭──────────────────────────────────────╮
+    │  🔄 主程序自动重载插件               │
+    │     旧版本下线 → 新版本上线          │
+    ╰──────────────────┬───────────────────╯
+                       │
+                       ▼
+    ╭──────────────────────────────────────╮
+    │  ✅ 完成！可以直接测试新功能了～     │
+    ╰──────────────────────────────────────╯
 ```
 
-### 4. 开发模式的优势
+### 控制台反馈
 
-- ⚡ **极速迭代** - 保存即生效，无需等待重启
-- 🎯 **精准重载** - 只重载修改的插件，不影响其他功能
-- 📊 **实时反馈** - 立即知道重载是否成功
-- 🔒 **安全可靠** - 重载失败会保留旧版本，不会崩溃
+```
+🚀 MoFox Plugin Dev Server
 
----
+📂 目录: weather_plugin
+📍 路径: E:/plugins/weather_plugin
+✓ 插件名: weather_plugin
 
-## 💡 最佳实践
+📦 注入目标插件...
+📦 注入 DevBridge 插件...
+🚀 启动主程序...
 
-### 1. 项目命名规范
+✨ 开发模式已启动！
+主程序窗口中会显示文件监控和重载信息
+DevBridge 插件会在主程序退出时自动清理
+```
+
+### 为什么热重载这么香？
+
+- ⚡ **快！** 不用等 Bot 重启
+- 🎯 **准！** 只重载你改的插件，其他插件不受影响
+- 🔒 **稳！** 重载失败也不怕，旧版本继续跑
+- 🧹 **干净！** 主程序退出时自动清理开发插件
+
+## 📚 完整实战：做个天气查询插件
+
+来，手把手带你做一个完整的插件！
+
+### Step 1️⃣ 创建项目
 
 ```bash
-# ✅ 好的命名
-mpdt init weather_plugin
-mpdt init user_manager
-mpdt init ai_chat_assistant
-
-# ❌ 避免的命名
-mpdt init WeatherPlugin  # 避免大写
-mpdt init weather-plugin # 避免连字符（Python 包名不支持）
-mpdt init 天气插件      # 避免中文
-```
-
-### 2. 组件命名规范
-
-```bash
-# ✅ 使用 PascalCase
-mpdt generate action GetWeather
-mpdt generate tool SearchEngine
-
-# ❌ 避免其他格式
-mpdt generate action get_weather  # 不要用 snake_case
-mpdt generate action getWeather   # 不要用 camelCase
-```
-
-### 3. 开发工作流
-
-推荐的开发流程：
-
-```bash
-# 1. 初始化插件
-mpdt init my_plugin -t action --with-examples
-
-# 2. 进入插件目录
-cd my_plugin
-
-# 3. 生成需要的组件
-mpdt generate action SendMessage -d "发送消息"
-mpdt generate tool Calculator -d "计算器"
-
-# 4. 运行检查
-mpdt check
-
-# 5. 修复问题
-mpdt check --fix
-
-# 6. 启动开发模式
-mpdt dev
-
-# 7. 编辑代码并实时测试
-# (在另一个终端或编辑器中修改代码)
-
-# 8. 完成开发后再次检查
-mpdt check
-
-# 9. 提交代码
-git add .
-git commit -m "feat: add message sending functionality"
-```
-
-### 4. 代码质量保证
-
-在提交代码前，务必运行完整检查：
-
-```bash
-# 完整的质量检查流程
-mpdt check --fix          # 自动修复格式问题
-mpdt check --level error  # 确保没有错误
-mpdt check --report markdown -o report.md  # 生成检查报告
-```
-
-### 5. 开发模式技巧
-
-```bash
-# 技巧 1: 使用多终端
-# 终端 1: 运行开发模式
-mpdt dev
-
-# 终端 2: 查看主程序日志
-tail -f logs/app_*.log
-
-# 技巧 2: 快速重新检查
-# 在开发过程中定期运行快速检查
-mpdt check --no-type --no-style  # 跳过耗时检查
-
-# 技巧 3: 保存配置
-# 创建 .mpdtrc.toml (未来功能)
-[mpdt]
-default_template = "action"
-default_license = "GPL-v3.0"
-```
-
----
-
-## 📚 完整示例：创建天气插件
-
-让我们通过一个完整的例子，从零开始创建一个天气查询插件。
-
-### 第一步：初始化项目
-
-```bash
-mpdt init weather_plugin -t action --with-examples -a "你的名字" -l GPL-v3.0
+mpdt init weather_plugin -t action --with-examples
 cd weather_plugin
 ```
 
-### 第二步：生成组件
+### Step 2️⃣ 生成组件
 
 ```bash
-# 生成 Action 组件
-mpdt generate action GetWeather -d "获取指定城市的天气信息"
+# 生成核心 Action
+mpdt generate action GetWeather -d "获取天气信息"
 
-# 生成 Tool 组件（供 LLM 调用）
-mpdt generate tool WeatherQuery -d "天气查询工具"
-
-# 生成 PlusCommand 组件（供用户直接使用）
+# 生成用户命令（可选）
 mpdt generate plus-command Weather -d "天气查询命令"
 ```
 
-### 第三步：实现功能
+### Step 3️⃣ 编写业务逻辑
 
-编辑 `components/actions/get_weather.py`:
+模板生成后，你需要在生成的框架代码基础上填入实际的业务逻辑。
+
+编辑 `components/actions/get_weather.py`：
 
 ```python
 from typing import Tuple
 from src.plugin_system.base.base_action import BaseAction
+import aiohttp  # 需要安装: pip install aiohttp
 
 class GetWeather(BaseAction):
     action_name = "get_weather"
@@ -518,210 +406,200 @@ class GetWeather(BaseAction):
         "city": "城市名称（如：北京、上海）"
     }
     action_require = [
-        "当用户询问天气情况时",
-        "当对话中提到天气相关话题时"
+        "当用户询问天气时",
+        "当对话提到天气相关话题时"
     ]
     
     async def go_activate(self, llm_judge_model=None) -> bool:
-        """当消息包含天气相关关键词时激活"""
-        return await self._keyword_match([
-            "天气", "气温", "下雨", "晴天", "阴天"
-        ])
+        """检测用户是否在问天气"""
+        keywords = ["天气", "气温", "下雨", "晴天", "冷不冷", "热不热"]
+        return await self._keyword_match(keywords)
     
     async def execute(self) -> Tuple[bool, str]:
-        """执行天气查询"""
-        # 获取城市参数
+        """查询并返回天气 - 这里是你需要实现的核心逻辑"""
         city = self.action_data.get("city", "北京")
         
-        # TODO: 调用天气 API 获取数据
-        # 这里用示例数据演示
-        weather_info = f"{city}今天晴天，气温 20-28℃"
+        # 实际项目中，你需要：
+        # 1. 调用天气 API 获取数据
+        # 2. 解析返回的 JSON
+        # 3. 格式化成用户友好的消息
         
-        # 发送消息给用户
-        await self.send_text(weather_info)
+        # 示例：调用天气 API（需要自己申请 API Key）
+        # api_key = self.plugin.config.get("api_key")
+        # async with aiohttp.ClientSession() as session:
+        #     async with session.get(f"https://api.weather.com/{city}") as resp:
+        #         data = await resp.json()
         
-        return True, f"已发送 {city} 的天气信息"
+        # 这里用模拟数据演示
+        weather = f"🌤️ {city}今天晴，气温 15-22℃，微风"
+        
+        await self.send_text(weather)
+        return True, f"已查询 {city} 天气"
 ```
 
-### 第四步：配置文件
+> ⚠️ **重要**：上面的天气 API 调用是示例，你需要自己申请天气服务的 API Key 并实现真实的调用逻辑。
 
-编辑 `config/config.toml`:
+### Step 4️⃣ 配置插件
+
+编辑 `config/config.toml`：
 
 ```toml
-# 插件启用状态
 enabled = true
 
-# 天气插件配置
 [weather_plugin]
-# 天气 API 配置（示例）
-api_key = "your_api_key_here"
-api_url = "https://api.weather.com"
+api_key = "你的天气API密钥"
 default_city = "北京"
 ```
 
-### 第五步：检查代码
+### Step 5️⃣ 检查 & 测试
 
 ```bash
-# 运行完整检查
-mpdt check
-
-# 自动修复代码风格
+# 先检查一下
 mpdt check --fix
 
-# 生成检查报告
-mpdt check --report markdown -o check_report.md
-```
-
-### 第六步：开发测试
-
-```bash
 # 启动开发模式
 mpdt dev
 ```
 
-现在你可以：
-1. 在编辑器中修改代码
-2. 保存文件
-3. MPDT 自动重载插件
-4. 在 Bot 中测试功能
+### Step 6️⃣ 试试效果
 
-### 第七步：完善文档
+在 Bot 里发消息："今天天气怎么样？"
 
-编辑 `README.md`:
+🎉 如果 Bot 回复了天气信息，恭喜你，插件开发成功！
 
-```markdown
-# 天气插件
+> 💡 **总结**：MPDT 帮你搭好了项目框架和组件模板，但核心的业务逻辑（比如调用天气 API、解析数据等）还是需要你自己来实现。
 
-获取城市天气信息的 MoFox-Bot 插件。
+## 💼 命名规范速查表
 
-## 功能
+### 项目名：用蛇形命名
 
-- 🌤️ 查询城市天气
-- 🌡️ 显示温度信息
-- ☔ 降雨提醒
-
-## 使用方法
-
-直接在聊天中询问：
-- "今天天气怎么样？"
-- "北京的天气"
-- "上海会下雨吗？"
-
-或使用命令：
-```
-/天气 北京
-```
-
-## 配置
-
-在 `config/config.toml` 中配置 API 密钥：
-```toml
-[weather_plugin]
-api_key = "your_key"
-```
-```
-
----
-
-## 🔧 故障排查
-
-### 常见问题
-
-#### 1. `mpdt: command not found`
-
-**原因**: MPDT 未正确安装或未添加到 PATH
-
-**解决方案**:
 ```bash
-# 确保在正确的虚拟环境中
-pip install -e .
+# ✅ 正确
+weather_plugin
+user_manager  
+ai_assistant
 
-# 或使用完整路径
+# ❌ 错误
+WeatherPlugin    # 不要大驼峰
+weather-plugin   # 不要连字符
+天气插件          # 不要中文
+```
+
+### 组件名：用大驼峰
+
+```bash
+# ✅ 正确
+mpdt generate action GetWeather
+mpdt generate tool SearchEngine
+
+# ❌ 错误
+mpdt generate action get_weather   # 不要蛇形
+mpdt generate action getweather    # 不要小驼峰
+```
+
+## 🚨 遇到问题？看这里！
+
+### ❓ "mpdt: command not found"
+
+八成是没装好或者没加到 PATH：
+
+```bash
+# 重新安装试试
+pip install mofox-plugin-dev-toolkit
+
+# 或者用完整路径调用
 python -m mpdt.cli --version
 ```
 
-#### 2. 开发模式连接失败
+### ❓ 开发模式连不上 MoFox-Bot
 
-**原因**: MMC 路径配置错误或主程序未启动
+检查配置对不对：
 
-**解决方案**:
 ```bash
-# 检查配置文件
-cat ~/.mpdt/config.toml
+# 看看当前配置
+mpdt config show
 
-# 手动指定路径
-mpdt dev --mmc-path "E:/path/to/mmc"
+# 测试配置是否有效
+mpdt config test
+
+# 重新配置
+mpdt config init
+
+# 或者手动设置路径
+mpdt config set-mofox "E:/你的路径/MoFox-Bot"
+
+# 或者启动时指定路径
+mpdt dev --mmc-path "E:/你的路径/MoFox-Bot"
 ```
 
-#### 3. 检查器报错
+### ❓ 检查报错 "No module named 'src'"
 
-**错误**: `ModuleNotFoundError: No module named 'src'`
+你可能不在 MoFox-Bot 主程序目录：
 
-**原因**: 不在 MMC 主程序环境中运行
-
-**解决方案**:
 ```bash
-# 在 MMC 主程序目录运行
-cd /path/to/mmc
+# 方案一：进入主程序目录
+cd /path/to/MoFox-Bot
 mpdt check /path/to/your/plugin
+
+# 方案二：跳过需要主程序的检查
+mpdt check --no-component --no-type
 ```
 
-#### 4. 热重载不生效
+### ❓ 热重载不生效
 
-**原因**: 文件监控未检测到变化
+几个可能的原因：
+- 🔍 文件没保存？按 Ctrl+S！
+- 🔍 改的是 `.py` 文件吗？（只监控 Python 文件）
+- 🔍 看看主程序窗口有没有报错（DevBridge 日志在那里）
+- 🔍 插件是否已经在主程序的 plugins 目录下？
 
-**解决方案**:
-- 确保保存了文件
-- 检查是否修改了 `.py` 文件（只监控 Python 文件）
-- 查看 MPDT 控制台是否有错误信息
+## 🎁 彩蛋：提高效率的小技巧
 
----
+### 1. 设置命令别名
 
-## 📖 进一步学习
-
-完成本指南后，建议继续学习：
-
-- [Action 组件开发指南](./action-components.md) - 深入了解 Action 组件
-- [工具指南](./tool_guide.md) - 创建供 LLM 使用的工具
-- [命令指南](./PLUS_COMMAND_GUIDE.md) - 创建用户命令
-- [配置指南](./configuration-guide.md) - 管理插件配置
-- [元数据指南](./metadata-guide.md) - 完善插件信息
-
----
-
-## 💡 小贴士
-
-### 快捷命令别名
-
-在你的 shell 配置文件（`.bashrc` 或 `.zshrc`）中添加：
+在 `.bashrc` 或 `.zshrc` 里加上：
 
 ```bash
-alias mpdt-new='mpdt init'
-alias mpdt-gen='mpdt generate'
-alias mpdt-check='mpdt check --fix'
-alias mpdt-dev='mpdt dev'
+alias mi='mpdt init'
+alias mg='mpdt generate'
+alias mc='mpdt check --fix'
+alias md='mpdt dev'
 ```
 
-### VS Code 集成
+以后 `mi my_plugin` 就能创建插件了！
 
-推荐安装以下 VS Code 扩展：
-- Python
-- Pylance
-- Ruff
-- TOML Language Support
+### 2. VS Code 扩展推荐
 
-### 版本控制
+安装这几个扩展，开发体验更丝滑：
 
-推荐的 `.gitignore`:
+- 🐍 **Python** - 必装
+- 🔍 **Pylance** - 智能提示
+- 🎨 **Ruff** - 代码格式化
+- 📝 **Even Better TOML** - 配置文件高亮
+
+### 3. 开发模式小技巧
+
+```bash
+# 开两个终端
+# 终端 1：跑开发模式
+mpdt dev
+
+# 终端 2：看日志（Windows用 Get-Content -Wait）
+tail -f logs/app_*.log
+```
+
+### 4. Git 忽略文件模板
+
+把这个加到 `.gitignore`：
 
 ```gitignore
-# Python
+# Python 缓存
 __pycache__/
 *.py[cod]
-*$py.class
-*.so
-.Python
+
+# 虚拟环境
 venv/
+.venv/
 
 # MPDT
 .mpdt/
@@ -733,23 +611,40 @@ logs/
 .idea/
 ```
 
----
+## 🗺️ 下一步去哪儿？
 
-## 🎉 总结
+恭喜你读完了这份指南！接下来可以：
 
-通过本指南，你已经学会了：
+- 📖 [Action 组件深入指南](./action-components.md) - 玩转 Action
+- 🔧 [Tool 开发指南](./tool_guide.md) - 给 AI 加技能
+- 💬 [命令开发指南](./PLUS_COMMAND_GUIDE.md) - 做用户命令
+- ⚙️ [配置管理指南](./configuration-guide.md) - 管理配置项
 
-✅ 安装和配置 MPDT  
-✅ 创建插件项目  
-✅ 生成各种组件  
-✅ 使用检查系统  
-✅ 使用热重载开发  
-✅ 遵循最佳实践  
+## 🦊 写在最后
 
-现在，你可以高效地开发高质量的 MoFox-Bot 插件了！
+MPDT 的定位是**开发辅助工具**，它能帮你：
 
-如有问题，欢迎在 [GitHub Issues](https://github.com/MoFox-Studio/mofox-plugin-toolkit/issues) 中反馈。
+- ✅ 快速搭建标准化的项目结构
+- ✅ 生成组件框架代码，省去重复劳动
+- ✅ 检查代码规范和常见问题
+- ✅ 热重载开发，提升调试效率
 
----
+但它**不能帮你**：
 
-**Happy Coding! 🚀**
+- ❌ 自动实现业务逻辑（这需要你自己写）
+- ❌ 自动接入第三方 API（需要你自己申请和集成）
+- ❌ 替代学习 MoFox-Bot 插件开发的知识
+
+把 MPDT 当作你的**脚手架工具**，它帮你打好地基，具体的房子还是要你自己盖！
+
+遇到问题？来 [GitHub Issues](https://github.com/MoFox-Studio/mofox-plugin-toolkit/issues) 聊聊，我们很乐意帮忙！
+
+<div align="center">
+
+**开始你的插件开发之旅吧！** 🚀
+
+Made with 🧡 by MoFox-Studio
+
+*"让 Bot 开发更规范，让框架搭建更简单"*
+
+</div>

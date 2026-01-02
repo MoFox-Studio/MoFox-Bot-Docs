@@ -4,11 +4,11 @@
 
 ## 零、WebUI 是什么？能干啥？
 
-MoFox-Bot WebUI 是一个基于 Web 的可视化管理控制台，让你通过浏览器就能完成对机器人的各种操作。
+MoFox-Bot WebUI 是一个基于 Web 的可视化管理控制台，让你通过浏览器就能完成对机器人的各种操作。再也不用对着黑乎乎的终端窗口发呆了！
 
 ### ✨ 主要功能
 
-**前端提供的功能**：
+**核心功能**：
 - 📊 **实时数据监控**：一目了然地查看消息统计、插件状态、系统资源使用情况
 - 🔌 **插件管理**：查看所有插件、启用/禁用插件、查看和编辑插件配置
 - 🛒 **插件市场**：浏览、搜索、安装社区开发的各类插件
@@ -16,8 +16,22 @@ MoFox-Bot WebUI 是一个基于 Web 的可视化管理控制台，让你通过�
 - 📱 **响应式设计**：无论是电脑还是手机，都能流畅访问
 - 🔐 **安全认证**：基于 API Key 的访问控制，保护你的机器人
 
+**自动更新功能**（懒人福音 🎉）：
+- 🔄 **一键更新 WebUI**：点一下按钮就能更新到最新版，告别手动下载
+- 🔄 **一键更新主程序**：MoFox-Bot 主程序也能一键更新
+- 📦 **自动安装依赖**：更新后自动帮你装好新增的依赖包
+- 🔙 **版本回滚**：更新翻车了？没关系，一键回滚到之前的版本
+- 🛡️ **备份保护**：更新前自动备份，安全无忧
+
+**更多好玩的功能**：
+- 🎭 **表情包管理**：管理和组织你的表情包资源
+- 👥 **人物关系管理**：可视化管理角色之间的关系
+- 💬 **聊天室**：实时聊天和消息广播功能
+- 📝 **日志查看器**：实时查看系统日志，debug 不再抓瞎
+
 **后端提供的能力**：
 - 🔍 **服务发现**：自动发现 MoFox-Bot 主程序的 IP 和端口
+- 🌐 **API 代理**：发现服务器自带代理功能，前端请求统一走 12138 端口
 - 🔑 **身份验证**：严格的 API Key 验证机制
 - 📡 **RESTful API**：标准化的数据接口
 - 🔌 **深度集成**：直接调用 MoFox-Bot 插件系统的各种 API
@@ -27,428 +41,386 @@ MoFox-Bot WebUI 是一个基于 Web 的可视化管理控制台，让你通过�
 在开始部署 WebUI 之前，请确认以下条件：
 
 1. **MoFox-Bot 主程序**：已经正确安装并能正常运行
-2. **Node.js 环境**：推荐使用当前 LTS 版本（Node.js 18 或更高）
-3. **项目文件**：已经下载或克隆了 `MoFox-Core-Webui` 项目
+2. **Git**：用于克隆仓库和后续自动更新（强烈推荐！）
+3. **Node.js 环境**（可选）：只有开发者才需要，普通用户不用管
 
-## 二、第一步：安装后端插件
-
-WebUI 的后端是以**插件**的形式集成到 MoFox-Bot 中的，所以第一步要先把后端插件装好。
-
-### 2.1 复制后端文件
-
-找到 `MoFox-Core-Webui` 项目中的 `backend` 文件夹，将它复制到 MoFox-Bot 的插件目录：
-
-```
-<MoFox-Bot安装目录>/
-└── plugins/
-    └── webui_backend/         ← 将 backend 文件夹重命名为 webui_backend 并放在这里
-        ├── __init__.py
-        ├── plugin.py
-        ├── discovery_server.py
-        ├── handlers/
-        └── routers/
-```
-
-::: tip 目录结构示例
-假设你的 MoFox-Bot 安装在 `E:\delveoper\mmc010`，那么完整路径应该是：
-```
-E:\delveoper\mmc010\plugins\webui_backend\
-```
+::: tip 没有 Git？
+如果你的电脑上没有 Git，可以从 [Git 官网](https://git-scm.com/) 下载安装。Windows 用户推荐使用安装包，一路下一步就行。装好 Git 之后，你就能享受一键更新的快乐了！
 :::
 
-### 2.2 配置 API Key（重要！）
+## 二、最简单的安装方式（强烈推荐！）
 
-打开 MoFox-Bot 的配置文件 `bot_config.toml`（通常在 `config` 目录下），找到 `plugin_api_valid_keys` 配置项：
+这是 2026 年了，我们当然要用最省心的方式！**一行命令搞定，还支持自动更新**，不香吗？
+
+### 2.1 克隆预编译版本
+
+打开终端（Windows 用 PowerShell，Mac/Linux 用 Terminal），进入 MoFox-Bot 的插件目录：
+
+**Windows PowerShell**：
+```powershell
+# 进入插件目录（把路径换成你自己的）
+cd E:\delveoper\mmc010\plugins
+
+# 克隆 webui-dist 分支（预编译版本，开箱即用）
+git clone -b webui-dist https://github.com/MoFox-Studio/MoFox-Core-Webui.git webui_backend
+```
+
+**Linux / macOS**：
+```bash
+# 进入插件目录
+cd /path/to/mofox-bot/plugins
+
+# 克隆 webui-dist 分支
+git clone -b webui-dist https://github.com/MoFox-Studio/MoFox-Core-Webui.git webui_backend
+```
+
+::: tip 为什么是 webui-dist 分支？
+这个分支包含了**已经编译好的前端文件**，你不需要安装 Node.js，不需要 `npm install`，不需要 `npm run build`。克隆下来就能直接用，懒人专属！
+
+而且最重要的是——**支持一键更新**！以后有新版本，在 WebUI 界面里点一下就行，不用再手动下载了。
+:::
+
+### 2.2 配置 API Key
+
+首次安装后，进入插件目录，编辑配置文件：
+
+```
+plugins/webui_backend/config/config.toml
+```
+
+找到 `[auth]` 部分，设置你的 API Key：
 
 ```toml
-# --- 插件API密钥认证 ---
-# 用于访问需要认证的插件API的有效密钥列表
-# 如果列表为空，则所有需要认证的API都将无法访问
-# 例如: ["your-secret-key-1", "your-secret-key-2"]
-plugin_api_valid_keys = ["your-secret-api-key-here"]
+[auth]
+# 替换成你自己的密钥（用于登录 WebUI）
+api_keys = ["your-super-secret-key-here"]
 ```
-
-**重要说明**：
-- 请将 `your-secret-api-key-here` 替换为**你自己的密钥**（强烈建议使用随机生成的长字符串）
-- 可以配置多个密钥，例如：`["key1", "key2", "key3"]`
-- 这个密钥将用于**登录 WebUI**，请妥善保管，不要泄露
-- **如果列表为空 `[]`，则无法登录 WebUI**
 
 ::: warning 安全提醒
-API Key 就像你家的钥匙，千万别把它写在公开的地方或分享给不信任的人。建议使用在线工具生成随机密钥，比如：`openssl rand -hex 32`
+API Key 就像你家的钥匙，千万别把它写在公开的地方或分享给不信任的人！
+
+建议使用随机生成的长字符串，比如：
+- Windows PowerShell：`[System.Guid]::NewGuid().ToString()`
+- Linux/Mac：`openssl rand -hex 32`
 :::
 
-### 2.3 重启 MoFox-Bot
+### 2.3 启动并访问
 
-保存配置文件后，**重启 MoFox-Bot 主程序**。插件会自动加载，并在固定端口 **12138** 启动服务发现服务器。
+1. **重启 MoFox-Bot**（如果正在运行的话）
+2. 打开浏览器，访问：**http://localhost:12138**
+3. 用你刚才配置的 API Key 登录
 
-::: tip 如何确认插件加载成功？
-重启后，在 MoFox-Bot 的日志中应该能看到类似这样的信息：
-```
-[INFO] 插件 webui_backend 已加载
-[INFO] 发现服务器已启动，端口：12138
-```
+::: tip 恭喜你！🎉
+如果看到了登录界面，说明安装成功了！以后更新只需要展开侧边栏找到「更新管理」就行，是不是超级简单？
 :::
 
-## 三、第二步：访问 WebUI
+## 三、自动更新功能使用指南
 
-根据你的情况，有两种方式访问 WebUI：
+这可能是整个 WebUI 最香的功能了——**一键更新**！
 
-### 方式一：使用预编译版本（推荐新手）
+### 3.1 找到更新管理
 
-如果你的 `backend/static/` 目录下**已经有编译好的前端文件**（通常是从 Release 下载的完整包，或者自己手动构建过），那么恭喜你，可以直接使用了！
+更新功能的入口非常好找：
 
-**操作步骤**：
+1. 登录 WebUI
+2. 看左侧边栏，往下滑
+3. 找到 **「更新管理」** 菜单项，点进去
 
-1. **确认静态文件存在**
-   
-   检查 `plugins/webui_backend/static/` 目录，应该能看到：
-   ```
-   plugins/webui_backend/static/
-   ├── index.html
-   ├── assets/
-   └── BUILD_INFO.txt
-   ```
+你会看到三个标签页：
+- **UI 更新**：更新 WebUI 前端和后端
+- **主程序**：更新 MoFox-Bot 主程序
+- **Git 设置**：配置 Git 相关选项
 
-2. **直接访问 WebUI**
-   
-   打开浏览器，访问：**http://localhost:12138**
-   
-   ::: tip 为什么是 12138？
-   当 `backend/static/` 目录存在时，发现服务器会自动托管这些静态文件，你不需要再启动独立的前端开发服务器。
-   :::
+### 3.2 更新 WebUI（前端 + 后端）
 
-3. **登录**
-   
-   使用你在 `bot_config.toml` 中配置的 API Key 登录即可。
+1. 进入「更新管理」页面
+2. 默认就在「UI 更新」标签页
+3. 点击 **「检查更新」** 按钮
+4. 如果有新版本，点击 **「立即更新」**
 
-**如何获取预编译版本？**
+更新过程全自动：
+- 从 GitHub 拉取最新代码
+- 自动备份当前版本（万一翻车可以回滚）
+- 应用更新并刷新页面
 
-- **方法一（推荐）**：访问 [GitHub Releases](https://github.com/ikun-11451/MoFox-Core-Webui/releases) 页面，下载最新的 `mofox-webui-backend.zip`，解压后就包含了完整的后端代码和编译好的前端。
-
-- **方法二**：如果你已经有源码，可以手动构建前端：
-  ```bash
-  cd MoFox-Core-Webui/forward/mofox-webui
-  npm install
-  npm run build
-  ```
-  
-  然后将 `dist/` 目录的内容复制到 `backend/static/`：
-  ```powershell
-  # Windows PowerShell
-  Copy-Item -Path forward\mofox-webui\dist\* -Destination backend\static\ -Recurse -Force
-  ```
-
-::: tip 生产模式的优势
-- 不需要安装 Node.js 和前端依赖
-- 不需要运行两个服务器（前端+后端）
-- 访问速度更快，资源占用更少
-- 适合长期稳定运行
+::: tip 更新失败了？
+别慌！WebUI 在更新前会自动备份，你可以在「历史版本」中选择回滚到之前的版本。
 :::
 
----
+### 3.3 更新 MoFox-Bot 主程序
 
-### 方式二：前端开发模式（开发者使用）
+没错，WebUI 还能帮你更新主程序！
 
-如果你需要**修改前端代码**或者**调试前端功能**，那就需要启动前端开发服务器。
+1. 进入「更新管理」页面
+2. 点击 **「主程序」** 标签页
+3. 点击 **「检查更新」**
+4. 确认更新内容后，点击 **「执行更新」**
+
+更新后会自动：
+- 检测你的 Python 虚拟环境类型（venv 还是 conda）
+- 自动安装新增的依赖包
+- 提示你重启主程序
+
+### 3.4 分支管理
+
+在「主程序」标签页，你可以看到「分支管理」功能：
+
+- **当前分支**：显示主程序当前所在的分支（比如 `dev`）
+- **切换分支**：可以切换到其他分支，比如切换到稳定版分支
+
+::: tip 小提示
+`dev` 分支是开发分支，有最新功能但可能不太稳定。如果追求稳定，建议切换到主分支。
+:::
 
 ::: warning 注意
-这种方式需要安装 Node.js 环境和前端依赖，适合开发者使用。如果你只是想使用 WebUI，强烈建议使用方式一。
+主程序更新或切换分支后需要**重启** MoFox-Bot 才能生效哦！
 :::
 
-### 3.1 进入前端目录
+### 3.5 版本回滚
 
-打开终端（命令行），进入前端项目目录：
+万一更新后出现问题，别担心：
 
-```bash
-cd MoFox-Core-Webui/forward/mofox-webui
-```
+1. 进入「更新管理」页面
+2. 在「历史版本」部分可以看到之前的版本
+3. 找到想要回滚的版本，点击 **「回滚」**
 
-### 3.2 安装依赖
+一切恢复如初，就像什么都没发生过一样~
 
-首次使用需要安装依赖包（只需要执行一次）：
+## 四、其他安装方式
 
-```bash
-npm install
-```
+如果你因为某些原因不能使用 Git，或者你是开发者需要修改代码，这里还有其他选择。
 
-如果你使用 `pnpm`（推荐，速度更快）：
+### 方式二：手动下载 ZIP（不支持自动更新）
 
-```bash
-pnpm install
-```
-
-::: tip 国内用户加速
-如果下载速度很慢，可以使用国内镜像：
-```bash
-npm config set registry https://registry.npmmirror.com
-npm install
-```
+::: warning 不推荐
+这种方式安装后**无法使用一键更新功能**，每次更新都要手动下载，适合网络环境特殊的用户。
 :::
 
-### 3.3 启动开发服务器
+1. 访问 [webui-dist 分支](https://github.com/MoFox-Studio/MoFox-Core-Webui/tree/webui-dist)
+2. 点击绿色的 **Code** 按钮 → **Download ZIP**
+3. 解压到 `plugins/webui_backend/` 目录
+4. 配置 API Key（参考 2.2）
+5. 重启 MoFox-Bot
 
-依赖安装完成后，启动前端开发服务器：
+### 方式三：开发者模式
+
+适合需要修改前端代码的开发者。这种方式需要安装 Node.js 环境。
 
 ```bash
+# 克隆完整仓库（包含源码）
+git clone https://github.com/MoFox-Studio/MoFox-Core-Webui.git
+
+# 复制后端到插件目录
+cp -r backend /path/to/mofox-bot/plugins/webui_backend
+
+# 进入前端目录
+cd forward/mofox-webui
+
+# 安装依赖
+npm install
+
+# 启动开发服务器
 npm run dev
+
+# 访问开发版：http://localhost:11451
 ```
 
-终端会输出类似这样的信息：
-
-```
-VITE v5.x.x  ready in xxx ms
-
-➜  Local:   http://localhost:11451/
-➜  Network: use --host to expose
-```
-
-### 3.4 访问 WebUI
-
-打开浏览器，访问：**http://localhost:11451**
-
-如果一切顺利，你会看到 WebUI 的登录界面。
-
-### 3.5 登录
-
-输入你在 `bot_config.toml` 中配置的 API Key（`plugin_api_valid_keys` 中的任意一个），点击登录。
-
-登录成功后，你就能看到 WebUI 的主界面了！
-
-::: tip 开发模式 vs 生产模式对比
+::: tip 开发模式 vs 生产模式
 | 特性 | 开发模式（11451端口） | 生产模式（12138端口） |
 |------|---------------------|---------------------|
 | 需要 Node.js | ✅ 是 | ❌ 否 |
 | 热重载 | ✅ 支持 | ❌ 不支持 |
-| 启动速度 | 慢（需要编译） | 快（直接加载） |
+| 自动更新 | ❌ 不支持 | ✅ 支持 |
 | 资源占用 | 高 | 低 |
 | 适用场景 | 前端开发调试 | 日常使用 |
 :::
 
-## 四、生产环境部署（可选）
-
-如果你想让 WebUI 长期运行，或者部署在服务器上供多人访问，这里提供几种部署方案。
-
-::: tip 最简单的方式
-如果只是个人使用，直接使用**方式一（预编译版本）**就已经是生产环境了，不需要额外部署。本章节主要适用于需要使用独立 Web 服务器或自定义域名的场景。
-:::
-
-### 4.1 使用集成的静态文件托管（推荐）
-
-这是最简单的生产部署方式，已经在"第三步 方式一"中介绍过了：
-
-1. 将编译好的前端文件放在 `backend/static/` 目录
-2. 启动 MoFox-Bot
-3. 直接访问 http://localhost:12138
-
-**优点**：
-- 配置简单，开箱即用
-- 不需要额外的 Web 服务器
-- 前后端统一端口，无需处理跨域问题
-
-**缺点**：
-- 不支持自定义域名和 HTTPS（除非配置反向代理）
-- 端口固定为 12138
-
-### 4.2 手动构建前端
-
-如果你需要自己构建前端（例如修改了前端代码），在前端目录下执行：
-
-```bash
-cd MoFox-Core-Webui/forward/mofox-webui
-npm install
-npm run build
-```
-
-构建完成后，静态文件会生成在 `forward/mofox-webui/dist` 目录中。
-
-将构建产物复制到后端的 static 目录：
-
-```powershell
-# Windows PowerShell
-Copy-Item -Path forward\mofox-webui\dist\* -Destination backend\static\ -Recurse -Force
-
-# Linux/Mac
-cp -r forward/mofox-webui/dist/* backend/static/
-```
-
-复制完成后，重启 MoFox-Bot，访问 http://localhost:12138 即可。
-
-### 4.3 使用独立的 Web 服务器（高级）
-
-如果你需要自定义域名、HTTPS 或者更灵活的配置，可以使用独立的 Web 服务器来托管前端文件。
-
-构建完成后，静态文件会生成在 `forward/mofox-webui/dist` 目录中。
-
-### 4.2 部署前端文件
-
-你可以使用任何静态文件服务器来部署这些文件，例如：
-
-#### 方式一：使用 Nginx
-
-将 `dist` 目录中的文件复制到 Nginx 的网站根目录，配置示例：
-
-```nginx
-server {
-    listen 11451;
-    server_name localhost;
-    root /path/to/dist;
-    index index.html;
-    
-    location / {
-        try_files $uri $uri/ /index.html;
-    }
-}
-```
-
-#### 方式二：使用 serve（简单快速）
-
-安装 `serve` 工具：
-
-```bash
-npm install -g serve
-```
-
-然后运行：
-
-```bash
-serve -s dist -l 11451
-```
-
-#### 方式三：使用 Apache、Caddy 等
-
-根据你熟悉的服务器软件配置即可。
-
 ## 五、工作原理：它是怎么运作的？
 
-理解 WebUI 的工作流程，能帮助你更好地排查问题。
+理解 WebUI 的工作流程，能帮助你更好地排查问题。（如果你只是用用，可以跳过这节~）
 
 ```
-┌─────────────┐       ┌──────────────────┐       ┌─────────────┐
-│   前端 UI   │──1──▶ │ 发现服务器:12138 │──2──▶ │  返回信息   │
-│ localhost:  │       │  (固定端口)      │       │ host + port │
-│   11451     │       └──────────────────┘       └─────────────┘
-└──────┬──────┘                                          │
-       │                                                 │
-       └────────────────3. 使用返回的地址访问─────────────┘
-                              ▼
-                    ┌──────────────────┐
-                    │   主程序 API     │
-                    │ plugins/         │
-                    │ webui_backend/*  │
-                    └──────────────────┘
+┌─────────────────────────────────────────────────────────────────┐
+│                       用户浏览器                                 │
+│                   http://localhost:12138                        │
+└──────────────────────────┬──────────────────────────────────────┘
+                           │
+                           ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                  发现服务器 (端口 12138)                         │
+│                                                                  │
+│  • 托管静态文件 (static/)                                        │
+│  • GET /server-info → 返回主程序地址                             │
+│  • API 代理 → 转发请求到主程序，前端不用关心主程序端口           │
+│  • 就像一个"导航站+中转站"                                       │
+└──────────────────────────┬──────────────────────────────────────┘
+                           │
+                           ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                    MoFox-Bot 主程序                              │
+│                                                                  │
+│  /plugin-api/webui_backend/                                     │
+│    ├── /auth         认证接口                                    │
+│    ├── /stats        统计数据                                    │
+│    ├── /plugins      插件管理                                    │
+│    ├── /config       配置管理                                    │
+│    ├── /marketplace  插件市场                                    │
+│    ├── /ui-update    WebUI 更新 ← 一键更新的秘密武器              │
+│    ├── /git-update   主程序更新                                  │
+│    ├── /log-viewer   日志查看                                    │
+│    ├── /chatroom     聊天室                                      │
+│    └── ...           更多 API                                    │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
 **流程说明**：
-1. **前端访问固定端口 12138**：前端首先会访问发现服务器（端口固定为 12138），获取 MoFox-Bot 主程序的实际地址
-2. **发现服务器返回信息**：发现服务器返回主程序的 IP 和端口
-3. **前端连接主程序**：前端使用获取到的地址 + API Key，访问受保护的 API 接口
+1. **浏览器访问 12138 端口**：发现服务器返回静态页面（前端界面）
+2. **前端发起 API 请求**：所有请求都发到 12138 端口
+3. **发现服务器代理转发**：自动把请求转发给主程序，前端完全不用关心主程序端口是多少
 
-::: tip 为什么要这样设计？
-因为 MoFox-Bot 主程序的端口可能是动态分配的，而前端需要一个固定的入口才能找到它。发现服务器就像一个"导航站"，告诉前端"主程序在哪儿"。
+::: tip 自动更新的原理
+WebUI 使用 Git 实现自动更新：
+1. `git fetch` 检查远程是否有新版本
+2. 对比本地和远程的 commit hash
+3. `git pull` 拉取最新代码
+4. 更新完成，刷新页面
+
+这就是为什么推荐使用 `git clone` 安装——因为只有这样才能用 `git pull` 更新啊！
 :::
 
 ## 六、项目结构说明
 
-了解项目结构有助于你进行定制化开发或排查问题。
+了解项目结构有助于你进行定制化开发或排查问题。（普通用户可以跳过~）
 
 ```
-MoFox-Core-Webui/
-├── backend/                    # 后端插件（需要复制到 Bot 插件目录）
-│   ├── plugin.py              # 主插件类
-│   ├── discovery_server.py    # 服务发现服务器（端口 12138）
-│   ├── handlers/              # 生命周期处理器
-│   │   ├── startup_handler.py
-│   │   └── shutdown_handler.py
-│   └── routers/               # API 路由
-│       ├── auth.py           # 认证接口
-│       ├── stats.py          # 统计数据接口
-│       ├── plugin_mgmt.py    # 插件管理接口
-│       ├── config_mgmt.py    # 配置管理接口
-│       └── marketplace.py    # 插件市场接口
-│
-└── forward/                   # 前端项目
-    └── mofox-webui/
-        ├── src/
-        │   ├── components/   # Vue 组件
-        │   ├── views/        # 页面视图
-        │   ├── router/       # 路由配置
-        │   └── stores/       # 状态管理（Pinia）
-        ├── package.json
-        └── vite.config.ts
+webui_backend/                    # 插件目录（安装后的结构）
+├── __init__.py                  # 模块入口
+├── plugin.py                    # 主插件类，一切的起点
+├── discovery_server.py          # 发现服务器 + 静态文件托管
+├── config/
+│   └── config.toml             # 插件配置文件（API Key 在这里改）
+├── static/                      # 编译好的前端静态文件
+│   ├── index.html
+│   └── assets/
+├── adapters/                    # 适配器组件
+├── apis/                        # 外部 API 集成
+├── handlers/                    # 生命周期处理器
+│   ├── startup_handler.py      # 启动时干啥
+│   └── shutdown_handler.py     # 关闭时干啥
+├── models/                      # 数据模型
+├── plugins/                     # 子插件
+├── routers/                     # API 路由（这里是功能的主体）
+│   ├── auth_router.py          # 认证接口
+│   ├── stats_router.py         # 统计数据
+│   ├── plugin_router.py        # 插件管理
+│   ├── config_router.py        # 配置管理
+│   ├── marketplace_router.py   # 插件市场
+│   ├── ui_update_router.py     # WebUI 更新
+│   ├── git_update_router.py    # 主程序更新
+│   ├── log_viewer_router.py    # 日志查看
+│   ├── chatroom_router.py      # 聊天室
+│   ├── emoji_manager_router.py # 表情包管理
+│   ├── relationship_router.py  # 人物关系
+│   └── ...                     # 还有更多
+├── storage/                     # 数据存储
+└── utils/                       # 工具函数
+    └── update/                  # 更新相关工具
+        ├── git_detector.py      # Git 环境检测
+        ├── git_updater.py       # Git 更新器
+        ├── ui_version_manager.py # UI 版本管理
+        └── venv_utils.py        # 虚拟环境工具
 ```
 
 ## 七、常见问题排查
 
 遇到问题别慌，先看看这里：
 
-### Q1: 访问 localhost:11451 显示"无法访问此网站"
-
-**可能原因**：
-- 前端开发服务器没有启动
-- 端口被其他程序占用
-
-**解决方法**：
-1. 确认终端中是否有 `npm run dev` 的输出信息
-2. 检查端口占用：`netstat -ano | findstr :11451`（Windows）或 `lsof -i :11451`（Mac/Linux）
-3. 如果端口被占用，关闭占用程序或修改前端配置文件中的端口
-
-### Q2: 登录后提示"无法连接到后端服务"
+### Q1: 访问 localhost:12138 显示"无法访问此网站"
 
 **可能原因**：
 - MoFox-Bot 主程序没有运行
 - 后端插件没有正确加载
-- 防火墙阻止了连接
+- 端口被其他程序占用
 
 **解决方法**：
 1. 确认 MoFox-Bot 主程序正在运行
 2. 检查日志，确认 `webui_backend` 插件已加载
-3. 确认发现服务器（端口 12138）正常启动
-4. 临时关闭防火墙测试
+3. 检查端口占用：
+   - Windows: `netstat -ano | findstr :12138`
+   - Mac/Linux: `lsof -i :12138`
+4. 如果端口被占用，关闭占用程序或修改配置
+
+### Q2: 登录后提示"无法连接到后端服务"
+
+**可能原因**：
+- 主程序端口配置不正确
+- 防火墙阻止了连接
+
+**解决方法**：
+1. 检查 `config/config.toml` 中的 `[main_server]` 配置
+2. 确认主程序实际运行的端口
+3. 临时关闭防火墙测试
 
 ### Q3: 输入 API Key 后提示"认证失败"
 
 **可能原因**：
-- API Key 输入错误
-- `bot_config.toml` 中的 `plugin_api_valid_keys` 配置不正确
+- API Key 输入错误（注意大小写和空格！）
+- 配置文件中的 `api_keys` 列表为空
 
 **解决方法**：
-1. 仔细核对 API Key 是否与配置文件中的完全一致（包括大小写、空格）
-2. 确认 `plugin_api_valid_keys` 列表不为空
-3. 修改配置后记得**重启 MoFox-Bot**
+1. 仔细核对 API Key 是否完全一致
+2. 确认 `config/config.toml` 中 `[auth]` 部分的 `api_keys` 不为空
+3. 修改配置后**记得重启 MoFox-Bot**
 
-### Q4: 修改配置后需要重启吗？
+### Q4: 点击"检查更新"提示"不在 webui-dist 分支"
 
-**关于后端配置**：
-- 修改 `bot_config.toml` 后，**需要重启 MoFox-Bot 主程序**
+**原因**：
+你可能是用 ZIP 下载安装的，或者克隆的是 main 分支。
 
-**关于前端配置**：
-- 修改前端配置后（如发现服务器地址），**需要重启前端开发服务器**（Ctrl+C 停止，然后重新 `npm run dev`）
-
-### Q5: 如何修改发现服务器的地址？
-
-如果你的 MoFox-Bot 部署在远程服务器上，需要修改前端配置：
-
-编辑 `forward/mofox-webui/src/api/config.ts`：
-
-```typescript
-export const DISCOVERY_SERVER_URL = 'http://your-server-ip:12138'
+**解决方法**：
+使用 Git 重新安装：
+```bash
+cd /path/to/plugins
+rm -rf webui_backend  # 删除旧的
+git clone -b webui-dist https://github.com/MoFox-Studio/MoFox-Core-Webui.git webui_backend
 ```
 
-将 `your-server-ip` 替换为你的服务器 IP 地址。
+### Q5: 更新后出现问题怎么办？
+
+**别慌！** WebUI 在更新前会自动备份：
+
+1. 进入侧边栏的 **更新管理**
+2. 在「历史版本」部分找到之前的版本
+3. 点击 **回滚**
+
+一切恢复如初！
+
+### Q6: 如何从远程服务器访问 WebUI？
+
+如果 MoFox-Bot 部署在远程服务器上：
+
+1. 确保服务器防火墙开放了 12138 端口
+2. 将 `config/config.toml` 中 `[discovery]` 的 `host` 设为 `0.0.0.0`
+3. 使用 `http://服务器IP:12138` 访问
+
+::: warning 安全提醒
+公网暴露端口有风险！建议：
+- 使用强密码作为 API Key
+- 考虑配置 HTTPS（通过 Nginx 反向代理）
+- 限制可访问的 IP 范围
+:::
 
 ## 八、技术栈说明
 
 如果你想参与开发或深度定制，了解技术栈会很有帮助。
 
 ### 前端
-- **Vue 3**：渐进式 JavaScript 框架
-- **TypeScript**：带类型系统的 JavaScript 超集
-- **Vite**：新一代前端构建工具，速度极快
+- **Vue 3**：渐进式 JavaScript 框架（好用！）
+- **TypeScript**：带类型系统的 JavaScript 超集（少踩坑！）
+- **Vite**：新一代前端构建工具（贼快！）
 - **Vue Router**：Vue 官方路由管理器
 - **Pinia**：轻量级状态管理库
 - **ECharts**：强大的数据可视化图表库
-- **Marked**：Markdown 渲染库
 
 ### 后端
 - **FastAPI**：现代、高性能的 Python Web 框架
@@ -457,7 +429,7 @@ export const DISCOVERY_SERVER_URL = 'http://your-server-ip:12138'
 
 ## 九、开发状态
 
-目前项目的功能完成情况：
+目前项目的功能完成情况（打勾的都能用了！）：
 
 - [x] 后端插件系统
 - [x] 服务发现机制
@@ -466,8 +438,16 @@ export const DISCOVERY_SERVER_URL = 'http://your-server-ip:12138'
 - [x] 插件管理
 - [x] 插件市场
 - [x] 配置编辑器
+- [x] 响应式布局
+- [x] 静态文件托管
+- [x] **WebUI 自动更新** 🎉
+- [x] **主程序自动更新** 🎉
+- [x] **依赖自动安装** 🎉
+- [x] **版本回滚** 🎉
 - [x] 实时日志查看
-- [ ] 响应式布局
+- [x] 聊天室功能
+- [x] 表情包管理
+- [x] 人物关系管理
 - [ ] 消息历史查看
 - [ ] 定时任务管理
 - [ ] 用户权限管理
@@ -479,16 +459,18 @@ export const DISCOVERY_SERVER_URL = 'http://your-server-ip:12138'
 WebUI 采用了多层安全机制：
 
 - **API Key 验证**：所有敏感接口都需要在请求头中携带 `X-API-Key`
-- **固定发现端口**：仅发现服务使用固定端口（12138），主要 API 使用动态端口
+- **固定发现端口**：仅发现服务使用固定端口（12138）
 - **CORS 配置**：后端已正确配置 CORS，支持跨域访问但限制了来源
-- **插件隔离**：后端以插件形式运行，与主程序隔离，降低安全风险
+- **会话管理**：可配置会话超时时间
+- **备份机制**：更新前自动备份，保护你的数据
 
 ::: warning 生产环境建议
 如果你要在公网环境部署 WebUI，强烈建议：
-1. 使用 HTTPS 加密传输
-2. 定期更换 API Key
-3. 限制访问 IP 范围
-4. 启用防火墙规则
+1. 使用 HTTPS 加密传输（配置 Nginx/Caddy 反向代理）
+2. 使用强密码作为 API Key
+3. 定期更换 API Key
+4. 限制访问 IP 范围
+5. 启用防火墙规则
 :::
 
 ## 十一、贡献与反馈
@@ -499,6 +481,8 @@ WebUI 采用了多层安全机制：
 - 提交 Pull Request
 - 加入社区讨论
 
----
+好了，现在你已经掌握了 MoFox-Bot WebUI 的完整使用方法。去享受可视化管理带来的便利吧！
 
-好了，现在你已经掌握了 MoFox-Bot WebUI 的完整使用方法。去享受可视化管理带来的便利吧！如果还有疑问，随时查阅本文档或联系社区。
+最重要的是——**记得用 `git clone` 安装，这样才能享受一键更新的快乐** 😎
+
+如果还有疑问，随时查阅本文档或联系社区。

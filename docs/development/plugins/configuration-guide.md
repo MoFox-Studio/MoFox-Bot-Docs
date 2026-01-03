@@ -237,6 +237,103 @@ ConfigField(
 | `file` | 文件路径选择 | 文件/目录路径 |
 
 
+### 📤 各编辑器输出值类型详解
+
+不同的编辑器会将不同格式的值写入到你的 TOML 配置文件中。了解每个编辑器的输出格式，可以帮助你更好地设计配置 Schema。
+
+| 编辑器 | 输出类型 | TOML 配置文件中的值 | 说明 |
+|--------|---------|---------------------|------|
+| `text` | `str` | `key = "hello world"` | 单行字符串，支持最大长度限制 |
+| `password` | `str` | `api_key = "sk-xxxxx"` | 与 text 相同，但 UI 中会遮罩显示 |
+| `textarea` | `str` | `prompt = "多行\n文本\n内容"` | 多行字符串，换行符会被保留 |
+| `number` | `int` / `float` | `count = 42` 或 `rate = 0.75` | 取决于 `type=int` 或 `type=float` |
+| `slider` | `int` / `float` | `temperature = 0.7` | 同 number，只是 UI 以滑块呈现 |
+| `switch` | `bool` | `enabled = true` | 布尔值：`true` 或 `false` |
+| `select` | `str` / `int` / 其他 | `model = "gpt-4"` | 取决于 `choices` 中选项的类型 |
+| `list` | `list` | `users = ["user1", "user2"]` | 数组，元素类型由 `item_type` 决定 |
+| `json` | `dict` | `settings = { key = "value" }` | 内联表或多行表格式的字典 |
+| `color` | `str` | `theme_color = "#6750A4"` | 大写的十六进制颜色值，带 `#` 前缀 |
+| `file` | `str` | `config_path = "/path/to/file"` | 文件或目录的路径字符串 |
+
+#### 输出示例
+
+**text / password / textarea / file / color** - 字符串类型：
+```toml
+[settings]
+username = "admin"              # text
+api_key = "sk-xxxxxxxx"         # password（值本身不加密）
+system_prompt = """
+你是一个助手。
+请友好回复。
+"""                              # textarea（多行字符串）
+data_dir = "/home/user/data"    # file
+accent_color = "#4285F4"        # color
+```
+
+**number / slider** - 数字类型：
+```toml
+[ai]
+max_tokens = 2048               # number (int)
+temperature = 0.7               # slider (float)
+top_p = 0.9                     # number (float)
+retry_count = 3                 # number (int)
+```
+
+**switch** - 布尔类型：
+```toml
+[features]
+enabled = true                  # switch
+debug_mode = false              # switch
+use_proxy = true                # switch
+```
+
+**select** - 选项类型（输出取决于 choices）：
+```toml
+[model]
+provider = "openai"             # select (字符串选项)
+priority = 1                    # select (数字选项)
+```
+
+**list** - 列表类型：
+```toml
+[permissions]
+# 简单字符串列表 (item_type="str")
+admins = ["user1", "user2", "user3"]
+
+# 数字列表 (item_type="number")
+allowed_ports = [8080, 8081, 8082]
+
+# 对象列表 (item_type="object")
+[[rules]]
+keyword = "hello"
+reply = "你好！"
+probability = 1.0
+
+[[rules]]
+keyword = "bye"
+reply = "再见~"
+probability = 0.8
+```
+
+**json** - 字典/对象类型：
+```toml
+[advanced]
+# 简单的内联表
+metadata = { version = "1.0", author = "dev" }
+
+# 复杂嵌套会展开为多行
+[advanced.custom_headers]
+Authorization = "Bearer xxx"
+Content-Type = "application/json"
+```
+
+:::tip 类型转换
+- 配置系统会自动处理 Python 类型和 TOML 类型之间的转换
+- 在代码中用 `get_config()` 获取的值已经是正确的 Python 类型
+- 不需要手动做类型转换，直接使用即可
+:::
+
+
 ### 🎨 UI 美化属性
 
 让你的配置界面更友好的属性：

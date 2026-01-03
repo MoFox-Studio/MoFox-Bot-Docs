@@ -22,18 +22,18 @@
 我们需要借助 Termux 这个强大的终端模拟器，并在其中安装一个 Ubuntu 系统，来为 MoFox_Bot 提供一个稳定、完整的运行环境。
 
 ### 1.安装 ZeroTermux:
-- 可以前往<a data-v-10225364="" class="VPNolebaseInlinePreviewLink" relative="" href="https://github.com/hanxinhao000/ZeroTermux/releases/tag/release" target="_blank" rel="noreferrer">ZeroTermux Github Releases</a>下载安装包。
+- 可以前往[ZeroTermux的github](https://github.com/hanxinhao000/ZeroTermux/releases/tag/release)下载安装包。
 - 我个人测试下来换源没什么用建议使用流量部署，部署完在用wifi，全程大概消耗1.5G流量。
 
 ### 2.安装 proot 和 Ubuntu:
 - 在 ZeroTermux 中，逐行执行以下命令来安装 proot 和 Ubuntu 环境。
-```
+```bash
 pkg install proot-distro      # 安装 proot
 proot-distro install ubuntu   # 安装 Ubuntu
 ```
 ### 3.登录 Ubuntu:
 - 安装完成后，执行以下命令登录到 Ubuntu 环境：
-```
+```bash
 proot-distro login ubuntu
 ```
 - 成功登录后，你将处于 Ubuntu 的 shell 环境中。后续的所有命令行操作，都将在这个 Ubuntu 环境中进行。成功登录后，你将处于 Ubuntu 的 shell 环境中。后续的所有命令行操作，都将在这个 Ubuntu 环境中进行。
@@ -41,7 +41,7 @@ proot-distro login ubuntu
 # 1.3 软件三件套：Python、Git 与 uv
 ### 1.安装基础软件包:
 - 在 Ubuntu 环境中，首先更新包列表并安装核心工具：
-```
+```bash
 apt update
 apt install sudo git curl python3 python3-pip python3-venv build-essential screen
 ```
@@ -49,28 +49,28 @@ apt install sudo git curl python3 python3-pip python3-venv build-essential scree
 
 ### 2.安装 uv (推荐的 Python 包管理器):
 - uv 是一个速度极快的 Python 包管理器，我们强烈推荐使用它来管理项目依赖。
-```
+```bash
 pip3 install uv --break-system-packages -i https://repo.huaweicloud.com/repository/pypi/simple
 ```
 - 为了让系统能找到 uv 命令，需要将它所在的路径添加到环境变量中。执行以下命令：
 
-```
+```bash
 echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
 source ~/.bashrc
 ```
 ### 3.验证
 - 输入以下命令并回车：
-```
+```bash
 python3 --version
 ```
 - 如果屏幕上显示出 Python 版本号（如 Python 3.13.6），则证明安装成功。
 - 输入以下命令并回车：
-```
+```bash
 git --version
 ```
 - 如果显示出 Git 的版本号（如 git version 2.34.1），则证明安装成功。
 - 输入以下命令并回车：
-```
+```bash
 uv --version
 ```
 - 如果显示出 uv 的版本号，则证明安装成功。
@@ -79,7 +79,7 @@ uv --version
 
 Napcat QQ 是一个 QQ 客户端，也是 MoFox_Bot 与 QQ 平台沟通的桥梁。
 
-```
+```bash
 curl -o \
 napcat.sh \
 https://nclatest.znin.net/NapNeko/NapCat-Installer/main/script/install.sh \
@@ -91,7 +91,7 @@ https://nclatest.znin.net/NapNeko/NapCat-Installer/main/script/install.sh \
 ### 1.创建并进入文件夹:
 - 在 Ubuntu 终端中，执行以下命令，这会在你的用户主目录下创建一个名为 MoFox_Bot_Deployment 的文件夹，并进入该目录。
 
-```
+```bash
 cd ~
 mkdir MoFox_Bot_Deployment
 cd MoFox_Bot_Deployment
@@ -100,19 +100,19 @@ cd MoFox_Bot_Deployment
 ### 2.git clone 神威:
 
 - 在终端中，粘贴并执行以下命令：
-```
+```bash
 git clone https://github.com/MoFox-Studio/MoFox-Core.git
 ```
 # 第三章：激活环境——注入灵魂
 我们已经有了机器人的“素体”（项目代码），现在需要为它创建一个纯净的生存空间（虚拟环境），并注入“灵魂”（安装所有必需的程序库）。
 ### 1.进入项目目录:
 - 输入并回车喵~
-```
+```bash
 cd MoFox-Core
 ```
 ### 2.创建并激活虚拟环境:
 - 我们将使用 uv 来完成环境的创建和激活。
-```
+```bash
 # 创建虚拟环境
 uv venv
 # 激活虚拟环境 (核心步骤)
@@ -122,13 +122,13 @@ source .venv/bin/activate
 - ⚠️ 重要提示: 之后所有的安装、运行操作，都必须在这个带有 (MoFox_Core) 标记的命令行窗口中进行。
 ### 3.依赖安装：一行代码搞定:
 - 在已激活虚拟环境的命令行窗口中，执行以下命令：
-```
+```bash
 uv pip install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple
 ```
 - 请耐心等待，直到它全部完成。
 - 好了看到那个犹如高考导数大题一样令人恶心的报错了吗？
 - 输入以下内容并回车
-```
+```bash
 # 方法A：使用环境变量
 export UV_LINK_MODE=copy
 uv pip install py-key-value-aio==0.2.8
@@ -145,17 +145,17 @@ uv pip install --link-mode copy py-key-value-aio==0.2.8
 这个文件负责最基础的环境变量设置。
 ### 1.复制与重命名:
 - 在 MoFox_Bot 文件夹的根目录下，执行以下命令：
-```
+```bash
 cp template/template.env .env
 ```
 ### 2.修改内容:
 
 - 用编辑器打开 .env 文件 
-```
+```bash
 nano .env
 ```
 - 找到 EULA_CONFIRMED=false 这一行，将 false 修改为 true。这代表你同意并遵守项目的用户许可协议。（使用右下角键盘左上角的4个箭头控制光标移动，并保证光标在false后而不是在e上面，相信我零基础的人需要这句话，这里建议切换英文输入。）
-```
+```ini
 EULA_CONFIRMED=true
 ```
 - 点击第一行第三个摁键 CTRL 在点击键盘上面的x y 在点击回车即可保存文件。
@@ -163,24 +163,24 @@ EULA_CONFIRMED=true
 # 4.2 bot_config.toml：机器人的“身份证”
 ### 1.创建文件夹:
 - 执行以下命令喵~
-```
+```bash
 mkdir config
 ```
 ### 2。复制与重命名:
 - 执行以下命令：
-```
+```bash
 cp template/bot_config_template.toml config/bot_config.toml
 ```
 ### 3.修改内容 (至少修改以下两项):
 - 用编辑器打开 config/bot_config.toml 文件。（已经教过一次了喵~再不会我要哈气了！）
 - 机器人 QQ 号: 找到 [bot] 配置节下的 qq_account，将其值修改为你准备用于运行机器人的 QQ 号。
-```
+```toml
 [bot]
 platform = "qq"
 qq_account = 123456789 # <--- 修改这里
 ```
 -  主人 QQ 号: 找到 [permission] 配置节下的 master_users，将其配置为你的 QQ 号。
-```
+```toml
 [permission]
 master_users = [["qq", "987654321"]] # <--- 修改这里的QQ号
 ```
@@ -188,7 +188,7 @@ master_users = [["qq", "987654321"]] # <--- 修改这里的QQ号
 
  这个文件用于配置机器人使用的大语言模型（LLM），是机器人能否思考和回答问题的关键。
 - 执行以下命令：
-```
+```bash
 cp template/model_config_template.toml config/model_config.toml
 ```
 - 我们已经为您准备了一份专门的快速上手指南，请点击并参照以下链接完成模型配置：[模型配置快速上手指南](/quick_start_model_config.md)
@@ -200,7 +200,7 @@ cp template/model_config_template.toml config/model_config.toml
 
 MoFox_Bot 会在第一次启动时，自动为所有内置插件创建默认的配置文件。
 - 执行以下命令，来启动一次 MoFox_Bot：
-```
+```bash
 uv run python bot.py
 ```
 - 程序启动后，你会看到大量的日志信息。当日志滚动停止，并且没有新的信息出现时，说明程序已经完成了初始化工作。
@@ -210,7 +210,7 @@ uv run python bot.py
 ### 1.找到配置文件:
 - 配置文件位于 config/plugis/napcat_adapter/config.toml。
 - 用编辑器打开该文件，找到 [plugin] 配置节，将 enabled 的值从 false 修改为 true
-```
+```toml
 [plugin]
 enabled = true # < 修改这里
 ```
@@ -221,7 +221,7 @@ enabled = true # < 修改这里
 所有准备工作和配置都已完成，现在，是时候唤醒你的机器人了！
 ### 1.第一步：启动并登录 Napcat QQ
 - 执行以下内容
-```
+```bash
 xvfb-run -a /root/Napcat/opt/QQ/qq --no-sandbox
 ```
 - - 你可以在这个目录找到Web Ui的登陆token/root/Napcat/opt/QQ/resources/app/app_launcher/napcat/config/webui.json  摁音量上键-查看IP-浏览器输入ip:6099（建议使用平板或电脑连接手机热点之后进入）-输入token-扫码登陆-右侧网络配置-新建-Websocket客户端-随便取一个名字-改url ws://localhost:8082（最后4个数字替换成自己设置的端口号）-保存
@@ -231,7 +231,7 @@ xvfb-run -a /root/Napcat/opt/QQ/qq --no-sandbox
   - 确认命令行提示符最左边有 (MoFox_Core) 标记。
   - 确认当前路径在 MoFox_Core 文件夹内。
 - 执行最终的启动命令：
-```
+```bash
 uv run python bot.py
 ```
 # 6.2 观察日志，判断成功
@@ -239,7 +239,7 @@ uv run python bot.py
 当你在日志中看到类似以下几条关键信息时，就代表你的机器人已经成功启动并连接到了 QQ 平台：
 
 
-```
+```log
 10-17 19:58:31 [Napcat 适配器] 启动消息重组器...
 10-17 19:58:31 [Napcat 适配器] 开始启动Napcat Adapter
 10-17 19:58:31 [Napcat 适配器] 正在启动 adapter，连接模式: reverse
@@ -279,7 +279,7 @@ MoFox_Bot(第三方修改版)
 
 恭喜你，部署成功！
 # 每次启动时要输的命令
-```
+```bash
 # 1. 登录 Ubuntu 环境
 proot-distro login ubuntu
 # 2. 启动napcat

@@ -191,7 +191,7 @@ master_users = [["qq", "987654321"]] # <--- 修改这里的QQ号
 ```bash
 cp template/model_config_template.toml config/model_config.toml
 ```
-- 我们已经为您准备了一份专门的快速上手指南，请点击并参照以下链接完成模型配置：[模型配置快速上手指南](\docs\guides\quick_start_model_config.md)
+- 我们已经为您准备了一份专门的快速上手指南，请点击并参照以下链接完成模型配置：[模型配置快速上手指南](quick_start_model_config.md)
 
 - 对于初次部署的用户，只需完成上述快速上手指南中的步骤即可。
 # 第五章：连接世界——内置适配器插件配置

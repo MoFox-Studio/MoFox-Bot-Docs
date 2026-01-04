@@ -191,7 +191,7 @@ master_users = [["qq", "987654321"]] # <--- 修改这里的QQ号
 ```bash
 cp template/model_config_template.toml config/model_config.toml
 ```
-- 我们已经为您准备了一份专门的快速上手指南，请点击并参照以下链接完成模型配置：[模型配置快速上手指南](/quick_start_model_config.md)
+- 我们已经为您准备了一份专门的快速上手指南，请点击并参照以下链接完成模型配置：[模型配置快速上手指南](docs\guides\quick_start_model_config.md)
 
 - 对于初次部署的用户，只需完成上述快速上手指南中的步骤即可。
 # 第五章：连接世界——内置适配器插件配置
@@ -285,7 +285,7 @@ proot-distro login ubuntu
 # 2. 启动napcat
 xvfb-run -a /root/Napcat/opt/QQ/qq --no-sandbox
 # 3. 进入 MoFox_Bot 项目目录
-cd ~/MoFox_Bot_Deployment/MoFox_Core
+cd ~/MoFox_Bot_Deployment/MoFox-Core
 # 4. 激活虚拟环境
 source .venv/bin/activate
 # 5. 启动 MoFox_Bot (在 screen 会话中)

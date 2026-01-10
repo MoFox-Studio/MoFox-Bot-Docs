@@ -82,18 +82,27 @@ git clone -b webui-dist https://github.com/MoFox-Studio/MoFox-Core-Webui.git web
 
 ### 2.2 配置 API Key
 
-首次安装后，进入插件目录，编辑配置文件：
+首次安装后，编辑机器人配置文件：
 
 ```
-plugins/webui_backend/config/config.toml
+config/bot_config.toml
 ```
 
-找到 `[auth]` 部分，设置你的 API Key：
+找到 `[plugin_http_system]` 部分，设置你的 API Key：
 
 ```toml
-[auth]
-# 替换成你自己的密钥（用于登录 WebUI）
-api_keys = ["your-super-secret-key-here"]
+[plugin_http_system]
+# 总开关，用于启用或禁用所有插件的HTTP端点功能
+enable_plugin_http_endpoints = true # 确保它的值为true
+
+# ==================== 安全相关配置 ====================
+# --- 插件API密钥认证 ---
+# 用于访问需要认证的插件API的有效密钥列表
+# 如果列表为空，则所有需要认证的API都将无法访问
+# 例如: ["your-secret-key-1", "your-secret-key-2"]
+plugin_api_valid_keys = [
+    "secret-key-1", # 替换成你自己的密钥（用于登录 WebUI）
+]
 ```
 
 ::: warning 安全提醒

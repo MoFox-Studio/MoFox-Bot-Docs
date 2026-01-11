@@ -1,12 +1,13 @@
 import { defineConfig } from 'vitepress'
 import { withMermaid } from "vitepress-plugin-mermaid";
-import { 
-  GitChangelog, 
-  GitChangelogMarkdownSection, 
+import {
+  GitChangelog,
+  GitChangelogMarkdownSection,
 } from '@nolebase/vitepress-plugin-git-changelog/vite'
-import { 
-  InlineLinkPreviewElementTransform 
+import {
+  InlineLinkPreviewElementTransform
 } from '@nolebase/vitepress-plugin-inline-link-preview/markdown-it'
+import taskLists from 'markdown-it-task-lists'
 
 const devSidebar = [
   {
@@ -100,6 +101,7 @@ export default withMermaid(defineConfig({
       config(md) {
         // other markdown-it configurations...
         md.use(InlineLinkPreviewElementTransform)
+        md.use(taskLists, { enabled: false })
       }
     },
   vite: {

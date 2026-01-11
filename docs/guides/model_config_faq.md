@@ -24,7 +24,7 @@
 ### 日志示例：`401 Unauthorized`
 
 ```log
-"任务-'replyer' 模型-'deepseek-v3': 客户端错误 401 - Invalid API key，不再重试。
+任务-'replyer' 模型-'deepseek-v3': 客户端错误 401 - API-Key错误，认证失败，请检查/config/model_config.toml中的配置是否正确，不再重试。
 ```
 
 ### ❓ 这是什么意思？
@@ -68,10 +68,10 @@ api_key = "sk-xxxxxxxxxxxxxxxxxx"  # ← 检查这里！
 ### 日志示例：`402 Payment Required`/`403 Forbidden`
 
 ```log
-"任务-'replyer' 模型-'deepseek-v3': 客户端错误 402 - Insufficient balance
+任务-'replyer' 模型-'deepseek-v3': 客户端错误 402 - 账号余额不足，不再重试。
 ```
 ```log
-任务-'replyer' 模型-'gpt-4': 客户端错误 403 - Forbidden，不再重试。
+任务-'replyer' 模型-'gpt-4': 客户端错误 403 - 模型拒绝访问，可能需要实名或余额不足，不再重试。
 ```
 
 
@@ -107,7 +107,7 @@ api_key = "sk-xxxxxxxxxxxxxxxxxx"  # ← 检查这里！
 ### 日志示例：`403 Forbidden`
 
 ```log
-任务-'replyer' 模型-'gpt-4': 客户端错误 403 - Access denied，不再重试。
+任务-'replyer' 模型-'gpt-4': 客户端错误 403 - 模型拒绝访问，可能需要实名或余额不足，不再重试。
 ```
 
 ### ❓ 这是什么意思？
@@ -201,14 +201,16 @@ model_list = ["sf-deepseek", "ds-deepseek"]
 
 ## 🌐 网络连接问题
 
-### 日志示例：连接错误
+### 日志示例：网络连接错误
+
 ```log
-任务-'replyer' 模型-'deepseek-v3': 网络连接错误，将于10秒后重试 (2次剩余)。
+任务-'replyer' 模型-'deepseek-v3': 连接异常，将于10秒后重试 (2次剩余)。
 ```
 
-### 日志示例：连接异常
+### 日志示例：严重网络错误（高额惩罚）
+
 ```log
-任务-'replyer' 模型-'deepseek-v3': 网络连接异常，将于10秒后重试 (2次剩余)。
+模型 'deepseek-v3' 发生严重错误 (NetworkConnectionError)，增加高额惩罚值: 5
 ```
 
 ### ❓ 这是什么意思？
@@ -262,10 +264,14 @@ retry_interval = 10
 任务-'replyer' 模型-'deepseek-v3': 服务器错误，将于10秒后重试 (2次剩余)。
 ```
 
+```log
+模型 'deepseek-v3' 发生服务器错误 (状态码: 500)，增加高额惩罚值: 5
+```
+
 ### 日志示例：`503 Service Unavailable`
 
 ```log
-任务-'replyer' 模型-'deepseek-v3': 服务器负载过高，请稍后重试，将于10秒后重试 (2次剩余)。
+任务-'replyer' 模型-'deepseek-v3': 服务器错误，将于10秒后重试 (2次剩余)。
 ```
 
 ### ❓ 这是什么意思？
@@ -286,8 +292,10 @@ API 服务器出问题了，不是你的错！
 
 ### 日志示例：模型未找到
 
+或者在模型选择阶段：
+
 ```log
-任务-'replyer' 模型-'deepseek-v3': 模型未在配置中找到，请检查 model_config.toml
+没有可用的模型供当前请求选择。
 ```
 
 ### ❓ 这是什么意思？
@@ -328,10 +336,10 @@ model_list = ["my-deepseek"]                # ← 使用你在 models 中定义�
 
 ## 📝 TOML 格式错误
 
-### 日志示例：字符串解析错误
+### 日志示例：配置文件格式错误
 
 ```log
-配置文件解析失败: Invalid value for 'api_key' at line 5"
+配置文件解析失败: Invalid value for 'api_key' at line 5
 ```
 
 ### ❓ 这是什么意思？

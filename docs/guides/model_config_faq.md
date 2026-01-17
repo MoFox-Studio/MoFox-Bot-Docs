@@ -290,7 +290,7 @@ API 服务器出问题了，不是你的错！
 
 ## ⚙️ 配置文件问题
 
-### 日志示例：模型未找到
+### 日志示例：模型'xxxxxx/xxxxxxxxxx'不存在"
 
 或者在模型选择阶段：
 
@@ -307,22 +307,33 @@ API 服务器出问题了，不是你的错！
 配置文件中有**三个层级**，它们必须正确关联：
 
 ```toml
-# ① 供应商层 - 定义 API 来源
+# 配置链路示例（3 层）——简明说明
+
+- 供应商层（api_providers）：定义 API 源、base_url、api_key，name 用作引用。  
+- 模型层（models）：给每个模型起一个自定义 name，绑定供应商的模型标识（model_identifier）和 api_provider。  
+- 任务层（model_task_config）：在任务中引用模型层的自定义 name 列表。
+
+
+```toml
+# ① 供应商层：定义 API 提供方
 [[api_providers]]
-name = "SiliconFlow"                        # ← 这个名字要记住
+name = "SiliconFlow"        # 供② 模型层引用的名字
 base_url = "https://api.siliconflow.cn/v1"
 api_key = "sk-xxx"
 client_type = "openai"
 
-# ② 模型层 - 定义具体模型
+# ② 模型层：将供应商的官方模型包装为自定义 name
 [[models]]
-name = "my-deepseek"                        # ← 你自定义的名字（在任务中使用）
-model_identifier = "deepseek-ai/DeepSeek-V3"  # ← 供应商的官方模型ID
-api_provider = "SiliconFlow"                # ← 必须与上面 name 一致！
+name = "my-deepseek"                         # 在③ 任务层中引用的名称
+model_identifier = "deepseek-ai/DeepSeek-V3" # 供应商的官方模型 ID
+api_provider = "SiliconFlow"                 # 必须与上面供应商层的 name 完全一致
 
-# ③ 任务层 - 使用模型
+# ③ 任务层：在任务中引用模型层的 name
 [model_task_config.replyer]
-model_list = ["my-deepseek"]                # ← 使用你在 models 中定义的 name
+model_list = ["my-deepseek"]                 # 使用② 模型层定义的 name
+```
+
+提示：确保 api_provider 字符串与对应 [[api_providers]] 的 name 完全一致（包括大小写）。
 ```
 
 **常见错误：**

@@ -28,8 +28,11 @@
 
 /* ===== 侧边栏分组标题 (level-0) ===== */
 .VPSidebarItem.level-0 > .item {
-  padding: 4px 4px 4px !important;
+  padding: 6px 8px !important;
   margin: 0 0 !important;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .VPSidebarItem.level-0 > .item > .text {
@@ -139,15 +142,19 @@
 /* ===== 折叠功能样式 ===== */
 .VPSidebarItem.collapsible > .item {
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 /* 折叠箭头 */
 .VPSidebarItem .caret {
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   fill: var(--vp-c-text-3);
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   flex-shrink: 0;
+  margin-right: 2px;
 }
 
 /* 展开时箭头朝下，折叠时箭头朝右 */

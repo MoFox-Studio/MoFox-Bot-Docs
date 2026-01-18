@@ -127,7 +127,7 @@ MoFox-Core 设计得非常“聪明”，它会在第一次启动时，自动检
 ## 故障排除
 
 <details>
-<summary><b>Q1: 启动成功，但日志里迟迟没有 `Napcat client connected` 信息？</b></summary>
+<summary><b>Q1: 启动成功，但日志里迟迟没有 `[Napcat 适配器] Bot xxxxxxx(botQQ号) 连接成功` 信息？</b></summary>
 
 这通常意味着 MoFox-Core 和 Napcat QQ 客户端之间的“神经”没有接上。请按以下步骤排查：
 

@@ -164,7 +164,6 @@ export default withMermaid(defineConfig({
           text: '开始',
           items: [
             { text: '指南主页', link: '/docs/guides/' },
-            { text: '新功能演示', link: '/docs/guides/new-features-demo' },
           ]
         },
         {
@@ -179,6 +178,7 @@ export default withMermaid(defineConfig({
             { text: '社区安装方式',
               collapsed: true, 
               items: [
+               { text: '社区部署方式介绍', link: '/docs/guides/community_way/' },
                { text: 'MoFox-Community 安装器', link: '/docs/guides/community_way/mofox-community-installer' },
             ]
           },

@@ -33,6 +33,12 @@ const myGuides = [
     title: '为一键包用户准备的部署教程...',
     link: './OneKey-Plus-Usage-Guide'
   },
+  {
+    avatar: '<iconify-icon icon="mdi:account-group"></iconify-icon>',
+    name: '社区部署方式',
+    title: '社区贡献的自动化部署脚本和工具...',
+    link: './community_way/'
+  },
   // ... 你可以根据需要添加任意多个卡片对象
 ]
 

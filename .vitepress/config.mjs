@@ -176,6 +176,12 @@ export default withMermaid(defineConfig({
             { text: 'Linux部署指南', link: '/docs/guides/mmc_deploy_linux' },
             { text: 'Docker部署指南', link: '/docs/guides/mmc_deploy_docker' },
             { text: 'Android部署指南', link: '/docs/guides/mmc_deploy_android' },
+            { text: '社区安装方式',
+              collapsed: true, 
+              items: [
+               { text: 'MoFox-Community 安装器', link: '/docs/guides/community_way/mofox-community-installer' },
+            ]
+          },
           ]
         },
         {

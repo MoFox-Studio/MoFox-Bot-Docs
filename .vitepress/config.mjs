@@ -18,10 +18,11 @@ const devSidebar = [
     ]
   },
   {
-    text: '架构',
+    text: 'API 文档',
     collapsed: false,
     items: [
-      { text: '技术栈与聊天流分析', link: '/docs/development/architecture/tech_stack_and_chat_flow' }
+      { text: '插件仓库数据 API', link: '/docs/development/api/plugin-registry-api' },
+      { text: '统计与消息 API', link: '/docs/development/api/statistics-api' }
     ]
   },
   {
@@ -30,7 +31,6 @@ const devSidebar = [
     items: [
       { text: '贡献指南', link: '/docs/development/CONTRIBUTE' },
       { text: '开发准则', link: '/docs/development/development_guidelines' },
-      { text: '添加/使用新的向量数据库', link: '/docs/development/add_or_use_new_vector_db_guide' }
     ]
   },
   {

@@ -17,10 +17,10 @@ const devGuides = [
     link: '../guides/index'
   },
   {
-    avatar: '🏗️',
-    name: '架构总览',
-    title: '宏观地了解 MoFox-Core 的核心设计理念、技术选型等。',
-    link: './architecture/tech_stack_and_chat_flow'
+    avatar: '📦',
+    name: 'MoFox相关API',
+    title: 'MoFox-Core 核心和衍生项目对外提供的 API 文档。',
+    link: './api/plugin-registry-api'
   },
   {
     avatar: '🤝',

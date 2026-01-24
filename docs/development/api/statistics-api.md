@@ -38,7 +38,7 @@ plugin_api_valid_keys = [
 - 为不同的应用或服务使用不同的 API Key，便于管理和撤销
 :::
 
----
+
 
 ## LLM 使用统计 API
 
@@ -108,7 +108,7 @@ plugin_api_valid_keys = [
 - 📈 生成 LLM 使用报表和趋势分析
 - 🔍 定位高消耗的模块或用户
 
----
+
 
 ## 消息统计 API
 
@@ -157,7 +157,7 @@ plugin_api_valid_keys = [
 - `total_count`：总消息数量
 - `count`：筛选后的消息数量
 
----
+
 
 ### 按聊天会话统计消息
 
@@ -270,6 +270,8 @@ X-API-Key: your-super-secret-key-here
 # GET 请求示例
 curl -X GET "http://127.0.0.1:8000/llm/stats?period_type=daily&days=7" \
      -H "X-API-Key: your-super-secret-key-here"
+
+
 ```
 
 **使用 Python requests 库示例：**
@@ -327,7 +329,7 @@ fetch(`${API_BASE_URL}/messages/recent?days=7&message_type=all`, {
 });
 ```
 
----
+
 
 ## 错误处理
 
@@ -354,7 +356,7 @@ fetch(`${API_BASE_URL}/messages/recent?days=7&message_type=all`, {
 }
 ```
 
----
+
 
 ## 最佳实践
 
@@ -372,7 +374,7 @@ fetch(`${API_BASE_URL}/messages/recent?days=7&message_type=all`, {
 3. **优化资源分配**：根据统计数据调整 BOT 的响应策略
 4. **识别异常**：监控突然的流量或成本变化
 
----
+
 
 ## 更新日志
 

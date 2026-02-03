@@ -4,7 +4,7 @@ const communityGuides = [
   {
     avatar: '<iconify-icon icon="mdi:script-text"></iconify-icon>',
     name: 'MoFox-Community 安装器',
-    title: '专为 Armbian 系统设计的一键安装脚本，支持自动配置和部署...',
+    title: '专为 Debian系列的 Linux 系统设计的一键安装脚本，支持自动配置和部署...',
     link: './mofox-community-installer'
   },
   // 未来可以在这里添加更多社区部署方案

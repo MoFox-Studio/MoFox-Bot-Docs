@@ -7,7 +7,7 @@
 本指南将引导您在任何支持 Docker 的环境下，通过 Docker Compose 完成 MoFox-Core 与 Napcat 的全部署流程。该方式是**官方最推荐的部署方案**，具有无与伦比的优势：
 
 *   **环境隔离**：所有依赖项均在 Docker 容器内，不污染你的宿主系统，告别繁琐的环境配置。
-*   **一键部署**：使用 `docker-compose up -d --build` 命令即可启动所有必需的服务（MoFox-Core + Napcat）。
+*   **一键部署**：使用 `docker compose up -d` 命令即可启动所有必需的服务（MoFox-Core + Napcat）。
 *   **管理便捷**：将两个核心应用视为一个整体，统一启动、停止和更新。
 *   **跨平台一致性**：无论在 Windows, macOS 还是各种 Linux 发行版上，部署体验都保持一致。
 
@@ -45,7 +45,7 @@ Docker 是容器化技术的核心，而 Docker Compose 则是管理多容器应
     *   执行以下两个命令，检查 Docker 和 Docker Compose 是否安装成功：
         ```bash
         docker --version
-        docker-compose version
+        docker compose version
         ```
     *   如果都能正确显示版本号，则证明环境已准备就绪。
 
@@ -134,13 +134,13 @@ cd MoFox-Core
 1.  **启动服务**:
     *   在 `MoFox-Core` 目录下，执行启动命令：
         ```bash
-        docker-compose up -d --build
+        docker compose up -d
         ```
 
 2.  **验证状态**:
     *   执行以下命令检查容器运行状态：
         ```bash
-        docker-compose ps
+        docker compose ps
         ```
     *   确保 `core` 和 `napcat` 服务都显示为 `Up` 或 `Running`。
 
@@ -169,20 +169,20 @@ cd MoFox-Core
 
 | 操作 | 命令 |
 | :--- | :--- |
-| **启动服务** | `docker-compose up -d --build` |
-| **停止服务** | `docker-compose down` |
-| **重启服务** | `docker-compose restart` |
-| **强制重建** | `docker-compose up -d --build --force-recreate` |
-| **查看日志** | `docker-compose logs -f` |
-| **查看指定服务日志** | `docker-compose logs -f core` 或 `docker-compose logs -f napcat` |
-| **更新镜像** | `docker-compose pull && docker-compose up -d --build` |
+| **启动服务** | `docker compose up -d` |
+| **停止服务** | `docker compose down` |
+| **重启服务** | `docker compose restart` |
+| **强制重建** | `docker compose up -d --force-recreate` |
+| **查看日志** | `docker compose logs -f` |
+| **查看指定服务日志** | `docker compose logs -f core` 或 `docker compose logs -f napcat` |
+| **更新镜像** | `docker compose pull && docker compose up -d` |
 
 ### 6.2 常见问题排查
 
 <details>
 <summary><b>Q1: 容器启动失败，或状态为 `exited`？</b></summary>
 
-*   **检查日志**: 执行 `docker-compose logs core` 查看服务日志，错误信息通常会显示在末尾。
+*   **检查日志**: 执行 `docker compose logs core` 查看服务日志，错误信息通常会显示在末尾。
 *   **配置错误**: 检查项目根目录下的 `.env` 以及 `config/bot_config.toml` 中的访问密钥是否已正确填写。
 *   **端口冲突**: 确保宿主机的 **12138** 和 **6099** 端口没有被其他程序占用。
 
@@ -192,7 +192,7 @@ cd MoFox-Core
 <summary><b>Q2: 无法打开 Web 管理界面或 Napcat WebUI？</b></summary>
 
 *   **防火墙/安全组**: 请确认服务器已放行 **12138** 和 **6099** 端口。如果是云服务器，还需在控制台防火墙规则中添加放行。
-*   **服务状态**: 执行 `docker-compose ps` 确认服务运行正常。
+*   **服务状态**: 执行 `docker compose ps` 确认服务运行正常。
 *   **地址错误**: 请确保使用正确的 `服务器IP:12138` 进行访问。
 
 </details>
@@ -201,16 +201,16 @@ cd MoFox-Core
 <summary><b>Q3: 机器人已部署但无法正常对话？</b></summary>
 
 *   **检查 WebUI 状态**: 登录管理界面，检查“模型配置”处是否显示连接成功，以及“适配器/连接”状态是否正常。
-*   **查看核心日志**: 执行 `docker-compose logs -f core`，观察给机器人发消息时是否有错误报告。
+*   **查看核心日志**: 执行 `docker compose logs -f core`，观察给机器人发消息时是否有错误报告。
 </details>
 
 <details>
 <summary><b>Q4: 我修改了配置文件，但没有生效？</b></summary>
 
-*   修改项目根目录或插件目录下的配置文件后，需要**重启**对应的容器才能生效。
+*   修改项目根目录 or 插件目录下的配置文件后，需要**重启**对应的容器才能生效。
     ```bash
     # 重启所有服务
-    docker-compose restart
+    docker compose restart
     ```
 </details>
 

@@ -152,11 +152,21 @@ cd MoFox-Core
     *   在浏览器中访问：`http://服务器IP:6099`。
     *   按照提示通过扫码或密码登录你的机器人 QQ 账号。**必须先完成此步骤**，机器人才有“身份”。
 
-2.  **访问 MoFox-Core WebUI**:
+2.  **配置 Napcat 与 MoFox-Core 连接**:
+    *   在 Napcat WebUI 中，点击左侧导航栏的 **网络设置**。
+    *   找到 **WebSocket 客户端** 选项，点击 **新建客户端**。
+    *   按照下图所示配置参数（具体地址请参考图片配置）：
+        ![Napcat 配置](../assets/napcat-docker.png)
+    *   **修改适配器配置**:
+        *   在宿主机项目目录下，打开 `config/plugins/napcat_adapter_plugin/config.toml`。
+        *   将 `Napcat WebSocket 服务地址` 从 `localhost` 改为 `0.0.0.0`。
+        *   修改完成后，由于是 Docker 部署，需要执行 `docker compose restart core` 以应用配置。
+
+3.  **访问 MoFox-Core WebUI**:
     *   在浏览器中访问：`http://服务器IP:12138`。
     *   **登录密码**: 输入你在 3.2 节 `plugin_api_valid_keys` 中填写的密钥。
 
-3.  **按照引导完成配置**:
+4.  **按照引导完成配置**:
     *   登录后，请严格按照 WebUI 界面上的**引导和说明**进行操作。
     *   你将在此处完成大语言模型（LLM）配置、Napcat 适配器连接授权等操作。
     *   这种方式相比手动编辑 `.toml` 文件更加安全且直观。

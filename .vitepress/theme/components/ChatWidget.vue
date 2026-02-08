@@ -47,14 +47,13 @@
           class="message-row" 
           :class="msg.role === 'user' ? 'message-right' : 'message-left'"
         >
-          <div class="message-avatar" v-if="msg.role !== 'user'">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+          <div class="message-avatar">
+            <svg v-if="msg.role !== 'user'" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+            <svg v-else xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
           </div>
+
           <div class="message-bubble">
             {{ msg.content }}
-          </div>
-          <div class="message-avatar user-avatar" v-if="msg.role === 'user'">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
           </div>
         </div>
 
@@ -103,6 +102,54 @@ const chatWindow = ref(null)
 const messagesContainer = ref(null)
 const chatId = ref('session-' + Date.now())
 
+// Rate limiting - 50 requests per session
+const RATE_LIMIT = 50
+const STORAGE_KEY = 'chat_request_count'
+
+function getRateLimitData() {
+  try {
+    const data = localStorage.getItem(STORAGE_KEY)
+    if (data) {
+      return JSON.parse(data)
+    }
+  } catch (e) {
+    console.error('Failed to read rate limit data:', e)
+  }
+  return { count: 0, resetDate: new Date().toDateString() }
+}
+
+function updateRateLimitCount() {
+  const today = new Date().toDateString()
+  let data = getRateLimitData()
+  
+  // Reset count if it's a new day
+  if (data.resetDate !== today) {
+    data = { count: 0, resetDate: today }
+  }
+  
+  data.count++
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data))
+  } catch (e) {
+    console.error('Failed to update rate limit:', e)
+  }
+  return data.count
+}
+
+function checkRateLimit() {
+  const data = getRateLimitData()
+  const today = new Date().toDateString()
+  
+  if (data.resetDate !== today) {
+    return { allowed: true, remaining: RATE_LIMIT }
+  }
+  
+  return {
+    allowed: data.count < RATE_LIMIT,
+    remaining: Math.max(0, RATE_LIMIT - data.count)
+  }
+}
+
 // Adjust initial position on mount
 onMounted(() => {
   // Set initial position to be somewhere reasonable (bottom leftish but draggable)
@@ -135,6 +182,17 @@ async function sendMessage() {
   const content = inputMessage.value.trim()
   if (!content || isLoading.value) return
 
+  // Check rate limit
+  const rateLimitCheck = checkRateLimit()
+  if (!rateLimitCheck.allowed) {
+    messages.value.push({
+      role: 'assistant',
+      content: `😔 您今天的请求次数已达到上限（${RATE_LIMIT}次）。请明天再试，或联系管理员提升额度。`
+    })
+    nextTick(() => scrollToBottom())
+    return
+  }
+
   // Add user message
   messages.value.push({
     role: 'user',
@@ -146,11 +204,8 @@ async function sendMessage() {
   nextTick(() => scrollToBottom())
 
   try {
-    // Prepare API payload
-    // Note: sending full history as requested/implied by "messages": [] structure
-    // Or just sending the last one depending on API requirement.
-    // The prompt showed "messages": [ { "role": "user", "content": "..." } ]
-    // I will send the full conversation history.
+    // Update rate limit count
+    const currentCount = updateRateLimitCount()
     
     // Construct payload
     const payload = {
@@ -164,26 +219,34 @@ async function sendMessage() {
     const response = await fetch('https://doc.may1.eu.org', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        "Origin":"https://doc.may1.eu.org"
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(payload)
     })
 
     if (!response.ok) {
-      throw new Error(`API Error: ${response.status}`)
+      let errorMsg = '服务器响应异常'
+      if (response.status === 429) {
+        errorMsg = '🚫 请求过于频繁，请稍后再试'
+      } else if (response.status === 500) {
+        errorMsg = '⚠️ 服务器内部错误，请稍后重试'
+      } else if (response.status === 403) {
+        errorMsg = '🔒 访问被拒绝，请检查权限'
+      } else if (response.status === 404) {
+        errorMsg = '❓ 服务接口不存在'
+      } else if (response.status >= 500) {
+        errorMsg = '⚠️ 服务器错误，请稍后重试'
+      } else if (response.status >= 400) {
+        errorMsg = '❌ 请求失败，请检查输入内容'
+      }
+      throw new Error(errorMsg)
     }
     
-    // Handling response. Assuming JSON.
-    // If it's a stream, this needs TextDecoder.
-    // For now, assume simple JSON with { content: "...", ... } or just raw text?
-    // Let's try to parse as JSON first.
     const responseText = await response.text()
     
     let assistantMessage = ''
     try {
       const data = JSON.parse(responseText)
-      // Look for common fields
       assistantMessage = data.content || data.message || data.reply || (typeof data === 'string' ? data : JSON.stringify(data))
       
       // Special case: if backend returns OpenAI style
@@ -191,7 +254,6 @@ async function sendMessage() {
           assistantMessage = data.choices[0].message.content
       }
     } catch (e) {
-      // If not JSON, use text
       assistantMessage = responseText
     }
 
@@ -201,17 +263,32 @@ async function sendMessage() {
         content: assistantMessage
       })
     } else {
-        messages.value.push({
-            role: 'assistant',
-            content: '(No content received)'
-        })
+      messages.value.push({
+        role: 'assistant',
+        content: '😕 抱歉，未能获取到有效回复，请重试'
+      })
     }
 
   } catch (error) {
     console.error('Chat error:', error)
+    let friendlyMessage = ''
+    
+    if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+      friendlyMessage = '🌐 网络连接失败，请检查您的网络连接'
+    } else if (error.message.includes('timeout')) {
+      friendlyMessage = '⏱️ 请求超时，请稍后重试'
+    } else if (error.message.startsWith('🚫') || error.message.startsWith('⚠️') || 
+               error.message.startsWith('🔒') || error.message.startsWith('❓') || 
+               error.message.startsWith('❌') || error.message.startsWith('😔')) {
+      // Already friendly error
+      friendlyMessage = error.message
+    } else {
+      friendlyMessage = `❌ 发生错误：${error.message}`
+    }
+    
     messages.value.push({
       role: 'assistant',
-      content: `Error: ${error.message}. Please try again later.`
+      content: friendlyMessage
     })
   } finally {
     isLoading.value = false
@@ -260,10 +337,10 @@ function stopDrag() {
 
 <style scoped>
 .chat-widget-container {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: var(--vp-font-family-base, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif);
   z-index: 1000;
   position: fixed;
-  pointer-events: none; /* Let clicks pass through container area, re-enable on children */
+  pointer-events: none;
   top: 0;
   left: 0;
   width: 100vw;
@@ -277,55 +354,57 @@ function stopDrag() {
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: var(--vp-c-brand-1, #367BF0);
-  color: white;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  background: var( --vp-c-bg);
+  color: var(--vp-c-text-1);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   pointer-events: auto;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   z-index: 2000;
 }
 
 .chat-toggle-btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  background: var(--vp-c-bg-soft);
 }
 
 .chat-window {
   position: absolute;
   width: 380px;
-  height: 550px;
+  height: 600px;
+  max-height: 80vh;
   background: var(--vp-c-bg, #ffffff);
-  border-radius: 12px;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.12);
   display: flex;
   flex-direction: column;
   pointer-events: auto;
   overflow: hidden;
   border: 1px solid var(--vp-c-divider, #e2e2e2);
   z-index: 2000;
+  transition: box-shadow 0.3s ease;
+  backdrop-filter: blur(10px);
 }
 
-/* Dark mode adjustment */
 :global(.dark) .chat-window {
-    background: #1e1e20;
-    border-color: #38383a;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.4);
 }
 
 .chat-header {
-  height: 50px;
-  background: var(--vp-c-brand-1, #367BF0);
-  background: linear-gradient(135deg, var(--vp-c-brand-1, #367BF0), var(--vp-c-brand-2, #5C96F5));
-  color: white;
+  height: 60px;
+  background: var(--vp-c-bg);
+  color: var( --vp-c-text-1, white);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 15px;
+  padding: 0 20px;
   cursor: move;
   user-select: none;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
 }
 
 .chat-title {
@@ -333,6 +412,7 @@ function stopDrag() {
   align-items: center;
   font-weight: 600;
   font-size: 16px;
+  letter-spacing: 0.5px;
 }
 
 .status-dot {
@@ -340,126 +420,130 @@ function stopDrag() {
   height: 8px;
   background: #4ade80;
   border-radius: 50%;
-  margin-right: 8px;
-  box-shadow: 0 0 4px rgba(74, 222, 128, 0.5);
+  margin-right: 10px;
+  box-shadow: 0 0 8px rgba(74, 222, 128, 0.6);
+  animation: pulse 2s infinite;
 }
 
 .chat-controls .close-btn {
-  background: none;
+  background: rgba(255,255,255,0.1);
   border: none;
-  color: rgba(255,255,255,0.8);
+  color: rgba(255,255,255,0.9);
   cursor: pointer;
-  padding: 4px;
-  border-radius: 4px;
+  padding: 6px;
+  border-radius: 8px;
   display: flex;
+  transition: all 0.2s;
 }
 
 .chat-controls .close-btn:hover {
-  background: rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.25);
   color: white;
+  transform: rotate(90deg);
 }
 
 .chat-messages {
   flex: 1;
-  padding: 15px;
+  padding: 20px;
   overflow-y: auto;
   background: var(--vp-c-bg-soft, #f9f9f9);
   display: flex;
   flex-direction: column;
-  gap: 12px;
-}
-
-:global(.dark) .chat-messages {
-    background: #161618;
+  gap: 16px;
 }
 
 .welcome-message {
   text-align: center;
   color: var(--vp-c-text-2, #666);
   font-size: 14px;
-  margin-top: 20px;
+  margin-top: 30px;
+  background: var(--vp-c-bg, #fff);
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  align-self: center;
+  max-width: 80%;
 }
 
 .message-row {
   display: flex;
   align-items: flex-end;
   max-width: 100%;
+  gap: 10px;
 }
 
 .message-left {
   align-self: flex-start;
+  flex-direction: row; /* Default */
 }
 
 .message-right {
   align-self: flex-end;
-  flex-direction: row-reverse;
+  flex-direction: row-reverse; /* Avatar on right of bubble */
+  justify-content: flex-end; /* Align group to right */
 }
 
 .message-avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: #e0e0e0;
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  background: var(--vp-c-bg, #fff);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 8px;
-  margin-left: 0;
-  color: #555;
+  color: var(--vp-c-text-2, #555);
   flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  border: 1px solid var(--vp-c-divider, #eee);
+  transition: transform 0.2s;
+}
+
+.message-avatar:hover {
+  transform: scale(1.1);
 }
 
 .message-right .message-avatar {
-  margin-right: 0;
-  margin-left: 8px;
   background: var(--vp-c-brand-2, #5C96F5);
   color: white;
-  display: none; /* Often hide user avatar in compact chats */
-}
-
-.message-right .user-avatar {
-    display: flex;
+  border: none;
 }
 
 .message-bubble {
-  padding: 10px 14px;
-  border-radius: 12px;
-  font-size: 14px;
-  line-height: 1.5;
-  max-width: 240px;
+  padding: 7px 10px;
+  border-radius: 16px;
+  font-size: 14.5px;
+  line-height: 1.6;
+  max-width: 260px;
   word-wrap: break-word;
   position: relative;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+  transition: all 0.2s;
 }
 
 .message-left .message-bubble {
-  background: white;
-  color: #333;
-  border-bottom-left-radius: 2px;
-}
-
-:global(.dark) .message-left .message-bubble {
-  background: #2f2f32;
-  color: #e2e2e4;
+  background: var(--vp-c-bg, #ffffff);
+  color: var(--vp-c-text-1, #333);
+  border-bottom-left-radius: 4px;
+  border: 1px solid var(--vp-c-divider, #eee);
 }
 
 .message-right .message-bubble {
   background: var(--vp-c-brand-1, #367BF0);
   color: white;
-  border-bottom-right-radius: 2px;
+  border-bottom-right-radius: 4px; /* Point towards avatar (on right) */
 }
 
 .loading-bubble {
   display: flex;
   align-items: center;
-  gap: 4px;
-  padding: 12px 16px;
+  gap: 6px;
+  padding: 14px 18px;
 }
 
 .dot {
   width: 6px;
   height: 6px;
-  background: #999;
+  background: var(--vp-c-text-3, #999);
   border-radius: 50%;
   animation: bounce 1.4s infinite ease-in-out both;
 }
@@ -472,48 +556,46 @@ function stopDrag() {
   40% { transform: scale(1); }
 }
 
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.4); }
+  70% { box-shadow: 0 0 0 6px rgba(74, 222, 128, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+}
+
 .chat-input-area {
-  padding: 10px;
-  background: white;
+  padding: 15px;
+  background: var(--vp-c-bg, white);
   border-top: 1px solid var(--vp-c-divider, #eee);
   display: flex;
   align-items: flex-end;
-  gap: 10px;
-}
-
-:global(.dark) .chat-input-area {
-    background: #1e1e20;
-    border-color: #38383a;
+  gap: 12px;
 }
 
 .chat-input-area textarea {
   flex: 1;
-  border: 1px solid var(--vp-c-divider, #ddd);
-  border-radius: 20px;
-  padding: 10px 15px;
+  border: 2px solid transparent;
+  border-radius: 24px;
+  padding: 7px 18px;
   font-family: inherit;
   font-size: 14px;
   resize: none;
   background: var(--vp-c-bg-soft, #f9f9f9);
   color: var(--vp-c-text-1, #333);
-  max-height: 100px;
+  max-height: 120px;
   outline: none;
-  transition: border-color 0.2s;
-}
-
-:global(.dark) .chat-input-area textarea {
-    background: #252529;
-    border-color: #3e3e42;
-    color: #fff;
+  transition: all 0.2s;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.03);
 }
 
 .chat-input-area textarea:focus {
+  background: var(--vp-c-bg, white);
   border-color: var(--vp-c-brand-1, #367BF0);
+  box-shadow: 0 0 0 3px rgba(54, 123, 240, 0.15);
 }
 
 .send-btn {
-  width: 36px;
-  height: 36px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   background: var(--vp-c-brand-1, #367BF0);
   color: white;
@@ -522,20 +604,24 @@ function stopDrag() {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background 0.2s, transform 0.1s;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(54, 123, 240, 0.3);
 }
 
 .send-btn:hover:not(:disabled) {
   background: var(--vp-c-brand-2, #5C96F5);
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(92, 150, 245, 0.4);
 }
 
 .send-btn:disabled {
-  background: #ccc;
+  background: var(--vp-c-text-3, #ccc);
   cursor: not-allowed;
   opacity: 0.7;
+  box-shadow: none;
 }
 
-/* Scrollbar for messages */
+/* Scrollbar styling */
 .chat-messages::-webkit-scrollbar {
   width: 6px;
 }
@@ -543,10 +629,10 @@ function stopDrag() {
   background: transparent;
 }
 .chat-messages::-webkit-scrollbar-thumb {
-  background: rgba(0,0,0,0.1);
+  background: var(--vp-c-divider, rgba(0,0,0,0.1));
   border-radius: 3px;
 }
-:global(.dark) .chat-messages::-webkit-scrollbar-thumb {
-  background: rgba(255,255,255,0.1);
+.chat-messages::-webkit-scrollbar-thumb:hover {
+  background: var(--vp-c-text-3, rgba(0,0,0,0.2));
 }
 </style>

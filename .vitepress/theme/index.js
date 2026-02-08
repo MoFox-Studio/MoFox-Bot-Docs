@@ -60,14 +60,14 @@ export default {
       // Dify Chatbot Configuration
       window.difyChatbotConfig = {
         token: 'Y0HDud0VUAFXopti',
-        baseUrl: 'https://m.43land.fun:8088',
+        baseUrl: 'https://m.43land.fun',
       }
 
       // Load Dify Script
       // Check if script already exists to avoid duplicates
       if (!document.getElementById('Y0HDud0VUAFXopti')) {
         const difyScript = document.createElement('script');
-        difyScript.src = 'https://m.43land.fun:8088/embed.min.js';
+        difyScript.src = 'https://m.43land.fun/embed.min.js';
         difyScript.id = 'Y0HDud0VUAFXopti';
         difyScript.defer = true;
         document.body.appendChild(difyScript);

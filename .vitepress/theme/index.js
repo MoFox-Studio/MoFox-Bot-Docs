@@ -57,73 +57,44 @@ export default {
       iconifyScript.src = 'https://code.iconify.design/iconify-icon/3.0.0/iconify-icon.min.js';
       document.head.appendChild(iconifyScript);
 
-      // Dify Chatbot Configuration
-      window.difyChatbotConfig = {
-        token: 'Y0HDud0VUAFXopti',
-        baseUrl: 'https://m.43land.fun',
+      // Load Chatbot Script
+      if (!document.getElementById('chatbot-iframe')) {
+        const chatbotScript = document.createElement('script');
+        chatbotScript.type = 'text/javascript';
+        // 依然使用 HTTPS 域名防止 Mixed Content 错误
+        const baseUrl = 'https://m.43land.fun';
+        // FastGPT/Other bot script path
+        chatbotScript.src = `${baseUrl}/js/iframe.js`;
+        chatbotScript.id = 'chatbot-iframe';
+        // Construct the full chat URL
+        chatbotScript.dataset.botSrc = `${baseUrl}/chat/share?shareId=aliqixwlJWkucyWtFgjKGiNH&showHistory=0`;
+        chatbotScript.dataset.defaultOpen = 'false';
+        chatbotScript.dataset.drag = 'true';
+        chatbotScript.dataset.openIcon = "data:image/svg+xml;base64,PHN2ZyB0PSIxNjkwNTMyNzg1NjY0IiBjbGFzcz0iaWNvbiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHAtaWQ9IjQxMzIiIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48cGF0aCBkPSJNNTEyIDMyQzI0Ny4wNCAzMiAzMiAyMjQgMzIgNDY0QTQxMC4yNCA0MTAuMjQgMCAwIDAgMTcyLjQ4IDc2OEwxNjAgOTY1LjEyYTI1LjI4IDI1LjI4IDAgMCAwIDM5LjA0IDIyLjRsMTY4LTExMkE1MjguNjQgNTI4LjY0IDAgMCAwIDUxMiA4OTZjMjY0Ljk2IDAgNDgwLTE5MiA0ODAtNDMyUzc3Ni45NiAzMiA1MTIgMzJ6IG0yNDQuOCA0MTZsLTM2MS42IDMwMS43NmExMi40OCAxMi40OCAwIDAgMS0xOS44NC0xMi40OGw1OS4yLTIzMy45MmgtMTYwYTEyLjQ4IDEyLjQ4IDAgMCAxLTcuMzYtMjMuMzZsMzYxLjYtMzAxLjc2YTEyLjQ4IDEyLjQ4IDAgMCAxIDE5Ljg0IDEyLjQ4bC01OS4yIDIzMy45MmgxNjBhMTIuNDggMTIuNDggMCAwIDEgOCAyMi4wOHoiIGZpbGw9IiM0ZTgzZmQiIHAtaWQ9IjQxMzMiPjwvcGF0aD48L3N2Zz4=";
+        chatbotScript.dataset.closeIcon = "data:image/svg+xml;base64,PHN2ZyB0PSIxNjkwNTM1NDQxNTI2IiBjbGFzcz0iaWNvbiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHAtaWQ9IjYzNjciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48cGF0aCBkPSJNNTEyIDEwMjRBNTEyIDUxMiAwIDEgMSA1MTIgMGE1MTIgNTEyIDAgMCAxIDAgMTAyNHpNMzA1Ljk1NjU3MSAzNzAuMzk1NDI5TDQ0Ny40ODggNTEyIDMwNS45NTY1NzEgNjUzLjYwNDU3MWE0NS41NjggNDUuNTY4IDAgMSAwIDY0LjQzODg1OCA2NC40Mzg4NThMNTEyIDU3Ni41MTJsMTQxLjYwNDU3MSAxNDEuNTMxNDI5YTQ1LjU2OCA0NS41NjggMCAwIDAgNjQuNDM4ODU4LTY0LjQzODg1OEw1NzYuNTEyIDUxMmwxNDEuNTMxNDI5LTE0MS42MDQ1NzFhNDUuNTY4IDQ1LjU2OCAwIDEgMC02NC40Mzg4NTgtNjQuNDM4ODU4TDUxMiA0NDcuNDg4IDM3MC4zOTU0MjkgMzA1Ljk1NjU3MWE0NS41NjggNDUuNTY4IDAgMCAwLTY0LjQzODg1OCA2NC40Mzg4NTh6IiBmaWxsPSIjNGU4M2ZkIiBwLWlkPSI2MzY4Ij48L3BhdGg+PC9zdmc+";
+        chatbotScript.defer = true;
+        document.body.appendChild(chatbotScript);
       }
 
-      // Load Dify Script
-      // Check if script already exists to avoid duplicates
-      if (!document.getElementById('Y0HDud0VUAFXopti')) {
-        const difyScript = document.createElement('script');
-        difyScript.src = 'https://m.43land.fun/embed.min.js';
-        difyScript.id = 'Y0HDud0VUAFXopti';
-        difyScript.defer = true;
-        document.body.appendChild(difyScript);
-      }
-
-      // Dify Styles
-      const difyStyle = document.createElement('style');
-      difyStyle.textContent = `
-        #dify-chatbot-bubble-button {
-          background-color: #1C64F2 !important;
-          position: fixed !important;
-          bottom: 20px !important;
-          left: 20px !important;
-          top: auto !important;
-          right: auto !important;
-          z-index: 2147483647 !important; /* Max Z-Index */
-          transform: none !important; /* Prevent parent transform issues */
+      // Force style for the new chatbot (FastGPT)
+      const chatStyle = document.createElement('style');
+      chatStyle.textContent = `
+        /* Override FastGPT default positioning (bottom-right) to bottom-left */
+        #fastgpt-chatbot-button {
+           left: 20px !important;
+           right: auto !important;
+           bottom: 20px !important;
+           z-index: 2147483647 !important;
+        }
+        #fastgpt-chatbot-window {
+           left: 20px !important;
+           right: auto !important;
+           bottom: 80px !important;
+           z-index: 2147483647 !important;
+           transform-origin: bottom left !important;
         }
       `;
-      document.head.appendChild(difyStyle);
-
-      // Force style application via JS interval (in case of dynamic overrides)
-      // This is a robust fallback if CSS is being overridden by the external script
-      if (!import.meta.env.SSR) {
-        const checkInterval = setInterval(() => {
-          const button = document.getElementById('dify-chatbot-bubble-button');
-          const windowEl = document.getElementById('dify-chatbot-bubble-window');
-
-          if (button) {
-            // Move to body to avoid transform/filter creating a new containing block
-            if (button.parentElement !== document.body) {
-              document.body.appendChild(button);
-            }
-            button.style.setProperty('position', 'fixed', 'important');
-            button.style.setProperty('bottom', '20px', 'important');
-            button.style.setProperty('left', '20px', 'important');
-            button.style.setProperty('top', 'auto', 'important');
-            button.style.setProperty('right', 'auto', 'important');
-            button.style.setProperty('z-index', '2147483647', 'important');
-            button.style.setProperty('transform', 'none', 'important');
-          }
-
-          if (windowEl) {
-             if (windowEl.parentElement !== document.body) {
-                document.body.appendChild(windowEl);
-             }
-             windowEl.style.setProperty('position', 'fixed', 'important');
-             windowEl.style.setProperty('z-index', '2147483647', 'important');
-             // Adjust window position to match button (bottom-left)
-             windowEl.style.setProperty('bottom', '80px', 'important');
-             windowEl.style.setProperty('left', '20px', 'important');
-             windowEl.style.setProperty('right', 'auto', 'important');
-             windowEl.style.setProperty('top', 'auto', 'important');
-          }
-        }, 500);
-      }
+      document.head.appendChild(chatStyle);
     }
     app.use(NolebaseEnhancedReadabilitiesPlugin)
     app.use(NolebaseGitChangelogPlugin)

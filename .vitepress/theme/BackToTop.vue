@@ -57,7 +57,7 @@ onUnmounted(() => {
 <style scoped>
 .back-to-top-container {
   position: fixed;
-  bottom: 2rem;
+  bottom: 6rem; /* Raised to avoid overlapping with ChatWidget button */
   right: 2rem;
   display: flex;
   flex-direction: column;

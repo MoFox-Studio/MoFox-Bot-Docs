@@ -24,6 +24,9 @@
           AI 助手
         </div>
         <div class="chat-controls">
+          <button @click="resetChat" class="close-btn" title="新对话" style="margin-right: 5px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"></path><path d="M1 20v-6h6"></path><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+          </button>
           <button @click="toggleChat" class="close-btn">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -209,6 +212,12 @@ function checkRateLimit() {
 //   // position.x = 20;
 // })
 
+function resetChat() {
+  messages.value = []
+  chatId.value = 'session-' + Date.now()
+  inputMessage.value = ''
+}
+
 function toggleChat() {
   isOpen.value = !isOpen.value
   if (isOpen.value) {
@@ -298,7 +307,6 @@ async function sendMessage() {
       throw new Error(errorMsg)
     }
 
-<<<<<<< HEAD
     const reader = response.body.getReader()
     const decoder = new TextDecoder('utf-8')
     let buffer = ''
@@ -387,85 +395,6 @@ async function sendMessage() {
        } catch(e) {}
     }
 
-=======
-    // Response received, stop waiting animation
-    isWaiting.value = false
-
-    // Initialize assistant message
-    const assistantMessage = reactive({
-      role: 'assistant',
-      content: ''
-    })
-    messages.value.push(assistantMessage)
-    
-    // Stream verification
-    if (!response.body) {
-         throw new Error('ReadableStream not supported by browser or response has no body')
-    }
-
-    const reader = response.body.getReader()
-    const decoder = new TextDecoder()
-    let buffer = ''
-    let currentEvent = ''
-    
-    try {
-      while (true) {
-        const { done, value } = await reader.read()
-        if (done) break
-        
-        const chunk = decoder.decode(value, { stream: true })
-        buffer += chunk
-        
-        const lines = buffer.split('\n')
-        buffer = lines.pop() || '' // Keep the last partial line
-        
-        for (const line of lines) {
-          const trimmedLine = line.trim()
-          if (!trimmedLine) continue
-          
-          if (trimmedLine.startsWith('event:')) {
-            currentEvent = trimmedLine.slice(6).trim()
-          } else if (trimmedLine.startsWith('data:')) {
-            const dataStr = trimmedLine.slice(5).trim()
-            if (dataStr === '[DONE]') continue
-            
-            try {
-               const data = JSON.parse(dataStr)
-               
-               // Only process 'answer' events for content
-               if (currentEvent === 'answer' || !currentEvent) {
-                 // Try standard structure
-                 const contentDelta = data.choices?.[0]?.delta?.content
-                 if (contentDelta) {
-                   assistantMessage.content += contentDelta
-                   nextTick(() => scrollToBottom())
-                 }
-               }
-            } catch (e) {
-               // Ignore JSON parse errors for intermediate chunks
-             }
-          }
-        }
-      }
-    } catch (streamError) {
-      console.error('Stream processing error:', streamError)
-      throw streamError
-    }
-    
-    // Fallback if empty (e.g. non-stream response or error)
-    if (!assistantMessage.content) {
-       // Check if we can just get text if stream failed immediately? 
-       // But we already read the stream.
-       // Maybe remove the empty message if it failed?
-       if (response.status === 200 && !buffer) { 
-           // If we finished successfully but got no content?
-           // Maybe the previous logic was better for fallback. 
-           // But now we are committed to stream.
-           assistantMessage.content = '（未收到回复内容）'
-       }
-    }
->>>>>>> 813552d3dd222c7766c18b692020419827bd87a9
-
   } catch (error) {
     console.error('Chat error:', error)
     let friendlyMessage = ''
@@ -510,7 +439,7 @@ async function sendMessage() {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background: var( --vp-c-bg);
+  background: var( --vp-c-bg-soft);
   color: var(--vp-c-text-1);
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   display: flex;
@@ -525,7 +454,7 @@ async function sendMessage() {
 .chat-toggle-btn:hover {
   transform: scale(1.1);
   box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-  background: var(--vp-c-bg-soft);
+  background: var(--vp-c-bg);
 }
 
 .chat-window {
@@ -584,6 +513,11 @@ async function sendMessage() {
   border-radius: 50%;
   margin-right: 10px;
   box-shadow: 0 0 8px rgba(74, 222, 128, 0.6);
+}
+
+.chat-controls {
+  display: flex;
+  align-items: center;
 }
 
 .chat-controls .close-btn {
@@ -765,6 +699,7 @@ async function sendMessage() {
   background: var(--vp-c-bg-alt);
   border: 1px solid var(--vp-c-divider);
   padding: 10px;
+  overflow-x: auto;
   border-radius: 6px;
   margin: 8px 0;
   font-size: 12px;
@@ -775,6 +710,27 @@ async function sendMessage() {
   border-radius: 4px;
   font-size: 0.9em;
   color: var(--vp-c-text-1);
+}
+
+.markdown-content :deep(table) {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 10px 0;
+  display: block;
+  overflow-x: auto;
+}
+
+.markdown-content :deep(th),
+.markdown-content :deep(td) {
+  border: 1px solid var(--vp-c-divider);
+  padding: 8px 12px;
+  text-align: left;
+  min-width: 100px; /* Ensure columns don't get too narrow, triggering scroll for many columns */
+}
+
+.markdown-content :deep(th) {
+  background: var(--vp-c-bg-soft);
+  font-weight: 600;
 }
 
 /* Specific overrides for right bubble markdown to be readable on blue */
@@ -791,7 +747,7 @@ async function sendMessage() {
 
 /* Message Details & Thinking Process */
 .message-details {
-  margin-bottom: 8px;
+  margin-bottom: 5px;
   border-bottom: 1px solid rgba(0,0,0,0.05);
   padding-bottom: 4px;
 }
@@ -943,6 +899,6 @@ async function sendMessage() {
 }
 
 .message-content {
-  white-space: pre-wrap;
+  /* white-space: pre-wrap; Removed to avoid extra space with markdown paragraphs */
 }
 </style>

@@ -36,16 +36,17 @@
 
 ## 重启 Bot
 
-无论是通过哪种方式安装，为了让新插件生效，你都需要**重启 MoFox Bot**。
+无论是通过哪种方式安装，为了让新插件生效，你都需要**重启 Neo-MoFox**。
 
 ## 验证安装
 
 重启后，如何确认插件是否成功加载了呢？很简单，去查看日志！
 
-在 MoFox Bot 的 `logs` 文件夹中，找到最新的日志文件，打开它。如果你看到类似下面这样的日志，就说明插件已经成功加载了：
+在 Neo-MoFox 的 `logs` 文件夹中，找到最新的日志文件，打开它。如果你看到类似下面这样的日志，就说明插件已经成功加载了：
 
 ```log
-11-08 10:15:08 [插件] ✅ 插件加载成功: affinity_chatter v1.0.0 (1个CHATTER, 1个INTEREST_CALCULATOR, 2个TOOL, 2个EVENT_HANDLER) - Built-in chatter plugin for affinity flow with interest scoring and relationship buildi
+[21:58:25] plugin_manager | INFO | ✅ 插件 'xxxxxx' 的组件注册完成
+[21:58:25] plugin_manager | INFO | ✅ 插件加载成功: xxxxx vX.X.X
 ```
 
 恭喜你，现在你已经成功安装了一个新的插件！快去体验一下它带来的新功能吧！

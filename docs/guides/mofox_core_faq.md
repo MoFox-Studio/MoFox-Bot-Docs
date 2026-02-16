@@ -2,8 +2,6 @@
 
 本文档整理了用户在使用 MoFox_Bot 过程中最常遇到的问题和解决方案。
 
-
-
 ## 📋 目录
 
 - [配置相关问题](#配置相关问题)
@@ -14,7 +12,6 @@
   - [发出去消息但 Bot 不回复怎么办？](#发出去消息但-bot-不回复怎么办)
   - [Bot 回复太慢或超时](#bot-回复太慢或超时)
 - [表情包相关问题](#表情包相关问题)
-  - [Bot 不使用表情包怎么办？](#bot-不使用表情包怎么办)
   - [表情包无法收集或显示损坏](#表情包无法收集或显示损坏)
 - [API 和模型问题](#api-和模型问题)
   - [API 调用失败](#api-调用失败)
@@ -59,13 +56,12 @@
    enable_mood = true
    ```
 
-3. **使用模板重建配置**
+3. **重建配置**
    - 备份当前配置文件
-   - 从 `template/bot_config_template.toml` 重新复制一份
-   - 逐项填写你的配置
+   - 删掉你的配置文件并启动 Bot，系统会自动生成新的默认配置文件
+   - 关闭 Bot 后，将你的配置项逐项复制到新的配置文件中，确保格式正确
 
 4. **检查必填项**
-   - `[bot]` 部分的 `qq_account` 必须是你的 Bot QQ 号
    - `[model_task_config]` 中的模型名称必须与 `[[models]]` 中定义的 `name` 一致
 
 ### 配置文件找不到或无法读取
@@ -74,25 +70,9 @@
 
 **解决方案**：
 
-1. 确保配置文件位于正确位置：
-   - `/config/bot_config.toml`
-   - `/config/model_config.toml`
-
-2. 检查 `.env` 文件是否存在于 `MoFox_Bot` 根目录，内容应包含：
-   ```
-   HOST=127.0.0.1
-   PORT=8000
-   EULA_CONFIRMED=true
-   ```
-
-3. 首次运行时，需要从 `template/` 目录复制模板文件：
-   ```shell
-   cp template/bot_config_template.toml config/bot_config.toml
-   cp template/model_config_template.toml config/model_config.toml
-   cp template/template.env .env
-   ```
-
-
+确保配置文件位于正确位置：
+   - `/config/core.toml`
+   - `/config/model.toml`
 
 ## 消息收发问题
 
@@ -129,28 +109,6 @@
    mute_group_list = []
    ```
 
-2. **检查 Bot 的回复条件**
-   - 在静默群组中，只有 @Bot 或回复 Bot 才会触发回复
-   - 检查 `[affinity_flow]` 的兴趣阈值设置是否太高：
-   ```toml
-   [affinity_flow]
-   reply_action_interest_threshold = 0.75  # 如果太高可能不容易触发回复
-   ```
-
-3. **检查是否被过滤**
-   ```toml
-   [message_receive]
-   # 确保你的消息不包含被过滤的词
-   ban_words = []
-   ban_msgs_regex = []
-   ```
-
-4. **检查思考超时设置**
-   ```toml
-   [chat]
-   thinking_timeout = 40  # 如果 API 响应慢，可以适当增加
-   ```
-
 5. **检查 API 是否正常工作**
    - 查看日志中是否有 API 调用错误
    - 确认 `model_config.toml` 中的 API Key 有效且余额充足
@@ -185,79 +143,6 @@
 4. **检查网络状况**
    - 如果使用国外 API（如 OpenAI），考虑配置代理
    - 国内推荐使用 DeepSeek、SiliconFlow 等国内平台
-
-
-
-## 表情包相关问题
-
-### Bot 不使用表情包怎么办？
-
-**症状**：Bot 回复时从不发送表情包。
-
-**解决方案**：
-
-1. **检查表情包功能是否启用**
-   ```toml
-   [emoji]
-   emoji_chance = 0.6  # 表情包触发概率，0.6 = 60%
-   # 如果是 0，则永远不会发表情包,仅在random模式下生效
-   ```
-
-2. **检查表情包激活类型**
-   ```toml
-   [emoji]
-   emoji_activate_type = "llm"  # 可选 "random" 或 "llm"
-   # "llm" 由大模型决定是否进入planner，"random" 随机判断是否进入planner
-   ```
-
-3. **确认 Bot 有收集到表情包**
-   - 表情包存储在 `data/emoji/` 目录
-   - 检查该目录是否有表情包文件
-   - 如果为空，Bot 需要先从群聊中"偷取"表情包：
-   ```toml
-   [emoji]
-   steal_emoji = true  # 启用表情包收集
-   ```
-
-4. **检查表情包数量设置**
-   ```toml
-   [emoji]
-   max_reg_num = 60  # 最大表情包数量
-   do_replace = true  # 达到上限后是否替换旧表情
-   ```
-
-5. **修改机器人的人设（玄学方法）**
-   ```toml
-   [personality]
-   # 建议50字以内，描述人格的核心特质
-   personality_core = "是一个女大学生"  # 建议50字以内                                 
-   # 人格的细节，描述人格的一些侧面
-   personality_side = '喜欢看bilibili和贴吧, 喜欢喝奶茶, 手机壁纸是白色系, 电脑桌面很乱但知道每个文件在哪, 有轻微近视但不常戴眼镜 ', # 在这里可以描述 Bot 喜欢发表情包等行为,当然不保证有效()
-   ```
-
-### 表情包无法收集或显示损坏
-
-**症状**：表情包无法正常显示或收集失败。
-
-**解决方案**：
-
-1. **检查表情包目录权限**
-   - 确保 `data/emoji/` 和 `data/emoji_registed/` 目录可读写
-
-2. **调整表情包检查间隔**
-   ```toml
-   [emoji]
-   check_interval = 10  # 表情包检查间隔（分钟）
-   ```
-
-3. **启用表情包过滤**（可选）
-   ```toml
-   [emoji]
-   content_filtration = true  # 只收集符合要求的表情包
-   filtration_prompt = "符合公序良俗"
-   ```
-
-
 
 ## API 和模型问题
 
@@ -307,35 +192,27 @@
    ```toml
    [[models]]
    model_identifier = "deepseek-chat"  # API 提供商定义的模型 ID
-   name = "deepseek-v3"  # 你自定义的名称
+   name = "Deepseek-deepseek-v3-Actor"  # 你自定义的名称
    api_provider = "DeepSeek"  # 必须与 api_providers 中的 name 匹配
    ```
 
 2. **确保 model_task_config 中使用正确的模型名称**
    ```toml
-   [model_task_config.replyer]
-   model_list = ["deepseek-v3"]  # 使用 models 中定义的 name
+   [model_task_config.actor]
+   model_list = ["Deepseek-deepseek-v3-Actor"]  # 使用 models 中定义的 name
    ```
 
-3. **调整温度参数**
-   ```toml
-   [model_task_config.replyer]
-   temperature = 0.3  # 建议 0.1-0.5，太高可能导致输出不稳定
-   max_tokens = 800
-   ```
-
-4. **检查是否使用了 Gemini 模型**
-   - Gemini 需要特殊的 client_type：
+3. **检查是否使用了 Gemini 模型**
+   - Google格式的Gemini 需要特殊的 client_type：
    ```toml
    [[api_providers]]
    name = "Google"
-   client_type = "aiohttp_gemini"  # Gemini 专用
+   client_type = "gemini"  # Gemini 专用
    ```
 
 :::tip
-如果你想知道更多请查看【[模型配置常见问题](./model_config_faq.md)】
+想知道更多请查看【[模型配置常见问题](./model_config_faq.md)】
 :::
-
 
 
 ## 数据库问题
@@ -353,27 +230,6 @@
    sqlite_path = "data/MaiBot.db"  # 确保路径正确
    ```
    - 确保 `data/` 目录存在且可写
-
-2. **MySQL**
-   ```toml
-   [database]
-   database_type = "mysql"
-   mysql_host = "localhost"
-   mysql_port = 3306
-   mysql_database = "maibot"
-   mysql_user = "root"
-   mysql_password = "your_password"
-   ```
-   - 确保 MySQL 服务正在运行
-   - 确保数据库 `maibot` 已创建
-   - 检查用户名密码是否正确
-
-3. **检查连接池设置**
-   ```toml
-   [database]
-   connection_pool_size = 10
-   connection_timeout = 10  # 如果连接慢，可以增加
-   ```
 
 ### 数据库文件损坏
 
@@ -395,7 +251,6 @@
    - Bot 会自动创建新数据库
    - 注意：这会丢失所有历史数据
 
-
 ## 启动和运行问题
 
 ### ModuleNotFoundError: No module named 'xxx'
@@ -414,50 +269,16 @@ ModuleNotFoundError: No module named 'structlog'
 根据你使用的环境管理工具选择对应方案：
 **注意确认你的命令行工作路径在项目根目录下**
 
-
-::: tabs
-
-@tab UV 环境
-
-2. **激活虚拟环境**
-   ```shell
-   # Windows
-   .\venv\Scripts\activate
-   
-   # Linux/macOS
-   source venv/bin/activate
-   ```
-   检查命令行前是否显示 `(venv)` 前缀
-
-3. **同步依赖**
+1. **同步依赖**
    ```shell
    # 同步依赖（会自动创建环境）
    uv sync
    ```
 
-2. **使用 UV 运行**
+2. **重新启动 Bot**
    ```shell
-   uv run python bot.py
+   uv run main.py
    ```
-
-@tab 普通 venv 环境
-
-1. **激活虚拟环境**
-   ```shell
-   # Windows
-   .\venv\Scripts\activate
-   
-   # Linux/macOS
-   source venv/bin/activate
-   ```
-   检查命令行前是否显示 `(venv)` 前缀
-
-2. **安装依赖**
-   ```shell
-   # 确保在虚拟环境中执行
-   pip install -r requirements.txt
-   ```
-
 
 ## 其他常见问题
 
@@ -466,75 +287,35 @@ ModuleNotFoundError: No module named 'structlog'
 日志文件位于 `logs/` 目录下，按日期命名：
 ```
 logs/
-├── app_20251129_120000.log.jsonl
-├── app_20251128_120000.log.jsonl
+├── mofox_20260214_141704_519890_cf544a38_2026-02-14.log
+├── mofox_20260214_201119_323890_c4ce3445_2026-02-14.log
 └── ...
 ```
 
 **调整日志级别**：
 ```toml
-[log]
-console_log_level = "INFO"  # 控制台日志级别
-file_log_level = "DEBUG"    # 文件日志级别
-file_retention_days = 30    # 日志保留天数
+[bot]
+# 日志目录
+# 值类型：str, 默认值："logs"
+logs_dir = "logs"
+# 日志级别：DEBUG/INFO/WARNING/ERROR/CRITICAL
+# 值类型：str, 默认值："INFO"
+log_level = "INFO"
 ```
-
-**调试模式**：
-```toml
-[debug]
-show_prompt = true  # 显示发送给模型的完整 prompt
-```
-
-### 如何使用日志查看器？
-
-MoFox_Bot 内置了一个基于 Web 的日志查看器，可以更方便地查看和搜索日志。
-
-**启动日志查看器**：
-```shell
-# 在 MoFox_Bot 根目录下运行
-python -m scripts.log_viewer
-
-# 指定端口（默认 8765）
-python -m scripts.log_viewer --port 8080
-
-# 不自动打开浏览器
-python -m scripts.log_viewer --no-browser
-```
-
-**功能特性**：
-- 📁 **文件列表**：左侧显示所有日志文件，点击即可查看
-- 🔍 **关键词搜索**：支持普通文本和正则表达式搜索
-- 🏷️ **级别筛选**：按 DEBUG/INFO/WARNING/ERROR/CRITICAL 筛选
-- 📦 **模块筛选**：按日志来源模块筛选
-- 📊 **统计信息**：显示各级别日志数量
-- 🔄 **自动刷新**：实时查看最新日志
-- 📄 **分页显示**：大文件分页加载，避免卡顿
-
-**使用技巧**：
-1. 遇到错误时，先选择级别为 `ERROR` 或 `WARNING` 快速定位问题
-2. 使用模块筛选可以只看特定功能的日志（如 `Chat`、`API` 等）
-3. 开启自动刷新可以实时监控 Bot 运行状态
 
 ### 如何重置 Bot 状态？
 
-1. **重置记忆系统**
-   - 删除 `data/memory_graph/` 目录
-
-2. **重置表情包**
-   - 删除 `data/emoji/` 目录
-
-3. **完全重置**
+**完全重置**
    - 备份 `config/` 目录
    - 删除整个 `data/` 目录
    - 重新启动 Bot
-
 
 
 ## 📞 获取帮助
 
 如果以上方案都无法解决你的问题：
 
-1. **查看详细日志**：设置 `file_log_level = "DEBUG"` 获取更多信息
+1. **查看详细日志**：设置 `log_level = "DEBUG"` 获取更多信息
 2. **加入 QQ 交流群**：[点击加入](https://qm.qq.com/q/jfeu7Dq7VS)
 3. **提交 Issue**：[GitHub Issues](https://github.com/MoFox-Studio/MoFox_Bot/issues)
 

@@ -210,11 +210,7 @@ export default withMermaid(defineConfig({
             { text: '内置插件使用指南', link: '/docs/guides/built_in_plugins_guide' },
             { text: '指令权限系统', link: '/docs/guides/permission_usage' },
             { text: 'WebUI 使用指南', link: '/docs/guides/webui_guide' },
-            { text: 'LPMM 知识库指南', link: '/docs/guides/lpmm_guide' },
             { text: '记忆系统介绍', link: '/docs/guides/memory_system_guide' },
-            { text: '主动思考器介绍', link: '/docs/guides/proactive_thinker_guide' },
-            { text: '计划系统介绍', link: '/docs/guides/schedule_and_planning_guide' },
-            { text: '视频识别功能', link: '/docs/guides/video_recognition' },
           ]
         },
         {

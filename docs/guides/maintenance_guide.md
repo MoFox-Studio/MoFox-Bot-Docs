@@ -15,21 +15,21 @@
 
 | 文件/文件夹 | 说明 |
 |-------------|------|
-| `config` 文件夹 | 机器人的核心配置，包括 `bot_config.toml`、`model_config.toml` 及所有插件配置 |
-| `data` 文件夹 | 机器人的数据库和记忆数据，如 `maibota.db` |
+| `config` 文件夹 | 机器人的核心配置，包括 `core.toml`、`model.toml` 及所有插件配置 |
+| `data` 文件夹 | 机器人的数据库和记忆数据，如 `mofox.db` |
 | `.env` 文件 | 项目根目录下的环境变量配置 |
 
 ### 1.3 备份方式
 
 #### 方式一：手动备份（懒人版）
 
-1. 打开你的 `MoFox-Core` 项目文件夹
-2. 在项目文件夹**之外**的安全位置（比如桌面，别放回收站里）创建备份文件夹，命名为 `MoFox-Core_Backup_日期`（例如 `MoFox-Core_Backup_20260103`）
+1. 打开你的 `Neo-MoFox` 项目文件夹
+2. 在项目文件夹**之外**的安全位置（比如桌面，别放回收站里）创建备份文件夹，命名为 `Neo-MoFox_Backup_日期`（例如 `Neo-MoFox_Backup_20260103`）
 3. 把 `config` 文件夹、`data` 文件夹和 `.env` 文件复制进去，完事！
 
 #### 方式二：全量备份（强迫症必备）
 
-直接把整个 `MoFox-Core` 文件夹复制一份。这是「核弹级」备份方案，无论发生什么，你都能满血复活。
+直接把整个 `Neo-MoFox` 文件夹复制一份。这是「核弹级」备份方案，无论发生什么，你都能满血复活。
 
 
 ## 第二章：更新机器人 🚀
@@ -68,20 +68,17 @@ git --version
 
 打开终端，切换到你的机器人文件夹：
 ```shell
-cd D:\MoFox-Core
+cd D:\Neo-MoFox
 ```
 
 #### 开始更新（复制粘贴三连）
 
 ```shell
-# 第一步：从云端拉取最新代码
+# 第1步：从云端拉取最新代码
 git pull
 
-# 第二步：激活虚拟环境（让 Python 知道该用哪个环境）
-.venv\Scripts\activate
-
-# 第三步：安装/更新依赖包
-uv pip install -r requirements.txt
+# 第2步：安装/更新依赖包
+uv sync
 ```
 
 :::tip 龟速下载？
@@ -90,8 +87,8 @@ uv pip install -r requirements.txt
 
 ### 2.3 切换分支
 
-MoFox-Core 有两个主要分支，就像游戏的正式服和测试服：
-- `master`：正式服，稳定可靠，适合求稳的朋友
+Neo-MoFox 有两个主要分支，就像游戏的正式服和测试服：
+- `main`：正式服，稳定可靠，适合求稳的朋友
 - `dev`：测试服，功能最新最潮，但偶尔可能翻车
 
 #### 查看当前分支
@@ -108,17 +105,17 @@ git branch
 # 想体验新功能？切换到 dev 分支
 git checkout dev
 git pull
-uv pip install -r requirements.txt
+uv sync
 
-# 玩够了想回到稳定版？切换回 master
-git checkout master
+# 玩够了想回到稳定版？切换回 main
+git checkout main
 git pull
-uv pip install -r requirements.txt
+uv sync
 ```
 
 ### 2.4 版本回退（后悔药）
 
-更新完发现新版本有 bug？没关系，我们有「时光机」🕐
+更新完发现新版本有 bug？没关系，我们有「时光机」
 
 ```shell
 # 查看历史版本（找到你想回去的那个时间点）
@@ -128,7 +125,7 @@ git log --oneline
 git reset --hard 版本号
 
 # 别忘了更新依赖
-uv pip install -r requirements.txt
+uv sync
 ```
 
 :::warning 警告
@@ -140,7 +137,7 @@ uv pip install -r requirements.txt
 更新完成！现在让我们看看机器人还活着没有
 
 ```shell
-uv run python bot.py
+uv run main.py
 ```
 
 如果正常启动没报错，恭喜你，更新成功！去群里炫耀吧~
@@ -152,13 +149,13 @@ uv run python bot.py
 
 记住一个真理：**「程序」和「数据」是分开住的。**
 
-程序就像房子，数据就像家具。房子可以换，但家具可以搬走。所以无论你怎么折腾程序，只要保护好 `config`、`data`、`.env` 这三件「家具」，你的机器人记忆和配置就永远不会丢。
+程序就像房子，数据就像家具。房子可以换，但家具可以搬走。所以无论你怎么折腾程序，只要保护好 `config`、`data` 这2件「家具」，你的机器人记忆和配置就永远不会丢。
 
 ### 3.2 迁移三步曲
 
 搬家其实很简单：
 
-1. **打包家具**：从旧项目中备份 `config`、`data` 和 `.env`
+1. **打包家具**：从旧项目中备份 `config`、`data` 
 2. **买新房子**：获取新的机器人程序（git clone、一键包或 zip 都行）
 3. **搬进新家**：把备份的数据覆盖到新程序对应位置
 
@@ -172,15 +169,15 @@ uv run python bot.py
 
 想搞一个分身用来做实验？
 
-1. 复制整个 `MoFox-Core` 文件夹
-2. 改名为 `MoFox-Core_Test`（或者叫「small_white_mouse」也行 ）
+1. 复制整个 `Neo-MoFox` 文件夹
+2. 改名为 `Neo-MoFox_Test`（或者叫「small_white_mouse」也行 ）
 3. 修改配置里的 QQ 号和他们对应的napcat端口，别让两个机器人打架
 
 #### 场景三：从一键包「毕业」到手动部署
 
 想从新手村毕业了？
 
-1. 在旧一键包里找到 `core/bot` 或 `bot` 目录，把 `config`、`data` 和 `.env` 备份出来
+1. 在旧一键包里找到 `core/bot` 或 `bot` 目录，把 `config`、`data` 备份出来
 2. 按照部署指南搭建新的 `uv` 手动部署环境
 3. 把备份的数据覆盖进去
 4. 启动！你的机器人会发现自己「觉醒」了，但记忆还在
@@ -217,34 +214,33 @@ git pull
 ```
 
 :::warning 别担心
-这只会丢弃你对代码的修改。`config` 里的配置不受影响，因为它们被 `.gitignore` 保护着呢。
+这只会丢弃你对代码的修改。`config` 里的配置不受影响
 :::
 
 
 ### Q3: 依赖安装失败
 
-**症状**：`uv pip install` 报错或卡住不动。
+**症状**：`uv sync` 报错或卡住不动。
 
 **药方**：
 1. 检查网络，该挂梯子就挂梯子
-2. 确认虚拟环境激活了（终端前面应该有个 `(.venv)`）
-3. 清理缓存重来：
+2 清理缓存重来：
    ```shell
    uv cache clean
-   uv pip install -r requirements.txt
+   uv sync
    ```
 
 
 ### Q4: 切换分支后功能异常
 
-**症状**：切换分支后机器人行为怪异(或者直接原地爆炸没法启动)。
+**症状**：切换分支直接原地爆炸没法启动。
 
 **病因**：切换分支后忘记拉取代码和更新依赖了（经典新手错误）
 
 **药方**：
 ```shell
 git pull
-uv pip install -r requirements.txt
+uv sync
 ```
 
 

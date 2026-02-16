@@ -1,4 +1,4 @@
-# MoFox-Core安装脚本使用说明文档
+#  [ 没更新的旧时代文档 ] MoFox-Core安装脚本使用说明文档
 ### 小白快速通道喵，以下内容你可以不用查看
 ```bash
 sudo curl -fsSL "https://raw.githubusercontent.com/MoFox-Elysia/MoFox-Installer/main/mofox.sh" -o "mofox.sh" && echo bash mofox.sh

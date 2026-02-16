@@ -1,4 +1,4 @@
-# <iconify-icon icon="mdi:docker" height="36"></iconify-icon> MoFox-Core Docker 部署指南
+# <iconify-icon icon="mdi:docker" height="36"></iconify-icon> [ 没更新的旧时代文档 ]  MoFox-Core Docker 部署指南
 
 ## 概述
 
@@ -55,11 +55,11 @@ Docker 是容器化技术的核心，而 Docker Compose 则是管理多容器应
 
 ### 2.1 克隆仓库
 
-首先，克隆 MoFox-Core 仓库并进入项目目录：
+首先，克隆 Neo-MoFox 仓库并进入项目目录：
 
 ```bash
-git clone https://github.com/MoFox-Studio/MoFox-Core.git
-cd MoFox-Core
+git clone https://github.com/MoFox-Studio/Neo-MoFox.git
+cd Neo-MoFox
 ```
 
 ### 2.2 准备配置文件
@@ -70,21 +70,6 @@ cd MoFox-Core
     在项目根目录下创建一个名为 `config` 的文件夹。
     ```bash
     mkdir config
-    ```
-
-2.  **初始化核心配置**:
-    将 `template` 目录下的 `bot_config_template.toml` 和 `model_config_template.toml` 放入 `config` 文件夹，并分别重命名为 `bot_config.toml` 和 `model_config.toml`。
-
-    ```bash
-    # 复制并重命名
-    cp template/bot_config_template.toml config/bot_config.toml
-    cp template/model_config_template.toml config/model_config.toml
-    ```
-
-3.  **初始化环境配置**:
-    将 `template/template.env` 复制到项目根目录下，并重命名为 `.env`。
-    ```bash
-    cp template/template.env .env
     ```
 
 > **💡 提示**: 在 Windows 环境下，你可以直接使用文件资源管理器进行复制和重命名操作。

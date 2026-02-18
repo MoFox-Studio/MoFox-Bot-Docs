@@ -287,19 +287,19 @@ Neo-MoFox 拥有强大的插件管理系统。在我们第一次启动程序时�
         *   找到 `[napcat_server]` 配置节的 `port` 小节，这里定义了 Neo-MoFox 将在哪个端口上“监听”来自 Napcat 客户端的连接请求。
 
     ```toml
-        # Napcat WebSocket 服务器配置
-        [napcat_server]
-        # ws 连接模式: reverse/direct
-        # 值类型：str, 默认值："reverse"
-        mode = "reverse"
+    # Napcat WebSocket 服务器配置
+    [napcat_server]
+    # ws 连接模式: reverse/direct
+    # 值类型：str, 默认值："reverse"
+    mode = "reverse"
 
-        # Napcat WebSocket 服务地址
-        # 值类型：str, 默认值："localhost"
-        host = "localhost"
+    # Napcat WebSocket 服务地址
+    # 值类型：str, 默认值："localhost"
+    host = "localhost"
 
-        # Napcat WebSocket 服务端口
-        # 值类型：int, 默认值：8095
-        port = 8095
+    # Napcat WebSocket 服务端口
+    # 值类型：int, 默认值：8095
+    port = 8095
     ```
     
     *   **请记下这个 `port` 值 (默认为 `8095`)**。除非 `8095` 端口已被其他程序占用，否则我们推荐保持默认设置。如果需要修改，请确保选择一个未被占用的端口。

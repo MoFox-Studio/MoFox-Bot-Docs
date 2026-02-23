@@ -114,7 +114,7 @@ Napcat QQ 是一个 QQ 客户端，也是 Neo-MoFox 与 QQ 平台沟通的桥梁
 
 *   在终端中，粘贴并执行以下命令：
     ```bash
-    git clone https://github.com/MoFox-Studio/Neo-MoFox.git
+    git clone -b dev --single-branch https://github.com/MoFox-Studio/Neo-MoFox.git
     ```
 
 > **🌐 网络小贴士**:

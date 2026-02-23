@@ -2,9 +2,9 @@
 layout: home
 
 hero:
-  name: "MoFox-Core"
-  text: "🚀 基于 MaiCore 的增强版智能体"
-  tagline: 提供更完善的功能、更好的稳定性和更丰富的使用体验
+  name: Neo-MoFox
+  text: 现代化多平台 AI 聊天机器人框架
+  tagline: 严格三层架构 · 灵活插件系统 · LLM 原生支持
   image:
     src: /logos/logo.png
     alt: MoFox-Core Logo
@@ -15,20 +15,29 @@ hero:
       text: 快速开始
       link: /docs/guides/
     - theme: alt
+      text: 插件开发
+      link: /docs/development/plugin_develop/
+    - theme: alt
       text: 在 GitHub 上查看
       link: https://github.com/MoFox-Studio/MoFox-Core
 
 features:
-  - title: 核心功能保留与增强 🔧
-    details: 保留原版所有核心功能，如智能对话、持久记忆和情感表达，并进行了全面优化和增强。
-  - title: 强大的插件系统 🔌
-    details: 全面重构的插件架构，支持完整的管理 API 和权限控制，让拓展功能变得前所未有的简单。
-  - title: 数据库自由切换 🔄
-    details: 支持 SQLite、MySQL 以及多种向量数据库，为长期记忆和知识库提供了强大的存储支持。
-  - title: 内置安全防护 🛡️
-    details: 集成了一整套回复前注入过滤系统，有效防止提示词注入攻击，为人格保驾护航。
-  - title: 多模态能力 🎥
-    details: 不仅仅是文本！支持多种视频识别模式，拓展了原版的视觉能力，让交互更丰富。
-  - title: 独特的个性化系统 😴
-    details: 引入了苏醒、睡眠、失眠等状态，内置强大的日程系统，让智能体更具“人性”，充满乐趣。
+  - icon: 🧩
+    title: 插件驱动
+    details: 一切功能皆插件。通过声明式组件系统，按需组合 Action、Tool、Chatter、Adapter 等组件，无需修改核心代码。
+  - icon: 🤖
+    title: LLM 原生
+    details: 内置多厂商 LLM 支持，Action 与 Tool 自动生成 Schema，Chatter 使用生成器模式实现流式对话，无缝接入 AI 能力。
+  - icon: 🔌
+    title: 多平台适配
+    details: 基于 mofox-wire 标准通信协议，通过 Adapter 组件适配 QQ、Telegram、Discord 等任意平台，一套逻辑多端运行。
+  - icon: 🏗️
+    title: 严格三层架构
+    details: kernel（技术基础）→ core（领域逻辑）→ app（装配运行），清晰的分层边界确保代码可维护性与可扩展性。
+  - icon: ⚙️
+    title: 类型安全配置
+    details: 基于 Pydantic + TOML 的配置系统，自动验证、自动补全、自动生成默认配置文件，告别配置混乱。
+  - icon: 🚀
+    title: 异步并发
+    details: 全面异步架构，TaskManager 统一管理并发任务，WatchDog 监控任务健康，稳定运行企业级工作负载。
 ---

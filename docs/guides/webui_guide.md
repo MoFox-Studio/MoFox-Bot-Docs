@@ -1,10 +1,14 @@
-#  [ 没更新的旧时代文档 ] MoFox-Bot WebUI 使用指南
+#  Neo-MoFox WebUI 使用指南
 
-欢迎来到 MoFox-Bot 的 Web 管理控制台！这份指南会手把手教你如何部署和使用这个可视化管理界面，让你告别纯命令行的操作方式，轻松管理你的机器人。
+欢迎来到 Neo-MoFox 的 Web 管理控制台！这份指南会手把手教你如何部署和使用这个可视化管理界面，让你告别纯命令行的操作方式，轻松管理你的机器人。
+
+:::warning 注意
+**Neo-MoFox 的 WebUI 目前处于测试阶段**，仍有不完善/跑不起来的功能，虽然我们已经尽力保证它的稳定性，但在某些环境下可能会遇到兼容性问题。如果你发现任何 bug 或者有改进建议，请毫不犹豫地在 GitHub 上提交 Issue 或 Pull Request！你的反馈对我们非常重要。
+
 
 ## 零、WebUI 是什么？能干啥？
 
-MoFox-Bot WebUI 是一个基于 Web 的可视化管理控制台，让你通过浏览器就能完成对机器人的各种操作。再也不用对着黑乎乎的终端窗口发呆了！
+Neo-MoFox WebUI 是一个基于 Web 的可视化管理控制台，让你通过浏览器就能完成对机器人的各种操作。再也不用对着黑乎乎的终端窗口发呆了！
 
 ### ✨ 主要功能
 
@@ -18,7 +22,7 @@ MoFox-Bot WebUI 是一个基于 Web 的可视化管理控制台，让你通过�
 
 **自动更新功能**（懒人福音 🎉）：
 - 🔄 **一键更新 WebUI**：点一下按钮就能更新到最新版，告别手动下载
-- 🔄 **一键更新主程序**：MoFox-Bot 主程序也能一键更新
+- 🔄 **一键更新主程序**：Neo-MoFox 主程序也能一键更新
 - 📦 **自动安装依赖**：更新后自动帮你装好新增的依赖包
 - 🔙 **版本回滚**：更新翻车了？没关系，一键回滚到之前的版本
 - 🛡️ **备份保护**：更新前自动备份，安全无忧
@@ -30,17 +34,17 @@ MoFox-Bot WebUI 是一个基于 Web 的可视化管理控制台，让你通过�
 - 📝 **日志查看器**：实时查看系统日志，debug 不再抓瞎
 
 **后端提供的能力**：
-- 🔍 **服务发现**：自动发现 MoFox-Bot 主程序的 IP 和端口
+- 🔍 **服务发现**：自动发现 Neo-MoFox 主程序的 IP 和端口
 - 🌐 **API 代理**：发现服务器自带代理功能，前端请求统一走 12138 端口
 - 🔑 **身份验证**：严格的 API Key 验证机制
 - 📡 **RESTful API**：标准化的数据接口
-- 🔌 **深度集成**：直接调用 MoFox-Bot 插件系统的各种 API
+- 🔌 **深度集成**：直接调用 Neo-MoFox 插件系统的各种 API
 
 ## 一、开始之前：你需要准备什么
 
 在开始部署 WebUI 之前，请确认以下条件：
 
-1. **MoFox-Bot 主程序**：已经正确安装并能正常运行
+1. **Neo-MoFox 主程序**：已经正确安装并能正常运行
 2. **Git**：用于克隆仓库和后续自动更新（强烈推荐！）
 3. **Node.js 环境**（可选）：只有开发者才需要，普通用户不用管
 
@@ -54,7 +58,7 @@ MoFox-Bot WebUI 是一个基于 Web 的可视化管理控制台，让你通过�
 
 ### 2.1 克隆预编译版本
 
-打开终端（Windows 用 PowerShell，Mac/Linux 用 Terminal），进入 MoFox-Bot 的插件目录：
+打开终端（Windows 用 PowerShell，Mac/Linux 用 Terminal），进入 Neo-MoFox 的插件目录：
 
 **Windows PowerShell**：
 ```powershell
@@ -68,7 +72,7 @@ git clone -b webui-dist https://github.com/MoFox-Studio/MoFox-Core-Webui.git web
 **Linux / macOS**：
 ```bash
 # 进入插件目录
-cd /path/to/mofox-bot/plugins
+cd /path/to/Neo-MoFox/plugins
 
 # 克隆 webui-dist 分支
 git clone -b webui-dist https://github.com/MoFox-Studio/MoFox-Core-Webui.git webui_backend
@@ -88,21 +92,30 @@ git clone -b webui-dist https://github.com/MoFox-Studio/MoFox-Core-Webui.git web
 config/bot_config.toml
 ```
 
-找到 `[plugin_http_system]` 部分，设置你的 API Key：
+找到 `[http_router]` 部分，设置你的 API Key：
 
 ```toml
-[plugin_http_system]
-# 总开关，用于启用或禁用所有插件的HTTP端点功能
-enable_plugin_http_endpoints = true # 确保它的值为true
+# HTTP 路由配置节
+# 
+# 定义 HTTP API 相关的配置参数。
+[http_router]
+# 是否启用 HTTP 路由
+# 值类型：bool, 默认值：true
+enable_http_router = true
 
-# ==================== 安全相关配置 ====================
-# --- 插件API密钥认证 ---
-# 用于访问需要认证的插件API的有效密钥列表
-# 如果列表为空，则所有需要认证的API都将无法访问
-# 例如: ["your-secret-key-1", "your-secret-key-2"]
-plugin_api_valid_keys = [
-    "secret-key-1", # 替换成你自己的密钥（用于登录 WebUI）
-]
+# HTTP 路由监听地址
+# 值类型：str, 默认值："127.0.0.1"
+http_router_host = "127.0.0.1"
+
+# HTTP 路由监听端口
+# 值类型：int, 默认值：8000
+http_router_port = 8000
+
+# WebUI API 访问密钥列表，留空则禁用认证（不推荐）
+# 值类型：list, 默认值：[]
+api_keys = [
+   "secret-key-1", # 替换成你自己的密钥（用于登录 WebUI）
+]  
 ```
 
 ::: warning 安全提醒
@@ -115,7 +128,7 @@ API Key 就像你家的钥匙，千万别把它写在公开的地方或分享给
 
 ### 2.3 启动并访问
 
-1. **重启 MoFox-Bot**（如果正在运行的话）
+1. **重启 Neo-MoFox**（如果正在运行的话）
 2. 打开浏览器，访问：**http://localhost:12138**
 3. 用你刚才配置的 API Key 登录
 
@@ -137,7 +150,7 @@ API Key 就像你家的钥匙，千万别把它写在公开的地方或分享给
 
 你会看到三个标签页：
 - **UI 更新**：更新 WebUI 前端和后端
-- **主程序**：更新 MoFox-Bot 主程序
+- **主程序**：更新 Neo-MoFox 主程序
 - **Git 设置**：配置 Git 相关选项
 
 ### 3.2 更新 WebUI（前端 + 后端）
@@ -156,7 +169,7 @@ API Key 就像你家的钥匙，千万别把它写在公开的地方或分享给
 别慌！WebUI 在更新前会自动备份，你可以在「历史版本」中选择回滚到之前的版本。
 :::
 
-### 3.3 更新 MoFox-Bot 主程序
+### 3.3 更新 Neo-MoFox 主程序
 
 没错，WebUI 还能帮你更新主程序！
 
@@ -182,7 +195,7 @@ API Key 就像你家的钥匙，千万别把它写在公开的地方或分享给
 :::
 
 ::: warning 注意
-主程序更新或切换分支后需要**重启** MoFox-Bot 才能生效哦！
+主程序更新或切换分支后需要**重启** Neo-MoFox 才能生效哦！
 :::
 
 ### 3.5 版本回滚
@@ -209,7 +222,7 @@ API Key 就像你家的钥匙，千万别把它写在公开的地方或分享给
 2. 点击绿色的 **Code** 按钮 → **Download ZIP**
 3. 解压到 `plugins/webui_backend/` 目录
 4. 配置 API Key（参考 2.2）
-5. 重启 MoFox-Bot
+5. 重启 Neo-MoFox
 
 ### 方式三：开发者模式
 
@@ -220,7 +233,7 @@ API Key 就像你家的钥匙，千万别把它写在公开的地方或分享给
 git clone https://github.com/MoFox-Studio/MoFox-Core-Webui.git
 
 # 复制后端到插件目录
-cp -r backend /path/to/mofox-bot/plugins/webui_backend
+cp -r backend /path/to/Neo-MoFox/plugins/webui_backend
 
 # 进入前端目录
 cd forward/mofox-webui
@@ -266,7 +279,7 @@ npm run dev
                            │
                            ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                    MoFox-Bot 主程序                              │
+│                    Neo-MoFox 主程序                              │
 │                                                                  │
 │  /plugin-api/webui_backend/                                     │
 │    ├── /auth         认证接口                                    │
@@ -347,12 +360,12 @@ webui_backend/                    # 插件目录（安装后的结构）
 ### Q1: 访问 localhost:12138 显示"无法访问此网站"
 
 **可能原因**：
-- MoFox-Bot 主程序没有运行
+- Neo-MoFox 主程序没有运行
 - 后端插件没有正确加载
 - 端口被其他程序占用
 
 **解决方法**：
-1. 确认 MoFox-Bot 主程序正在运行
+1. 确认 Neo-MoFox 主程序正在运行
 2. 检查日志，确认 `webui_backend` 插件已加载
 3. 检查端口占用：
    - Windows: `netstat -ano | findstr :12138`
@@ -379,7 +392,7 @@ webui_backend/                    # 插件目录（安装后的结构）
 **解决方法**：
 1. 仔细核对 API Key 是否完全一致
 2. 确认 `config/config.toml` 中 `[auth]` 部分的 `api_keys` 不为空
-3. 修改配置后**记得重启 MoFox-Bot**
+3. 修改配置后**记得重启 Neo-MoFox**
 
 ### Q4: 点击"检查更新"提示"不在 webui-dist 分支"
 
@@ -406,7 +419,7 @@ git clone -b webui-dist https://github.com/MoFox-Studio/MoFox-Core-Webui.git web
 
 ### Q6: 如何从远程服务器访问 WebUI？
 
-如果 MoFox-Bot 部署在远程服务器上：
+如果 Neo-MoFox 部署在远程服务器上：
 
 1. 确保服务器防火墙开放了 12138 端口
 2. 将 `config/config.toml` 中 `[discovery]` 的 `host` 设为 `0.0.0.0`
@@ -434,7 +447,7 @@ git clone -b webui-dist https://github.com/MoFox-Studio/MoFox-Core-Webui.git web
 ### 后端
 - **FastAPI**：现代、高性能的 Python Web 框架
 - **Uvicorn**：轻量级 ASGI 服务器
-- **MoFox Plugin System**：与 MoFox-Bot 插件系统深度集成
+- **MoFox Plugin System**：与 Neo-MoFox 插件系统深度集成
 
 ## 九、开发状态
 
@@ -490,7 +503,7 @@ WebUI 采用了多层安全机制：
 - 提交 Pull Request
 - 加入社区讨论
 
-好了，现在你已经掌握了 MoFox-Bot WebUI 的完整使用方法。去享受可视化管理带来的便利吧！
+好了，现在你已经掌握了 Neo-MoFox WebUI 的完整使用方法。去享受可视化管理带来的便利吧！
 
 最重要的是——**记得用 `git clone` 安装，这样才能享受一键更新的快乐** 😎
 

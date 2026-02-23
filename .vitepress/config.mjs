@@ -18,69 +18,52 @@ const devSidebar = [
     ]
   },
   {
-    text: 'API 文档',
-    collapsed: false,
-    items: [
-      { text: '插件仓库数据 API', link: '/docs/development/api/plugin-registry-api' },
-      { text: '统计与消息 API', link: '/docs/development/api/statistics-api' }
-    ]
-  },
-  {
     text: '贡献指南和开发帮助',
     collapsed: false,
     items: [
-      { text: '贡献指南', link: '/docs/development/CONTRIBUTE' },
-      { text: '开发准则', link: '/docs/development/development_guidelines' },
+      { text: '参与项目贡献', link: '/docs/development/guidelines/CONTRIBUTE' },
+      { text: '开发准则', link: '/docs/development/guidelines/development_guidelines' },
     ]
   },
   {
-    text: '插件',
+    text: '插件开发',
     collapsed: false,
     items: [
-      { text: '插件概述', link: '/docs/development/plugins/' },
-      { text: '如何贡献插件', link: '/docs/development/plugins/how-to-contribute-plugins' },
-      { text: '快速开始', link: '/docs/development/plugins/quick-start' },
-      { text: 'MPDT 开发工具指南', link: '/docs/development/plugins/mpdt-guide' },
-      { text: '元数据指南', link: '/docs/development/plugins/metadata-guide' },
-      { text: '依赖管理', link: '/docs/development/plugins/dependency-management' },
-      { text: '配置指南', link: '/docs/development/plugins/configuration-guide' },
-      { text: '权限系统', link: '/docs/development/plugins/PERMISSION_GUIDE' },
-      { text: '可用范围控制', link: '/docs/development/plugins/command-scope' },
-      { text: '插件可用组件',
+      { text: '插件开发概述', link: '/docs/development/plugin_develop/' },
+      { text: '快速开始', link: '/docs/development/plugin_develop/guide/quick-start' },
+      { text: '插件机制原理', link: '/docs/development/plugin_develop/guide/mechanism' },
+      { text: '插件结构与最佳实践', link: '/docs/development/plugin_develop/structure' },
+      { text: 'manifest.json 格式说明', link: '/docs/development/plugin_develop/manifest' },
+      { text: '进阶开发', link: '/docs/development/plugin_develop/advanced' },
+      {
+        text: '插件组件',
         collapsed: false,
         items: [
-          { text: 'Chatter指南', link: '/docs/development/plugins/chatter-components' },
-          { text: 'HTTP 组件指南', link: '/docs/development/plugins/http-components' },
-          { text: 'Action指南', link: '/docs/development/plugins/action-components' },
-          { text: 'Prompt指南', link: '/docs/development/plugins/prompt-components' },
-          { text: '工具指南', link: '/docs/development/plugins/tool_guide' },
-          { text: '命令指南', link: '/docs/development/plugins/PLUS_COMMAND_GUIDE' },
-          { text: '事件系统', link: '/docs/development/plugins/event-system-guide' },
+          { text: '组件总览', link: '/docs/development/plugin_develop/components/' },
+          { text: 'Plugin — 插件根组件', link: '/docs/development/plugin_develop/components/plugin' },
+          { text: 'Action — 动作组件', link: '/docs/development/plugin_develop/components/action' },
+          { text: 'Adapter — 适配器组件', link: '/docs/development/plugin_develop/components/adapter' },
+          { text: 'Chatter — 聊天器组件', link: '/docs/development/plugin_develop/components/chatter' },
+          { text: 'Collection — 集合组件', link: '/docs/development/plugin_develop/components/collection' },
+          { text: 'Command — 命令组件', link: '/docs/development/plugin_develop/components/command' },
+          { text: 'Config — 配置组件', link: '/docs/development/plugin_develop/components/config' },
+          { text: 'EventHandler — 事件处理器组件', link: '/docs/development/plugin_develop/components/event-handler' },
+          { text: 'Router — 路由组件', link: '/docs/development/plugin_develop/components/router' },
+          { text: 'Service — 服务组件', link: '/docs/development/plugin_develop/components/service' },
+          { text: 'Tool — 工具组件', link: '/docs/development/plugin_develop/components/tool' },
         ]
       },
       {
         text: '插件 API',
         collapsed: false,
         items: [
-          { text: 'Adapter Command API', link: '/docs/development/plugins/api/adapter-command-api' },
-          { text: 'Chat API', link: '/docs/development/plugins/api/chat-api' },
-          { text: 'Component State API', link: '/docs/development/plugins/api/component-state-api' },
-          { text: 'Config API', link: '/docs/development/plugins/api/config-api' },
-          { text: 'Database API', link: '/docs/development/plugins/api/database-api' },
-          { text: 'Emoji API', link: '/docs/development/plugins/api/emoji-api' },
-          { text: 'Generator API', link: '/docs/development/plugins/api/generator-api' },
-          { text: 'LLM API', link: '/docs/development/plugins/api/llm-api' },
-          { text: 'Logging API', link: '/docs/development/plugins/api/logging-api' },
-          { text: 'Message API', link: '/docs/development/plugins/api/message-api' },
-          { text: 'Mood API', link: '/docs/development/plugins/api/mood-api' },
-          { text: 'Person API', link: '/docs/development/plugins/api/person-api' },
-          { text: 'Plugin Info API', link: '/docs/development/plugins/api/plugin-info-api' },
-          { text: 'Plugin Manage API', link: '/docs/development/plugins/api/plugin-manage-api' },
-          { text: 'Prompt Component Manage API', link: '/docs/development/plugins/api/prompt-component-manage-api' },
-          { text: 'Send API', link: '/docs/development/plugins/api/send-api' },
-          { text: 'Schedule API', link: '/docs/development/plugins/api/schedule-api' },
-          { text: 'Storage API', link: '/docs/development/plugins/api/storage-api' },
-          { text: 'Tool API', link: '/docs/development/plugins/api/tool-api' }
+          { text: 'API 文档总览', link: '/docs/development/plugin_develop/api/' },
+          { text: '数据库 API', link: '/docs/development/plugin_develop/api/database-api' },
+          { text: '事件 API', link: '/docs/development/plugin_develop/api/event-api' },
+          { text: 'LLM API', link: '/docs/development/plugin_develop/api/llm-api' },
+          { text: '日志 API', link: '/docs/development/plugin_develop/api/log-api' },
+          { text: '消息查询 API', link: '/docs/development/plugin_develop/api/message-api' },
+          { text: '消息发送 API', link: '/docs/development/plugin_develop/api/send-api' },
         ]
       }
     ]
@@ -136,7 +119,7 @@ export default withMermaid(defineConfig({
     },
   },
   ignoreDeadLinks: true,
-  title: "MoFox-Core",
+  title: "Neo-MoFox",
   description: "🚀 基于 MaiCore 的增强版智能体，提供更完善的功能和更好的使用体验",
   head: [
     ['link', { rel: 'icon', href: '/logos/logo-3.png' }]
@@ -151,9 +134,9 @@ export default withMermaid(defineConfig({
         text: '相关链接',
         items: [
           { text: 'MoFox-Studio', link: 'https://github.com/MoFox-Studio' },
-          { text: 'MoFox-Core', link: 'https://github.com/MoFox-Studio/MoFox-Core' },
-          { text: 'MoFox_Docs', link: 'https://github.com/MoFox-Studio/MoFox-Bot-Docs' },
-          { text: 'MoFox-Bot-QQ群', link: 'https://qm.qq.com/q/jfeu7Dq7VS'},
+          { text: 'Neo-MoFox', link: 'https://github.com/MoFox-Studio/Neo-MoFox' },
+          { text: 'Neo-MoFox Docs', link: 'https://github.com/MoFox-Studio/MoFox-Bot-Docs' },
+          { text: 'Neo-MoFox-Bot-QQ群', link: 'https://qm.qq.com/q/jfeu7Dq7VS'},
         ]
       }
     ],

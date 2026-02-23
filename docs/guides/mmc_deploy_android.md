@@ -317,7 +317,7 @@ proot-distro login ubuntu
 # 2. 启动napcat
 xvfb-run -a /root/Napcat/opt/QQ/qq --no-sandbox
 # 3. 进入 Neo-MoFox 项目目录
-cd ~/Neo-MoFox_Deployment/Neo-MoFox-Core
+cd ~/Neo-MoFox_Deployment/Neo-Neo-MoFox
 # 4. 激活虚拟环境
 source .venv/bin/activate
 # 5. 启动 Neo-MoFox (在 screen 会话中)

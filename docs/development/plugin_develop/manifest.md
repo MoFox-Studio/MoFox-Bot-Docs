@@ -14,7 +14,8 @@
     "plugins": [],
     "components": []
   },
-  "entry_point": "plugin.py"
+  "entry_point": "plugin.py",
+  "min_core_version": "1.0.0"
 }
 ```
 
@@ -28,13 +29,15 @@
 | `author` | `string` | 是 | 作者 |
 | `dependencies` | `object` | 是 | 插件/组件依赖 |
 | `entry_point` | `string` | 是 | 入口文件路径（默认通常为 `plugin.py`） |
+| `min_core_version` | `string` | 是 | 最低核心版本（如 `1.0.0`） |
 | `include` | `array` | 否 | 组件清单；未提供时按空列表处理 |
-| `min_core_version` | `string` | 强烈建议必填 | 最低核心版本；当前实现中请务必显式填写并与当前核心版本兼容（如 `1.0.0`） |
+| `python_dependencies` | `array` | 否 | Python 包依赖列表（pip requirement 格式） |
+| `dependencies_required` | `bool` | 否 | Python 依赖是否必需（默认 `true`） |
 
-::: danger 当前实现注意（务必阅读）
-`min_core_version` 会参与版本检查。当前加载器在该字段缺失时会回退到 `3.0.0`，会导致插件被判定为不兼容并拒绝加载。
+::: warning 版本兼容性检查
+`min_core_version` 用于版本兼容性检查。插件要求的最低核心版本必须 <= 当前运行的核心版本，否则插件将被拒绝加载。
 
-因此在当前版本中，`min_core_version` 应视为“必须显式填写”的字段，推荐填写不高于实际核心版本的值。
+请填写不高于实际核心版本的值（如当前核心版本为 `1.0.0`，则填写 `1.0.0`）。
 :::
 
 ## `dependencies`
@@ -70,7 +73,23 @@
 | `component_name` | `string` | `""` | 组件名 |
 | `dependencies` | `string[]` | `[]` | 组件级依赖 |
 | `enabled` | `bool` | `true` | 是否启用 |
+python_dependencies`（可选）
 
+Python 包依赖列表，使用 pip requirement 格式。
+
+```json
+"python_dependencies": [
+  "requests>=2.28.0",
+  "pandas>=1.5.0",
+  "numpy"
+]
+```
+
+配合 `dependencies_required` 字段使用：
+- 若 `dependencies_required` 为 `true`（默认）：Python 依赖安装失败时，插件将被跳过
+- 若 `dependencies_required` 为 `false`：安装失败仅发出警告，仍尝试加载插件
+
+## `
 ## `component_type` 可用值
 
 - `action`
@@ -105,6 +124,8 @@
     }
   ],
   "entry_point": "plugin.py",
-  "min_core_version": "1.0.0"
+  "min_core_version": "1.0.0",
+  "python_dependencies": [],
+  "dependencies_required": true
 }
 ```

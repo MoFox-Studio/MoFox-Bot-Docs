@@ -79,7 +79,6 @@ uv --version
 
 从 [GitHub Releases](https://github.com/MoFox-Studio/Neo-MoFox-Launcher/releases) 下载最新的 `Neo-MoFox-Launcher-<date>-nightly-win.zip` 文件，解压后直接运行 `neo-mofox-launcher.exe`。
 
----
 
 ## 首次运行：环境检测
 

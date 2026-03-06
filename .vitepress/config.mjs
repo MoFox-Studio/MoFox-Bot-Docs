@@ -153,7 +153,7 @@ export default withMermaid(defineConfig({
           text: '部署指南',
           collapsed: false,
           items:[
-            { text: '一键包部署指南', link: '/docs/guides/OneKey-Plus-Usage-Guide' },
+            { text: 'Launcher 部署指南', link: '/docs/guides/launcher_deployment_guide' },
             { text: 'Windows部署指南', link: '/docs/guides/deployment_guide' },
             { text: 'Linux部署指南', link: '/docs/guides/mmc_deploy_linux' },
             { text: 'Docker部署指南', link: '/docs/guides/mmc_deploy_docker' },

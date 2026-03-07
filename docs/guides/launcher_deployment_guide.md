@@ -77,7 +77,14 @@ uv --version
 
 #### 方式一：下载预构建版本（推荐）
 
-从 [GitHub Releases](https://github.com/MoFox-Studio/Neo-MoFox-Launcher/releases) 下载最新的 `Neo-MoFox-Launcher-<date>-nightly-win.zip` 文件，解压后直接运行 `neo-mofox-launcher.exe`。
+从 [GitHub Releases](https://github.com/MoFox-Studio/Neo-MoFox-Launcher/releases) 下载对应平台的最新 nightly 版本。当前发布的二进制格式包括：
+
+- **Windows 安装包**：`Neo-MoFox-Launcher-<date>-nightly-win-<arch>-setup.exe`
+- **Windows 便携版**：`Neo-MoFox-Launcher-<date>-nightly-win-<arch>-portable.exe`
+- **Linux deb 包**：`Neo-MoFox-Launcher-<date>-nightly-linux-<arch>.deb`
+
+将安装包双击运行即可安装；便携版无需安装，可直接执行；Linux 下使用 `dpkg -i` 命令安装 deb 包。
+
 
 
 ## 首次运行：环境检测

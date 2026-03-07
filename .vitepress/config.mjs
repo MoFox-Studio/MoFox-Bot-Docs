@@ -43,6 +43,7 @@ const devSidebar = [
           { text: 'Plugin — 插件根组件', link: '/docs/development/plugin_develop/components/plugin' },
           { text: 'Action — 动作组件', link: '/docs/development/plugin_develop/components/action' },
           { text: 'Adapter — 适配器组件', link: '/docs/development/plugin_develop/components/adapter' },
+          { text: 'agent — 协助者组件', link: '/docs/development/plugin_develop/components/agent' },
           { text: 'Chatter — 聊天器组件', link: '/docs/development/plugin_develop/components/chatter' },
           { text: 'Collection — 集合组件', link: '/docs/development/plugin_develop/components/collection' },
           { text: 'Command — 命令组件', link: '/docs/development/plugin_develop/components/command' },
@@ -58,12 +59,25 @@ const devSidebar = [
         collapsed: false,
         items: [
           { text: 'API 文档总览', link: '/docs/development/plugin_develop/api/' },
+          { text: 'Action API', link: '/docs/development/plugin_develop/api/action-api' },
+          { text: 'Adapter API', link: '/docs/development/plugin_develop/api/adapter-api' },
+          { text: 'Chat API', link: '/docs/development/plugin_develop/api/chat-api' },
+          { text: 'Command API', link: '/docs/development/plugin_develop/api/command-api' },
+          { text: 'Config API', link: '/docs/development/plugin_develop/api/config-api' },
           { text: '数据库 API', link: '/docs/development/plugin_develop/api/database-api' },
           { text: '事件 API', link: '/docs/development/plugin_develop/api/event-api' },
           { text: 'LLM API', link: '/docs/development/plugin_develop/api/llm-api' },
           { text: '日志 API', link: '/docs/development/plugin_develop/api/log-api' },
+          { text: 'Media API', link: '/docs/development/plugin_develop/api/media-api' },
           { text: '消息查询 API', link: '/docs/development/plugin_develop/api/message-api' },
+          { text: 'Permission API', link: '/docs/development/plugin_develop/api/permission-api' },
+          { text: 'Plugin API', link: '/docs/development/plugin_develop/api/plugin-api' },
+          { text: 'Prompt API', link: '/docs/development/plugin_develop/api/prompt-api' },
+          { text: 'Router API', link: '/docs/development/plugin_develop/api/router-api' },
           { text: '消息发送 API', link: '/docs/development/plugin_develop/api/send-api' },
+          { text: 'Service API', link: '/docs/development/plugin_develop/api/service-api' },
+          { text: 'Storage API', link: '/docs/development/plugin_develop/api/storage-api' },
+          { text: 'Stream API', link: '/docs/development/plugin_develop/api/stream-api' },
         ]
       }
     ]

@@ -29,9 +29,9 @@ const myGuides = [
   },
   {
     avatar: '<iconify-icon icon="material-symbols:package-2"></iconify-icon>',
-    name: '一键包部署指南',
-    title: '为一键包用户准备的部署教程...',
-    link: './OneKey-Plus-Usage-Guide'
+    name: 'Launcher 部署指南',
+    title: '为 Launcher 用户准备的部署教程...',
+    link: './launcher_deployment_guide'
   },
   {
     avatar: '<iconify-icon icon="mdi:account-group"></iconify-icon>',

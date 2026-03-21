@@ -1,7 +1,7 @@
 # MPDT: 你的插件开发启动器
 
 ::: info 版本说明
-本文档对齐 mofox-plugin-toolkit v0.4.8
+本文档对齐 mofox-plugin-toolkit v0.4.9
 :::
 
 如果你正准备为 Neo-MoFox 开发插件，却被“第一步该干啥”卡住，那么 `mpdt` 就是你的救星。

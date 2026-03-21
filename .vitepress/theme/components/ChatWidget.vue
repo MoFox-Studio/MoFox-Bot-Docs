@@ -4,21 +4,16 @@
         <div class="chat-window" :class="{ 'sidebar-open': isOpen }">
             <!-- Header -->
             <div class="chat-header">
-                <div class="chat-title">
-                    <span class="status-dot"></span>
-                    AI 助手
-                </div>
-                <div class="chat-controls">
+                <div class="chat-header-left">
                     <button
                         @click="resetChat"
-                        class="close-btn"
+                        class="header-btn"
                         title="新对话"
-                        style="margin-right: 5px"
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            width="18"
-                            height="18"
+                            width="16"
+                            height="16"
                             viewBox="0 0 24 24"
                             fill="none"
                             stroke="currentColor"
@@ -26,18 +21,17 @@
                             stroke-linecap="round"
                             stroke-linejoin="round"
                         >
-                            <path d="M23 4v6h-6"></path>
-                            <path d="M1 20v-6h6"></path>
-                            <path
-                                d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"
-                            ></path>
+                            <path d="M12 5v14M5 12h14" />
                         </svg>
                     </button>
-                    <button @click="toggleChat" class="close-btn">
+                    <span class="chat-header-title">新对话</span>
+                </div>
+                <div class="chat-controls">
+                    <button @click="resetChat" class="header-btn" title="重置">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            width="18"
-                            height="18"
+                            width="16"
+                            height="16"
                             viewBox="0 0 24 24"
                             fill="none"
                             stroke="currentColor"
@@ -45,8 +39,27 @@
                             stroke-linecap="round"
                             stroke-linejoin="round"
                         >
-                            <line x1="18" y1="6" x2="6" y2="18"></line>
-                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                            <path d="M23 4v6h-6" />
+                            <path d="M1 20v-6h6" />
+                            <path
+                                d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"
+                            />
+                        </svg>
+                    </button>
+                    <button @click="toggleChat" class="header-btn" title="关闭">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <line x1="18" y1="6" x2="6" y2="18" />
+                            <line x1="6" y1="6" x2="18" y2="18" />
                         </svg>
                     </button>
                 </div>
@@ -54,8 +67,129 @@
 
             <!-- Messages Area -->
             <div class="chat-messages" ref="messagesContainer">
-                <div v-if="messages.length === 0" class="welcome-message">
-                    <p>有什么可以帮您的吗？</p>
+                <!-- Welcome Screen -->
+                <div v-if="messages.length === 0" class="welcome-screen">
+                    <div class="welcome-illustration">
+                        <svg
+                            width="120"
+                            height="80"
+                            viewBox="0 0 120 80"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <defs>
+                                <radialGradient
+                                    id="cloudGrad"
+                                    cx="30%"
+                                    cy="30%"
+                                    r="70%"
+                                    fx="30%"
+                                    fy="30%"
+                                >
+                                    <stop offset="0%" stop-color="#FFECD2" />
+                                    <stop offset="40%" stop-color="#FFB380" />
+                                    <stop offset="100%" stop-color="#E87D38" />
+                                </radialGradient>
+                                <radialGradient
+                                    id="cloudGrad2"
+                                    cx="40%"
+                                    cy="40%"
+                                    r="60%"
+                                >
+                                    <stop offset="0%" stop-color="#FFE0B2" />
+                                    <stop offset="100%" stop-color="#E87D38" />
+                                </radialGradient>
+                                <filter
+                                    id="dropShadow"
+                                    x="-10%"
+                                    y="-10%"
+                                    width="120%"
+                                    height="120%"
+                                >
+                                    <feDropShadow
+                                        dx="0"
+                                        dy="6"
+                                        stdDeviation="8"
+                                        flood-color="#E87D38"
+                                        flood-opacity="0.2"
+                                    />
+                                </filter>
+                            </defs>
+                            <g filter="url(#dropShadow)">
+                                <!-- Back cloud parts -->
+                                <circle
+                                    cx="40"
+                                    cy="50"
+                                    r="22"
+                                    fill="url(#cloudGrad2)"
+                                />
+                                <circle
+                                    cx="80"
+                                    cy="46"
+                                    r="26"
+                                    fill="url(#cloudGrad2)"
+                                />
+
+                                <!-- Main front cloud parts -->
+                                <circle
+                                    cx="60"
+                                    cy="40"
+                                    r="32"
+                                    fill="url(#cloudGrad)"
+                                />
+                                <circle
+                                    cx="32"
+                                    cy="54"
+                                    r="16"
+                                    fill="url(#cloudGrad)"
+                                />
+                                <circle
+                                    cx="90"
+                                    cy="52"
+                                    r="20"
+                                    fill="url(#cloudGrad)"
+                                />
+
+                                <!-- Cloud base filler to make it flat at bottom -->
+                                <path
+                                    d="M 32 70 L 90 70 Q 110 70 110 52 Q 110 50 109 48 L 30 48 Q 16 50 16 54 Q 16 70 32 70 Z"
+                                    fill="url(#cloudGrad)"
+                                />
+                            </g>
+                        </svg>
+                    </div>
+                    <h2 class="welcome-greeting">{{ greeting }}</h2>
+                    <p class="welcome-sub">What are we doing today?</p>
+
+                    <div class="suggestion-grid">
+                        <button
+                            v-for="s in suggestions"
+                            :key="s.title"
+                            class="suggestion-card"
+                            @click="sendSuggestion(s.prompt)"
+                        >
+                            <span class="suggestion-icon">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="16"
+                                    height="16"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.5"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    v-html="s.svgPath"
+                                ></svg>
+                            </span>
+                            <div class="suggestion-text">
+                                <span class="suggestion-title">{{
+                                    s.title
+                                }}</span>
+                                <span class="suggestion-sub">{{ s.sub }}</span>
+                            </div>
+                        </button>
+                    </div>
                 </div>
 
                 <div
@@ -336,40 +470,87 @@
 
             <!-- Input Area -->
             <div class="chat-input-area">
-                <textarea
-                    v-model="inputMessage"
-                    placeholder="输入消息..."
-                    @keydown.enter.prevent="handleEnter"
-                    rows="1"
-                    ref="textarea"
-                ></textarea>
-                <button
-                    class="send-btn"
-                    @click="sendMessage"
-                    :disabled="!inputMessage.trim() || isLoading"
+                <div class="privacy-notice">
+                    Chats are recorded to improve the service and are processed
+                    in accordance with our <a href="#">Privacy Policy</a>.
+                    <button class="close-notice">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="12"
+                            height="12"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+                <div
+                    class="input-box"
+                    :class="{ 'input-box--active': inputMessage.length > 0 }"
                 >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="20"
-                        height="20"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    >
-                        <line x1="22" y1="2" x2="11" y2="13"></line>
-                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                    </svg>
-                </button>
+                    <textarea
+                        v-model="inputMessage"
+                        placeholder="What can we help you with?"
+                        @keydown.enter.prevent="handleEnter"
+                        rows="3"
+                        ref="textarea"
+                        class="chat-textarea"
+                    ></textarea>
+                    <div class="input-actions">
+                        <button class="settings-btn" title="Settings">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
+                                <path
+                                    d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"
+                                ></path>
+                            </svg>
+                        </button>
+                        <button
+                            class="send-btn"
+                            @click="sendMessage"
+                            :disabled="!inputMessage.trim() || isLoading"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
+                                <line x1="22" y1="2" x2="11" y2="13"></line>
+                                <polygon
+                                    points="22 2 15 22 11 13 2 9 22 2"
+                                ></polygon>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, nextTick, watch } from "vue";
+import { ref, reactive, computed, onMounted, nextTick, watch } from "vue";
 import MarkdownIt from "markdown-it";
 import { useChatState } from "./useChatState";
 
@@ -490,6 +671,25 @@ function handleEnter(e) {
     }
 }
 
+// ← 在这里修改你的 Worker 地址
+const WORKER_URL = "https://red-frost-5db0.x18982400258.workers.dev/";
+
+// 获取当前页面上下文，发送给 Agent 的 step ②
+function getPageContext() {
+    if (typeof window === "undefined") return null;
+    return {
+        url: window.location.href,
+        title: document.title,
+        // 优先取 VitePress 正文容器，避免把导航栏/侧边栏内容带进去
+        content:
+            (
+                document.querySelector(".vp-doc") ||
+                document.querySelector("main") ||
+                document.querySelector("article")
+            )?.innerText?.slice(0, 2000) || "",
+    };
+}
+
 function scrollToBottom() {
     if (messagesContainer.value) {
         messagesContainer.value.scrollTop =
@@ -551,9 +751,10 @@ async function sendMessage() {
                     content: m.content,
                 }))
                 .filter((m) => m.content), // Filter out any empty messages just in case
+            pageContext: getPageContext(), // 当前页面上下文，供 Agent 理解用户所在位置
         };
 
-        const response = await fetch("https://doc.may1.eu.org", {
+        const response = await fetch(WORKER_URL, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -708,6 +909,51 @@ async function sendMessage() {
     }
 }
 
+// ── 问候语（按时段） ────────────────────────────────────────────
+const greeting = computed(() => {
+    const h = new Date().getHours();
+    if (h >= 5 && h < 12) return "Good morning.";
+    if (h >= 12 && h < 18) return "Good afternoon.";
+    return "Good evening.";
+});
+
+// ── 快捷建议卡片 ───────────────────────────────────────────────
+const suggestions = [
+    {
+        svgPath:
+            '<path d="M13.5 10.5 21 3"/><path d="M16 3h5v5"/><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/><path d="m11 10-6.5 6.5A2.12 2.12 0 0 0 7.5 19.5L14 13"/>',
+        title: "快速开始",
+        sub: "Help me get started",
+        prompt: "如何快速开始使用 MoFox Bot？",
+    },
+    {
+        svgPath:
+            '<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>',
+        title: "插件开发",
+        sub: "How to create plugins",
+        prompt: "如何开发一个 MoFox Bot 插件？",
+    },
+    {
+        svgPath:
+            '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
+        title: "配置说明",
+        sub: "Show my configuration",
+        prompt: "MoFox Bot 有哪些配置项？",
+    },
+    {
+        svgPath:
+            '<path d="M17.5 19c2.5 0 4.5-2 4.5-4.5a4.5 4.5 0 0 0-4.1-4.5h-.1a5.5 5.5 0 0 0-10.7-1C5.2 9.2 4 10.5 4 12c0 1.7 1.3 3 3 3h10.5z"/>',
+        title: "Docker 部署",
+        sub: "What is the process?",
+        prompt: "如何使用 Docker 部署 MoFox Bot？",
+    },
+];
+
+function sendSuggestion(prompt) {
+    inputMessage.value = prompt;
+    sendMessage();
+}
+
 // Drag functionality removed
 </script>
 
@@ -719,20 +965,16 @@ async function sendMessage() {
         BlinkMacSystemFont,
         "Segoe UI",
         Roboto,
-        "Helvetica Neue",
-        Arial,
         sans-serif
     );
     z-index: 1000;
-    /* position: fixed; pointer-events: none; top: 0; left: 0; width: 100vw; height: 100vh; */
-    /* Remove container overlay to avoid blocking clicks when closed */
 }
 
-/* Global Transition for Layout Squeeze */
 :global(body) {
     --chat-sidebar-width: 400px;
 }
 
+/* ── Window ─────────────────────────────────────────────────── */
 .chat-window {
     position: fixed;
     top: 0;
@@ -741,104 +983,195 @@ async function sendMessage() {
     width: var(--chat-sidebar-width);
     height: 100vh;
     max-height: 100vh;
-    background: var(--vp-c-bg, #ffffff);
-    box-shadow: -5px 0 30px rgba(0, 0, 0, 0.1);
+    background: #fdfdfc;
+    box-shadow: -2px 0 24px rgba(0, 0, 0, 0.08);
     display: flex;
     flex-direction: column;
     pointer-events: auto;
     overflow: hidden;
-    border-left: 1px solid var(--vp-c-divider, #e2e2e2);
+    border-left: 1px solid rgba(0, 0, 0, 0.06);
     z-index: 2000;
     transition:
-        transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+        transform 0.32s cubic-bezier(0.25, 0.8, 0.25, 1),
         box-shadow 0.3s ease;
-    transform: translateX(100%); /* Hidden by default */
+    transform: translateX(100%);
 }
 
 .chat-window.sidebar-open {
-    transform: translateX(0); /* Slide in */
-    box-shadow: -5px 0 50px rgba(0, 0, 0, 0.2);
+    transform: translateX(0);
+    box-shadow: -4px 0 40px rgba(0, 0, 0, 0.12);
 }
 
 :global(.dark) .chat-window {
-    box-shadow: -5px 0 30px rgba(0, 0, 0, 0.3);
+    background: #111111;
+    border-left: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: -2px 0 24px rgba(0, 0, 0, 0.4);
 }
 
+/* ── Header ─────────────────────────────────────────────────── */
 .chat-header {
-    height: 60px;
+    height: 56px;
     flex-shrink: 0;
-    background: var(--vp-c-bg);
-    color: var(--vp-c-text-1);
+    background: transparent;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 20px;
-    /* user-select: none; */
-    border-bottom: 1px solid var(--vp-c-divider);
+    padding: 0 16px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 }
 
-.chat-title {
+:global(.dark) .chat-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.chat-header-left {
     display: flex;
     align-items: center;
-    font-weight: 600;
-    font-size: 16px;
+    gap: 8px;
 }
 
-.status-dot {
-    width: 8px;
-    height: 8px;
-    background: #4ade80;
-    border-radius: 50%;
-    margin-right: 10px;
-    box-shadow: 0 0 8px rgba(74, 222, 128, 0.6);
+.chat-header-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--vp-c-text-1);
 }
 
 .chat-controls {
     display: flex;
     align-items: center;
+    gap: 2px;
 }
 
-.chat-controls .close-btn {
+.header-btn {
     background: transparent;
     border: none;
-    color: var(--vp-c-text-2);
+    color: var(--vp-c-text-3);
     cursor: pointer;
-    padding: 6px;
-    border-radius: 4px;
+    padding: 7px;
+    border-radius: 8px;
     display: flex;
-    transition: all 0.2s;
+    align-items: center;
+    justify-content: center;
+    transition:
+        background 0.18s,
+        color 0.18s;
 }
 
-.chat-controls .close-btn:hover {
+.header-btn:hover {
     background: var(--vp-c-bg-soft);
     color: var(--vp-c-text-1);
 }
 
+/* ── Messages ────────────────────────────────────────────────── */
 .chat-messages {
     flex: 1;
-    padding: 20px;
+    padding: 20px 16px;
     overflow-y: auto;
-    background: var(
-        --vp-c-bg-alt
-    ); /* Slightly different bg for sidebar content */
+    background: var(--vp-c-bg-alt);
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 16px;
 }
 
-.welcome-message {
-    text-align: center;
-    color: var(--vp-c-text-2, #666);
+/* ── Welcome Screen ──────────────────────────────────────────── */
+.welcome-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 8px 16px;
+    gap: 0;
+}
+
+.welcome-illustration {
+    margin-bottom: 16px;
+}
+
+.welcome-greeting {
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--vp-c-text-1);
+    margin: 0 0 8px;
+    letter-spacing: -0.3px;
+}
+
+.welcome-sub {
+    font-size: 15px;
+    color: var(--vp-c-text-2);
+    margin: 0 0 32px;
+}
+
+.suggestion-grid {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.suggestion-card {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 20px;
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 12px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+:global(.dark) .suggestion-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.suggestion-card:hover {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(0, 0, 0, 0.1);
+    transform: scale(1.01);
+}
+
+:global(.dark) .suggestion-card:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.suggestion-icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--vp-c-text-2);
+    opacity: 0.7;
+}
+
+.suggestion-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.suggestion-title {
     font-size: 14px;
-    margin-top: 40px;
-    padding: 0 20px;
+    font-weight: 500;
+    color: var(--vp-c-text-1);
+    line-height: 1.4;
 }
 
+.suggestion-sub {
+    font-size: 14px;
+    color: var(--vp-c-text-2);
+    line-height: 1.4;
+}
+
+/* ── Message Rows ────────────────────────────────────────────── */
 .message-row {
     display: flex;
     align-items: flex-start;
     max-width: 100%;
-    gap: 12px;
+    gap: 10px;
 }
 
 .message-left {
@@ -853,17 +1186,16 @@ async function sendMessage() {
 }
 
 .message-avatar {
-    width: 32px;
-    height: 32px;
-    border-radius: 6px; /* Square-ish for copilot feel? Or keep circle. Keep circle but smaller. */
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
-    background: var(--vp-c-bg, #fff);
+    background: var(--vp-c-bg);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--vp-c-text-2, #555);
+    color: var(--vp-c-text-2);
     flex-shrink: 0;
-    border: 1px solid var(--vp-c-divider, #eee);
+    border: 1px solid var(--vp-c-divider);
 }
 
 .message-right .message-avatar {
@@ -873,68 +1205,152 @@ async function sendMessage() {
 }
 
 .message-bubble {
-    padding: 8px 12px;
-    border-radius: 8px; /* Less rounded for sidebar look */
+    padding: 10px 14px;
+    border-radius: 12px;
     font-size: 14px;
-    line-height: 1.6;
-    max-width: 100%; /* In sidebar, bubble can take avail width */
+    line-height: 1.65;
+    max-width: 100%;
     flex: 1;
     word-wrap: break-word;
 }
 
 .message-left .message-bubble {
-    background: transparent; /* Copilot style: blend in or slight bg */
-    /* Let's keep bubble but make it subtle */
     background: var(--vp-c-bg);
     border: 1px solid var(--vp-c-divider);
     color: var(--vp-c-text-1);
+    border-top-left-radius: 4px;
 }
 
 .message-right .message-bubble {
-    background: var(--vp-c-brand-soft); /* Softer brand color */
-    color: var(--vp-c-text-1);
-    border: 1px solid var(--vp-c-brand-1);
-    /* Or just brand block */
     background: var(--vp-c-brand-1);
     color: white;
+    border-top-right-radius: 4px;
 }
 
+/* ── Input Area ──────────────────────────────────────────────── */
 .chat-input-area {
-    padding: 15px;
-    background: var(--vp-c-bg);
-    border-top: 1px solid var(--vp-c-divider);
-    display: flex;
-    align-items: flex-end;
-    gap: 10px;
+    padding: 16px;
+    background: transparent;
     flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
-.chat-input-area textarea {
-    flex: 1;
-    border: 1px solid var(--vp-c-divider);
-    border-radius: 6px;
-    padding: 8px 12px;
-    font-family: inherit;
-    font-size: 14px;
-    resize: none;
-    background: var(--vp-c-bg-mute); /* Input bg */
+.privacy-notice {
+    font-size: 12px;
+    color: var(--vp-c-text-2);
+    background: rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 8px;
+    padding: 12px 32px 12px 16px;
+    position: relative;
+    line-height: 1.4;
+}
+
+:global(.dark) .privacy-notice {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.privacy-notice a {
     color: var(--vp-c-text-1);
-    max-height: 150px;
+    text-decoration: underline;
+    text-decoration-color: rgba(0, 0, 0, 0.2);
+    text-underline-offset: 2px;
+}
+
+:global(.dark) .privacy-notice a {
+    text-decoration-color: rgba(255, 255, 255, 0.2);
+}
+
+.close-notice {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: var(--vp-c-text-3);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+}
+
+.close-notice:hover {
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--vp-c-text-2);
+}
+
+.input-box {
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    border: 1px solid #f97316; /* Orange border like CF */
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    transition: all 0.2s ease;
+}
+
+:global(.dark) .input-box {
+    background: #111111;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.input-box:focus-within {
+    box-shadow: 0 6px 24px rgba(249, 115, 22, 0.15);
+}
+
+.chat-textarea {
+    width: 100%;
+    border: none;
     outline: none;
+    background: transparent;
+    font-family: inherit;
+    font-size: 15px;
+    color: var(--vp-c-text-1);
+    resize: none;
+    max-height: 140px;
+    min-height: 60px;
+    line-height: 1.5;
+}
+
+.chat-textarea::placeholder {
+    color: var(--vp-c-text-3);
+}
+
+.input-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 8px;
+}
+
+.settings-btn {
+    background: transparent;
+    border: none;
+    color: var(--vp-c-text-3);
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     transition: all 0.2s;
 }
 
-.chat-input-area textarea:focus {
-    border-color: var(--vp-c-brand-1);
-    background: var(--vp-c-bg);
+.settings-btn:hover {
+    background: var(--vp-c-bg-soft);
+    color: var(--vp-c-text-2);
 }
 
 .send-btn {
-    width: 36px;
-    height: 36px;
-    border-radius: 6px;
-    background: var(--vp-c-brand-1);
-    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #f3f3f3;
+    color: #a1a1aa;
     border: none;
     display: flex;
     align-items: center;
@@ -943,13 +1359,28 @@ async function sendMessage() {
     transition: all 0.2s;
 }
 
+:global(.dark) .send-btn {
+    background: #222;
+    color: #555;
+}
+
+.send-btn:not(:disabled) {
+    background: var(--vp-c-text-1);
+    color: var(--vp-c-bg);
+}
+
 .send-btn:hover:not(:disabled) {
-    background: var(--vp-c-brand-2);
+    transform: scale(1.05);
+}
+
+.send-btn:active:not(:disabled) {
+    transform: scale(0.96);
 }
 
 .send-btn:disabled {
     background: var(--vp-c-divider);
     cursor: not-allowed;
+    opacity: 0.6;
 }
 
 /* Scrollbar styling */

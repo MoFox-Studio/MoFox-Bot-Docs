@@ -80,6 +80,26 @@ const devSidebar = [
         ]
       },
       {
+        text: 'MPDT 开发工具',
+        collapsed: false,
+        items: [
+          { text: 'MPDT 概述', link: '/docs/development/mpdt/' },
+          { text: '安装指南', link: '/docs/development/mpdt/installation' },
+          {
+            text: '命令参考',
+            collapsed: false,
+            items: [
+              { text: 'mpdt init', link: '/docs/development/mpdt/commands/init' },
+              { text: 'mpdt generate', link: '/docs/development/mpdt/commands/generate' },
+              { text: 'mpdt check', link: '/docs/development/mpdt/commands/check' },
+              { text: 'mpdt build', link: '/docs/development/mpdt/commands/build' },
+              { text: 'mpdt dev', link: '/docs/development/mpdt/commands/dev' },
+              { text: 'mpdt config', link: '/docs/development/mpdt/commands/config' }
+            ]
+          }
+        ]
+      },
+      {
         text: '插件 API',
         collapsed: false,
         items: [

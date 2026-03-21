@@ -8,8 +8,6 @@
 配置系统支持 **MoFox-Core-WebUI** 等可视化编辑器。通过在 `Field` 中指定 UI 属性（如 `label`、`tag`、`placeholder`），系统会自动生成配置表单界面，让用户无需手动编辑 TOML 文件。
 :::
 
----
-
 ## 配置文件位置
 
 框架自动管理配置文件，存放在以下路径：
@@ -25,8 +23,6 @@ config/
 - 插件首次加载时，若配置文件不存在，框架会自动生成包含所有默认值的配置文件
 - 配置文件采用 UTF-8 编码
 - 支持多配置文件（通过 `config_name` 区分）
-
----
 
 ## 基础配置类
 
@@ -63,8 +59,6 @@ enabled = true
 # 请求超时时间（秒）
 timeout = 30
 ```
-
----
 
 ## 配置节（Section）
 
@@ -138,8 +132,6 @@ port = 8080
 # 启用表情包回复
 enable_emoji = true
 ```
-
----
 
 ## Field 字段定义
 
@@ -450,8 +442,6 @@ class AdvancedConfig(BaseConfig):
     proxy: ProxySection = Field(default_factory=ProxySection)
 ```
 
----
-
 ## 完整示例
 
 ### 配置类定义
@@ -578,8 +568,6 @@ class MyAction(BaseAction):
         return True, "执行成功"
 ```
 
----
-
 ## 类方法
 
 ### `load_for_plugin(plugin_name, *, auto_generate=True, auto_update=True)`
@@ -621,8 +609,6 @@ path = MyPluginConfig.get_default_path()
 ```python
 MyPluginConfig.generate_default()
 ```
-
----
 
 ## 最佳实践
 
@@ -707,8 +693,6 @@ allowed_groups: list[str] = Field(
 )
 ```
 
----
-
 ## 常见问题
 
 ### Q: 如何迁移旧配置？
@@ -772,8 +756,6 @@ class MyPlugin(BasePlugin):
 ### Q: WebUI 相关的参数不起作用怎么办？
 
 **A:** WebUI 相关参数（如 `label`、`tag`、`placeholder`、`input_type` 等）仅在使用 MoFox-Core-WebUI 或其他支持的可视化界面时生效。如果仅通过 TOML 文件配置，这些参数不会影响功能，但建议保留以便将来使用 WebUI。
-
----
 
 ## 注意事项
 

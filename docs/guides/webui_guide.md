@@ -90,7 +90,7 @@ git clone -b webui-dist https://github.com/MoFox-Studio/MoFox-Core-Webui.git web
 首次安装后，编辑机器人配置文件：
 
 ```
-config/bot_config.toml
+config/core.toml
 ```
 
 找到 `[http_router]` 部分，设置你的 API Key：

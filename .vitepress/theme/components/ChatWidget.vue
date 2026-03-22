@@ -70,93 +70,11 @@
                 <!-- Welcome Screen -->
                 <div v-if="messages.length === 0" class="welcome-screen">
                     <div class="welcome-illustration">
-                        <svg
-                            width="120"
-                            height="80"
-                            viewBox="0 0 120 80"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <defs>
-                                <radialGradient
-                                    id="cloudGrad"
-                                    cx="30%"
-                                    cy="30%"
-                                    r="70%"
-                                    fx="30%"
-                                    fy="30%"
-                                >
-                                    <stop offset="0%" stop-color="#FFECD2" />
-                                    <stop offset="40%" stop-color="#FFB380" />
-                                    <stop offset="100%" stop-color="#E87D38" />
-                                </radialGradient>
-                                <radialGradient
-                                    id="cloudGrad2"
-                                    cx="40%"
-                                    cy="40%"
-                                    r="60%"
-                                >
-                                    <stop offset="0%" stop-color="#FFE0B2" />
-                                    <stop offset="100%" stop-color="#E87D38" />
-                                </radialGradient>
-                                <filter
-                                    id="dropShadow"
-                                    x="-10%"
-                                    y="-10%"
-                                    width="120%"
-                                    height="120%"
-                                >
-                                    <feDropShadow
-                                        dx="0"
-                                        dy="6"
-                                        stdDeviation="8"
-                                        flood-color="#E87D38"
-                                        flood-opacity="0.2"
-                                    />
-                                </filter>
-                            </defs>
-                            <g filter="url(#dropShadow)">
-                                <!-- Back cloud parts -->
-                                <circle
-                                    cx="40"
-                                    cy="50"
-                                    r="22"
-                                    fill="url(#cloudGrad2)"
-                                />
-                                <circle
-                                    cx="80"
-                                    cy="46"
-                                    r="26"
-                                    fill="url(#cloudGrad2)"
-                                />
-
-                                <!-- Main front cloud parts -->
-                                <circle
-                                    cx="60"
-                                    cy="40"
-                                    r="32"
-                                    fill="url(#cloudGrad)"
-                                />
-                                <circle
-                                    cx="32"
-                                    cy="54"
-                                    r="16"
-                                    fill="url(#cloudGrad)"
-                                />
-                                <circle
-                                    cx="90"
-                                    cy="52"
-                                    r="20"
-                                    fill="url(#cloudGrad)"
-                                />
-
-                                <!-- Cloud base filler to make it flat at bottom -->
-                                <path
-                                    d="M 32 70 L 90 70 Q 110 70 110 52 Q 110 50 109 48 L 30 48 Q 16 50 16 54 Q 16 70 32 70 Z"
-                                    fill="url(#cloudGrad)"
-                                />
-                            </g>
-                        </svg>
+                        <img
+                            src="/mascot.png"
+                            alt="MoFox 助手"
+                            class="welcome-mascot"
+                        />
                     </div>
                     <h2 class="welcome-greeting">{{ greeting }}</h2>
                     <p class="welcome-sub">What are we doing today?</p>
@@ -1015,7 +933,27 @@ function sendSuggestion(prompt) {
 }
 
 .welcome-illustration {
-    margin-bottom: 16px;
+    margin-bottom: 12px;
+}
+
+.welcome-mascot {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+    filter: drop-shadow(0 6px 20px rgba(100, 150, 255, 0.2));
+    animation: mascot-float 3s ease-in-out infinite;
+    user-select: none;
+    pointer-events: none;
+}
+
+@keyframes mascot-float {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-6px);
+    }
 }
 
 .welcome-greeting {

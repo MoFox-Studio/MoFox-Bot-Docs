@@ -597,7 +597,7 @@ const providers = [
         icon: "◆",
         models: [
             {
-                id: "claude-4.6-sonnet-real",
+                id: "claude-4.6-sonnet",
                 name: "Claude Sonnet 4.6",
                 desc: "能不能用随缘",
             },

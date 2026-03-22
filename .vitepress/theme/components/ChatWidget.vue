@@ -144,7 +144,7 @@
                         <div
                             class="message-content markdown-content"
                             v-if="msg.content"
-                            v-html="md.render(msg.content)"
+                            v-html="md.render(cleanContent(msg.content))"
                         ></div>
                     </div>
 
@@ -273,7 +273,7 @@
                         <div v-if="msg.content" class="cf-answer-card">
                             <div
                                 class="message-content markdown-content"
-                                v-html="md.render(msg.content)"
+                                v-html="md.render(cleanContent(msg.content))"
                             ></div>
                         </div>
 
@@ -757,6 +757,16 @@ async function sendMessage() {
         isWaiting.value = false;
         nextTick(() => scrollToBottom());
     }
+}
+
+// ── 清理 AI 原始标签，防止 <read>/<explain> 等泄漏到 UI ──────────
+function cleanContent(text) {
+    if (!text) return "";
+    return text
+        .replace(/<explain>[\s\S]*?<\/explain>/gi, "")
+        .replace(/<read>[\s\S]*?<\/read>/gi, "")
+        .replace(/<search>[\s\S]*?<\/search>/gi, "")
+        .trim();
 }
 
 // ── 问候语（按时段） ────────────────────────────────────────────

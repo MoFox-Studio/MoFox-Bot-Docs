@@ -320,7 +320,10 @@
             <!-- Input Area -->
             <div class="chat-input-area">
                 <div class="privacy-notice">
-                    聊天内容可能会被记录以用于改进服务及其质量，并会遵循我们的<a href="#">隐私政策</a>进行处理。
+                    聊天内容可能会被记录以用于改进服务及其质量，并会遵循我们的<a
+                        href="#"
+                        >隐私政策</a
+                    >进行处理。
                     <button class="close-notice">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -1831,11 +1834,8 @@ function sendSuggestion(prompt) {
     display: flex;
     align-items: center;
     gap: 6px;
-    padding: 8px 10px;
-    border-radius: 8px;
+    padding: 4px 0;
     font-size: 13px;
-    background: var(--vp-c-bg-soft);
-    border: 1px solid var(--vp-c-divider);
     color: var(--vp-c-text-2, #666);
     line-height: 1.5;
 }

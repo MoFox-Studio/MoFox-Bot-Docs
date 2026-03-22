@@ -77,7 +77,7 @@
                         />
                     </div>
                     <h2 class="welcome-greeting">{{ greeting }}</h2>
-                    <p class="welcome-sub">What are we doing today?</p>
+                    <p class="welcome-sub">今天想做点什么？</p>
 
                     <div class="suggestion-grid">
                         <button
@@ -320,8 +320,7 @@
             <!-- Input Area -->
             <div class="chat-input-area">
                 <div class="privacy-notice">
-                    Chats are recorded to improve the service and are processed
-                    in accordance with our <a href="#">Privacy Policy</a>.
+                    聊天内容可能会被记录以用于改进服务及其质量，并会遵循我们的<a href="#">隐私政策</a>进行处理。
                     <button class="close-notice">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -403,7 +402,7 @@
 
                     <textarea
                         v-model="inputMessage"
-                        placeholder="What can we help you with?"
+                        placeholder="有事情需要我帮忙吗？"
                         @keydown.enter.prevent="handleEnter"
                         rows="3"
                         ref="textarea"
@@ -1066,9 +1065,9 @@ function cleanContent(text) {
 // ── 问候语（按时段） ────────────────────────────────────────────
 const greeting = computed(() => {
     const h = new Date().getHours();
-    if (h >= 5 && h < 12) return "Good morning.";
-    if (h >= 12 && h < 18) return "Good afternoon.";
-    return "Good evening.";
+    if (h >= 5 && h < 12) return "早上好。";
+    if (h >= 12 && h < 18) return "下午好。";
+    return "晚上好。";
 });
 
 // ── 快捷建议卡片 ───────────────────────────────────────────────
@@ -1077,28 +1076,28 @@ const suggestions = [
         svgPath:
             '<path d="M13.5 10.5 21 3"/><path d="M16 3h5v5"/><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/><path d="m11 10-6.5 6.5A2.12 2.12 0 0 0 7.5 19.5L14 13"/>',
         title: "快速开始",
-        sub: "Help me get started",
+        sub: "帮助我开始使用",
         prompt: "如何快速开始使用 MoFox Bot？",
     },
     {
         svgPath:
             '<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>',
         title: "插件开发",
-        sub: "How to create plugins",
+        sub: "开发属于你的插件",
         prompt: "如何开发一个 MoFox Bot 插件？",
     },
     {
         svgPath:
             '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
         title: "配置说明",
-        sub: "Show my configuration",
+        sub: "查看我的配置",
         prompt: "MoFox Bot 有哪些配置项？",
     },
     {
         svgPath:
             '<path d="M17.5 19c2.5 0 4.5-2 4.5-4.5a4.5 4.5 0 0 0-4.1-4.5h-.1a5.5 5.5 0 0 0-10.7-1C5.2 9.2 4 10.5 4 12c0 1.7 1.3 3 3 3h10.5z"/>',
         title: "Docker 部署",
-        sub: "What is the process?",
+        sub: "部署流程参考",
         prompt: "如何使用 Docker 部署 MoFox Bot？",
     },
 ];
@@ -1137,7 +1136,7 @@ function sendSuggestion(prompt) {
     width: var(--chat-sidebar-width);
     height: 100vh;
     max-height: 100vh;
-    background: #fdfdfc;
+    background: var(--vp-c-bg);
     box-shadow: -2px 0 24px rgba(0, 0, 0, 0.08);
     display: flex;
     flex-direction: column;
@@ -1157,7 +1156,7 @@ function sendSuggestion(prompt) {
 }
 
 :global(.dark) .chat-window {
-    background: #111111;
+    background: var(--vp-c-bg);
     border-left: 1px solid rgba(255, 255, 255, 0.06);
     box-shadow: -2px 0 24px rgba(0, 0, 0, 0.4);
 }
@@ -1166,12 +1165,13 @@ function sendSuggestion(prompt) {
 .chat-header {
     height: 56px;
     flex-shrink: 0;
-    background: transparent;
+    background: var(--vp-c-bg);
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 16px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    border-bottom: 1px solid var(--vp-c-divider);
+    z-index: 10;
 }
 
 :global(.dark) .chat-header {
@@ -1389,11 +1389,14 @@ function sendSuggestion(prompt) {
     line-height: 1.65;
     max-width: 85%;
     word-wrap: break-word;
+    background: var(--vp-c-bg-soft);
+    border: 1px solid var(--vp-c-divider);
 }
 
 .message-right .message-bubble {
     background: var(--vp-c-brand-1);
     color: white;
+    border: none;
     border-top-right-radius: 4px;
 }
 
@@ -1456,7 +1459,7 @@ function sendSuggestion(prompt) {
 .input-box {
     display: flex;
     flex-direction: column;
-    background: #ffffff;
+    background: var(--vp-c-bg-alt);
     border: 1px solid #f97316; /* Orange border like CF */
     border-radius: 16px;
     padding: 16px;
@@ -1465,7 +1468,7 @@ function sendSuggestion(prompt) {
 }
 
 :global(.dark) .input-box {
-    background: #111111;
+    background: var(--vp-c-bg-alt);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
@@ -1810,7 +1813,11 @@ function sendSuggestion(prompt) {
     display: flex;
     align-items: center;
     gap: 6px;
+    padding: 8px 10px;
+    border-radius: 8px;
     font-size: 13px;
+    background: var(--vp-c-bg-soft);
+    border: 1px solid var(--vp-c-divider);
     color: var(--vp-c-text-2, #666);
     line-height: 1.5;
 }

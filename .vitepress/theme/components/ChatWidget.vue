@@ -192,6 +192,7 @@
                     </div>
                 </div>
 
+                <!-- User messages -->
                 <div
                     v-for="(msg, index) in messages"
                     :key="index"
@@ -200,28 +201,9 @@
                         msg.role === 'user' ? 'message-right' : 'message-left'
                     "
                 >
-                    <div class="message-avatar">
+                    <!-- User avatar only -->
+                    <div v-if="msg.role === 'user'" class="message-avatar">
                         <svg
-                            v-if="msg.role !== 'user'"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="20"
-                            height="20"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-                            <path
-                                d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"
-                            />
-                            <path d="M8 14s1.5 2 4 2 4-2 4-2" />
-                            <line x1="9" y1="9" x2="9.01" y2="9" />
-                            <line x1="15" y1="9" x2="15.01" y2="9" />
-                        </svg>
-                        <svg
-                            v-else
                             xmlns="http://www.w3.org/2000/svg"
                             width="20"
                             height="20"
@@ -239,204 +221,171 @@
                         </svg>
                     </div>
 
-                    <div class="message-bubble">
-                        <div
-                            v-if="
-                                msg.details &&
-                                ((msg.details.steps &&
-                                    msg.details.steps.length > 0) ||
-                                    (msg.details.references &&
-                                        msg.details.references.length > 0))
-                            "
-                            class="message-details"
-                        >
-                            <!-- Thinking Process / Timeline Panel -->
-                            <div
-                                class="thinking-panel"
-                                v-if="
-                                    msg.details.steps &&
-                                    msg.details.steps.length > 0
-                                "
-                            >
-                                <div class="thinking-panel-header">
-                                    <div class="thinking-panel-title">
-                                        <span class="thinking-panel-dot"></span>
-                                        <span
-                                            v-if="msg.details.isThinking"
-                                            class="thinking-text"
-                                            >{{ getCurrentStepName(msg) }}</span
-                                        >
-                                        <span v-else>思考过程</span>
-                                    </div>
-                                    <span
-                                        v-if="
-                                            !msg.details.isThinking &&
-                                            msg.details.duration
-                                        "
-                                        class="duration-badge"
-                                        >{{ msg.details.duration }}s</span
-                                    >
-                                </div>
-
-                                <div class="steps-timeline">
-                                    <div
-                                        v-for="(step, sIdx) in msg.details
-                                            .steps"
-                                        :key="sIdx"
-                                        class="timeline-item"
-                                        :class="[
-                                            `timeline-item--${step.status}`,
-                                            {
-                                                'timeline-item--last':
-                                                    sIdx ===
-                                                    msg.details.steps.length -
-                                                        1,
-                                            },
-                                        ]"
-                                    >
-                                        <div class="timeline-marker-wrap">
-                                            <span
-                                                class="timeline-marker"
-                                                :class="step.status"
-                                            >
-                                                <svg
-                                                    v-if="
-                                                        step.status ===
-                                                        'running'
-                                                    "
-                                                    class="spin"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="12"
-                                                    height="12"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    stroke-width="2"
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                >
-                                                    <path
-                                                        d="M21 12a9 9 0 1 1-6.219-8.56"
-                                                    ></path>
-                                                </svg>
-                                                <svg
-                                                    v-else
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="12"
-                                                    height="12"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    stroke-width="2"
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                >
-                                                    <polyline
-                                                        points="20 6 9 17 4 12"
-                                                    ></polyline>
-                                                </svg>
-                                            </span>
-                                            <span
-                                                v-if="
-                                                    sIdx !==
-                                                    msg.details.steps.length - 1
-                                                "
-                                                class="timeline-line"
-                                            ></span>
-                                        </div>
-
-                                        <div class="timeline-content">
-                                            <div class="timeline-step-name">
-                                                {{ step.name }}
-                                            </div>
-                                            <div class="timeline-step-status">
-                                                {{
-                                                    step.status === "running"
-                                                        ? "正在执行"
-                                                        : "已完成"
-                                                }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Citations -->
-                            <div
-                                v-if="
-                                    msg.details.references &&
-                                    msg.details.references.length > 0
-                                "
-                                class="citation-area"
-                            >
-                                <div class="citation-header">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="12"
-                                        height="12"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                    >
-                                        <path
-                                            d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
-                                        ></path>
-                                        <polyline
-                                            points="14 2 14 8 20 8"
-                                        ></polyline>
-                                        <line
-                                            x1="16"
-                                            y1="13"
-                                            x2="8"
-                                            y2="13"
-                                        ></line>
-                                        <line
-                                            x1="16"
-                                            y1="17"
-                                            x2="8"
-                                            y2="17"
-                                        ></line>
-                                        <polyline
-                                            points="10 9 9 9 8 9"
-                                        ></polyline>
-                                    </svg>
-                                    <span>引用文档</span>
-                                </div>
-                                <div class="citation-list">
-                                    <a
-                                        v-for="(ref, idx) in msg.details
-                                            .references"
-                                        :key="idx"
-                                        :href="ref.url || '#'"
-                                        :target="ref.url ? '_blank' : '_self'"
-                                        class="citation-item"
-                                        :title="ref.title || ref.name"
-                                    >
-                                        {{
-                                            ref.title ||
-                                            ref.name ||
-                                            "文档 " + (idx + 1)
-                                        }}
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Message Content -->
+                    <!-- User bubble -->
+                    <div v-if="msg.role === 'user'" class="message-bubble">
                         <div
                             class="message-content markdown-content"
                             v-if="msg.content"
                             v-html="md.render(msg.content)"
                         ></div>
+                    </div>
 
-                        <!-- Standalone Typing Indicator (Only showed when no steps are visible and no content) -->
+                    <!-- Assistant: CF-style layout (no avatar) -->
+                    <div
+                        v-if="msg.role === 'assistant'"
+                        class="cf-assistant-block"
+                    >
+                        <!-- Thinking header (collapsible) -->
+                        <div
+                            v-if="
+                                msg.details &&
+                                msg.details.steps &&
+                                msg.details.steps.length > 0
+                            "
+                            class="cf-thinking-section"
+                        >
+                            <button
+                                class="cf-thinking-toggle"
+                                @click="
+                                    msg.details._showThinking =
+                                        !msg.details._showThinking
+                                "
+                            >
+                                <svg
+                                    v-if="msg.details._showThinking"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="12"
+                                    height="12"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <polyline
+                                        points="18 15 12 9 6 15"
+                                    ></polyline>
+                                </svg>
+                                <svg
+                                    v-else
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="12"
+                                    height="12"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <polyline
+                                        points="6 9 12 15 18 9"
+                                    ></polyline>
+                                </svg>
+                                <span
+                                    v-if="msg.details.isThinking"
+                                    class="cf-thinking-label thinking-text"
+                                    >{{ getCurrentStepName(msg) }}</span
+                                >
+                                <span v-else class="cf-thinking-label">{{
+                                    msg.details._showThinking
+                                        ? "hide thinking"
+                                        : "show thinking"
+                                }}</span>
+                            </button>
+
+                            <!-- Steps list (visible when expanded or still thinking) -->
+                            <div
+                                v-if="
+                                    msg.details._showThinking ||
+                                    msg.details.isThinking
+                                "
+                                class="cf-steps-list"
+                            >
+                                <div
+                                    v-for="(step, sIdx) in msg.details.steps"
+                                    :key="sIdx"
+                                    class="cf-step-item"
+                                    :class="{
+                                        'cf-step-running':
+                                            step.status === 'running',
+                                    }"
+                                >
+                                    <span class="cf-step-arrow">→</span>
+                                    <span class="cf-step-name">{{
+                                        step.name
+                                    }}</span>
+                                    <span
+                                        v-if="step.status === 'running'"
+                                        class="cf-step-badge cf-step-badge--running"
+                                    >
+                                        <svg
+                                            class="spin"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="10"
+                                            height="10"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="2.5"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                        >
+                                            <path
+                                                d="M21 12a9 9 0 1 1-6.219-8.56"
+                                            ></path>
+                                        </svg>
+                                    </span>
+                                    <span
+                                        v-if="
+                                            msg.details.duration &&
+                                            !msg.details.isThinking &&
+                                            sIdx ===
+                                                msg.details.steps.length - 1
+                                        "
+                                        class="cf-step-duration"
+                                        >({{ msg.details.duration }}s)</span
+                                    >
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Answer card -->
+                        <div v-if="msg.content" class="cf-answer-card">
+                            <div
+                                class="message-content markdown-content"
+                                v-html="md.render(msg.content)"
+                            ></div>
+                        </div>
+
+                        <!-- Citations below card -->
+                        <div
+                            v-if="
+                                msg.details &&
+                                msg.details.references &&
+                                msg.details.references.length > 0
+                            "
+                            class="cf-citations"
+                        >
+                            <a
+                                v-for="(ref, idx) in msg.details.references"
+                                :key="idx"
+                                :href="ref.url || '#'"
+                                :target="ref.url ? '_blank' : '_self'"
+                                class="cf-citation-chip"
+                                :title="ref.title || ref.name"
+                            >
+                                {{
+                                    ref.title || ref.name || "文档 " + (idx + 1)
+                                }}
+                            </a>
+                        </div>
+
+                        <!-- Typing indicator -->
                         <div
                             v-if="
                                 isLoading &&
-                                msg.role === 'assistant' &&
                                 !msg.content &&
                                 (!msg.details ||
                                     !msg.details.steps ||
@@ -713,6 +662,7 @@ async function sendMessage() {
             references: [],
             duration: 0,
             isThinking: true,
+            _showThinking: true,
         },
     });
     messages.value.push(assistantMsg);
@@ -1153,7 +1103,11 @@ function sendSuggestion(prompt) {
     display: flex;
     align-items: flex-start;
     max-width: 100%;
-    gap: 10px;
+    gap: 8px;
+}
+
+.message-row.message-left {
+    gap: 0;
 }
 
 .message-left {
@@ -1168,8 +1122,8 @@ function sendSuggestion(prompt) {
 }
 
 .message-avatar {
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
     background: var(--vp-c-bg);
     display: flex;
@@ -1191,16 +1145,8 @@ function sendSuggestion(prompt) {
     border-radius: 12px;
     font-size: 14px;
     line-height: 1.65;
-    max-width: 100%;
-    flex: 1;
+    max-width: 85%;
     word-wrap: break-word;
-}
-
-.message-left .message-bubble {
-    background: var(--vp-c-bg);
-    border: 1px solid var(--vp-c-divider);
-    color: var(--vp-c-text-1);
-    border-top-left-radius: 4px;
 }
 
 .message-right .message-bubble {
@@ -1439,11 +1385,40 @@ function sendSuggestion(prompt) {
     text-decoration: underline;
 }
 
-/* Message Details & Thinking Process */
-.message-details {
-    margin-bottom: 8px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-    padding-bottom: 8px;
+/* ── CF-style Assistant Block ────────────────────────────────── */
+.cf-assistant-block {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+/* ── Thinking Section ────────────────────────────────────────── */
+.cf-thinking-section {
+    margin-bottom: 6px;
+}
+
+.cf-thinking-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: none;
+    padding: 4px 0;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--vp-c-text-3, #999);
+    transition: color 0.15s;
+    user-select: none;
+}
+
+.cf-thinking-toggle:hover {
+    color: var(--vp-c-text-2);
+}
+
+.cf-thinking-label {
+    font-size: 13px;
 }
 
 .thinking-text {
@@ -1453,184 +1428,115 @@ function sendSuggestion(prompt) {
 
 @keyframes pulse-text {
     0% {
-        opacity: 0.7;
+        opacity: 0.6;
     }
     50% {
         opacity: 1;
     }
     100% {
-        opacity: 0.7;
+        opacity: 0.6;
     }
 }
 
-.thinking-panel {
-    margin-bottom: 10px;
-    padding: 10px 12px;
-    background: rgba(0, 0, 0, 0.02);
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    border-radius: 12px;
-}
-
-.thinking-panel-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    margin-bottom: 10px;
-}
-
-.thinking-panel-title {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    min-width: 0;
-    font-size: 12px;
-    color: var(--vp-c-text-2, #666);
-    font-weight: 500;
-}
-
-.thinking-panel-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--vp-c-brand-1, #367bf0);
-    box-shadow: 0 0 0 4px rgba(54, 123, 240, 0.12);
-    flex-shrink: 0;
-}
-
-.duration-badge {
-    background: rgba(0, 0, 0, 0.05);
-    padding: 2px 6px;
-    border-radius: 999px;
-    font-size: 10px;
-    line-height: 1.2;
-    color: var(--vp-c-text-2, #666);
-    flex-shrink: 0;
-}
-
-.steps-timeline {
+/* ── Steps List ──────────────────────────────────────────────── */
+.cf-steps-list {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 3px;
+    padding: 4px 0 2px;
 }
 
-.timeline-item {
-    display: grid;
-    grid-template-columns: 20px 1fr;
-    gap: 10px;
-    align-items: flex-start;
-}
-
-.timeline-marker-wrap {
-    position: relative;
+.cf-step-item {
     display: flex;
-    justify-content: center;
-    min-height: 34px;
-}
-
-.timeline-marker {
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    display: inline-flex;
     align-items: center;
-    justify-content: center;
-    background: var(--vp-c-bg);
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    color: var(--vp-c-text-3, #999);
-    z-index: 1;
-}
-
-.timeline-marker.running {
-    color: var(--vp-c-brand-1, #367bf0);
-    border-color: rgba(54, 123, 240, 0.28);
-    background: rgba(54, 123, 240, 0.08);
-}
-
-.timeline-marker.success {
-    color: #16a34a;
-    border-color: rgba(22, 163, 74, 0.25);
-    background: rgba(22, 163, 74, 0.08);
-}
-
-.timeline-line {
-    position: absolute;
-    top: 20px;
-    bottom: -8px;
-    width: 1.5px;
-    background: linear-gradient(
-        to bottom,
-        rgba(0, 0, 0, 0.14),
-        rgba(0, 0, 0, 0.06)
-    );
-}
-
-.timeline-content {
-    padding-bottom: 12px;
-    min-width: 0;
-}
-
-.timeline-step-name {
+    gap: 6px;
     font-size: 13px;
-    line-height: 1.45;
+    color: var(--vp-c-text-2, #666);
+    line-height: 1.5;
+}
+
+.cf-step-item.cf-step-running {
     color: var(--vp-c-text-1);
+}
+
+.cf-step-arrow {
+    color: var(--vp-c-text-3, #aaa);
+    flex-shrink: 0;
+    font-size: 12px;
+}
+
+.cf-step-name {
+    min-width: 0;
     word-break: break-word;
 }
 
-.timeline-step-status {
-    margin-top: 2px;
-    font-size: 11px;
-    color: var(--vp-c-text-3, #999);
-}
-
-.timeline-item--running .timeline-step-name {
-    color: var(--vp-c-brand-1, #367bf0);
-    font-weight: 500;
-}
-
-.timeline-item--last .timeline-content {
-    padding-bottom: 0;
-}
-
-.citation-area {
-    margin-top: 8px;
-    padding-top: 6px;
-    border-top: 1px dashed rgba(0, 0, 0, 0.08);
-}
-
-.citation-header {
-    display: flex;
+.cf-step-badge--running {
+    display: inline-flex;
     align-items: center;
-    gap: 6px;
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--vp-c-text-2, #666);
-    margin-bottom: 6px;
+    color: var(--vp-c-brand-1, #367bf0);
+    flex-shrink: 0;
 }
 
-.citation-list {
+.cf-step-duration {
+    font-size: 11px;
+    color: var(--vp-c-text-3, #aaa);
+    flex-shrink: 0;
+}
+
+/* ── Answer Card ─────────────────────────────────────────────── */
+.cf-answer-card {
+    background: var(--vp-c-bg);
+    border: 1px solid rgba(0, 0, 0, 0.07);
+    border-radius: 14px;
+    padding: 20px 22px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--vp-c-text-1);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+:global(.dark) .cf-answer-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* ── Citations ───────────────────────────────────────────────── */
+.cf-citations {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
+    margin-top: 8px;
+    padding-left: 2px;
 }
 
-.citation-item {
+.cf-citation-chip {
     font-size: 11px;
-    padding: 2px 8px;
+    padding: 3px 10px;
     background: rgba(0, 0, 0, 0.04);
-    border-radius: 4px;
+    border-radius: 999px;
     color: var(--vp-c-brand-1, #367bf0);
     text-decoration: none;
-    transition: all 0.2s;
-    max-width: 100%;
+    transition: all 0.18s;
+    max-width: 240px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    border: 1px solid transparent;
 }
 
-.citation-item:hover {
-    background: rgba(54, 123, 240, 0.1);
+.cf-citation-chip:hover {
+    background: rgba(54, 123, 240, 0.08);
+    border-color: rgba(54, 123, 240, 0.2);
     text-decoration: underline;
+}
+
+:global(.dark) .cf-citation-chip {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+:global(.dark) .cf-citation-chip:hover {
+    background: rgba(54, 123, 240, 0.12);
 }
 
 .spin {

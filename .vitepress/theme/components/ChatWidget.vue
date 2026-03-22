@@ -343,6 +343,64 @@
                     class="input-box"
                     :class="{ 'input-box--active': inputMessage.length > 0 }"
                 >
+                    <!-- Model Picker Overlay -->
+                    <Transition name="model-picker-fade">
+                        <div v-if="showModelPicker" class="model-picker">
+                            <div class="model-picker-title">选择模型</div>
+                            <template v-for="(p, pi) in providers" :key="p.id">
+                                <div
+                                    class="model-provider-label"
+                                    :class="{
+                                        'model-provider-label--first': pi === 0,
+                                    }"
+                                >
+                                    <span class="model-provider-icon">{{
+                                        p.icon
+                                    }}</span>
+                                    {{ p.name }}
+                                </div>
+                                <button
+                                    v-for="m in p.models"
+                                    :key="p.id + ':' + m.id"
+                                    class="model-option"
+                                    :class="{
+                                        active:
+                                            selectedModel.id === m.id &&
+                                            selectedModel.providerId === p.id,
+                                    }"
+                                    @click="selectModel(p, m)"
+                                >
+                                    <span class="model-option-name">{{
+                                        m.name
+                                    }}</span>
+                                    <span class="model-option-desc">{{
+                                        m.desc
+                                    }}</span>
+                                    <svg
+                                        v-if="
+                                            selectedModel.id === m.id &&
+                                            selectedModel.providerId === p.id
+                                        "
+                                        class="model-option-check"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="14"
+                                        height="14"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2.5"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    >
+                                        <polyline
+                                            points="20 6 9 17 4 12"
+                                        ></polyline>
+                                    </svg>
+                                </button>
+                            </template>
+                        </div>
+                    </Transition>
+
                     <textarea
                         v-model="inputMessage"
                         placeholder="What can we help you with?"
@@ -352,11 +410,19 @@
                         class="chat-textarea"
                     ></textarea>
                     <div class="input-actions">
-                        <button class="settings-btn" title="Settings">
+                        <button
+                            class="settings-btn"
+                            :class="{ active: showModelPicker }"
+                            @click="showModelPicker = !showModelPicker"
+                            :title="selectedModel.name"
+                        >
+                            <span class="settings-model-label">{{
+                                selectedModel.name
+                            }}</span>
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
-                                width="16"
-                                height="16"
+                                width="12"
+                                height="12"
                                 viewBox="0 0 24 24"
                                 fill="none"
                                 stroke="currentColor"
@@ -364,9 +430,7 @@
                                 stroke-linecap="round"
                                 stroke-linejoin="round"
                             >
-                                <path
-                                    d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"
-                                ></path>
+                                <polyline points="6 9 12 15 18 9"></polyline>
                             </svg>
                         </button>
                         <button
@@ -521,7 +585,75 @@ function handleEnter(e) {
 }
 
 // ← 在这里修改你的 Worker 地址
-const WORKER_URL = "https://red-frost-5db0.x18982400258.workers.dev/";
+const WORKER_URL = "https://doc.43land.fun/";
+
+// ── 提供商 & 模型列表（按需增删） ─────────────────────────────
+const providers = [
+    {
+        id: "elysiver",
+        name: "Elysiver",
+        icon: "◆",
+        models: [
+            {
+                id: "claude-4.6-sonnet-real",
+                name: "Claude Sonnet 4.6",
+                desc: "能不能用随缘",
+            },
+            {
+                id: "gemini-3-flash-preview",
+                name: "Gemini 3 Flash",
+                desc: "哈气米",
+            },
+            {
+                id: "gemini-3.1-pro-preview",
+                name: "Gemini 3.1 Pro",
+                desc: "依旧哈气米",
+            },
+            {
+                id: "gpt-5.4",
+                name: "GPT-5.4",
+                desc: "奥特曼最新力作",
+            },
+        ],
+    },
+    {
+        id: "nvidia",
+        name: "Nvidia",
+        icon: "⬡",
+        models: [
+            {
+                id: "moonshotai/kimi-k2.5",
+                name: "Kimi k2.5",
+                desc: "长文本模型",
+            },
+            {
+                id: "minimaxai/minimax-m2.5",
+                name: "MiniMax m2.5",
+                desc: "大杯模型",
+            },
+            {
+                id: "deepseek-ai/deepseek-v3.2",
+                name: "DeepSeek v3.2",
+                desc: "深度求索",
+            },
+            {
+                id: "qwen/qwen3-next-80b-a3b-thinking",
+                name: "Qwen3 Next Thinking",
+                desc: "思考模型",
+            },
+        ],
+    },
+];
+const selectedModel = ref({
+    providerId: providers[0].id,
+    ...providers[0].models[0],
+});
+const showModelPicker = ref(false);
+
+function selectModel(provider, m) {
+    selectedModel.value = { providerId: provider.id, ...m };
+    showModelPicker.value = false;
+}
 
 // 获取当前页面上下文，发送给 Agent 的 step ②
 function getPageContext() {
@@ -569,7 +701,8 @@ async function sendMessage() {
 
     inputMessage.value = "";
     isLoading.value = true;
-    let streamTagBuffer = ""; // buffer for partial tag detection in answer stream
+    let thinkingDone = false;
+    let thinkingBuffer = "";
 
     // Initialize assistant message immediately
     const assistantMsg = reactive({
@@ -594,6 +727,8 @@ async function sendMessage() {
         // Construct payload
         const payload = {
             chatId: chatId.value,
+            provider: selectedModel.value.providerId,
+            model: selectedModel.value.id,
             messages: messages.value
                 .slice(0, -1)
                 .map((m) => ({
@@ -683,78 +818,100 @@ async function sendMessage() {
                                 data.choices[0].delta &&
                                 data.choices[0].delta.content
                             ) {
-                                // 把 chunk 加进缓冲区，再做标签解析
-                                streamTagBuffer +=
-                                    data.choices[0].delta.content;
+                                const chunk = data.choices[0].delta.content;
 
-                                // 提取完整的 <explain> 标签 → 转成思考步骤
-                                streamTagBuffer = streamTagBuffer.replace(
-                                    /<explain>([\s\S]*?)<\/explain>/gi,
-                                    (_, text) => {
-                                        const label = text.trim().slice(0, 40);
+                                if (!thinkingDone) {
+                                    thinkingBuffer += chunk;
+                                    const stopIdx =
+                                        thinkingBuffer.indexOf(
+                                            "[STOP_THINKING]",
+                                        );
+
+                                    if (stopIdx !== -1) {
+                                        thinkingDone = true;
+
+                                        // 解析 [STOP_THINKING] 之前的标签 → 步骤
+                                        const thinking = thinkingBuffer.slice(
+                                            0,
+                                            stopIdx,
+                                        );
+                                        thinking.replace(
+                                            /<explain>([\s\S]*?)<\/explain>/gi,
+                                            (_, t) => {
+                                                const label = t
+                                                    .trim()
+                                                    .slice(0, 40);
+                                                if (
+                                                    label &&
+                                                    !assistantMsg.details.steps.find(
+                                                        (s) => s.name === label,
+                                                    )
+                                                ) {
+                                                    assistantMsg.details.steps.push(
+                                                        {
+                                                            name: label,
+                                                            status: "success",
+                                                            timestamp:
+                                                                Date.now(),
+                                                        },
+                                                    );
+                                                }
+                                            },
+                                        );
+                                        thinking.replace(
+                                            /<read>([\s\S]*?)<\/read>/gi,
+                                            (_, url) => {
+                                                const seg =
+                                                    url
+                                                        .trim()
+                                                        .split("/")
+                                                        .filter(Boolean)
+                                                        .pop() || url.trim();
+                                                const label = `读取文档：${seg.slice(0, 24)}`;
+                                                if (
+                                                    !assistantMsg.details.steps.find(
+                                                        (s) => s.name === label,
+                                                    )
+                                                ) {
+                                                    assistantMsg.details.steps.push(
+                                                        {
+                                                            name: label,
+                                                            status: "success",
+                                                            timestamp:
+                                                                Date.now(),
+                                                        },
+                                                    );
+                                                }
+                                            },
+                                        );
+
+                                        // 添加"组织回答"步骤
                                         if (
-                                            label &&
                                             !assistantMsg.details.steps.find(
-                                                (s) => s.name === label,
+                                                (s) => s.name === "组织回答",
                                             )
                                         ) {
                                             assistantMsg.details.steps.push({
-                                                name: label,
-                                                status: "success",
+                                                name: "组织回答",
+                                                status: "running",
                                                 timestamp: Date.now(),
                                             });
                                         }
-                                        return "";
-                                    },
-                                );
 
-                                // 提取完整的 <read> 标签 → 转成思考步骤
-                                streamTagBuffer = streamTagBuffer.replace(
-                                    /<read>([\s\S]*?)<\/read>/gi,
-                                    (_, url) => {
-                                        const seg =
-                                            url
-                                                .trim()
-                                                .split("/")
-                                                .filter(Boolean)
-                                                .pop() || url.trim();
-                                        const label = `读取文档：${seg.slice(0, 24)}`;
-                                        if (
-                                            !assistantMsg.details.steps.find(
-                                                (s) => s.name === label,
-                                            )
-                                        ) {
-                                            assistantMsg.details.steps.push({
-                                                name: label,
-                                                status: "success",
-                                                timestamp: Date.now(),
-                                            });
+                                        // [STOP_THINKING] 之后的内容是正式答案
+                                        const afterStop = thinkingBuffer.slice(
+                                            stopIdx + "[STOP_THINKING]".length,
+                                        );
+                                        thinkingBuffer = "";
+                                        if (afterStop) {
+                                            assistantMsg.content += afterStop;
+                                            assistantMsg.details.isThinking = false;
+                                            nextTick(() => scrollToBottom());
                                         }
-                                        return "";
-                                    },
-                                );
-
-                                // 保留缓冲区末尾可能不完整的标签（等待后续 chunk 补全）
-                                const lastOpen =
-                                    streamTagBuffer.lastIndexOf("<");
-                                let safeContent = streamTagBuffer;
-                                if (
-                                    lastOpen !== -1 &&
-                                    streamTagBuffer.indexOf(">", lastOpen) ===
-                                        -1
-                                ) {
-                                    safeContent = streamTagBuffer.slice(
-                                        0,
-                                        lastOpen,
-                                    );
-                                    streamTagBuffer =
-                                        streamTagBuffer.slice(lastOpen);
+                                    }
                                 } else {
-                                    streamTagBuffer = "";
-                                }
-
-                                if (safeContent) {
-                                    assistantMsg.content += safeContent;
+                                    // 已过 [STOP_THINKING]，正常追加答案
+                                    assistantMsg.content += chunk;
                                     assistantMsg.details.isThinking = false;
                                     nextTick(() => scrollToBottom());
                                 }
@@ -827,6 +984,71 @@ async function sendMessage() {
     } finally {
         isLoading.value = false;
         isWaiting.value = false;
+
+        // 如果模型没有输出 [STOP_THINKING]，兜底处理 thinkingBuffer 和 content 里残留的标签
+        const leftover = thinkingBuffer + (assistantMsg.content || "");
+        if (leftover) {
+            // 清空原内容，重新从 leftover 里分离步骤和答案
+            assistantMsg.content = "";
+            leftover
+                .replace(/<explain>([\s\S]*?)<\/explain>/gi, (_, t) => {
+                    const label = t.trim().slice(0, 40);
+                    if (
+                        label &&
+                        !assistantMsg.details.steps.find(
+                            (s) => s.name === label,
+                        )
+                    ) {
+                        assistantMsg.details.steps.push({
+                            name: label,
+                            status: "success",
+                            timestamp: Date.now(),
+                        });
+                    }
+                    return "";
+                })
+                .replace(/<read>([\s\S]*?)<\/read>/gi, (_, url) => {
+                    const seg =
+                        url.trim().split("/").filter(Boolean).pop() ||
+                        url.trim();
+                    const label = `读取文档：${seg.slice(0, 24)}`;
+                    if (
+                        !assistantMsg.details.steps.find(
+                            (s) => s.name === label,
+                        )
+                    ) {
+                        assistantMsg.details.steps.push({
+                            name: label,
+                            status: "success",
+                            timestamp: Date.now(),
+                        });
+                    }
+                    return "";
+                })
+                .replace(/\[STOP_THINKING\]/g, "")
+                .trim();
+
+            // 最终 content 用 cleanContent 过滤一次保险
+            assistantMsg.content = cleanContent(
+                assistantMsg.content ||
+                    leftover
+                        .replace(
+                            /<(?:explain|read)>[\s\S]*?<\/(?:explain|read)>/gi,
+                            "",
+                        )
+                        .replace(/\[STOP_THINKING\]/g, "")
+                        .trim(),
+            );
+        }
+
+        // 标记"组织回答"步骤完成
+        const composeStep = assistantMsg.details.steps.find(
+            (s) => s.name === "组织回答",
+        );
+        if (composeStep) composeStep.status = "success";
+
+        assistantMsg.details._showThinking = true;
+        assistantMsg.details.isThinking = false;
         nextTick(() => scrollToBottom());
     }
 }
@@ -1183,6 +1405,7 @@ function sendSuggestion(prompt) {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    position: relative;
 }
 
 .privacy-notice {
@@ -1277,20 +1500,137 @@ function sendSuggestion(prompt) {
 
 .settings-btn {
     background: transparent;
-    border: none;
-    color: var(--vp-c-text-3);
+    border: 1px solid var(--vp-c-divider);
+    color: var(--vp-c-text-2);
     cursor: pointer;
-    padding: 6px;
+    padding: 4px 8px;
     border-radius: 8px;
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
+    gap: 4px;
     transition: all 0.2s;
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1;
+    height: 26px;
+    white-space: nowrap;
 }
 
-.settings-btn:hover {
+.settings-btn:hover,
+.settings-btn.active {
     background: var(--vp-c-bg-soft);
+    border-color: var(--vp-c-brand-1);
+    color: var(--vp-c-brand-1);
+}
+
+.settings-model-label {
+    font-size: 11px;
+    font-weight: 500;
+}
+
+/* ── Model Picker ─────────────────────────────────────────────── */
+.model-picker {
+    position: absolute;
+    inset: 0;
+    background: var(--vp-c-bg);
+    border-radius: 14px;
+    padding: 8px;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    overflow-y: auto;
+}
+
+:global(.dark) .model-picker {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.model-picker-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--vp-c-text-3);
+    padding: 4px 10px 6px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.model-provider-label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 700;
     color: var(--vp-c-text-2);
+    padding: 8px 10px 4px;
+    letter-spacing: 0.03em;
+    border-top: 1px solid var(--vp-c-divider);
+    margin-top: 4px;
+}
+
+.model-provider-label--first {
+    border-top: none;
+    margin-top: 0;
+}
+
+.model-provider-icon {
+    font-style: normal;
+    font-size: 10px;
+    opacity: 0.7;
+}
+
+.model-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-family: inherit;
+    text-align: left;
+    transition: background 0.15s;
+    width: 100%;
+}
+
+.model-option:hover {
+    background: var(--vp-c-bg-soft);
+}
+
+.model-option.active {
+    background: var(--vp-c-brand-soft);
+}
+
+.model-option-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--vp-c-text-1);
+    flex-shrink: 0;
+}
+
+.model-option-desc {
+    font-size: 11px;
+    color: var(--vp-c-text-3);
+    flex: 1;
+}
+
+.model-option-check {
+    color: var(--vp-c-brand-1);
+    flex-shrink: 0;
+}
+
+.model-picker-fade-enter-active,
+.model-picker-fade-leave-active {
+    transition:
+        opacity 0.15s ease,
+        transform 0.15s ease;
+}
+.model-picker-fade-enter-from,
+.model-picker-fade-leave-to {
+    opacity: 0;
+    transform: scale(0.97);
 }
 
 .send-btn {

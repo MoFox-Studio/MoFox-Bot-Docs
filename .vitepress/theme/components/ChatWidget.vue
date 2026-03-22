@@ -250,134 +250,116 @@
                             "
                             class="message-details"
                         >
-                            <!-- Thinking Process / Dynamic Status -->
-                            <details
-                                class="thinking-process"
+                            <!-- Thinking Process / Timeline Panel -->
+                            <div
+                                class="thinking-panel"
                                 v-if="
                                     msg.details.steps &&
                                     msg.details.steps.length > 0
                                 "
                             >
-                                <summary>
-                                    <div class="summary-content">
-                                        <!-- Loading / Success Icon -->
-                                        <svg
-                                            v-if="msg.details.isThinking"
-                                            class="spin"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="14"
-                                            height="14"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            stroke-width="2"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                        >
-                                            <path
-                                                d="M21 12a9 9 0 1 1-6.219-8.56"
-                                            ></path>
-                                        </svg>
-                                        <svg
-                                            v-else
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="14"
-                                            height="14"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            stroke-width="2"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                        >
-                                            <circle
-                                                cx="12"
-                                                cy="12"
-                                                r="10"
-                                            ></circle>
-                                            <line
-                                                x1="12"
-                                                y1="16"
-                                                x2="12"
-                                                y2="12"
-                                            ></line>
-                                            <line
-                                                x1="12"
-                                                y1="8"
-                                                x2="12.01"
-                                                y2="8"
-                                            ></line>
-                                        </svg>
-
-                                        <!-- Dynamic Text -->
+                                <div class="thinking-panel-header">
+                                    <div class="thinking-panel-title">
+                                        <span class="thinking-panel-dot"></span>
                                         <span
                                             v-if="msg.details.isThinking"
                                             class="thinking-text"
                                             >{{ getCurrentStepName(msg) }}</span
                                         >
                                         <span v-else>思考过程</span>
-
-                                        <span
-                                            v-if="
-                                                !msg.details.isThinking &&
-                                                msg.details.duration
-                                            "
-                                            class="duration-badge"
-                                            >{{ msg.details.duration }}s</span
-                                        >
                                     </div>
-                                </summary>
-                                <div class="steps-list">
+                                    <span
+                                        v-if="
+                                            !msg.details.isThinking &&
+                                            msg.details.duration
+                                        "
+                                        class="duration-badge"
+                                        >{{ msg.details.duration }}s</span
+                                    >
+                                </div>
+
+                                <div class="steps-timeline">
                                     <div
                                         v-for="(step, sIdx) in msg.details
                                             .steps"
                                         :key="sIdx"
-                                        class="step-item"
+                                        class="timeline-item"
+                                        :class="[
+                                            `timeline-item--${step.status}`,
+                                            {
+                                                'timeline-item--last':
+                                                    sIdx ===
+                                                    msg.details.steps.length -
+                                                        1,
+                                            },
+                                        ]"
                                     >
-                                        <span
-                                            class="step-icon"
-                                            :class="step.status"
-                                        >
-                                            <svg
-                                                v-if="step.status === 'running'"
-                                                class="spin"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                width="12"
-                                                height="12"
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                stroke-width="2"
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
+                                        <div class="timeline-marker-wrap">
+                                            <span
+                                                class="timeline-marker"
+                                                :class="step.status"
                                             >
-                                                <path
-                                                    d="M21 12a9 9 0 1 1-6.219-8.56"
-                                                ></path>
-                                            </svg>
-                                            <svg
-                                                v-else
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                width="12"
-                                                height="12"
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                stroke-width="2"
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                            >
-                                                <polyline
-                                                    points="20 6 9 17 4 12"
-                                                ></polyline>
-                                            </svg>
-                                        </span>
-                                        <span class="step-name">{{
-                                            step.name
-                                        }}</span>
+                                                <svg
+                                                    v-if="
+                                                        step.status ===
+                                                        'running'
+                                                    "
+                                                    class="spin"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="12"
+                                                    height="12"
+                                                    viewBox="0 0 24 24"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    stroke-width="2"
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                >
+                                                    <path
+                                                        d="M21 12a9 9 0 1 1-6.219-8.56"
+                                                    ></path>
+                                                </svg>
+                                                <svg
+                                                    v-else
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="12"
+                                                    height="12"
+                                                    viewBox="0 0 24 24"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    stroke-width="2"
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                >
+                                                    <polyline
+                                                        points="20 6 9 17 4 12"
+                                                    ></polyline>
+                                                </svg>
+                                            </span>
+                                            <span
+                                                v-if="
+                                                    sIdx !==
+                                                    msg.details.steps.length - 1
+                                                "
+                                                class="timeline-line"
+                                            ></span>
+                                        </div>
+
+                                        <div class="timeline-content">
+                                            <div class="timeline-step-name">
+                                                {{ step.name }}
+                                            </div>
+                                            <div class="timeline-step-status">
+                                                {{
+                                                    step.status === "running"
+                                                        ? "正在执行"
+                                                        : "已完成"
+                                                }}
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </details>
+                            </div>
 
                             <!-- Citations -->
                             <div
@@ -1459,9 +1441,9 @@ function sendSuggestion(prompt) {
 
 /* Message Details & Thinking Process */
 .message-details {
-    margin-bottom: 5px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-    padding-bottom: 4px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    padding-bottom: 8px;
 }
 
 .thinking-text {
@@ -1481,47 +1463,133 @@ function sendSuggestion(prompt) {
     }
 }
 
-.thinking-process summary {
-    cursor: pointer;
-    list-style: none;
-    font-size: 12px;
-    color: var(--vp-c-text-2, #666);
-    user-select: none;
-    outline: none;
+.thinking-panel {
+    margin-bottom: 10px;
+    padding: 10px 12px;
+    background: rgba(0, 0, 0, 0.02);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 12px;
 }
 
-.thinking-process summary::-webkit-details-marker {
-    display: none;
-}
-
-.summary-content {
+.thinking-panel-header {
     display: flex;
     align-items: center;
-    gap: 6px;
-    opacity: 0.8;
-    transition: opacity 0.2s;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 10px;
 }
 
-.summary-content:hover {
-    opacity: 1;
+.thinking-panel-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    font-size: 12px;
+    color: var(--vp-c-text-2, #666);
+    font-weight: 500;
+}
+
+.thinking-panel-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--vp-c-brand-1, #367bf0);
+    box-shadow: 0 0 0 4px rgba(54, 123, 240, 0.12);
+    flex-shrink: 0;
 }
 
 .duration-badge {
     background: rgba(0, 0, 0, 0.05);
-    padding: 1px 5px;
-    border-radius: 4px;
+    padding: 2px 6px;
+    border-radius: 999px;
     font-size: 10px;
+    line-height: 1.2;
+    color: var(--vp-c-text-2, #666);
+    flex-shrink: 0;
 }
 
-.steps-list {
-    margin-top: 8px;
-    padding: 8px;
-    background: rgba(0, 0, 0, 0.02);
-    border-radius: 8px;
+.steps-timeline {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    margin-bottom: 8px;
+    gap: 2px;
+}
+
+.timeline-item {
+    display: grid;
+    grid-template-columns: 20px 1fr;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+.timeline-marker-wrap {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    min-height: 34px;
+}
+
+.timeline-marker {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--vp-c-bg);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: var(--vp-c-text-3, #999);
+    z-index: 1;
+}
+
+.timeline-marker.running {
+    color: var(--vp-c-brand-1, #367bf0);
+    border-color: rgba(54, 123, 240, 0.28);
+    background: rgba(54, 123, 240, 0.08);
+}
+
+.timeline-marker.success {
+    color: #16a34a;
+    border-color: rgba(22, 163, 74, 0.25);
+    background: rgba(22, 163, 74, 0.08);
+}
+
+.timeline-line {
+    position: absolute;
+    top: 20px;
+    bottom: -8px;
+    width: 1.5px;
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.14),
+        rgba(0, 0, 0, 0.06)
+    );
+}
+
+.timeline-content {
+    padding-bottom: 12px;
+    min-width: 0;
+}
+
+.timeline-step-name {
+    font-size: 13px;
+    line-height: 1.45;
+    color: var(--vp-c-text-1);
+    word-break: break-word;
+}
+
+.timeline-step-status {
+    margin-top: 2px;
+    font-size: 11px;
+    color: var(--vp-c-text-3, #999);
+}
+
+.timeline-item--running .timeline-step-name {
+    color: var(--vp-c-brand-1, #367bf0);
+    font-weight: 500;
+}
+
+.timeline-item--last .timeline-content {
+    padding-bottom: 0;
 }
 
 .citation-area {
@@ -1563,26 +1631,6 @@ function sendSuggestion(prompt) {
 .citation-item:hover {
     background: rgba(54, 123, 240, 0.1);
     text-decoration: underline;
-}
-
-.step-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 12px;
-    color: var(--vp-c-text-2, #555);
-}
-
-.step-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 16px;
-    height: 16px;
-}
-
-.step-icon.running {
-    color: var(--vp-c-brand-1, #367bf0);
 }
 
 .spin {

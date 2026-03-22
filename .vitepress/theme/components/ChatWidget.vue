@@ -569,6 +569,7 @@ async function sendMessage() {
 
     inputMessage.value = "";
     isLoading.value = true;
+    let streamTagBuffer = ""; // buffer for partial tag detection in answer stream
 
     // Initialize assistant message immediately
     const assistantMsg = reactive({
@@ -682,10 +683,81 @@ async function sendMessage() {
                                 data.choices[0].delta &&
                                 data.choices[0].delta.content
                             ) {
-                                assistantMsg.content +=
+                                // 把 chunk 加进缓冲区，再做标签解析
+                                streamTagBuffer +=
                                     data.choices[0].delta.content;
-                                assistantMsg.details.isThinking = false; // Start showing content
-                                nextTick(() => scrollToBottom());
+
+                                // 提取完整的 <explain> 标签 → 转成思考步骤
+                                streamTagBuffer = streamTagBuffer.replace(
+                                    /<explain>([\s\S]*?)<\/explain>/gi,
+                                    (_, text) => {
+                                        const label = text.trim().slice(0, 40);
+                                        if (
+                                            label &&
+                                            !assistantMsg.details.steps.find(
+                                                (s) => s.name === label,
+                                            )
+                                        ) {
+                                            assistantMsg.details.steps.push({
+                                                name: label,
+                                                status: "success",
+                                                timestamp: Date.now(),
+                                            });
+                                        }
+                                        return "";
+                                    },
+                                );
+
+                                // 提取完整的 <read> 标签 → 转成思考步骤
+                                streamTagBuffer = streamTagBuffer.replace(
+                                    /<read>([\s\S]*?)<\/read>/gi,
+                                    (_, url) => {
+                                        const seg =
+                                            url
+                                                .trim()
+                                                .split("/")
+                                                .filter(Boolean)
+                                                .pop() || url.trim();
+                                        const label = `读取文档：${seg.slice(0, 24)}`;
+                                        if (
+                                            !assistantMsg.details.steps.find(
+                                                (s) => s.name === label,
+                                            )
+                                        ) {
+                                            assistantMsg.details.steps.push({
+                                                name: label,
+                                                status: "success",
+                                                timestamp: Date.now(),
+                                            });
+                                        }
+                                        return "";
+                                    },
+                                );
+
+                                // 保留缓冲区末尾可能不完整的标签（等待后续 chunk 补全）
+                                const lastOpen =
+                                    streamTagBuffer.lastIndexOf("<");
+                                let safeContent = streamTagBuffer;
+                                if (
+                                    lastOpen !== -1 &&
+                                    streamTagBuffer.indexOf(">", lastOpen) ===
+                                        -1
+                                ) {
+                                    safeContent = streamTagBuffer.slice(
+                                        0,
+                                        lastOpen,
+                                    );
+                                    streamTagBuffer =
+                                        streamTagBuffer.slice(lastOpen);
+                                } else {
+                                    streamTagBuffer = "";
+                                }
+
+                                if (safeContent) {
+                                    assistantMsg.content += safeContent;
+                                    assistantMsg.details.isThinking = false;
+                                    nextTick(() => scrollToBottom());
+                                }
                             }
                         } else if (eventType === "flowResponses") {
                             assistantMsg.details.responses.push(data);

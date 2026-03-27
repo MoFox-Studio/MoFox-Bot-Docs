@@ -410,7 +410,7 @@ export default withMermaid(
     ignoreDeadLinks: true,
     title: "Neo-MoFox",
     description:
-      "🚀 基于 MaiCore 的增强版智能体，提供更完善的功能和更好的使用体验",
+      "现代化多平台 AI 聊天机器人框架，支持插件化、适配器、Agent 编排等功能。",
     head: [["link", { rel: "icon", href: "/logos/logo-3.png" }]],
     themeConfig: {
       // https://vitepress.dev/reference/default-theme-config
@@ -569,7 +569,7 @@ export default withMermaid(
       },
 
       socialLinks: [
-        { icon: "github", link: "https://github.com/MoFox-Studio/MoFox-Core" },
+        { icon: "github", link: "https://github.com/MoFox-Studio/Neo-MoFox" },
       ],
 
       lastUpdated: true,

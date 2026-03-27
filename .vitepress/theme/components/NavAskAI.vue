@@ -48,7 +48,7 @@ const { isOpen, toggle } = useChatState();
     transition: all 0.22s cubic-bezier(0.25, 0.8, 0.25, 1);
     font-family: var(--vp-font-family-base);
     line-height: 1;
-    margin: 0 4px 0 0;
+    margin: 0 8px 0 24px;
     white-space: nowrap;
     user-select: none;
     height: 32px;

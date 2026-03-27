@@ -320,7 +320,10 @@
             <!-- Input Area -->
             <div class="chat-input-area">
                 <div class="privacy-notice">
-                    聊天内容可能会被记录以用于改进服务及其质量，并会遵循我们的<a href="#">隐私政策</a>进行处理。
+                    聊天内容可能会被记录以用于改进服务及其质量，并会遵循我们的<a
+                        href="#"
+                        >隐私政策</a
+                    >进行处理。
                     <button class="close-notice">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -594,7 +597,7 @@ const providers = [
         icon: "◆",
         models: [
             {
-                id: "claude-4.6-sonnet-real",
+                id: "claude-4.6-sonnet",
                 name: "Claude Sonnet 4.6",
                 desc: "能不能用随缘",
             },
@@ -702,6 +705,7 @@ async function sendMessage() {
     isLoading.value = true;
     let thinkingDone = false;
     let thinkingBuffer = "";
+    let responseBuffer = "";
 
     // Initialize assistant message immediately
     const assistantMsg = reactive({
@@ -903,14 +907,24 @@ async function sendMessage() {
                                         );
                                         thinkingBuffer = "";
                                         if (afterStop) {
-                                            assistantMsg.content += afterStop;
+                                            responseBuffer += afterStop;
+                                            assistantMsg.content =
+                                                responseBuffer.replace(
+                                                    /<think>[\s\S]*?(?:<\/think>|$)/gi,
+                                                    "",
+                                                );
                                             assistantMsg.details.isThinking = false;
                                             nextTick(() => scrollToBottom());
                                         }
                                     }
                                 } else {
                                     // 已过 [STOP_THINKING]，正常追加答案
-                                    assistantMsg.content += chunk;
+                                    responseBuffer += chunk;
+                                    assistantMsg.content =
+                                        responseBuffer.replace(
+                                            /<think>[\s\S]*?(?:<\/think>|$)/gi,
+                                            "",
+                                        );
                                     assistantMsg.details.isThinking = false;
                                     nextTick(() => scrollToBottom());
                                 }
@@ -985,7 +999,8 @@ async function sendMessage() {
         isWaiting.value = false;
 
         // 如果模型没有输出 [STOP_THINKING]，兜底处理 thinkingBuffer 和 content 里残留的标签
-        const leftover = thinkingBuffer + (assistantMsg.content || "");
+        const leftover =
+            thinkingBuffer + (responseBuffer || assistantMsg.content || "");
         if (leftover) {
             // 清空原内容，重新从 leftover 里分离步骤和答案
             assistantMsg.content = "";
@@ -1024,6 +1039,7 @@ async function sendMessage() {
                     }
                     return "";
                 })
+                .replace(/<think>[\s\S]*?(?:<\/think>|$)/gi, "")
                 .replace(/\[STOP_THINKING\]/g, "")
                 .trim();
 
@@ -1032,11 +1048,16 @@ async function sendMessage() {
                 assistantMsg.content ||
                     leftover
                         .replace(
-                            /<(?:explain|read)>[\s\S]*?<\/(?:explain|read)>/gi,
+                            /<(?:explain|read|think)>[\s\S]*?<\/(?:explain|read|think)>/gi,
                             "",
                         )
+                        .replace(/<think>[\s\S]*?(?:<\/think>|$)/gi, "")
                         .replace(/\[STOP_THINKING\]/g, "")
                         .trim(),
+            );
+            assistantMsg.content = assistantMsg.content.replace(
+                /<think>[\s\S]*?(?:<\/think>|$)/gi,
+                "",
             );
         }
 
@@ -1813,11 +1834,8 @@ function sendSuggestion(prompt) {
     display: flex;
     align-items: center;
     gap: 6px;
-    padding: 8px 10px;
-    border-radius: 8px;
+    padding: 4px 0;
     font-size: 13px;
-    background: var(--vp-c-bg-soft);
-    border: 1px solid var(--vp-c-divider);
     color: var(--vp-c-text-2, #666);
     line-height: 1.5;
 }

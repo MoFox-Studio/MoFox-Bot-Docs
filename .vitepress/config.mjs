@@ -223,6 +223,7 @@ const devSidebar = [
         items: [
           { text: "MPDT 概述", link: "/docs/development/mpdt/" },
           { text: "安装指南", link: "/docs/development/mpdt/installation" },
+          { text: "AI Skill 安装指南", link: "/docs/development/mpdt/skill-guide" },
           {
             text: "命令参考",
             collapsed: false,

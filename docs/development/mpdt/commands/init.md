@@ -35,14 +35,18 @@ mpdt init [OPTIONS] [PLUGIN_NAME]
 
 ### 模板类型 (`--template`)
 
-`mpdt` 内置了 6 种模板，以适应不同的开发起点：
+`mpdt` 内置了 10 种模板，以适应不同的开发起点：
 
 - `basic`: 最精简的模板，只包含一个能被加载的空插件。
 - `action`: 包含一个 `Action` 组件的示例。
 - `tool`: 包含一个 `Tool` 组件的示例。
+- `collection`: 包含一个 `Collection` 组件的示例，用于将多个 Action/Tool 组织为集合。
+- `router`: 包含一个 `Router` 组件的示例，提供 HTTP API 接口。
 - `plus_command`: 包含一个 `PlusCommand` 组件的示例。
-- `full`: “全家桶”模板，包含多种常用组件，适合学习和参考。
+- `event_handler`: 包含一个 `EventHandler` 组件的示例，用于监听系统事件。
+- `full`: "全家桶"模板，包含多种常用组件，适合学习和参考。
 - `adapter`: 用于开发平台适配器的专用模板。
+- `chatter`: 包含一个 `Chatter` 组件的示例，定义 Bot 的对话策略。
 
 ### 许可证类型 (`--license`)
 

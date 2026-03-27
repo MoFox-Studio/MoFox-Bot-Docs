@@ -83,4 +83,46 @@ mpdt --version
         -   在文件末尾添加 `export PATH="<你的脚本目录>:$PATH"`。
         -   保存文件，然后运行 `source ~/.zshrc` (或对应的配置文件) 或重启终端。
 
+## 获取 AI 开发助手支持（可选）
+
+MPDT 提供了一个 `SKILL.md` 文件，让 GitHub Copilot、Cursor 等 AI 助手能够按照最佳实践帮助你开发插件。
+
+### 快速获取
+
+**方法一：克隆完整仓库（推荐）**
+
+如果你想参与 MPDT 开发或查看源码：
+
+```bash
+git clone https://github.com/MoFox-Studio/mofox-plugin-toolkit.git
+cd mofox-plugin-toolkit
+code .  # 在 VS Code 中打开
+```
+
+现在 GitHub Copilot 会自动识别 `SKILL.md` 文件。
+
+**方法二：仅下载 Skill 文件**
+
+如果你只想获取 Skill 支持：
+
+```bash
+# 下载到你的插件开发工作区根目录
+curl -O https://raw.githubusercontent.com/MoFox-Studio/mofox-plugin-toolkit/main/SKILL.md
+
+# 或使用 wget
+wget https://raw.githubusercontent.com/MoFox-Studio/mofox-plugin-toolkit/main/SKILL.md
+```
+
+### 验证 Skill 是否生效
+
+1. 在包含 `SKILL.md` 的目录中打开 VS Code
+2. 打开 GitHub Copilot Chat（快捷键 `Ctrl+I` 或 `Cmd+I`）
+3. 输入："使用 MPDT 帮我创建一个插件"
+4. 观察 Copilot 是否按照 MPDT 标准流程回应
+
+::: tip
+如果你不使用 AI 助手，可以跳过这一步。`SKILL.md` 也可以作为开发流程参考手册。详见 [Skill 使用指南](./skill-guide.md)。
+:::
+
+
 现在，你的开发环境已经准备就绪。是时候用 [mpdt init](./commands/init.md) 来创建你的第一个插件了！

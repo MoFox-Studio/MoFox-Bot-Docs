@@ -21,9 +21,8 @@ WebUI 还在测试中，偶尔会闹点小脾气。遇到 bug 别慌，来 GitHu
 
 打开终端（Windows 用 PowerShell，Mac/Linux 用 Terminal），然后：
 
-### Windows 用户
-
-```powershell
+:::code-group
+```powershell [Windows]
 # 进入你的 Neo-MoFox 插件目录
 cd E:\delveoper\mmc010\Neo-MoFox\plugins
 
@@ -31,15 +30,14 @@ cd E:\delveoper\mmc010\Neo-MoFox\plugins
 git clone -b webui-dist https://github.com/MoFox-Studio/MoFox-Core-Webui.git
 ```
 
-### Linux / macOS 用户
-
-```bash
+```bash [Linux / macOS]
 # 进入插件目录（改成你自己的路径）
 cd /path/to/Neo-MoFox/plugins
 
 # 克隆预编译版本
 git clone -b webui-dist https://github.com/MoFox-Studio/MoFox-Core-Webui.git
 ```
+:::
 
 ::: tip 为什么是 webui-dist 分支？
 因为这个分支里已经有**编译好的前端文件**，下载就能用，不用折腾 Node.js 和 npm。

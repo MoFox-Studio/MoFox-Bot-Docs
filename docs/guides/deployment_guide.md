@@ -107,18 +107,22 @@ Napcat QQ 是一个 QQ 客户端，也是 Neo-MoFox 与 QQ 平台沟通的桥梁
 
 2.  **执行克隆命令**:
     *   在弹出的命令提示符窗口中，粘贴并执行以下命令：
-        ```shell
-        git clone https://github.com/MoFox-Studio/Neo-MoFox.git
-        ```
 
-> **🌐 网络小贴士**:
-> 如果你发现下载速度极慢或连接失败，这通常是由于网络问题。可以尝试使用以下备用镜像地址：
-> ```shell
-> # 备用地址1
-> git clone https://kgithub.com/MoFox-Studio/Neo-MoFox.git
-> # 备用地址2
-> git clone https://xget.xi-xu.me/gh/MoFox-Studio/Neo-MoFox.git
-> ```
+:::code-group
+```shell [官方地址]
+git clone https://github.com/MoFox-Studio/Neo-MoFox.git
+```
+
+```shell [备用地址1]
+git clone https://kgithub.com/MoFox-Studio/Neo-MoFox.git
+```
+
+```shell [备用地址2]
+git clone https://xget.xi-xu.me/gh/MoFox-Studio/Neo-MoFox.git
+```
+:::
+
+> **🌐 网络小贴士**: 如果你发现下载速度极慢或连接失败,这通常是由于网络问题。可以尝试使用备用镜像地址。
 
 执行命令后，Git 会开始下载项目文件。当进度条走完，命令行界面不再滚动时，就代表克隆完成了。
 
@@ -159,15 +163,15 @@ Napcat QQ 是一个 QQ 客户端，也是 Neo-MoFox 与 QQ 平台沟通的桥梁
     *   光有环境还不行，我们得把它“激活”，这样后续的命令才能使用里面的工具。
     *   **根据你使用的终端类型，选择对应的激活命令**：
 
-        *   **如果你使用的是 `cmd` (传统命令提示符)**:
-            ```shell
-            .venv\Scripts\activate
-            ```
+    :::code-group
+    ```shell [CMD (命令提示符)]
+    .venv\Scripts\activate
+    ```
 
-        *   **如果你使用的是 `PowerShell` (Windows Terminal 或 VS Code 默认终端)**:
-            ```shell
-            .venv\Scripts\Activate.ps1
-            ```
+    ```powershell [PowerShell]
+    .venv\Scripts\Activate.ps1
+    ```
+    :::
 
     *   **观察变化！** 成功激活后，你会看到命令行提示符的最前面，多出了一个 `(Neo-MoFox)` 的标记。这表示你已经成功进入了 Neo-MoFox 的专属环境。
 

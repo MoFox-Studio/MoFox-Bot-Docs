@@ -30,15 +30,25 @@
 Docker 是容器化技术的核心，而 Docker Compose 则是管理多容器应用的利器。
 
 1.  **安装 Docker**:
-    *   **对于 Windows/macOS 用户**:
-        *   前往 [Docker 官方网站](https://www.docker.com/products/docker-desktop/) 下载并安装 **Docker Desktop**。它已经内置了 Docker Engine 和 Docker Compose，无需额外安装。
-    *   **对于 Linux 用户**:
-        *   我们推荐遵循 Docker 官方的安装文档，以确保安装最新、最稳定的版本。
-        *   **对于 Ubuntu/Debian 用户**，可以执行以下命令一键安装：
-            ```bash
-            curl -fsSL https://get.docker.com -o get-docker.sh
-            sudo sh get-docker.sh
-            ```
+
+:::code-group
+```bash [Windows/macOS]
+# 前往 Docker 官方网站下载并安装 Docker Desktop
+# https://www.docker.com/products/docker-desktop/
+# 它已经内置了 Docker Engine 和 Docker Compose，无需额外安装
+```
+
+```bash [Ubuntu/Debian]
+# 一键安装脚本
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+```
+
+```bash [其他 Linux 发行版]
+# 参考 Docker 官方文档
+# https://docs.docker.com/engine/install/
+```
+:::
 
 2.  **验证安装**:
     *   打开你的终端 (Terminal, PowerShell, or CMD)。

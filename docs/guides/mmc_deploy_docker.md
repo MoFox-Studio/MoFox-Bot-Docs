@@ -1,13 +1,13 @@
-# <iconify-icon icon="mdi:docker" height="36"></iconify-icon> [ 没更新的旧时代文档 ]  MoFox-Core Docker 部署指南
+# <iconify-icon icon="mdi:docker" height="36"></iconify-icon> [ 没更新的旧时代文档 ]  Neo-MoFox Docker 部署指南
 
 ## 概述
 
-欢迎使用 MoFox-Core，一个高度可定制化的 AI Bot 框架。
+欢迎使用 Neo-MoFox，一个高度可定制化的 AI Bot 框架。
 
-本指南将引导您在任何支持 Docker 的环境下，通过 Docker Compose 完成 MoFox-Core 与 Napcat 的全部署流程。该方式是**官方最推荐的部署方案**，具有无与伦比的优势：
+本指南将引导您在任何支持 Docker 的环境下，通过 Docker Compose 完成 Neo-MoFox 与 Napcat 的全部署流程。该方式是**官方最推荐的部署方案**，具有无与伦比的优势：
 
 *   **环境隔离**：所有依赖项均在 Docker 容器内，不污染你的宿主系统，告别繁琐的环境配置。
-*   **一键部署**：使用 `docker compose up -d` 命令即可启动所有必需的服务（MoFox-Core + Napcat）。
+*   **一键部署**：使用 `docker compose up -d` 命令即可启动所有必需的服务（Neo-MoFox + Napcat）。
 *   **管理便捷**：将两个核心应用视为一个整体，统一启动、停止和更新。
 *   **跨平台一致性**：无论在 Windows, macOS 还是各种 Linux 发行版上，部署体验都保持一致。
 
@@ -108,7 +108,7 @@ cd Neo-MoFox
 
 2.  **网络预留**:
     *   **重要**: 部署完成后，请确保你的服务器防火墙或安全组已放行 **12138** 和 **6099** 端口。
-    *   **12138**: 用于访问 MoFox-Core 的 Web 管理界面。
+    *   **12138**: 用于访问 Neo-MoFox 的 Web 管理界面。
     *   **6099**: 用于访问 Napcat 的 WebUI 进行 QQ 登录。
     *   除此密钥外，你**无需**手动修改任何其他配置文件。所有的机器人配置、模型设置和插件调整都将通过 WebUI 引导完成。
 
@@ -117,7 +117,7 @@ cd Neo-MoFox
 现在项目已准备就绪，我们可以正式启动并进入图形化配置阶段。
 
 1.  **启动服务**:
-    *   在 `MoFox-Core` 目录下，执行启动命令：
+    *   在 `Neo-MoFox` 目录下，执行启动命令：
         ```bash
         docker compose up -d
         ```
@@ -137,7 +137,7 @@ cd Neo-MoFox
     *   在浏览器中访问：`http://服务器IP:6099`。
     *   按照提示通过扫码或密码登录你的机器人 QQ 账号。**必须先完成此步骤**，机器人才有“身份”。
 
-2.  **配置 Napcat 与 MoFox-Core 连接**:
+2.  **配置 Napcat 与 Neo-MoFox 连接**:
     *   在 Napcat WebUI 中，点击左侧导航栏的 **网络设置**。
     *   找到 **WebSocket 客户端** 选项，点击 **新建客户端**。
     *   按照下图所示配置参数（具体地址请参考图片配置）：
@@ -147,7 +147,7 @@ cd Neo-MoFox
         *   将 `Napcat WebSocket 服务地址` 从 `localhost` 改为 `0.0.0.0`。
         *   修改完成后，由于是 Docker 部署，需要执行 `docker compose restart core` 以应用配置。
 
-3.  **访问 MoFox-Core WebUI**:
+3.  **访问 Neo-MoFox WebUI**:
     *   在浏览器中访问：`http://服务器IP:12138`。
     *   **登录密码**: 输入你在 3.2 节 `plugin_api_valid_keys` 中填写的密钥。
 
@@ -211,4 +211,4 @@ cd Neo-MoFox
 
 ## 结语：你的冒险才刚刚开始
 
-至此，你已经成功走完了 MoFox-Core 的 Docker 部署全程。但这仅仅是一个开始。MoFox-Core 的真正魅力，在于其强大的插件系统和可塑性。现在，去探索和配置，打造一个独一无二的 AI 伙伴吧！
+至此，你已经成功走完了 Neo-MoFox 的 Docker 部署全程。但这仅仅是一个开始。Neo-MoFox 的真正魅力，在于其强大的插件系统和可塑性。现在，去探索和配置，打造一个独一无二的 AI 伙伴吧！

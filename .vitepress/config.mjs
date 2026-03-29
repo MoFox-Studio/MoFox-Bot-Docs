@@ -568,7 +568,7 @@ export default withMermaid(
       },
 
       socialLinks: [
-        { icon: "github", link: "https://github.com/MoFox-Studio/MoFox-Core" },
+        { icon: "github", link: "https://github.com/MoFox-Studio/Neo-MoFox" },
       ],
 
       lastUpdated: true,

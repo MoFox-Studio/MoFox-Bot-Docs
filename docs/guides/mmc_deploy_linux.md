@@ -29,15 +29,17 @@ Python 是 Neo-MoFox 运行的编程语言环境。
 
 1.  **安装**:
     *   打开终端，根据你的 Linux 发行版，使用包管理器安装 Python 3.10 或更高版本。
-    *   **对于 Debian/Ubuntu**:
-        ```bash
-        sudo apt update
-        sudo apt install python3 python3-pip python3-venv
-        ```
-    *   **对于 CentOS/RHEL**:
-        ```bash
-        sudo dnf install python3 python3-pip
-        ```
+
+:::code-group
+```bash [Debian/Ubuntu]
+sudo apt update
+sudo apt install python3 python3-pip python3-venv
+```
+
+```bash [CentOS/RHEL]
+sudo dnf install python3 python3-pip
+```
+:::
 
 2.  **验证**:
     *   在终端中输入以下命令并回车：
@@ -51,14 +53,16 @@ Python 是 Neo-MoFox 运行的编程语言环境。
 Git 是一个版本控制工具，我们用它来从 GitHub 上获取 Neo-MoFox 的项目代码。
 
 1.  **安装**:
-    *   **对于 Debian/Ubuntu**:
-        ```bash
-        sudo apt install git
-        ```
-    *   **对于 CentOS/RHEL**:
-        ```bash
-        sudo dnf install git
-        ```
+
+:::code-group
+```bash [Debian/Ubuntu]
+sudo apt install git
+```
+
+```bash [CentOS/RHEL]
+sudo dnf install git
+```
+:::
 
 2.  **验证**:
     *   在终端中输入以下命令并回车：
@@ -113,18 +117,22 @@ Napcat QQ 是一个 QQ 客户端，也是 Neo-MoFox 与 QQ 平台沟通的桥梁
 现在，我们在这个“基地”里执行代码下载命令。
 
 *   在终端中，粘贴并执行以下命令：
-    ```bash
-    git clone -b dev --single-branch https://github.com/MoFox-Studio/Neo-MoFox.git
-    ```
 
-> **🌐 网络小贴士**:
-> 如果你发现下载速度极慢或连接失败，这通常是由于网络问题。可以尝试使用以下备用镜像地址：
-> ```bash
-> # 备用地址1
-> git clone https://kgithub.com/MoFox-Studio/Neo-MoFox.git
-> # 备用地址2
-> git clone https://xget.xi-xu.me/gh/MoFox-Studio/Neo-MoFox.git
-> ```
+:::code-group
+```bash [官方地址]
+git clone -b dev --single-branch https://github.com/MoFox-Studio/Neo-MoFox.git
+```
+
+```bash [备用地址1]
+git clone https://kgithub.com/MoFox-Studio/Neo-MoFox.git
+```
+
+```bash [备用地址2]
+git clone https://xget.xi-xu.me/gh/MoFox-Studio/Neo-MoFox.git
+```
+:::
+
+> **🌐 网络小贴士**: 如果你发现下载速度极慢或连接失败,这通常是由于网络问题。可以尝试使用备用镜像地址。
 
 执行命令后，Git 会开始下载项目文件。当克隆完成后，你的 `Neo-MoFox_Deployment` 文件夹里会多出一个名为 `Neo-MoFox` 的新文件夹。恭喜，你已经成功获取了项目代码！
 

@@ -1,4 +1,4 @@
-# <iconify-icon icon="mdi:docker" height="36"></iconify-icon> [ 没更新的旧时代文档 ]  Neo-MoFox Docker 部署指南
+# <iconify-icon icon="mdi:docker" height="36"></iconify-icon> Neo-MoFox Docker 部署指南
 
 ## 概述
 
@@ -30,15 +30,25 @@
 Docker 是容器化技术的核心，而 Docker Compose 则是管理多容器应用的利器。
 
 1.  **安装 Docker**:
-    *   **对于 Windows/macOS 用户**:
-        *   前往 [Docker 官方网站](https://www.docker.com/products/docker-desktop/) 下载并安装 **Docker Desktop**。它已经内置了 Docker Engine 和 Docker Compose，无需额外安装。
-    *   **对于 Linux 用户**:
-        *   我们推荐遵循 Docker 官方的安装文档，以确保安装最新、最稳定的版本。
-        *   **对于 Ubuntu/Debian 用户**，可以执行以下命令一键安装：
-            ```bash
-            curl -fsSL https://get.docker.com -o get-docker.sh
-            sudo sh get-docker.sh
-            ```
+
+:::code-group
+```bash [Windows/macOS]
+# 前往 Docker 官方网站下载并安装 Docker Desktop
+# https://www.docker.com/products/docker-desktop/
+# 它已经内置了 Docker Engine 和 Docker Compose，无需额外安装
+```
+
+```bash [Ubuntu/Debian]
+# 一键安装脚本
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+```
+
+```bash [其他 Linux 发行版]
+# 参考 Docker 官方文档
+# https://docs.docker.com/engine/install/
+```
+:::
 
 2.  **验证安装**:
     *   打开你的终端 (Terminal, PowerShell, or CMD)。
@@ -94,23 +104,10 @@ cd Neo-MoFox
         HOST="0.0.0.0"
         ```
 
-### 3.2 完善核心配置
+### 3.2 网络预留
 
-现在，我们只需要设置 Web 管理界面的访问密钥，其余配置均可在界面中完成。
-
-1.  **设置访问密钥**:
-    *   打开 `config/bot_config.toml` 文件。
-    *   找到 `plugin_api_valid_keys` 字段，填入你的自定义密钥（这将作为你的登录密码）。
-        ```toml
-        # 示例
-        plugin_api_valid_keys = ["你的自定义密钥"]
-        ```
-
-2.  **网络预留**:
-    *   **重要**: 部署完成后，请确保你的服务器防火墙或安全组已放行 **12138** 和 **6099** 端口。
-    *   **12138**: 用于访问 Neo-MoFox 的 Web 管理界面。
-    *   **6099**: 用于访问 Napcat 的 WebUI 进行 QQ 登录。
-    *   除此密钥外，你**无需**手动修改任何其他配置文件。所有的机器人配置、模型设置和插件调整都将通过 WebUI 引导完成。
+*   **重要**: 部署完成后，请确保你的服务器防火墙或安全组已放行 **6099** 端口。
+*   **6099**: 用于访问 Napcat 的 WebUI 进行 QQ 登录。
 
 ## 第四章：启动！——见证奇迹的时刻
 
@@ -127,7 +124,7 @@ cd Neo-MoFox
         ```bash
         docker compose ps
         ```
-    *   确保 `core` 和 `napcat` 服务都显示为 `Up` 或 `Running`。
+    *   确保 `napcat` 服务显示为 `Up` 或 `Running`。
 
 ## 第五章：连接世界——引导配置
 
@@ -147,16 +144,7 @@ cd Neo-MoFox
         *   将 `Napcat WebSocket 服务地址` 从 `localhost` 改为 `0.0.0.0`。
         *   修改完成后，由于是 Docker 部署，需要执行 `docker compose restart core` 以应用配置。
 
-3.  **访问 Neo-MoFox WebUI**:
-    *   在浏览器中访问：`http://服务器IP:12138`。
-    *   **登录密码**: 输入你在 3.2 节 `plugin_api_valid_keys` 中填写的密钥。
-
-4.  **按照引导完成配置**:
-    *   登录后，请严格按照 WebUI 界面上的**引导和说明**进行操作。
-    *   你将在此处完成大语言模型（LLM）配置、Napcat 适配器连接授权等操作。
-    *   这种方式相比手动编辑 `.toml` 文件更加安全且直观。
-
-> **💡 小贴士**: 若无法打开页面，请务必检查服务器的**防火墙或安全组**是否已放行 **12138** 和 **6099** 端口。成功连接后，机器人的冒险就正式开始了！
+> **💡 小贴士**: 若无法打开页面，请务必检查服务器的**防火墙或安全组**是否已放行 **6099** 端口。成功连接后，机器人的冒险就正式开始了！
 
 ## 第六章：后续管理与故障排查
 
@@ -178,24 +166,24 @@ cd Neo-MoFox
 <summary><b>Q1: 容器启动失败，或状态为 `exited`？</b></summary>
 
 *   **检查日志**: 执行 `docker compose logs core` 查看服务日志，错误信息通常会显示在末尾。
-*   **配置错误**: 检查项目根目录下的 `.env` 以及 `config/bot_config.toml` 中的访问密钥是否已正确填写。
-*   **端口冲突**: 确保宿主机的 **12138** 和 **6099** 端口没有被其他程序占用。
+*   **配置错误**: 检查项目根目录下的 `.env` 配置是否已正确填写。
+*   **端口冲突**: 确保宿主机的 **6099** 端口没有被其他程序占用。
 
 </details>
 
 <details>
-<summary><b>Q2: 无法打开 Web 管理界面或 Napcat WebUI？</b></summary>
+<summary><b>Q2: 无法打开 Napcat WebUI？</b></summary>
 
-*   **防火墙/安全组**: 请确认服务器已放行 **12138** 和 **6099** 端口。如果是云服务器，还需在控制台防火墙规则中添加放行。
+*   **防火墙/安全组**: 请确认服务器已放行 **6099** 端口。如果是云服务器，还需在控制台防火墙规则中添加放行。
 *   **服务状态**: 执行 `docker compose ps` 确认服务运行正常。
-*   **地址错误**: 请确保使用正确的 `服务器IP:12138` 进行访问。
+*   **地址错误**: 请确保使用正确的 `服务器IP:6099` 进行访问。
 
 </details>
 
 <details>
 <summary><b>Q3: 机器人已部署但无法正常对话？</b></summary>
 
-*   **检查 WebUI 状态**: 登录管理界面，检查“模型配置”处是否显示连接成功，以及“适配器/连接”状态是否正常。
+
 *   **查看核心日志**: 执行 `docker compose logs -f core`，观察给机器人发消息时是否有错误报告。
 </details>
 

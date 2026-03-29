@@ -223,6 +223,7 @@ const devSidebar = [
         items: [
           { text: "MPDT 概述", link: "/docs/development/mpdt/" },
           { text: "安装指南", link: "/docs/development/mpdt/installation" },
+          { text: "AI Skill 安装指南", link: "/docs/development/mpdt/skill-guide" },
           {
             text: "命令参考",
             collapsed: false,
@@ -409,7 +410,7 @@ export default withMermaid(
     ignoreDeadLinks: true,
     title: "Neo-MoFox",
     description:
-      "🚀 基于 MaiCore 的增强版智能体，提供更完善的功能和更好的使用体验",
+      "现代化多平台 AI 聊天机器人框架，支持插件化、适配器、Agent 编排等功能。",
     head: [["link", { rel: "icon", href: "/logos/logo-3.png" }]],
     themeConfig: {
       // https://vitepress.dev/reference/default-theme-config

@@ -1,240 +1,343 @@
-#  Neo-MoFox WebUI 使用指南
+# Neo-MoFox WebUI 部署指南
 
-欢迎来到 Neo-MoFox 的 Web 管理控制台！这份指南会手把手教你如何部署和使用这个可视化管理界面，让你告别纯命令行的操作方式，轻松管理你的机器人。
+欢迎！这份指南会手把手教你如何部署 WebUI——让你**从命令行地狱中解脱出来**，用浏览器优雅地管理你的机器人。
 
-:::warning 注意
-**Neo-MoFox 的 WebUI 目前处于测试阶段**，仍有不完善/跑不起来的功能，虽然我们已经尽力保证它的稳定性，但在某些环境下可能会遇到兼容性问题。如果你发现任何 bug 或者有改进建议，请毫不犹豫地在 GitHub 上提交 Issue 或 Pull Request！你的反馈对我们非常重要。
+:::warning 测试阶段
+WebUI 还在测试中，偶尔会闹点小脾气。遇到 bug 别慌，来 GitHub 提 Issue，我们一起修！
 :::
 
 
-## 零、WebUI 是什么？能干啥？
+## 第一步：确认你已经装好了主程序
 
-Neo-MoFox WebUI 是一个基于 Web 的可视化管理控制台，让你通过浏览器就能完成对机器人的各种操作。再也不用对着黑乎乎的终端窗口发呆了！
+开始之前，确保你已经：
+- ✅ 安装并能正常运行 Neo-MoFox 主程序
+- ✅ 电脑上装了 Git（没装的话去 [git-scm.com](https://git-scm.com/) 下一个，Windows 用户一路下一步就行）
 
-### ✨ 主要功能
-
-**核心功能**：
-- 📊 **实时数据监控**：一目了然地查看消息统计、插件状态、系统资源使用情况
-- 🔌 **插件管理**：查看所有插件、启用/禁用插件、查看和编辑插件配置
-- 🛒 **插件市场**：浏览、搜索、安装社区开发的各类插件
-- ⚙️ **配置管理**：可视化编辑各种配置文件，不用再手动改 TOML 了
-- 📱 **响应式设计**：无论是电脑还是手机，都能流畅访问
-- 🔐 **安全认证**：基于 API Key 的访问控制，保护你的机器人
-
-**自动更新功能**（懒人福音 🎉）：
-- 🔄 **一键更新 WebUI**：点一下按钮就能更新到最新版，告别手动下载
-- 🔄 **一键更新主程序**：Neo-MoFox 主程序也能一键更新
-- 📦 **自动安装依赖**：更新后自动帮你装好新增的依赖包
-- 🔙 **版本回滚**：更新翻车了？没关系，一键回滚到之前的版本
-- 🛡️ **备份保护**：更新前自动备份，安全无忧
-
-**更多好玩的功能**：
-- 🎭 **表情包管理**：管理和组织你的表情包资源
-- 👥 **人物关系管理**：可视化管理角色之间的关系
-- 💬 **聊天室**：实时聊天和消息广播功能
-- 📝 **日志查看器**：实时查看系统日志，debug 不再抓瞎
-
-**后端提供的能力**：
-- 🔍 **服务发现**：自动发现 Neo-MoFox 主程序的 IP 和端口
-- 🌐 **API 代理**：发现服务器自带代理功能，前端请求统一走 12138 端口
-- 🔑 **身份验证**：严格的 API Key 验证机制
-- 📡 **RESTful API**：标准化的数据接口
-- 🔌 **深度集成**：直接调用 Neo-MoFox 插件系统的各种 API
-
-## 一、开始之前：你需要准备什么
-
-在开始部署 WebUI 之前，请确认以下条件：
-
-1. **Neo-MoFox 主程序**：已经正确安装并能正常运行
-2. **Git**：用于克隆仓库和后续自动更新（强烈推荐！）
-3. **Node.js 环境**（可选）：只有开发者才需要，普通用户不用管
-
-::: tip 没有 Git？
-如果你的电脑上没有 Git，可以从 [Git 官网](https://git-scm.com/) 下载安装。Windows 用户推荐使用安装包，一路下一步就行。装好 Git 之后，你就能享受一键更新的快乐了！
+::: tip 为什么要用 Git？
+因为 Git 能让你**一键更新 WebUI**，不用每次都手动下载。信我，偷懒是第一生产力。
 :::
 
-## 二、最简单的安装方式（强烈推荐！）
+## 第二步：把 WebUI 克隆到插件目录
 
-这是 2026 年了，我们当然要用最省心的方式！**一行命令搞定，还支持自动更新**，不香吗？
+打开终端（Windows 用 PowerShell，Mac/Linux 用 Terminal），然后：
 
-### 2.1 克隆预编译版本
+:::code-group
+```powershell [Windows]
+# 进入你的 Neo-MoFox 插件目录
+cd E:\delveoper\mmc010\Neo-MoFox\plugins
 
-打开终端（Windows 用 PowerShell，Mac/Linux 用 Terminal），进入 Neo-MoFox 的插件目录：
-
-**Windows PowerShell**：
-```powershell
-# 进入插件目录（把路径换成你自己的）
-cd E:\delveoper\mmc010\plugins
-
-# 克隆 webui-dist 分支（预编译版本，开箱即用）
-git clone -b webui-dist https://github.com/MoFox-Studio/Neo-MoFox-Webui.git webui_backend
+# 克隆预编译版本（webui-dist 分支）
+git clone -b webui-dist https://github.com/MoFox-Studio/Neo-MoFox-Webui.git
 ```
 
-**Linux / macOS**：
-```bash
-# 进入插件目录
+```bash [Linux / macOS]
+# 进入插件目录（改成你自己的路径）
 cd /path/to/Neo-MoFox/plugins
 
-# 克隆 webui-dist 分支
-git clone -b webui-dist https://github.com/MoFox-Studio/Neo-MoFox-Webui.git webui_backend
+# 克隆预编译版本
+git clone -b webui-dist https://github.com/MoFox-Studio/Neo-MoFox-Webui.git
 ```
+:::
 
 ::: tip 为什么是 webui-dist 分支？
-这个分支包含了**已经编译好的前端文件**，你不需要安装 Node.js，不需要 `npm install`，不需要 `npm run build`。克隆下来就能直接用，懒人专属！
+因为这个分支里已经有**编译好的前端文件**，下载就能用，不用折腾 Node.js 和 npm。
 
-而且最重要的是——**支持一键更新**！以后有新版本，在 WebUI 界面里点一下就行，不用再手动下载了。
+而且！这个分支支持**一键更新**——以后在 WebUI 界面里点一下就能升级，爽歪歪。
 :::
 
-### 2.2 配置 API Key
-
-首次安装后，编辑机器人配置文件：
+克隆完成后，你的目录结构应该长这样：
 
 ```
-config/core.toml
+Neo-MoFox/
+├── plugins/
+│   └── Neo-MoFox-Webui/      ← 新克隆的 WebUI 插件
+│       ├── backend/           ← 后端代码
+│       │   ├── static/        ← 编译好的前端文件
+│       │   ├── router/        ← API 路由
+│       │   └── ...
+│       └── ...
+└── ...
 ```
 
-找到 `[http_router]` 部分，设置你的 API Key：
+
+## 第三步：配置登录密钥
+
+编辑 Neo-MoFox 的配置文件：
+
+```
+<Neo-MoFox安装目录>/config/core.toml
+```
+
+找到 `[http_router]` 这一节，设置你的 API Key：
 
 ```toml
-# HTTP 路由配置节
-# 
-# 定义 HTTP API 相关的配置参数。
 [http_router]
-# 是否启用 HTTP 路由
-# 值类型：bool, 默认值：true
+# 是否启用 HTTP 路由（必须是 true）
 enable_http_router = true
 
-# HTTP 路由监听地址
-# 值类型：str, 默认值："127.0.0.1"
+# 监听地址（本机访问用 127.0.0.1，局域网访问用 0.0.0.0）
 http_router_host = "127.0.0.1"
 
-# HTTP 路由监听端口
-# 值类型：int, 默认值：8000
+# 监听端口（默认 8000，别和其他程序冲突就行）
 http_router_port = 8000
 
-# WebUI API 访问密钥列表，留空则禁用认证（不推荐）
-# 值类型：list, 默认值：[]
+# 登录密钥列表（重点在这里！）
 api_keys = [
-   "secret-key-1", # 替换成你自己的密钥（用于登录 WebUI）
-]  
+    "your-super-secret-key-here",  # 改成你自己的密钥
+]
 ```
 
-::: warning 安全提醒
-API Key 就像你家的钥匙，千万别把它写在公开的地方或分享给不信任的人！
+::: danger 安全提醒
+**API Key 就像你家钥匙，别随便给别人！**
 
-建议使用随机生成的长字符串，比如：
-- Windows PowerShell：`[System.Guid]::NewGuid().ToString()`
-- Linux/Mac：`openssl rand -hex 32`
+推荐生成一个随机字符串：
+- **Windows PowerShell**：`[System.Guid]::NewGuid().ToString()`
+- **Linux/Mac**：`openssl rand -hex 32`
+
+把生成的结果复制到 `<Neo-MoFox安装目录>/config/core.toml` 的 `api_keys` 列表里。
 :::
 
-### 2.3 启动并访问
+**配置示例**（仅供参考，别直接复制）：
 
-1. **重启 Neo-MoFox**（如果正在运行的话）
-2. 打开浏览器，访问：**http://localhost:12138**
-3. 用你刚才配置的 API Key 登录
+```toml
+api_keys = [
+    "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+]
+```
+
+
+
+## 第四步：启动主程序
+
+保存配置文件后，启动（或重启）Neo-MoFox：
+
+```bash
+# 在 Neo-MoFox 根目录运行
+uv run main.py
+```
+
+启动成功后，你会在日志里看到类似这样的提示：
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+          🌐 WebUI 可访问地址
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+监听地址: 127.0.0.1:8000
+
+🖥️  本机访问
+  ▶ http://localhost:8000/webui/frontend
+  ▶ http://127.0.0.1:8000/webui/frontend
+
+🌐 局域网访问
+  ▶ http://192.168.1.100:8000/webui/frontend  ← 推荐
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+::: tip 看到这个提示就成功了！
+日志里会自动显示所有可访问的地址，包括局域网 IP。手机想访问的话，用带 🌐 标记的那个。
+:::
+
+
+
+## 第五步：打开浏览器登录
+
+1. **复制可访问地址**（推荐用 `http://localhost:8000/webui/frontend`）
+2. **打开浏览器**，粘贴地址，回车
+3. **输入密钥**，就是你刚才在 `config/core.toml` 里配置的那个 `api_keys`
+4. **点击登录**
+
+登录成功后，你会看到一个漂亮的仪表盘，上面有各种统计数据、插件列表、配置编辑器等等。
 
 ::: tip 恭喜你！🎉
-如果看到了登录界面，说明安装成功了！以后更新只需要展开侧边栏找到「更新管理」就行，是不是超级简单？
+到这里你已经完成部署了！现在可以愉快地用浏览器管理机器人了。
+
+想更新 WebUI？打开侧边栏，找到「更新管理」，点一下就行。
 :::
 
-## 三、自动更新功能使用指南
 
-这可能是整个 WebUI 最香的功能了——**一键更新**！
 
-### 3.1 找到更新管理
+## 常见问题（遇到问题先看这里）
 
-更新功能的入口非常好找：
+### Q1: 浏览器显示"无法访问此网站"
+
+**原因**：
+- Neo-MoFox 主程序没运行
+- 插件没加载成功
+- 端口被占用了
+
+**解决方法**：
+1. 确认主程序正在运行（看终端有没有报错）
+2. 检查日志，确认 `Neo-MoFox-Webui` 插件已加载
+3. 检查端口占用：
+   - **Windows**：`netstat -ano | findstr :8000`
+   - **Linux/Mac**：`lsof -i :8000`
+   如果被占用，修改 `<Neo-MoFox安装目录>/config/core.toml` 里的 `http_router_port`，改成其他没被占用的端口（如 8080），然后重启主程序。
+
+### Q2: 输入密钥后提示"认证失败"
+
+**原因**：
+- 密钥输入错误（注意大小写和空格！）
+- 配置文件里 `api_keys` 是空的
+
+**解决方法**：
+1. 仔细核对密钥是否和配置文件里的**完全一致**
+2. 确认 `<Neo-MoFox安装目录>/config/core.toml` 的 `[http_router]` 部分，`api_keys` 列表不为空
+3. 修改配置后**必须重启主程序**
+
+### Q3: 能登录，但是功能用不了
+
+**原因**：可能是前端文件没下载完整，或者 Git 克隆出问题了
+
+**解决方法**：
+```bash
+cd plugins/Neo-MoFox-Webui
+git pull origin webui-dist
+```
+
+重新拉取一遍代码，然后重启主程序。
+
+
+### Q4: 局域网访问不了（手机/其他电脑）
+
+**原因**：监听地址设置成 `127.0.0.1` 了
+
+**解决方法**：
+编辑 `config/core.toml`，把 `http_router_host` 改成 `0.0.0.0`：
+
+```toml
+http_router_host = "0.0.0.0"
+```
+
+然后重启主程序。
+
+::: warning 安全提示
+`0.0.0.0` 会让所有网络都能访问，包括公网（如果你的路由器转发了的话）。
+
+**如果暴露到公网**，强烈建议：
+- 用超级复杂的 API Key
+- 配置防火墙规则限制访问 IP
+- 考虑用 Nginx 反向代理加上 HTTPS
+:::
+
+### Q5: 想用其他端口怎么办？
+
+编辑 `config/core.toml`，修改 `http_router_port`：
+
+```toml
+http_router_port = 9999  # 改成你想要的端口
+```
+
+重启主程序，然后访问 `http://localhost:9999/webui/frontend`。
+
+## 一键更新（懒人必看）
+
+WebUI 支持**在界面内一键更新**，不用手动下载：
 
 1. 登录 WebUI
-2. 看左侧边栏，往下滑
-3. 找到 **「更新管理」** 菜单项，点进去
-
-你会看到三个标签页：
-- **UI 更新**：更新 WebUI 前端和后端
-- **主程序**：更新 Neo-MoFox 主程序
-- **Git 设置**：配置 Git 相关选项
-
-### 3.2 更新 WebUI（前端 + 后端）
-
-1. 进入「更新管理」页面
-2. 默认就在「UI 更新」标签页
-3. 点击 **「检查更新」** 按钮
+2. 打开侧边栏，找到 **「更新管理」**
+3. 点击 **「检查更新」**
 4. 如果有新版本，点击 **「立即更新」**
 
-更新过程全自动：
+更新会自动：
 - 从 GitHub 拉取最新代码
-- 自动备份当前版本（万一翻车可以回滚）
-- 应用更新并刷新页面
+- 备份当前版本（万一翻车可以回滚）
+- 刷新页面
 
 ::: tip 更新失败了？
-别慌！WebUI 在更新前会自动备份，你可以在「历史版本」中选择回滚到之前的版本。
+别慌！WebUI 会自动备份，你可以在「历史版本」里回滚到之前的版本。
 :::
 
-### 3.3 更新 Neo-MoFox 主程序
 
-没错，WebUI 还能帮你更新主程序！
 
-1. 进入「更新管理」页面
-2. 点击 **「主程序」** 标签页
-3. 点击 **「检查更新」**
-4. 确认更新内容后，点击 **「执行更新」**
+## 手动下载方式（不推荐）
 
-更新后会自动：
-- 检测你的 Python 虚拟环境类型（venv 还是 conda）
-- 自动安装新增的依赖包
-- 提示你重启主程序
-
-### 3.4 分支管理
-
-在「主程序」标签页，你可以看到「分支管理」功能：
-
-- **当前分支**：显示主程序当前所在的分支（比如 `dev`）
-- **切换分支**：可以切换到其他分支，比如切换到稳定版分支
-
-::: tip 小提示
-`dev` 分支是开发分支，有最新功能但可能不太稳定。如果追求稳定，建议切换到主分支。
-:::
-
-::: warning 注意
-主程序更新或切换分支后需要**重启** Neo-MoFox 才能生效哦！
-:::
-
-### 3.5 版本回滚
-
-万一更新后出现问题，别担心：
-
-1. 进入「更新管理」页面
-2. 在「历史版本」部分可以看到之前的版本
-3. 找到想要回滚的版本，点击 **「回滚」**
-
-一切恢复如初，就像什么都没发生过一样~
-
-## 四、其他安装方式
-
-如果你因为某些原因不能使用 Git，或者你是开发者需要修改代码，这里还有其他选择。
-
-### 方式二：手动下载 ZIP（不支持自动更新）
-
-::: warning 不推荐
-这种方式安装后**无法使用一键更新功能**，每次更新都要手动下载，适合网络环境特殊的用户。
-:::
+如果你实在没法用 Git，也可以手动下载 ZIP：
 
 1. 访问 [webui-dist 分支](https://github.com/MoFox-Studio/Neo-MoFox-Webui/tree/webui-dist)
 2. 点击绿色的 **Code** 按钮 → **Download ZIP**
-3. 解压到 `plugins/webui_backend/` 目录
-4. 配置 API Key（参考 2.2）
-5. 重启 Neo-MoFox
+3. 解压到 `plugins/Neo-MoFox-Webui/` 目录
+4. 重启主程序
 
-### 方式三：开发者模式
+::: warning 缺点
+手动下载后**无法使用一键更新功能**，每次更新都得重新下载解压。
 
-适合需要修改前端代码的开发者。这种方式需要安装 Node.js 环境。
+所以还是强烈建议用 Git！
+:::
+
+
+
+## 技术细节（给开发者看的）
+
+如果你想了解 WebUI 的工作原理，或者需要进行二次开发，这里有一些技术细节：
+
+### 架构概览
+
+```
+用户浏览器
+    ↓
+http://localhost:8000/webui/frontend
+    ↓
+[FrontendRouter]  ← 托管静态文件（backend/static/）
+    ↓
+[ApiRouter]  ← 提供 API 接口（/webui/api/...）
+    ↓
+插件系统 API（src/core/components/）
+```
+
+### 核心组件
+
+- **FrontendRouter**：托管编译好的 Vue 前端（SPA 模式）
+- **ApiRouter**：处理认证和 API 请求
+- **StartupUrlEventHandler**：系统启动时输出可访问 URL
+- **各种功能 Router**：stats、config、plugin_manage、log_viewer 等
+
+### 认证机制
+
+WebUI 使用 `X-API-Key` 请求头进行认证：
+
+1. 前端从用户输入获取密钥
+2. 将密钥存储到浏览器 localStorage
+3. 所有 API 请求都在请求头中携带 `X-API-Key`
+4. 后端通过 `src/core/utils/security.py` 中的 `get_api_key` 验证密钥是否在 `config/core.toml` 的 `api_keys` 列表中
+
+### 目录结构
+
+```
+Neo-MoFox-Webui/
+├── backend/                  # 后端插件代码
+│   ├── plugin.py            # 插件入口，注册所有组件
+│   ├── manifest.json        # 插件元数据
+│   ├── static/              # 编译好的前端文件（webui-dist 分支）
+│   │   ├── index.html
+│   │   └── assets/
+│   ├── router/              # FastAPI 路由组件
+│   │   ├── frontend_router.py  # 前端托管
+│   │   ├── api_router.py       # 认证 API
+│   │   ├── stats_router.py     # 统计数据
+│   │   ├── plugin_manage_router.py  # 插件管理
+│   │   ├── core_config_router.py    # 配置管理
+│   │   ├── git_update_router.py     # Git 更新
+│   │   └── ...
+│   ├── event_handler/       # 事件处理器
+│   │   └── startup_url_event_handler.py  # 启动提示
+│   ├── adapter/             # 适配器组件（如聊天室）
+│   ├── services/            # 业务逻辑服务
+│   ├── storage/             # 数据存储
+│   └── utils/               # 工具函数
+└── forward/                 # 前端源码（仅开发者需要）
+    └── mofox-webui/
+        ├── src/
+        ├── package.json
+        └── ...
+```
+
+### 开发模式
+
+如果你想修改前端代码：
 
 ```bash
 # 克隆完整仓库（包含源码）
 git clone https://github.com/MoFox-Studio/Neo-MoFox-Webui.git
-
-# 复制后端到插件目录
-cp -r backend /path/to/Neo-MoFox/plugins/webui_backend
 
 # 进入前端目录
 cd forward/mofox-webui
@@ -242,270 +345,28 @@ cd forward/mofox-webui
 # 安装依赖
 npm install
 
-# 启动开发服务器
+# 启动开发服务器（热重载）
 npm run dev
-
-# 访问开发版：http://localhost:11451
 ```
 
-::: tip 开发模式 vs 生产模式
-| 特性 | 开发模式（11451端口） | 生产模式（12138端口） |
-|------|---------------------|---------------------|
-| 需要 Node.js | ✅ 是 | ❌ 否 |
-| 热重载 | ✅ 支持 | ❌ 不支持 |
-| 自动更新 | ❌ 不支持 | ✅ 支持 |
-| 资源占用 | 高 | 低 |
-| 适用场景 | 前端开发调试 | 日常使用 |
-:::
+开发服务器会在 `http://localhost:5173` 启动，修改代码后会自动刷新。
 
-## 五、工作原理：它是怎么运作的？
+前端构建：
 
-理解 WebUI 的工作流程，能帮助你更好地排查问题。（如果你只是用用，可以跳过这节~）
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                       用户浏览器                                 │
-│                   http://localhost:12138                        │
-└──────────────────────────┬──────────────────────────────────────┘
-                           │
-                           ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                  发现服务器 (端口 12138)                         │
-│                                                                  │
-│  • 托管静态文件 (static/)                                        │
-│  • GET /server-info → 返回主程序地址                             │
-│  • API 代理 → 转发请求到主程序，前端不用关心主程序端口           │
-│  • 就像一个"导航站+中转站"                                       │
-└──────────────────────────┬──────────────────────────────────────┘
-                           │
-                           ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                    Neo-MoFox 主程序                              │
-│                                                                  │
-│  /plugin-api/webui_backend/                                     │
-│    ├── /auth         认证接口                                    │
-│    ├── /stats        统计数据                                    │
-│    ├── /plugins      插件管理                                    │
-│    ├── /config       配置管理                                    │
-│    ├── /marketplace  插件市场                                    │
-│    ├── /ui-update    WebUI 更新 ← 一键更新的秘密武器              │
-│    ├── /git-update   主程序更新                                  │
-│    ├── /log-viewer   日志查看                                    │
-│    ├── /chatroom     聊天室                                      │
-│    └── ...           更多 API                                    │
-└─────────────────────────────────────────────────────────────────┘
-```
-
-**流程说明**：
-1. **浏览器访问 12138 端口**：发现服务器返回静态页面（前端界面）
-2. **前端发起 API 请求**：所有请求都发到 12138 端口
-3. **发现服务器代理转发**：自动把请求转发给主程序，前端完全不用关心主程序端口是多少
-
-::: tip 自动更新的原理
-WebUI 使用 Git 实现自动更新：
-1. `git fetch` 检查远程是否有新版本
-2. 对比本地和远程的 commit hash
-3. `git pull` 拉取最新代码
-4. 更新完成，刷新页面
-
-这就是为什么推荐使用 `git clone` 安装——因为只有这样才能用 `git pull` 更新啊！
-:::
-
-## 六、项目结构说明
-
-了解项目结构有助于你进行定制化开发或排查问题。（普通用户可以跳过~）
-
-```
-webui_backend/                    # 插件目录（安装后的结构）
-├── __init__.py                  # 模块入口
-├── plugin.py                    # 主插件类，一切的起点
-├── discovery_server.py          # 发现服务器 + 静态文件托管
-├── config/
-│   └── config.toml             # 插件配置文件（API Key 在这里改）
-├── static/                      # 编译好的前端静态文件
-│   ├── index.html
-│   └── assets/
-├── adapters/                    # 适配器组件
-├── apis/                        # 外部 API 集成
-├── handlers/                    # 生命周期处理器
-│   ├── startup_handler.py      # 启动时干啥
-│   └── shutdown_handler.py     # 关闭时干啥
-├── models/                      # 数据模型
-├── plugins/                     # 子插件
-├── routers/                     # API 路由（这里是功能的主体）
-│   ├── auth_router.py          # 认证接口
-│   ├── stats_router.py         # 统计数据
-│   ├── plugin_router.py        # 插件管理
-│   ├── config_router.py        # 配置管理
-│   ├── marketplace_router.py   # 插件市场
-│   ├── ui_update_router.py     # WebUI 更新
-│   ├── git_update_router.py    # 主程序更新
-│   ├── log_viewer_router.py    # 日志查看
-│   ├── chatroom_router.py      # 聊天室
-│   ├── emoji_manager_router.py # 表情包管理
-│   ├── relationship_router.py  # 人物关系
-│   └── ...                     # 还有更多
-├── storage/                     # 数据存储
-└── utils/                       # 工具函数
-    └── update/                  # 更新相关工具
-        ├── git_detector.py      # Git 环境检测
-        ├── git_updater.py       # Git 更新器
-        ├── ui_version_manager.py # UI 版本管理
-        └── venv_utils.py        # 虚拟环境工具
-```
-
-## 七、常见问题排查
-
-遇到问题别慌，先看看这里：
-
-### Q1: 访问 localhost:12138 显示"无法访问此网站"
-
-**可能原因**：
-- Neo-MoFox 主程序没有运行
-- 后端插件没有正确加载
-- 端口被其他程序占用
-
-**解决方法**：
-1. 确认 Neo-MoFox 主程序正在运行
-2. 检查日志，确认 `webui_backend` 插件已加载
-3. 检查端口占用：
-   - Windows: `netstat -ano | findstr :12138`
-   - Mac/Linux: `lsof -i :12138`
-4. 如果端口被占用，关闭占用程序或修改配置
-
-### Q2: 登录后提示"无法连接到后端服务"
-
-**可能原因**：
-- 主程序端口配置不正确
-- 防火墙阻止了连接
-
-**解决方法**：
-1. 检查 `config/config.toml` 中的 `[main_server]` 配置
-2. 确认主程序实际运行的端口
-3. 临时关闭防火墙测试
-
-### Q3: 输入 API Key 后提示"认证失败"
-
-**可能原因**：
-- API Key 输入错误（注意大小写和空格！）
-- 配置文件中的 `api_keys` 列表为空
-
-**解决方法**：
-1. 仔细核对 API Key 是否完全一致
-2. 确认 `config/config.toml` 中 `[auth]` 部分的 `api_keys` 不为空
-3. 修改配置后**记得重启 Neo-MoFox**
-
-### Q4: 点击"检查更新"提示"不在 webui-dist 分支"
-
-**原因**：
-你可能是用 ZIP 下载安装的，或者克隆的是 main 分支。
-
-**解决方法**：
-使用 Git 重新安装：
 ```bash
-cd /path/to/plugins
-rm -rf webui_backend  # 删除旧的
-git clone -b webui-dist https://github.com/MoFox-Studio/Neo-MoFox-Webui.git webui_backend
+npm run build
 ```
 
-### Q5: 更新后出现问题怎么办？
+构建产物会输出到 `forward/mofox-webui/dist/` 目录，需要手动复制到 `backend/static/`。
 
-**别慌！** WebUI 在更新前会自动备份：
 
-1. 进入侧边栏的 **更新管理**
-2. 在「历史版本」部分找到之前的版本
-3. 点击 **回滚**
 
-一切恢复如初！
+## 反馈与贡献
 
-### Q6: 如何从远程服务器访问 WebUI？
+遇到问题或有建议？欢迎：
 
-如果 Neo-MoFox 部署在远程服务器上：
+- 🐛 [提交 Bug 报告](https://github.com/MoFox-Studio/Neo-MoFox-Webui/issues/new)
+- 💡 提出功能建议
+- 🛠️ 提交 Pull Request
 
-1. 确保服务器防火墙开放了 12138 端口
-2. 将 `config/config.toml` 中 `[discovery]` 的 `host` 设为 `0.0.0.0`
-3. 使用 `http://服务器IP:12138` 访问
-
-::: warning 安全提醒
-公网暴露端口有风险！建议：
-- 使用强密码作为 API Key
-- 考虑配置 HTTPS（通过 Nginx 反向代理）
-- 限制可访问的 IP 范围
-:::
-
-## 八、技术栈说明
-
-如果你想参与开发或深度定制，了解技术栈会很有帮助。
-
-### 前端
-- **Vue 3**：渐进式 JavaScript 框架（好用！）
-- **TypeScript**：带类型系统的 JavaScript 超集（少踩坑！）
-- **Vite**：新一代前端构建工具（贼快！）
-- **Vue Router**：Vue 官方路由管理器
-- **Pinia**：轻量级状态管理库
-- **ECharts**：强大的数据可视化图表库
-
-### 后端
-- **FastAPI**：现代、高性能的 Python Web 框架
-- **Uvicorn**：轻量级 ASGI 服务器
-- **MoFox Plugin System**：与 Neo-MoFox 插件系统深度集成
-
-## 九、开发状态
-
-目前项目的功能完成情况（打勾的都能用了！）：
-
-- [x] 后端插件系统
-- [x] 服务发现机制
-- [x] 用户认证
-- [x] 仪表盘统计
-- [x] 插件管理
-- [x] 插件市场
-- [x] 配置编辑器
-- [x] 响应式布局
-- [x] 静态文件托管
-- [x] **WebUI 自动更新** 🎉
-- [x] **主程序自动更新** 🎉
-- [x] **依赖自动安装** 🎉
-- [x] **版本回滚** 🎉
-- [x] 实时日志查看
-- [x] 聊天室功能
-- [x] 表情包管理
-- [x] 人物关系管理
-- [ ] 消息历史查看
-- [ ] 定时任务管理
-- [ ] 用户权限管理
-
-我们会持续开发新功能，敬请期待！
-
-## 十、安全性说明
-
-WebUI 采用了多层安全机制：
-
-- **API Key 验证**：所有敏感接口都需要在请求头中携带 `X-API-Key`
-- **固定发现端口**：仅发现服务使用固定端口（12138）
-- **CORS 配置**：后端已正确配置 CORS，支持跨域访问但限制了来源
-- **会话管理**：可配置会话超时时间
-- **备份机制**：更新前自动备份，保护你的数据
-
-::: warning 生产环境建议
-如果你要在公网环境部署 WebUI，强烈建议：
-1. 使用 HTTPS 加密传输（配置 Nginx/Caddy 反向代理）
-2. 使用强密码作为 API Key
-3. 定期更换 API Key
-4. 限制访问 IP 范围
-5. 启用防火墙规则
-:::
-
-## 十一、贡献与反馈
-
-如果你在使用过程中遇到问题，或者有好的建议，欢迎：
-
-- 在 GitHub 提交 Issue
-- 提交 Pull Request
-- 加入社区讨论
-
-好了，现在你已经掌握了 Neo-MoFox WebUI 的完整使用方法。去享受可视化管理带来的便利吧！
-
-最重要的是——**记得用 `git clone` 安装，这样才能享受一键更新的快乐** 😎
-
-如果还有疑问，随时查阅本文档或联系社区。
+感谢你的使用！祝你玩得开心 🎉

@@ -1,4 +1,4 @@
-#  [ 没更新的旧时代文档 ] MoFox-Core安装脚本使用说明文档
+#  [ 没更新的旧时代文档 ] Neo-MoFox安装脚本使用说明文档
 ### 小白快速通道喵，以下内容你可以不用查看
 ```bash
 sudo curl -fsSL "https://raw.githubusercontent.com/MoFox-Elysia/MoFox-Installer/main/mofox.sh" -o "mofox.sh" && echo bash mofox.sh
@@ -6,7 +6,7 @@ sudo curl -fsSL "https://raw.githubusercontent.com/MoFox-Elysia/MoFox-Installer/
 ## 脚本概述
 - **脚本名称**: `mofox.sh`
 - **版本**: 2.7.6
-- **功能**: 在Armbian系统上自动安装MoFox-Core及相关软件
+- **功能**: 在Armbian系统上自动安装Neo-MoFox及相关软件
 - **适用系统**: Debian 11 Armbian（理论支持所有主流Linux发行版）
 
 ## 脚本结构
@@ -15,7 +15,7 @@ sudo curl -fsSL "https://raw.githubusercontent.com/MoFox-Elysia/MoFox-Installer/
 1. **系统检查与准备** - 检查系统资源、权限、架构和网络
 2. **软件选择** - 交互式选择需要安装的软件
 3. **软件安装** - 自动安装选择的软件包
-4. **配置管理** - 配置MoFox-Core和NapcatQQ
+4. **配置管理** - 配置Neo-MoFox和NapcatQQ
 5. **快速安装模式** - 检测到现有安装时的优化流程
 
 ---
@@ -114,7 +114,7 @@ r - 重新显示日志
 ```bash
 # 当检测到现有MoFox安装时，显示：
 请选择操作：
-1)删除现有 MoFox-Core 
+1)删除现有 Neo-MoFox 
 2) 跳过系统检查，直接从软件选择开始
 3) 正常完整安装
 请选择 [1/2/3]: 
@@ -170,12 +170,12 @@ r - 重新显示日志
 3. 自动配置
 
 #### `install_mofox()`
-**功能**: 安装MoFox-Core（最复杂的安装流程）
+**功能**: 安装Neo-MoFox（最复杂的安装流程）
 **用户交互步骤**:
 
 **步骤1**: 配置QQ账号和昵称
 ```bash
-现在开始配置MoFox-Core的QQ账号和机器人信息
+现在开始配置Neo-MoFox的QQ账号和机器人信息
 注意：QQ号应为纯数字，5-15位
 请输入机器人的QQ号: 
 请输入机器人的昵称（显示名称）: 
@@ -189,7 +189,7 @@ r - 重新显示日志
 
 **步骤3**: 配置机器人人格设定
 ```bash
-现在开始配置MoFox-Core的机器人人格设定
+现在开始配置Neo-MoFox的机器人人格设定
 注意：这些设定将影响机器人的行为和回复风格
 
 人格核心特质（建议50字以内，描述人格的核心特质）
@@ -211,7 +211,7 @@ r - 重新显示日志
 
 **步骤4**: 配置聊天功能开关
 ```bash
-现在开始配置MoFox-Core的聊天功能开关
+现在开始配置Neo-MoFox的聊天功能开关
 以下配置将影响机器人的聊天行为和功能
 
 是否允许回复自己说的话？
@@ -315,7 +315,7 @@ Armbian软件自动安装脚本 v2.7.6
 ║                检测到现有MoFox安装                      ║
 ...
 请选择操作：
-1)删除现有 MoFox-Core 
+1)删除现有 Neo-MoFox 
 2) 跳过系统检查，直接从软件选择开始
 3) 正常完整安装
 请选择 [1/2/3]: 
@@ -344,7 +344,7 @@ Armbian软件自动安装脚本 v2.7.6
 是否安装 coplar？(y/N): 
 ```
 
-### 步骤5: MoFox-Core配置
+### 步骤5: Neo-MoFox配置
 **需要用户输入的配置项较多，请参考上面的详细说明**
 
 ### 步骤6: 安装完成

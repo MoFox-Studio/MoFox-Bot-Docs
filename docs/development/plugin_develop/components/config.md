@@ -5,7 +5,7 @@
 `BaseConfig` 是 MoFox 插件的配置管理基类，用于定义和管理插件的 TOML 配置文件。它基于 Pydantic 实现，提供类型验证、默认值管理和自动配置文件生成功能。
 
 ::: tip WebUI 可视化编辑支持
-配置系统支持 **MoFox-Core-WebUI** 等可视化编辑器。通过在 `Field` 中指定 UI 属性（如 `label`、`tag`、`placeholder`），系统会自动生成配置表单界面，让用户无需手动编辑 TOML 文件。
+配置系统支持 **Neo-MoFox-WebUI** 等可视化编辑器。通过在 `Field` 中指定 UI 属性（如 `label`、`tag`、`placeholder`），系统会自动生成配置表单界面，让用户无需手动编辑 TOML 文件。
 :::
 
 ## 配置文件位置
@@ -156,7 +156,7 @@ enable_emoji = true
 #### 2. WebUI 显示增强参数
 
 ::: warning 依赖 WebUI
-以下参数仅在使用 MoFox-Core-WebUI 或其他支持的可视化界面时生效。如果仅使用 TOML 文件配置，这些参数不会影响功能。
+以下参数仅在使用 Neo-MoFox-WebUI 或其他支持的可视化界面时生效。如果仅使用 TOML 文件配置，这些参数不会影响功能。
 :::
 
 | 参数 | 说明 |
@@ -755,7 +755,7 @@ class MyPlugin(BasePlugin):
 
 ### Q: WebUI 相关的参数不起作用怎么办？
 
-**A:** WebUI 相关参数（如 `label`、`tag`、`placeholder`、`input_type` 等）仅在使用 MoFox-Core-WebUI 或其他支持的可视化界面时生效。如果仅通过 TOML 文件配置，这些参数不会影响功能，但建议保留以便将来使用 WebUI。
+**A:** WebUI 相关参数（如 `label`、`tag`、`placeholder`、`input_type` 等）仅在使用 Neo-MoFox-WebUI 或其他支持的可视化界面时生效。如果仅通过 TOML 文件配置，这些参数不会影响功能，但建议保留以便将来使用 WebUI。
 
 ## 注意事项
 
@@ -764,7 +764,7 @@ class MyPlugin(BasePlugin):
 :::
 
 ::: warning WebUI 依赖
-本文档中提到的 WebUI 相关功能（如 `label`、`tag`、`placeholder`、`input_type` 等）需要配合 **MoFox-Core-WebUI** 或其他支持的可视化界面使用。如果仅使用 TOML 文件配置，这些参数不会影响功能。
+本文档中提到的 WebUI 相关功能（如 `label`、`tag`、`placeholder`、`input_type` 等）需要配合 **Neo-MoFox-WebUI** 或其他支持的可视化界面使用。如果仅使用 TOML 文件配置，这些参数不会影响功能。
 :::
 
 ::: tip 多配置文件

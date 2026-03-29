@@ -18,18 +18,18 @@
 
 ### 报告问题
 
-如果您在使用中发现了 Bug 或其他问题，请通过 [GitHub Issues](https://github.com/MoFox-Studio/MoFox-Core/issues) 报告给我们。
+如果您在使用中发现了 Bug 或其他问题，请通过 [GitHub Issues](https://github.com/MoFox-Studio/Neo-MoFox/issues) 报告给我们。
 
 在提交 Issue 之前，请：
 
 1.  **搜索现有 Issue**：确保您的问题尚未被报告。
-2.  **使用最新版本**：确认您使用的是最新版本的 MoFox-Core。
+2.  **使用最新版本**：确认您使用的是最新版本的 Neo-MoFox。
 
 在提交 Issue 时，请提供以下信息：
 
 -   **清晰的标题**：简明扼要地描述问题。
 -   **详细的描述**：提供问题的复现步骤、期望的行为和实际表现。
--   **环境信息**：包括您的操作系统、Python 版本、MoFox-Core 版本等。
+-   **环境信息**：包括您的操作系统、Python 版本、Neo-MoFox 版本等。
 -   **相关的日志或截图**：这将帮助我们更快地定位问题。
 
 ### 提出功能建议

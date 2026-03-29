@@ -27,7 +27,7 @@ WebUI 还在测试中，偶尔会闹点小脾气。遇到 bug 别慌，来 GitHu
 cd E:\delveoper\mmc010\Neo-MoFox\plugins
 
 # 克隆预编译版本（webui-dist 分支）
-git clone -b webui-dist https://github.com/MoFox-Studio/MoFox-Core-Webui.git
+git clone -b webui-dist https://github.com/MoFox-Studio/Neo-MoFox-Webui.git
 ```
 
 ```bash [Linux / macOS]
@@ -35,7 +35,7 @@ git clone -b webui-dist https://github.com/MoFox-Studio/MoFox-Core-Webui.git
 cd /path/to/Neo-MoFox/plugins
 
 # 克隆预编译版本
-git clone -b webui-dist https://github.com/MoFox-Studio/MoFox-Core-Webui.git
+git clone -b webui-dist https://github.com/MoFox-Studio/Neo-MoFox-Webui.git
 ```
 :::
 
@@ -50,7 +50,7 @@ git clone -b webui-dist https://github.com/MoFox-Studio/MoFox-Core-Webui.git
 ```
 Neo-MoFox/
 ├── plugins/
-│   └── MoFox-Core-Webui/     ← 新克隆的 WebUI 插件
+│   └── Neo-MoFox-Webui/      ← 新克隆的 WebUI 插件
 │       ├── backend/           ← 后端代码
 │       │   ├── static/        ← 编译好的前端文件
 │       │   ├── router/        ← API 路由
@@ -167,7 +167,7 @@ uv run main.py
 
 **解决方法**：
 1. 确认主程序正在运行（看终端有没有报错）
-2. 检查日志，确认 `MoFox-Core-Webui` 插件已加载
+2. 检查日志，确认 `Neo-MoFox-Webui` 插件已加载
 3. 检查端口占用：
    - **Windows**：`netstat -ano | findstr :8000`
    - **Linux/Mac**：`lsof -i :8000`
@@ -190,7 +190,7 @@ uv run main.py
 
 **解决方法**：
 ```bash
-cd plugins/MoFox-Core-Webui
+cd plugins/Neo-MoFox-Webui
 git pull origin webui-dist
 ```
 
@@ -253,9 +253,9 @@ WebUI 支持**在界面内一键更新**，不用手动下载：
 
 如果你实在没法用 Git，也可以手动下载 ZIP：
 
-1. 访问 [webui-dist 分支](https://github.com/MoFox-Studio/MoFox-Core-Webui/tree/webui-dist)
+1. 访问 [webui-dist 分支](https://github.com/MoFox-Studio/Neo-MoFox-Webui/tree/webui-dist)
 2. 点击绿色的 **Code** 按钮 → **Download ZIP**
-3. 解压到 `plugins/MoFox-Core-Webui/` 目录
+3. 解压到 `plugins/Neo-MoFox-Webui/` 目录
 4. 重启主程序
 
 ::: warning 缺点
@@ -303,7 +303,7 @@ WebUI 使用 `X-API-Key` 请求头进行认证：
 ### 目录结构
 
 ```
-MoFox-Core-Webui/
+Neo-MoFox-Webui/
 ├── backend/                  # 后端插件代码
 │   ├── plugin.py            # 插件入口，注册所有组件
 │   ├── manifest.json        # 插件元数据
@@ -336,8 +336,8 @@ MoFox-Core-Webui/
 如果你想修改前端代码：
 
 ```bash
-# 克隆完整仓库
-git clone https://github.com/MoFox-Studio/MoFox-Core-Webui.git
+# 克隆完整仓库（包含源码）
+git clone https://github.com/MoFox-Studio/Neo-MoFox-Webui.git
 
 # 进入前端目录
 cd forward/mofox-webui
@@ -365,7 +365,7 @@ npm run build
 
 遇到问题或有建议？欢迎：
 
-- 🐛 [提交 Bug 报告](https://github.com/MoFox-Studio/MoFox-Core-Webui/issues/new)
+- 🐛 [提交 Bug 报告](https://github.com/MoFox-Studio/Neo-MoFox-Webui/issues/new)
 - 💡 提出功能建议
 - 🛠️ 提交 Pull Request
 

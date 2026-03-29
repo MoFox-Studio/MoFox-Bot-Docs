@@ -7,7 +7,7 @@ hero:
   tagline: 严格三层架构 · 灵活插件系统 · LLM 原生支持
   image:
     src: /logos/logo.png
-    alt: MoFox-Core Logo
+    alt: Neo-MoFox Logo
     width: 700
     height: 700
   actions:
@@ -19,7 +19,7 @@ hero:
       link: /docs/development/plugin_develop/
     - theme: alt
       text: 在 GitHub 上查看
-      link: https://github.com/MoFox-Studio/MoFox-Core
+      link: https://github.com/MoFox-Studio/Neo-MoFox
 
 features:
   - icon: 🧩

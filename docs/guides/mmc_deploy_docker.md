@@ -99,9 +99,11 @@ cd Neo-MoFox
         ```
 
 2.  **配置监听地址**:
-    *   **重要**: Docker 部署时，需要让服务监听所有网络接口。找到 `HOST="127.0.0.1"`，将其修改为：
+    *   **重要**: Docker 部署时，需要让服务监听所有网络接口。找到"Neo-MoFox\config\plugins\napcat_adapter\config.toml" `host = "localhost"`，将其修改为：
         ```
-        HOST="0.0.0.0"
+        # Napcat WebSocket 服务地址
+        # 值类型：str, 默认值："localhost"
+        host = "0.0.0.0"
         ```
 
 ### 3.2 网络预留
@@ -139,10 +141,6 @@ cd Neo-MoFox
     *   找到 **WebSocket 客户端** 选项，点击 **新建客户端**。
     *   按照下图所示配置参数（具体地址请参考图片配置）：
         ![Napcat 配置](../assets/napcat-docker.png)
-    *   **修改适配器配置**:
-        *   在宿主机项目目录下，打开 `config/plugins/napcat_adapter_plugin/config.toml`。
-        *   将 `Napcat WebSocket 服务地址` 从 `localhost` 改为 `0.0.0.0`。
-        *   修改完成后，由于是 Docker 部署，需要执行 `docker compose restart core` 以应用配置。
 
 > **💡 小贴士**: 若无法打开页面，请务必检查服务器的**防火墙或安全组**是否已放行 **6099** 端口。成功连接后，机器人的冒险就正式开始了！
 

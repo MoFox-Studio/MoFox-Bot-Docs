@@ -88,17 +88,9 @@ cd Neo-MoFox
 
 在启动之前，我们需要对机器人进行一些基础配置。
 
-### 3.1 修改 .env 环境配置
+###2.  配置监听地址
 
-使用你喜欢的代码编辑器（如 VS Code）打开项目根目录下的 `.env` 文件。
 
-1.  **签署 EULA**:
-    *   找到 `EULA_CONFIRMED=false`，将其修改为 `true`，表示你同意最终用户许可协议。
-        ```
-        EULA_CONFIRMED=true
-        ```
-
-2.  **配置监听地址**:
     *   **重要**: Docker 部署时，需要让服务监听所有网络接口。找到"Neo-MoFox\config\plugins\napcat_adapter\config.toml" `host = "localhost"`，将其修改为：
         ```
         # Napcat WebSocket 服务地址

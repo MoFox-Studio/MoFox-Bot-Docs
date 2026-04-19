@@ -110,4 +110,4 @@
 
 我们为你准备了详细的插件开发文档，希望能帮助你快速上手。
 
-[前往插件开发指南](../development/plugins/index.md)
+[前往插件开发指南](../development/plugin_develop/index.md)

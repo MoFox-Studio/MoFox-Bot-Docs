@@ -35,7 +35,7 @@ git clone -b webui-dist https://github.com/MoFox-Studio/Neo-MoFox-Webui.git
 cd /path/to/Neo-MoFox/plugins
 
 # 克隆预编译版本
-git clone -b webui-dist https://github.com/MoFox-Studio/Neo-MoFox-Webui.git
+git clone -b webui-dist https://github.com/MoFox-Studio/MoFox-Core-Webui.git
 ```
 :::
 

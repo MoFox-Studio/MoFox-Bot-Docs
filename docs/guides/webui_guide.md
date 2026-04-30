@@ -27,7 +27,7 @@ WebUI 还在测试中，偶尔会闹点小脾气。遇到 bug 别慌，来 GitHu
 cd E:\delveoper\mmc010\Neo-MoFox\plugins
 
 # 克隆预编译版本（webui-dist 分支）
-git clone -b webui-dist https://github.com/MoFox-Studio/Neo-MoFox-Webui.git
+git clone -b webui-dist https://github.com/MoFox-Studio/MoFox-Core-Webui.git
 ```
 
 ```bash [Linux / macOS]

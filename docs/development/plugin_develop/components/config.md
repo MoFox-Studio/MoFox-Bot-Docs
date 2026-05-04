@@ -72,7 +72,6 @@ timeout = 30
     title: str = None,   # 可选，WebUI 显示标题
     description: str = None,  # 可选，节描述
     tag: str = None,     # 可选，预设标签（用于 WebUI 图标）
-    order: int = 0       # 可选，显示顺序
 )
 ```
 
@@ -84,7 +83,6 @@ timeout = 30
 | `title` | `str` | WebUI 显示标题（不指定则使用节名） |
 | `description` | `str` | 节描述（不指定则使用类的 docstring 首行） |
 | `tag` | `str` | 预设标签，WebUI 会自动映射图标 |
-| `order` | `int` | 显示顺序，数字越小越靠前 |
 
 **可用的 tag 标签：**
 
@@ -103,13 +101,13 @@ from src.core.components.base.config import (
 class MyPluginConfig(BaseConfig):
     config_name = "config"
     
-    @config_section("server", title="服务器配置", tag="network", order=0)
+    @config_section("server", title="服务器配置", tag="network")
     class ServerSection(SectionBase):
         """服务器连接配置"""
         host: str = Field(default="127.0.0.1", description="服务器地址")
         port: int = Field(default=8080, ge=1, le=65535, description="端口")
     
-    @config_section("features", title="功能开关", tag="general", order=10)
+    @config_section("features", title="功能开关", tag="general")
     class FeaturesSection(SectionBase):
         """功能开关配置"""
         enable_emoji: bool = Field(default=True, description="启用表情包回复")
@@ -165,7 +163,6 @@ enable_emoji = true
 | `tag` | 预设标签（自动映射图标） |
 | `placeholder` | 输入框占位符 |
 | `hint` | 帮助提示文本 |
-| `order` | 显示顺序 |
 | `hidden` | 是否隐藏 |
 | `disabled` | 是否只读 |
 
@@ -462,7 +459,7 @@ class MyPluginConfig(BaseConfig):
     config_name = "config"
     config_description = "My Plugin 的配置文件"
     
-    @config_section("bot", title="Bot 信息", tag="general", order=0)
+    @config_section("bot", title="Bot 信息", tag="general")
     class BotSection(SectionBase):
         """Bot 基本信息"""
         nickname: str = Field(
@@ -476,7 +473,7 @@ class MyPluginConfig(BaseConfig):
             label="Bot ID"
         )
     
-    @config_section("server", title="服务器配置", tag="network", order=10)
+    @config_section("server", title="服务器配置", tag="network")
     class ServerSection(SectionBase):
         """平台服务器连接配置"""
         host: str = Field(
@@ -498,7 +495,7 @@ class MyPluginConfig(BaseConfig):
             tag="security"
         )
     
-    @config_section("features", title="功能开关", tag="general", order=20)
+    @config_section("features", title="功能开关", tag="general",)
     class FeaturesSection(SectionBase):
         """功能开关"""
         enable_emoji: bool = Field(

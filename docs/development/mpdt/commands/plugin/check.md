@@ -84,6 +84,20 @@ mpdt plugin check --no-structure
 mpdt plugin check --no-metadata
 ```
 
+### --no-config
+跳过配置检查。
+
+```bash
+mpdt plugin check --no-config
+```
+
+### --no-import
+跳过导入检查。
+
+```bash
+mpdt plugin check --no-import
+```
+
 ### --no-component
 
 跳过组件检查。

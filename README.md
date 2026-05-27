@@ -1,6 +1,6 @@
 # Neo-MoFox Docs
 
-🚀 基于 MaiCore 的增强版智能体，提供更完善的功能和更好的使用体验。
+重构的增强版智能体，提供更完善的功能和更好的使用体验。
 
 本文档旨在帮助您了解 Neo-MoFox 的功能、部署和开发。
 
@@ -29,18 +29,21 @@
 
 要在本地预览和编辑文档站点，请按照以下步骤操作：
 
-1.  **克隆仓库**
+1. **克隆仓库**
+
     ```bash
     git clone https://github.com/MoFox-Studio/MoFox-Bot-Docs.git
     cd MoFox-Bot-Docs
     ```
 
-2.  **安装依赖**
+2. **安装依赖**
+
     ```bash
     npm install
     ```
 
-3.  **运行开发服务器**
+3. **运行开发服务器**
+
     ```bash
     npm run docs:dev
     ```

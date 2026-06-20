@@ -38,6 +38,10 @@ const myGuides = [
     title: '社区贡献的自动化部署脚本和工具...',
     link: './community_way/'
   },
+  },
+]
+
+const extGuides = [
   {
     avatar: '<iconify-icon icon="mdi:api"></iconify-icon>',
     name: 'MCP 使用教程',
@@ -167,6 +171,10 @@ const artists = [
 ## 选择你的部署平台
 
 <GuideCards :guides="myGuides" />
+
+## 扩展功能
+
+<GuideCards :guides="extGuides" />
 
 ## 团队成员
 

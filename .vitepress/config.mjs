@@ -443,20 +443,20 @@ export default withMermaid(
             items: [
               {
                 text: "Launcher 部署指南",
-                link: "/docs/guides/launcher_deployment_guide",
+                link: "/docs/guides/deployment/launcher_deployment_guide",
               },
               {
                 text: "Windows部署指南",
-                link: "/docs/guides/deployment_guide",
+                link: "/docs/guides/deployment/deployment_guide",
               },
-              { text: "Linux部署指南", link: "/docs/guides/mmc_deploy_linux" },
+              { text: "Linux部署指南", link: "/docs/guides/deployment/mmc_deploy_linux" },
               {
                 text: "Docker部署指南",
-                link: "/docs/guides/mmc_deploy_docker",
+                link: "/docs/guides/deployment/mmc_deploy_docker",
               },
               {
                 text: "Android部署指南",
-                link: "/docs/guides/mmc_deploy_android",
+                link: "/docs/guides/deployment/mmc_deploy_android",
               },
               {
                 text: "社区安装方式",
@@ -464,11 +464,11 @@ export default withMermaid(
                 items: [
                   {
                     text: "社区部署方式介绍",
-                    link: "/docs/guides/community_way/",
+                    link: "/docs/guides/deployment/community_way/",
                   },
                   {
                     text: "MoFox-Community 安装器",
-                    link: "/docs/guides/community_way/mofox-community-installer",
+                    link: "/docs/guides/deployment/community_way/mofox-community-installer",
                   },
                 ],
               },
@@ -480,15 +480,15 @@ export default withMermaid(
             items: [
               {
                 text: "模型配置快速上手",
-                link: "/docs/guides/quick_start_model_config",
+                link: "/docs/guides/configuration/quick_start_model_config",
               },
               {
                 text: "Bot配置文件指南",
-                link: "/docs/guides/bot_config_guide",
+                link: "/docs/guides/configuration/bot_config_guide",
               },
               {
                 text: "模型配置指南(进阶)",
-                link: "/docs/guides/model_configuration_guide",
+                link: "/docs/guides/configuration/model_configuration_guide",
               },
             ],
           },
@@ -496,9 +496,9 @@ export default withMermaid(
             text: "常见问题与帮助",
             collapsed: false,
             items: [
-              { text: "模型配置FAQ", link: "/docs/guides/model_config_faq" },
-              { text: "如何更换端口", link: "/docs/guides/how_to_change_port" },
-              { text: "维护指南", link: "/docs/guides/maintenance_guide" },
+              { text: "模型配置FAQ", link: "/docs/guides/configuration/model_config_faq" },
+              { text: "如何更换端口", link: "/docs/guides/configuration/how_to_change_port" },
+              { text: "维护指南", link: "/docs/guides/usage/maintenance_guide" },
             ],
           },
           {
@@ -507,16 +507,16 @@ export default withMermaid(
             items: [
               {
                 text: "插件安装指南",
-                link: "/docs/guides/plugin-installation-guide",
+                link: "/docs/guides/usage/plugin-installation-guide",
               },
               {
                 text: "内置插件使用指南",
-                link: "/docs/guides/built_in_plugins_guide",
+                link: "/docs/guides/usage/built_in_plugins_guide",
               },
-              { text: "指令权限系统", link: "/docs/guides/permission_usage" },
-              { text: "WebUI 使用指南", link: "/docs/guides/webui_guide" },
-              { text: "MCP 使用教程", link: "/docs/guides/mcp_guide" },
-              { text: "Skill 使用教程", link: "/docs/guides/skill_guide" },
+              { text: "指令权限系统", link: "/docs/guides/usage/permission_usage" },
+              { text: "WebUI 使用指南", link: "/docs/guides/usage/webui_guide" },
+              { text: "MCP 使用教程", link: "/docs/guides/usage/mcp_guide" },
+              { text: "Skill 使用教程", link: "/docs/guides/usage/skill_guide" },
             ],
           },
           {
@@ -534,14 +534,14 @@ export default withMermaid(
             text: "其他",
             collapsed: false,
             items: [
-              { text: "最终用户许可协议", link: "/docs/guides/eula" },
+              { text: "最终用户许可协议", link: "/docs/guides/misc/eula" },
               {
                 text: "如何高效提问",
-                link: "/docs/guides/how-to-ask-questions-efficiently",
+                link: "/docs/guides/misc/how-to-ask-questions-efficiently",
               },
               {
                 text: "提问的智慧(精简版)",
-                link: "/docs/guides/how-to-ask-questions-the-smart-way",
+                link: "/docs/guides/misc/how-to-ask-questions-the-smart-way",
               },
             ],
           },

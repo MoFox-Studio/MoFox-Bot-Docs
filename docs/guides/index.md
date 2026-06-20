@@ -6,31 +6,31 @@ const myGuides = [
     avatar: '<iconify-icon icon="material-symbols:window-sharp"></iconify-icon>',
     name: 'Windows 部署指南',
     title: '为 Windows 用户准备的图形化界面部署教程...',
-    link: './deployment_guide'
+    link: './deployment/deployment_guide'
   },
   {
     avatar: '<iconify-icon icon="mdi:linux"></iconify-icon>',
     name: 'Linux 部署指南',
     title: '为 Linux 用户准备的命令行部署教程...',
-    link: './mmc_deploy_linux'
+    link: './deployment/mmc_deploy_linux'
   },
   {
     avatar: '<iconify-icon icon="material-symbols:android"></iconify-icon>',
     name: 'Android 部署指南',
     title: '为 Android 用户准备的部署教程...',
-    link: './mmc_deploy_android'
+    link: './deployment/mmc_deploy_android'
   },
   {
     avatar: '<iconify-icon icon="mdi:docker"></iconify-icon>',
     name: 'Docker 部署指南',
     title: '为 Docker 用户准备的部署教程...',
-    link: './mmc_deploy_docker'
+    link: './deployment/mmc_deploy_docker'
   },
   {
     avatar: '<iconify-icon icon="material-symbols:package-2"></iconify-icon>',
     name: 'Launcher 部署指南',
     title: '为 Launcher 用户准备的部署教程...',
-    link: './launcher_deployment_guide'
+    link: './deployment/launcher_deployment_guide'
   },
   {
     avatar: '<iconify-icon icon="mdi:account-group"></iconify-icon>',
@@ -45,13 +45,13 @@ const extGuides = [
     avatar: '<iconify-icon icon="mdi:api"></iconify-icon>',
     name: 'MCP 使用教程',
     title: '通过 Model Context Protocol 扩展 AI 能力...',
-    link: './mcp_guide'
+    link: './usage/mcp_guide'
   },
   {
     avatar: '<iconify-icon icon="mdi:lightbulb-on"></iconify-icon>',
     name: 'Skill 使用教程',
     title: '使用 Skill 模块扩展工具调用...',
-    link: './skill_guide'
+    link: './usage/skill_guide'
   },
 ]
 

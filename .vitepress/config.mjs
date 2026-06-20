@@ -441,6 +441,12 @@ export default withMermaid(
         { text: "指南", link: "/docs/guides/" },
         { text: "开发", link: "/docs/development/" },
         {
+          text: "内置插件",
+          items: [
+            { text: "Plugin UI", link: "/docs/builtin_plugins/plugin-ui/" },
+          ],
+        },
+        {
           text: "相关链接",
           items: [
             { text: "MoFox-Studio", link: "https://github.com/MoFox-Studio" },
@@ -582,6 +588,24 @@ export default withMermaid(
           },
         ],
         "/docs/development/": devSidebar,
+        "/docs/builtin_plugins/": [
+          {
+            text: "内置插件",
+            items: [
+              { text: "概览", link: "/docs/builtin_plugins/" },
+            ],
+          },
+          {
+            text: "Plugin UI",
+            collapsed: false,
+            items: [
+              { text: "概览", link: "/docs/builtin_plugins/plugin-ui/" },
+              { text: "快速入门", link: "/docs/builtin_plugins/plugin-ui/quick-start" },
+              { text: "代码指南", link: "/docs/builtin_plugins/plugin-ui/code-guide" },
+              { text: "组件参考", link: "/docs/builtin_plugins/plugin-ui/components" },
+            ],
+          },
+        ],
       },
 
       editLink: {

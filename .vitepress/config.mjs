@@ -409,9 +409,7 @@ export default withMermaid(
         { text: "开发", link: "/docs/development/" },
         {
           text: "内置插件",
-          items: [
-            { text: "Plugin UI", link: "/docs/builtin_plugins/plugin-ui/" },
-          ],
+          link: "/docs/builtin_plugins/",
         },
         {
           text: "相关链接",

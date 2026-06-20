@@ -546,6 +546,8 @@ export default withMermaid(
               },
               { text: "指令权限系统", link: "/docs/guides/permission_usage" },
               { text: "WebUI 使用指南", link: "/docs/guides/webui_guide" },
+              { text: "MCP 使用教程", link: "/docs/guides/mcp_guide" },
+              { text: "Skill 使用教程", link: "/docs/guides/skill_guide" },
             ],
           },
           {

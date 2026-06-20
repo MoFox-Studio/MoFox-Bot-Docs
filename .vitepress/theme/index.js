@@ -24,10 +24,6 @@ import { NolebaseInlineLinkPreviewPlugin } from "@nolebase/vitepress-plugin-inli
 import "@nolebase/vitepress-plugin-inline-link-preview/client/style.css";
 import NotFound from "./NotFound.vue";
 import BackgroundLogo from "./components/BackgroundLogo.vue";
-import KeyboardShortcuts from "./components/KeyboardShortcuts.vue";
-import ChatWidget from "./components/ChatWidget.vue";
-import NavAskAI from "./components/NavAskAI.vue";
-import BottomInput from "./components/BottomInput.vue";
 import CodeCopyEnhancer from "./CodeCopyEnhancer.vue";
 import "./style/link.scss";
 
@@ -50,7 +46,6 @@ export default {
       "doc-before": () => h(ReadingTime),
       "doc-after": () => h(Giscus),
       "nav-bar-content-after": () => [
-        h(NavAskAI),
         h(NolebaseEnhancedReadabilitiesMenu),
       ],
       "nav-screen-content-after": () =>
@@ -59,10 +54,7 @@ export default {
         h(BackToTop),
         h(BackgroundLogo),
         h(ReadingProgress),
-        h(KeyboardShortcuts),
         h(CodeCopyEnhancer),
-        h(ChatWidget),
-        h(BottomInput),
       ],
     });
   },

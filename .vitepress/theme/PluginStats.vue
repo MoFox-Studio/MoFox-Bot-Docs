@@ -8,8 +8,8 @@
         <span>插件市场</span>
       </div>
       <div class="repo-url-container">
-        <a :href="pluginRepoUrl" target="_blank" rel="noopener noreferrer" class="repo-url-link">
-          {{ pluginRepoUrl }}
+        <a :href="pluginMarketUrl" target="_blank" rel="noopener noreferrer" class="repo-url-link">
+          {{ pluginMarketUrl }}
         </a>
         <button @click.stop.prevent="copyUrl" class="copy-button">
           <span class="icon">
@@ -27,10 +27,24 @@
         </div>
         <div class="stat-item">
           <span class="icon">
-            <iconify-icon icon="mdi:new-box"></iconify-icon>
+            <iconify-icon icon="mdi:download"></iconify-icon>
           </span>
           <span v-if="loading">正在加载...</span>
-          <span v-else>今日新增: <strong>{{ newToday }}</strong></span>
+          <span v-else>总下载量: <strong>{{ totalDownloads }}</strong></span>
+        </div>
+        <div class="stat-item">
+          <span class="icon">
+            <iconify-icon icon="mdi:account-group"></iconify-icon>
+          </span>
+          <span v-if="loading">正在加载...</span>
+          <span v-else>开发者: <strong>{{ totalAuthors }}</strong></span>
+        </div>
+        <div class="stat-item">
+          <span class="icon">
+            <iconify-icon icon="mdi:heart"></iconify-icon>
+          </span>
+          <span v-if="loading">正在加载...</span>
+          <span v-else>总点赞: <strong>{{ totalLikes }}</strong></span>
         </div>
       </div>
     </div>
@@ -40,71 +54,59 @@
 <script setup>
 import { ref, onMounted, defineCustomElement } from 'vue';
 
-// 镜像站列表，哼，我就不信你们还能全都挂掉！
-const mirrorUrls = [
-  'https://cdn.jsdelivr.net/gh/MoFox-Studio/MoFox-Plugin-Repo@main/plugin_details.json',
-  'https://ghproxy.com/https://raw.githubusercontent.com/MoFox-Studio/MoFox-Plugin-Repo/refs/heads/main/plugin_details.json',
-  'https://mirror.ghproxy.com/https://raw.githubusercontent.com/MoFox-Studio/MoFox-Plugin-Repo/refs/heads/main/plugin_details.json',
-  'https://raw.githubusercontent.com/MoFox-Studio/MoFox-Plugin-Repo/refs/heads/main/plugin_details.json',
-];
-const pluginRepoUrl = 'https://plugin.mofox-sama.com/';
+/** 新插件市场地址 */
+const pluginMarketUrl = 'https://39.96.71.162/';
+
+/** 新插件市场 API 基地址 */
+const marketApiBase = 'https://39.96.71.162/api/v1';
 
 const totalPlugins = ref(0);
-const newToday = ref(0);
+const totalDownloads = ref(0);
+const totalAuthors = ref(0);
+const totalLikes = ref(0);
 const copyIcon = ref('mdi:content-copy');
 const loading = ref(true);
 
+/** 复制市场地址到剪贴板 */
 const copyUrl = async () => {
   try {
-    await navigator.clipboard.writeText(pluginRepoUrl);
+    await navigator.clipboard.writeText(pluginMarketUrl);
     copyIcon.value = 'mdi:check';
     setTimeout(() => {
       copyIcon.value = 'mdi:content-copy';
     }, 2000);
   } catch (err) {
-    console.error('主人，复制失败了，呜呜呜...', err);
+    console.error('复制失败:', err);
     copyIcon.value = 'mdi:alert-circle-outline';
-     setTimeout(() => {
+    setTimeout(() => {
       copyIcon.value = 'mdi:content-copy';
     }, 2000);
   }
 };
 
-// 轮流尝试所有镜像站
-const fetchFromMirrors = async () => {
-  for (const url of mirrorUrls) {
-    try {
-      const response = await fetch(url);
-      if (response.ok) {
-        return response.json();
-      }
-      console.warn(`主人，镜像站 ${url} 好像也挂了...`);
-    } catch (error) {
-      console.error(`主人，访问镜像站 ${url} 时出错了:`, error);
-    }
+/** 从新插件市场 API 获取统计数据 */
+const fetchMarketStats = async () => {
+  const response = await fetch(`${marketApiBase}/market/stats`);
+  if (!response.ok) {
+    throw new Error(`API 请求失败: ${response.status}`);
   }
-  throw new Error('主人，所有的镜像站都阵亡了，我也没办法了...');
+  return response.json();
 };
-
 
 onMounted(async () => {
   loading.value = true;
   try {
-    const plugins = await fetchFromMirrors();
-    totalPlugins.value = plugins.length;
-
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    newToday.value = plugins.filter(plugin => {
-      const createdAt = new Date(plugin.createdAt);
-      return createdAt >= today;
-    }).length;
-
+    const stats = await fetchMarketStats();
+    totalPlugins.value = stats.plugins_total ?? 0;
+    totalDownloads.value = stats.downloads_total ?? 0;
+    totalAuthors.value = stats.authors_total ?? 0;
+    totalLikes.value = stats.likes_total ?? 0;
   } catch (error) {
-    console.error(error.message);
-    totalPlugins.value = '获取插件信息失败';
-    newToday.value = '获取插件信息失败';
+    console.error('获取插件市场统计信息失败:', error.message);
+    totalPlugins.value = '—';
+    totalDownloads.value = '—';
+    totalAuthors.value = '—';
+    totalLikes.value = '—';
   } finally {
     loading.value = false;
   }

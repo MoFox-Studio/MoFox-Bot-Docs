@@ -9,35 +9,6 @@ import taskLists from "markdown-it-task-lists";
 import { writeFileSync, mkdirSync } from "node:fs";
 import { resolve } from "node:path";
 
-// ── 从 sidebar 配置中递归提取所有页面链接 ────────────────────────
-function extractLinksFromSidebar(sidebar) {
-  const links = [];
-
-  function walk(items) {
-    if (!items) return;
-    if (Array.isArray(items)) {
-      for (const item of items) walk(item);
-      return;
-    }
-    if (typeof items === "object") {
-      if (items.link) {
-        links.push({ title: items.text || items.link, path: items.link });
-      }
-      if (items.items) walk(items.items);
-    }
-  }
-
-  if (Array.isArray(sidebar)) {
-    walk(sidebar);
-  } else if (typeof sidebar === "object") {
-    for (const key of Object.keys(sidebar)) {
-      walk(sidebar[key]);
-    }
-  }
-
-  return links;
-}
-
 const devSidebar = [
   {
     text: "开发",

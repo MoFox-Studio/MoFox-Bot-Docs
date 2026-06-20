@@ -1,4 +1,4 @@
-# <iconify-icon icon="mdi:docker" height="36"></iconify-icon> Neo-MoFox Docker 部署指南
+﻿# <iconify-icon icon="mdi:docker" height="36"></iconify-icon> Neo-MoFox Docker 部署指南
 
 ## 概述
 
@@ -13,7 +13,7 @@
 
 本教程将覆盖从环境准备到成功运行的每一个步骤，旨在为所有用户提供一条最清晰、最高效的部署路径。
 
-## 第一章：准备工作——地基搭建
+## 第一章：准备工作
 
 在正式开始部署之前，我们需要先确保系统环境满足要求。
 
@@ -84,14 +84,14 @@ cd Neo-MoFox
 
 > **💡 提示**: 在 Windows 环境下，你可以直接使用文件资源管理器进行复制和重命名操作。
 
-## 第三章：核心配置——注入灵魂
+## 第三章：核心配置
 
 在启动之前，我们需要对机器人进行一些基础配置。
 
 ###2.  配置监听地址
 
 
-    *   **重要**: Docker 部署时，需要让服务监听所有网络接口。找到"Neo-MoFox\config\plugins\napcat_adapter\config.toml" `host = "localhost"`，将其修改为：
+    *   **重要**: Docker 部署时，需要让服务监听所有网络接口。找到"Neo-MoFox\config\plugins\onebot_adapter\config.toml" `host = "localhost"`，将其修改为：
         ```
         # Napcat WebSocket 服务地址
         # 值类型：str, 默认值："localhost"
@@ -103,7 +103,7 @@ cd Neo-MoFox
 *   **重要**: 部署完成后，请确保你的服务器防火墙或安全组已放行 **6099** 端口。
 *   **6099**: 用于访问 Napcat 的 WebUI 进行 QQ 登录。
 
-## 第四章：启动！——见证奇迹的时刻
+## 第四章：启动
 
 现在项目已准备就绪，我们可以正式启动并进入图形化配置阶段。
 

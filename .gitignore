@@ -30,3 +30,4 @@
 .vitepress/cache/deps/vitepress___minisearch.js.map
 /cache/
 /dist/
+.agents/

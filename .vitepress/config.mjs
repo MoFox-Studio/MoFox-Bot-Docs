@@ -550,10 +550,6 @@ export default withMermaid(
               },
               { text: "指令权限系统", link: "/docs/guides/permission_usage" },
               { text: "WebUI 使用指南", link: "/docs/guides/webui_guide" },
-              {
-                text: "记忆系统介绍",
-                link: "/docs/guides/memory_system_guide",
-              },
             ],
           },
           {
@@ -562,12 +558,8 @@ export default withMermaid(
             items: [
               { text: "适配器介绍", link: "/docs/guides/adapter_list" },
               {
-                text: "OneBot/Napcat 适配器(内置版)",
+                text: "OneBot 适配器配置",
                 link: "/docs/guides/adapter_list/onebot_v11_config",
-              },
-              {
-                text: "OneBot/Napcat 适配器(独立版)",
-                link: "/docs/guides/adapter_list/napcat_adapter",
               },
             ],
           },

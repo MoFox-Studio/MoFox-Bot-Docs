@@ -1,117 +1,94 @@
-# 数据库 API
+# Database API
 
-`src/app/plugin_system/api/database_api` 提供 `CRUDBase / QueryBuilder / AggregateQuery` 的扁平化封装。
+`src.app.plugin_system.api.database_api` 提供扁平化的数据库操作接口，封装了 CRUD、查询构建器、聚合查询、分页和批量迭代。
 
 ## 导入
 
 ```python
 from src.app.plugin_system.api.database_api import (
     # CRUD
-    get_by_id,
-    get_by,
-    get_multi,
-    create,
-    update,
-    delete,
-    count,
-    exists,
-    get_or_create,
-    bulk_create,
-    bulk_update,
-    # QueryBuilder
-    query,
-    filter_query,
-    filter_query_first,
-    filter_query_count,
-    # Aggregate
-    aggregate,
-    sum_field,
-    avg_field,
-    max_field,
-    min_field,
-    group_by_count,
-    # Iterator / Pagination
-    iter_batches,
-    iter_all,
+    get_by_id, get_by, get_multi, create, update, delete,
+    count, exists, get_or_create, bulk_create, bulk_update,
+    # 查询构建器
+    query, filter_query, filter_query_first, filter_query_count,
+    # 聚合
+    aggregate, sum_field, avg_field, max_field, min_field, group_by_count,
+    # 迭代器
+    iter_batches, iter_all,
+    # 分页
     paginate,
 )
 ```
 
-## CRUD
+## CRUD 操作
+
+| 函数 | 说明 |
+|------|------|
+| `get_by_id(model, id) -> T \| None` | 按 ID 获取 |
+| `get_by(model, **filters) -> T \| None` | 按条件获取单条 |
+| `get_multi(model, skip=0, limit=100, **filters) -> list[T]` | 获取多条 |
+| `create(model, obj_in) -> T` | 创建记录 |
+| `update(model, id, obj_in) -> T \| None` | 更新记录 |
+| `delete(model, id) -> bool` | 删除记录 |
+| `count(model, **filters) -> int` | 统计数量 |
+| `exists(model, **filters) -> bool` | 检查存在 |
+| `get_or_create(model, defaults=None, **filters) -> tuple[T, bool]` | 获取或创建 |
+| `bulk_create(model, objs_in) -> list[T]` | 批量创建 |
+| `bulk_update(model, updates) -> int` | 批量更新 |
 
 ```python
-item = await get_by_id(MyModel, 1)
-item = await get_by(MyModel, key="k1")
-items = await get_multi(MyModel, skip=0, limit=20, status="active")
-
-created = await create(MyModel, {"name": "A"})
-updated = await update(MyModel, created.id, {"name": "B"})
-ok = await delete(MyModel, created.id)
-
-total = await count(MyModel, status="active")
-has_any = await exists(MyModel, key="k1")
-
-obj, is_created = await get_or_create(
-    MyModel,
-    defaults={"status": "new"},
-    key="k1",
-)
-
-batch = await bulk_create(MyModel, [{"name": "A"}, {"name": "B"}])
-changed = await bulk_update(
-    MyModel,
-    [(1, {"name": "A1"}), (2, {"name": "B1"})],
-)
+user = await get_by_id(UserModel, 1)
+users = await get_multi(UserModel, skip=0, limit=50, status="active")
+count = await count(UserModel, status="active")
 ```
 
-## QueryBuilder 扁平入口
+## 查询构建器
+
+| 函数 | 说明 |
+|------|------|
+| `query(model) -> QueryBuilder[T]` | 创建查询构建器（支持链式调用） |
+| `filter_query(model, **conditions) -> list[T]` | 快速过滤查询 |
+| `filter_query_first(model, **conditions) -> T \| None` | 快速过滤取第一条 |
+| `filter_query_count(model, **conditions) -> int` | 快速过滤统计 |
 
 ```python
-rows = await query(MyModel).filter(status="active").order_by("-id").limit(50).all()
-rows = await filter_query(MyModel, status="active", score__gt=10)
-first = await filter_query_first(MyModel, key="k1")
-amount = await filter_query_count(MyModel, status="active")
+# 链式查询
+results = await query(UserModel).filter(age__gt=18).order_by("name").all()
+
+# 快速过滤
+users = await filter_query(UserModel, status="active", role__in=["admin", "mod"])
 ```
 
 ## 聚合查询
 
+| 函数 | 说明 |
+|------|------|
+| `aggregate(model) -> AggregateQuery` | 创建聚合查询 |
+| `sum_field(model, field, **filters) -> float` | 求和 |
+| `avg_field(model, field, **filters) -> float` | 求平均 |
+| `max_field(model, field, **filters) -> Any` | 最大值 |
+| `min_field(model, field, **filters) -> Any` | 最小值 |
+| `group_by_count(model, *fields, **filters) -> list[tuple]` | 分组统计 |
+
+## 迭代器（内存优化）
+
+| 函数 | 说明 |
+|------|------|
+| `iter_batches(model, batch_size=1000, **conditions) -> AsyncIterator[list[T]]` | 分批迭代 |
+| `iter_all(model, batch_size=1000, **conditions) -> AsyncIterator[T]` | 逐条迭代 |
+
 ```python
-agg = aggregate(MyModel)
-
-total_amount = await sum_field(MyModel, "amount", status="paid")
-avg_score = await avg_field(MyModel, "score", status="active")
-max_score = await max_field(MyModel, "score")
-min_score = await min_field(MyModel, "score")
-
-# 返回形如 [(group_key1, group_key2, ..., count), ...]
-groups = await group_by_count(MyModel, "platform", "status")
+async for batch in iter_batches(LogModel, batch_size=500, level="ERROR"):
+    for log in batch:
+        process(log)
 ```
 
-## 迭代与分页
+## 分页
+
+`paginate(model, page=1, page_size=20, **conditions) -> tuple[list[T], int]`
+
+返回 `(结果列表, 总数量)`。
 
 ```python
-# 分批遍历（每批 list[T]）
-async for batch in iter_batches(MyModel, batch_size=500, status="active"):
-    for row in batch:
-        ...
-
-# 逐条遍历（T）
-async for row in iter_all(MyModel, batch_size=500, status="active"):
-    ...
-
-# 分页
-rows, total = await paginate(MyModel, page=1, page_size=20, status="active")
+items, total = await paginate(UserModel, page=1, page_size=20)
 ```
-
-## 过滤操作符
-
-常用条件写法：
-
-- `field=value`
-- `field__gt=...`
-- `field__gte=...`
-- `field__lt=...`
-- `field__lte=...`
-- `field__in=[...]`
-- `field__contains="..."`
-- `field__startswith="..."`

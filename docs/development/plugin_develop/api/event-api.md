@@ -1,6 +1,6 @@
-# 事件 API
+# Event API
 
-`src/app/plugin_system/api/event_api` 提供事件发布和处理器注册能力。
+`src.app.plugin_system.api.event_api` 提供事件的发布、处理器注册和临时监听器管理。
 
 ## 导入
 
@@ -10,61 +10,51 @@ from src.app.plugin_system.api.event_api import (
     register_handler,
     unregister_handler,
     build_subscription_map,
+    create_temporary_handler,
+    unregister_temporary_handler,
     get_event_stats,
 )
 ```
 
-## 函数说明
+## 函数
 
-### `publish_event(event, kwargs=None) -> dict[str, Any]`
+### 事件发布
 
-发布系统事件或自定义事件。
+`publish_event(event: EventType | str, kwargs: dict | None = None) -> dict[str, Any]`
 
-```python
-from src.core.components.types import EventType
-
-result = await publish_event(
-    EventType.ON_MESSAGE_RECEIVED,
-    {"stream_id": "qq_group_123", "content": "hello"},
-)
-
-custom = await publish_event(
-    "my_plugin:user_action",
-    {"user_id": "u1", "action": "buy"},
-)
-```
-
-### `register_handler(signature, handler) -> None`
-
-手动注册处理器实例。
-
-### `unregister_handler(signature) -> None`
-
-注销处理器。
-
-### `build_subscription_map() -> None`
-
-根据当前已注册处理器重建订阅映射。
-
-### `get_event_stats() -> dict[str, int]`
-
-返回统计字段：
-
-- `handler_count`
-- `event_type_count`
-- `total_subscriptions`
+发布事件给订阅者。支持系统事件（`EventType` 枚举）和自定义事件（字符串）。
 
 ```python
-stats = get_event_stats()
-# 例如：{'handler_count': 12, 'event_type_count': 6, 'total_subscriptions': 20}
+from src.core.components import EventType
+
+# 系统事件
+result = await publish_event(EventType.ON_MESSAGE_RECEIVED, {"message": msg})
+
+# 自定义事件
+result = await publish_event("my_plugin:user_action", {"action": "click"})
 ```
 
-## 跨插件事件示例
+### 处理器注册
 
-```python
-# 发布
-await publish_event("shop:item_purchased", {"user_id": "u1", "item": "vip"})
+| 函数 | 说明 |
+|------|------|
+| `register_handler(signature: str, handler: BaseEventHandler) -> None` | 注册事件处理器 |
+| `unregister_handler(signature: str) -> None` | 注销事件处理器 |
+| `build_subscription_map() -> None` | 构建事件订阅映射表 |
 
-# 订阅（在 EventHandler 组件中）
-# init_subscribe = ["shop:item_purchased"]
-```
+### 临时监听器
+
+| 函数 | 说明 |
+|------|------|
+| `create_temporary_handler(event_names, handle_func, priority=0) -> str` | 创建临时监听器，执行后自动清除 |
+| `unregister_temporary_handler(temporary_id: str) -> bool` | 手动注销临时监听器 |
+
+### 统计
+
+`get_event_stats() -> dict[str, int]`
+
+获取事件统计信息（处理器数量、事件类型数、总订阅数）。
+
+## 相关文档
+
+- [EventHandler 组件](../components/event-handler.md)

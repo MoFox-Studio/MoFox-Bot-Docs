@@ -1,10 +1,6 @@
-# Neo-MoFox 开发之旅：从这里启程!
+# Neo-MoFox 开发指南
 
-你好，未来的代码魔术师！
-
-欢迎来到 Neo-MoFox 的核心开发区域。我们非常激动，你愿意投入宝贵的时间和精力，与我们一同构筑这个充满无限可能的世界。无论你是身经百战的资深开发者，还是初出茅庐的编程新星，这里都有你施展才华的舞台。
-
-本篇文档将作为你的向导，带你一步步深入 Neo-MoFox 的内部，理解它的脉络，掌握它的力量，最终创造出属于你自己的“魔法”。
+欢迎来到 Neo-MoFox 的开发文档。无论你是想贡献代码、开发插件，还是了解框架内部机制，这里都有你需要的资料。
 
 ## 快速导航
 
@@ -13,7 +9,7 @@ const devGuides = [
   {
     avatar: '<iconify-icon icon="material-symbols:build"></iconify-icon>',
     name: '环境搭建',
-    title: '配置本地开发环境，让 Neo-MoFox 顺利运行起来。',
+    title: '配置本地开发环境，让 Neo-MoFox 运行起来。',
     link: '../guides/index'
   },
   {
@@ -25,7 +21,7 @@ const devGuides = [
   {
     avatar: '<iconify-icon icon="material-symbols:extension"></iconify-icon>',
     name: '插件开发',
-    title: '学习如何从零开始，创造属于你自己的强大插件。',
+    title: '从零开始，创造属于你自己的插件。',
     link: './plugin_develop'
   }
 ]
@@ -33,10 +29,6 @@ const devGuides = [
 
 <GuideCards :guides="devGuides" />
 
-## 加入我们：成为社群的一员
+## 加入社区
 
-一个人的力量是有限的，但一群人的智慧是无穷的。
-
-我们热切地期盼你的加入，你的每一个想法、每一次尝试，都可能为 Neo-MoFox 带来新的活力。遇到问题时，不要犹豫，社群就是你最坚实的后盾。
-
-再次感谢你的到来，期待看到你在这个世界里创造出的独一无二的奇迹！
+遇到问题可以在 QQ 群（169850076）或 GitHub Issues 中讨论。欢迎贡献代码、文档或插件。

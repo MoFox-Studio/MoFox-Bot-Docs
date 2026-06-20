@@ -3,13 +3,13 @@ import {
   toArray,
   tryOnScopeDispose,
   unrefElement
-} from "./chunk-6WSJOYDR.js";
+} from "./chunk-XNT3I2JX.js";
 import {
   computed,
   shallowRef,
   toValue,
   watch
-} from "./chunk-ZZEIC257.js";
+} from "./chunk-OFIGD5RU.js";
 import "./chunk-HKJ2B2AA.js";
 
 // node_modules/tabbable/dist/index.esm.js
@@ -1137,18 +1137,4 @@ function useFocusTrap(target, options = {}) {
 export {
   useFocusTrap
 };
-/*! Bundled license information:
-
-tabbable/dist/index.esm.js:
-  (*!
-  * tabbable 6.2.0
-  * @license MIT, https://github.com/focus-trap/tabbable/blob/master/LICENSE
-  *)
-
-focus-trap/dist/focus-trap.esm.js:
-  (*!
-  * focus-trap 7.6.5
-  * @license MIT, https://github.com/focus-trap/focus-trap/blob/master/LICENSE
-  *)
-*/
 //# sourceMappingURL=vitepress___@vueuse_integrations_useFocusTrap.js.map

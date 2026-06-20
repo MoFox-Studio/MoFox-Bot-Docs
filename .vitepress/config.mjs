@@ -1,11 +1,11 @@
 import { defineConfig } from "vitepress";
-import { withMermaid } from "vitepress-plugin-mermaid";
 import {
   GitChangelog,
   GitChangelogMarkdownSection,
 } from "@nolebase/vitepress-plugin-git-changelog/vite";
 import { InlineLinkPreviewElementTransform } from "@nolebase/vitepress-plugin-inline-link-preview/markdown-it";
 import taskLists from "markdown-it-task-lists";
+import mermaidPlugin from "./plugins/markdown-it-mermaid.js";
 import { writeFileSync, mkdirSync } from "node:fs";
 import { resolve } from "node:path";
 
@@ -332,8 +332,7 @@ const devSidebar = [
   },
 ];
 // https://vitepress.dev/reference/site-config
-export default withMermaid(
-  defineConfig({
+export default defineConfig({
     // ── 构建结束后自动生成 catalog.json ──────────────────────────
     async buildEnd(siteConfig) {
       const sidebar = siteConfig.site.themeConfig.sidebar || {};
@@ -360,7 +359,7 @@ export default withMermaid(
     },
     markdown: {
       config(md) {
-        // other markdown-it configurations...
+        md.use(mermaidPlugin);
         md.use(InlineLinkPreviewElementTransform);
         md.use(taskLists, { enabled: false });
       },
@@ -592,5 +591,5 @@ export default withMermaid(
       },
       backToTop: true,
     },
-  }),
+  },
 );

@@ -10,6 +10,7 @@ import ReadingProgress from "./components/ui/ReadingProgress.vue";
 import CodeCopyEnhancer from "./components/ui/CodeCopyEnhancer.vue";
 
 // 内容/功能组件
+import MermaidRenderer from "./components/content/MermaidRenderer.vue";
 import Giscus from "./components/content/Giscus.vue";
 import GuideCards from "./components/content/GuideCards.vue";
 import BibleDisplay from "./components/content/BibleDisplay.vue";
@@ -40,7 +41,7 @@ export default {
     return h(DefaultTheme.Layout, null, {
       "not-found": () => h(NotFound),
       "doc-before": () => h(ReadingTime),
-      "doc-after": () => h(Giscus),
+      "doc-after": () => [h(MermaidRenderer), h(Giscus)],
       "nav-bar-content-after": () => [
         h(NolebaseEnhancedReadabilitiesMenu),
       ],

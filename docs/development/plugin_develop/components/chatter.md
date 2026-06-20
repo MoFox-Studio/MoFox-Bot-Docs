@@ -1,4 +1,4 @@
-# Chatter — 聊天器组件
+﻿# Chatter — 聊天器组件
 
 `BaseChatter` 是对话流程组件，使用异步生成器通过 `yield` 返回状态。
 
@@ -57,7 +57,7 @@
 
 ### `await self.get_llm_usables()`
 
-获取当前流可用的 `Action/Tool/Collection` 组件类列表。
+获取当前流可用的 `Action/Tool/Agent` 组件类列表。
 
 ### `await self.modify_llm_usables(llm_usables)`
 

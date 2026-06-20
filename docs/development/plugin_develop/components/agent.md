@@ -28,7 +28,7 @@
 | `chatter_allow` | `list[str]` | `[]` | 允许调用的 Chatter 名称列表,空列表表示全部允许 |
 | `chat_type` | `ChatType` | `ChatType.ALL` | 支持的聊天类型 |
 | `associated_platforms` | `list[str]` | `[]` | 关联平台,空列表表示所有平台 |
-| `associated_types` | `list[str]` | `[]` | 需要的内容类型列表 |
+| `associated_types` | `list[str]` | `[]` | **必填** — 需要的内容类型列表 |
 | `dependencies` | `list[str]` | `[]` | 组件级依赖的组件签名列表 |
 | `usables` | `list[type[LLMUsable] \| str]` | `[]` | Agent 专属可调用组件类列表 |
 

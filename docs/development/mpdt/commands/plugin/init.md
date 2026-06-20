@@ -1,4 +1,4 @@
-# mpdt plugin init
+﻿# mpdt plugin init
 
 初始化新插件项目，创建标准的插件目录结构和配置文件。
 
@@ -27,7 +27,6 @@ mpdt plugin init [plugin_name] [options]
 - `basic` - 基础插件（仅包含根组件）*默认*
 - `action` - Action 插件（包含示例 Action）
 - `tool` - Tool 插件（包含示例 Tool）
-- `collection` - Collection 插件
 - `router` - Router 插件
 - `plus_command` - Plus Command 插件
 - `event_handler` - Event Handler 插件
@@ -173,7 +172,6 @@ my_plugin/
 │   ├── tools/          # Tool 组件
 │   │   ├── __init__.py
 │   │   └── example_tool.py
-│   ├── collections/    # Collection 组件
 │   ├── routers/        # Router 组件
 │   ├── adapters/       # Adapter 组件
 │   ├── chatters/       # Chatter 组件

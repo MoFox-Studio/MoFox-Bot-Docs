@@ -188,10 +188,6 @@ const devSidebar = [
             link: "/docs/development/plugin_develop/components/chatter",
           },
           {
-            text: "Collection — 集合组件",
-            link: "/docs/development/plugin_develop/components/collection",
-          },
-          {
             text: "Command — 命令组件",
             link: "/docs/development/plugin_develop/components/command",
           },

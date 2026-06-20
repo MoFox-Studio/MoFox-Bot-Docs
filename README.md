@@ -1,27 +1,25 @@
 # Neo-MoFox Docs
 
-重构的增强版智能体，提供更完善的功能和更好的使用体验。
+Neo-MoFox 的官方文档站。包含部署指南、配置说明、插件开发文档等。
 
-本文档旨在帮助您了解 Neo-MoFox 的功能、部署和开发。
+## Neo-MoFox 特性
 
-## ✨ 功能
+- **插件驱动**: 一切功能皆插件，按需组合 Action、Tool、Chatter、Adapter 等组件，无需修改核心代码。
+- **LLM 原生**: 内置多厂商 LLM 支持，Action 与 Tool 自动生成 Schema，Chatter 流式对话无缝接入 AI 能力。
+- **多平台适配**: 基于 mofox-wire 标准通信协议，通过 Adapter 组件适配 QQ、Telegram、Discord 等任意平台。
+- **严格三层架构**: kernel（技术基础）→ core（领域逻辑）→ app（装配运行），清晰的分层边界确保代码可维护性。
+- **类型安全配置**: 基于 Pydantic + TOML 的配置系统，自动验证、自动补全、自动生成默认配置文件。
+- **异步并发**: 全面异步架构，TaskManager 统一管理并发任务，WatchDog 监控任务健康。
 
-- **核心功能保留与增强 🔧**: 保留原版所有核心功能，如智能对话、持久记忆和情感表达，并进行了全面优化和增强。
-- **强大的插件系统 🔌**: 全面重构的插件架构，支持完整的管理 API 和权限控制，让拓展功能变得前所未有的简单。
-- **数据库自由切换 🔄**: 支持 SQLite、MySQL 以及多种向量数据库，为长期记忆和知识库提供了强大的存储支持。
-- **内置安全防护 🛡️**: 集成了一整套回复前注入过滤系统，有效防止提示词注入攻击，为人格保驾护航。
-- **多模态能力 🎥**: 不仅仅是文本！支持多种视频识别模式，拓展了原版的视觉能力，让交互更丰富。
-- **独特的个性化系统 😴**: 引入了苏醒、睡眠、失眠等状态，内置强大的日程系统，让智能体更具“人性”，充满乐趣。
+## 文档
 
-## 📚 文档
+有关完整文档，请访问 [Neo-MoFox Docs](https://docs.mofox-sama.com/)。
 
-有关完整文档，请访问 [Neo-MoFox Docs](https://mofox-studio.github.io/MoFox-Bot-Docs/)。
+## 快速开始
 
-## 🚀 快速开始
+通过 [部署指南](https://docs.mofox-sama.com/docs/guides/) 快速开始。
 
-通过 [Windows 部署指南](https://mofox-studio.github.io/MoFox-Bot-Docs/docs/deployment_guide.html) 快速开始。
-
-## 🤝 为此文档做出贡献
+## 为此文档做出贡献
 
 感谢您有兴趣为 Neo-MoFox 文档做出贡献！我们欢迎所有形式的贡献，从修正拼写错误到撰写全新的章节。
 
@@ -60,12 +58,12 @@ npm run docs:build
 
 构建的文件将位于 `docs/.vitepress/dist` 目录中。
 
-## 🔗 相关链接
+## 相关链接
 
 - **Neo-MoFox GitHub**: [https://github.com/MoFox-Studio/Neo-MoFox](https://github.com/MoFox-Studio/Neo-MoFox)
 - **MoFox_Docs GitHub**: [https://github.com/MoFox-Studio/MoFox-Bot-Docs](https://github.com/MoFox-Studio/MoFox-Bot-Docs)
-- **MoFox-Bot QQ 交流群**: [169850076](https://qm.qq.com/q/jfeu7Dq7VS)
+- **MoFox-Bot QQ 交流群**: 169850076
 
-## 📄 许可证
+## 许可证
 
-本仓库根据 [GPL-3.0 许可证](LICENSE) 的条款获得许可。
+本仓库根据 [AGPL-3.0 许可证](LICENSE) 的条款获得许可。

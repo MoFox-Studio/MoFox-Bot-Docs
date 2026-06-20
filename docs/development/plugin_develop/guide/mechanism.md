@@ -1,4 +1,4 @@
-# 插件机制原理
+﻿# 插件机制原理
 
 在开始开发 Neo-MoFox 插件之前，了解插件系统的运作机制有助于做出更合理的设计决策。
 
@@ -37,7 +37,7 @@ plugin_name:component_type:component_name
 ```
 
 例如：
-- `napcat_adapter:adapter:napcat_adapter`
+- `onebot_adapter:adapter:onebot_adapter`
 - `my_plugin:action:send_emoji`
 - `my_plugin:tool:calculator`
 - `my_plugin:command:help`

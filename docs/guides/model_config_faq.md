@@ -1,4 +1,4 @@
-# [依旧老旧过时的文档]🔧 模型配置问题排查指南
+﻿# 模型配置问题排查指南
 
 > 遇到问题？对照日志找答案！本指南收集了真实的错误日志示例，帮你快速定位问题.
 
@@ -24,7 +24,7 @@
 ### 日志示例：`401 Unauthorized`
 
 ```log
-任务-'replyer' 模型-'deepseek-v3': 客户端错误 401 - API-Key错误，认证失败，请检查/config/model_config.toml中的配置是否正确，不再重试。
+任务-'replyer' 模型-'deepseek-v3': 客户端错误 401 - API-Key错误，认证失败，请检查/config/model.toml中的配置是否正确，不再重试。
 ```
 
 ### ❓ 这是什么意思？
@@ -35,7 +35,7 @@
 
 **第一步：检查配置文件中的 API Key**
 
-打开 `config/model_config.toml`，找到你使用的供应商配置：
+打开 `config/model.toml`，找到你使用的供应商配置：
 
 ```toml
 [[api_providers]]
@@ -127,7 +127,7 @@ api_key = "sk-xxxxxxxxxxxxxxxxxx"  # ← 检查这里！
    - 在供应商后台查看你有权访问的模型列表
 
 3. **更换可用模型**
-   - 在 `model_config.toml` 中改用你有权限的模型
+   - 在 `model.toml` 中改用你有权限的模型
 
 
 ## ⚡ 请求限流问题

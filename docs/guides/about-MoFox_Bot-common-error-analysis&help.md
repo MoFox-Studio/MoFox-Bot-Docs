@@ -1,4 +1,4 @@
-# 关于 MoFox-bot 的常见错误报告
+﻿# 关于 MoFox-bot 的常见错误报告
 
 ## 1. 使用 Windows 平台 QQ 的用户被下线问题的相关解析
 
@@ -46,13 +46,13 @@
 1. API key 的填写
 2. 你可能没有填写对应的 API key
 
-> 默认硅基流动的 API 在 `"Neo-MoFox\Bot\config\model_config.toml"` 文件修改
+> 默认硅基流动的 API 在 `"Neo-MoFox\Bot\config\model.toml"` 文件修改
 
 * ## 403 问题
 
 1. 没有删除 pro/deepseekai/deepseekV3 的 “pro/” 前缀  
    > 因为这是真钱模型，位置同上
-2. 在 `"Neo-MoFox\Bot\config\model_config.toml"` 文件修改
+2. 在 `"Neo-MoFox\Bot\config\model.toml"` 文件修改
 
 ---
 
@@ -65,15 +65,8 @@
 * ## 个人中转 API 平台的连接问题
 
 2. **连接错误是你与你的 API key 平台的连接错误，请检查**  
-   `"Neo-MoFox\Bot\config\model_config.toml"`  
+   `"Neo-MoFox\Bot\config\model.toml"`  
    **里的 URL 是否填写正确/是否保存文件/是否挂上了梯子/是否开启对应平台本地服务**
-
-* ## 文件下载/更新一键包时文件下载失败/下载依赖时文件下载失败
-
-1. 下载失败请开启梯子  
-   - [一元机场](https://xn--4gq62f.com/#/register?code=gpwiVnOu) 费用是 12 元一年 100G 每月/7 元一个月 2048G 网速很捉襟见肘  
-   - [一云梯](https://inv02.1ytaff.com/register?aff=UZ0ZzCHc) 15 元每月 100G 网速尚可
-2. 是否正确使用镜像源
 
 ---
 
@@ -155,7 +148,7 @@
 1. 可在其所在的根文件夹下寻找 "template"，里面会有你要的模板文件，请复制到原文件的文件夹里，记得在编写完成模板文件后更改其文件名  
    （如我要寻找位于
    ```
-    "Neo-MoFox\Bot\config\model_config.toml"
+    "Neo-MoFox\Bot\config\model.toml"
    ```
    的文件的模板的话我可以去
    ```
@@ -169,7 +162,7 @@
 
 1. 一键包控制台是 0.9 版本的，在上面填 key 的信息已经没用了，现在在
    ```
-    Neo-MoFox\Bot\config\model_config.toml
+    Neo-MoFox\Bot\config\model.toml
    ```
    里修改和填写 key
 2. 若你的Ada启动后出现了非常多的  

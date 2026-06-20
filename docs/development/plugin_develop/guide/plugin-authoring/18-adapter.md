@@ -1,4 +1,4 @@
-# 18. Adapter：插件怎样真正接上外部平台
+﻿# 18. Adapter：插件怎样真正接上外部平台
 
 > **导读** 本章介绍 Adapter——插件与外部聊天平台之间的桥接层。Adapter 的核心职责是双向翻译：把平台原始消息转成统一的 `MessageEnvelope`，把核心的出站消息翻译回平台协议。本章将解释 Adapter 与 mofox-wire 的层次关系、`from_platform_message()` 的工作原理、生命周期钩子的实用意义，以及第一次写 Adapter 应该怎样控制复杂度。最后提供 `BaseAdapter` 基类速查。
 
@@ -439,7 +439,7 @@ class DemoBridgeAdapter(BaseAdapter):
 
 ## 18.11 为什么真实平台 Adapter 会明显更复杂
 
-如果你去看现有的 `napcat_adapter`，会发现它和刚才那个最小例子完全不是一个体量。
+如果你去看现有的 `onebot_adapter`，会发现它和刚才那个最小例子完全不是一个体量。
 
 这很正常。
 

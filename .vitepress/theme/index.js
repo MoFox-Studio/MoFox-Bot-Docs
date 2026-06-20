@@ -1,16 +1,27 @@
 import DefaultTheme from "vitepress/theme";
-import "./custom.css";
+import "./style/custom.css";
 import "./style/sidebar.css";
-import Giscus from "./Giscus.vue";
-import GuideCards from "./GuideCards.vue";
-import BibleDisplay from "./BibleDisplay.vue";
-import MoFoxTeamCard from "./MoFoxTeamCard.vue";
-import PluginStats from "./PluginStats.vue";
-import ContributePluginGuide from "./ContributePluginGuide.vue";
+import "./style/link.scss";
+
+// UI 增强组件
+import BackToTop from "./components/ui/BackToTop.vue";
+import BackgroundLogo from "./components/ui/BackgroundLogo.vue";
+import ReadingProgress from "./components/ui/ReadingProgress.vue";
+import CodeCopyEnhancer from "./components/ui/CodeCopyEnhancer.vue";
+
+// 内容/功能组件
+import Giscus from "./components/content/Giscus.vue";
+import GuideCards from "./components/content/GuideCards.vue";
+import BibleDisplay from "./components/content/BibleDisplay.vue";
+import MoFoxTeamCard from "./components/content/MoFoxTeamCard.vue";
+import PluginStats from "./components/content/PluginStats.vue";
+import ContributePluginGuide from "./components/content/ContributePluginGuide.vue";
+import ReadingTime from "./components/content/ReadingTime.vue";
+
+// 页面级组件
+import NotFound from "./components/pages/NotFound.vue";
+
 import { h } from "vue";
-import ReadingTime from "./ReadingTime.vue";
-import BackToTop from "./BackToTop.vue";
-import ReadingProgress from "./ReadingProgress.vue";
 import {
   NolebaseEnhancedReadabilitiesMenu,
   NolebaseEnhancedReadabilitiesScreenMenu,
@@ -22,21 +33,6 @@ import "@nolebase/vitepress-plugin-git-changelog/client/style.css";
 import { NolebaseInlineLinkPreviewPlugin } from "@nolebase/vitepress-plugin-inline-link-preview/client";
 
 import "@nolebase/vitepress-plugin-inline-link-preview/client/style.css";
-import NotFound from "./NotFound.vue";
-import BackgroundLogo from "./components/BackgroundLogo.vue";
-import CodeCopyEnhancer from "./CodeCopyEnhancer.vue";
-import "./style/link.scss";
-
-// 动态加载外部脚本的函数
-function loadScript(src) {
-  return new Promise((resolve, reject) => {
-    const script = document.createElement("script");
-    script.src = src;
-    script.onload = resolve;
-    script.onerror = reject;
-    document.body.appendChild(script);
-  });
-}
 
 export default {
   ...DefaultTheme,

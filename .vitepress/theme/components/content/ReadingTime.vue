@@ -17,7 +17,7 @@
 <script setup>
 import { ref, onMounted, onUnmounted, watch, nextTick } from 'vue';
 import { useData } from 'vitepress';
-import { getReadingTime } from './utils.js';
+import { getReadingTime } from '../../utils/readingTime.js';
 
 const { page } = useData();
 const readingTimeText = ref('');

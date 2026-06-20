@@ -38,7 +38,6 @@ const myGuides = [
     title: '社区贡献的自动化部署脚本和工具...',
     link: './community_way/'
   },
-  },
 ]
 
 const extGuides = [

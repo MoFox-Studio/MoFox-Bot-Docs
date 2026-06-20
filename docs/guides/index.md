@@ -38,6 +38,18 @@ const myGuides = [
     title: '社区贡献的自动化部署脚本和工具...',
     link: './community_way/'
   },
+  {
+    avatar: '<iconify-icon icon="mdi:api"></iconify-icon>',
+    name: 'MCP 使用教程',
+    title: '通过 Model Context Protocol 扩展 AI 能力...',
+    link: './mcp_guide'
+  },
+  {
+    avatar: '<iconify-icon icon="mdi:lightbulb-on"></iconify-icon>',
+    name: 'Skill 使用教程',
+    title: '使用 Skill 模块扩展工具调用...',
+    link: './skill_guide'
+  },
 ]
 
 const members = [

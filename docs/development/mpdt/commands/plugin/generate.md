@@ -1,4 +1,4 @@
-# mpdt plugin generate
+﻿# mpdt plugin generate
 
 快速生成插件组件代码，避免手写样板代码。
 
@@ -17,7 +17,6 @@ mpdt plugin generate [component_type] [component_name] [path] [options]
 **可选值**：
 - `action` - Action 组件（动作组件）
 - `tool` - Tool 组件（工具组件）
-- `collection` - Collection 组件（集合组件）
 - `event` - Event Handler（事件处理器）
 - `adapter` - Adapter 组件（适配器）
 - `plus-command` - Plus Command 组件
@@ -116,7 +115,6 @@ mpdt plugin generate service DatabaseService --root
 |---------|---------|
 | `action` | `components/actions/<name>.py` |
 | `tool` | `components/tools/<name>.py` |
-| `collection` | `components/collections/<name>.py` |
 | `event` | `components/events/<name>.py` |
 | `adapter` | `components/adapters/<name>.py` |
 | `plus-command` | `components/plus_command/<name>.py` |

@@ -97,21 +97,6 @@ async with tm.group(name="batch", timeout=60, cancel_on_error=True) as tg:
     tg.create_task(task_b())
 ```
 
-## Collection 门控
-
-Collection 可作为工具集合入口，按需解包内部组件。
-
-```python
-class PremiumCollection(BaseCollection):
-    collection_name = "premium_tools"
-
-    async def get_contents(self) -> list[str]:
-        return [
-            "my_plugin:action:vip_action",
-            "my_plugin:tool:advanced_search",
-        ]
-```
-
 ## 权限系统
 
 `Command.permission_level` 使用 `PermissionLevel`：

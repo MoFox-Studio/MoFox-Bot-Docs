@@ -1,150 +1,54 @@
-﻿# Napcat OneBot 适配器配置指南
+# OneBot 适配器配置指南
 
 ## 概述
 
-欢迎使用 Neo-MoFox 内置的 Napcat 适配器。
-
-将适配器“内置”于主程序中，是官方最为推荐的最佳实践。它就像是为机器人配备了一个“官方翻译耳机”，无需任何外部转接，直接就能与 Napcat QQ 客户端进行稳定、高效的沟通。
-
-**使用OneBot 适配器的优势**:
-
-*   **部署简化**：仅需下载和运行 Neo-MoFox 主项目。
-*   **操作便捷**：只需管理单个进程。
-*   **配置统一**：所有相关设置均在主项目的配置文件中完成。
-
-本指南将专注于指导你如何配置并启用这个强大的内置连接器。
+OneBot 适配器（`onebot_adapter`）是 Neo-MoFox 连接 QQ 平台的推荐方式，通过 OneBot 协议与 Napcat QQ 客户端通信。
 
 ## 前置条件
 
-在开始本章之前，我们假定你已经**基本完成**了 Neo-MoFox 的主程序部署，至少包括：
+在配置适配器之前，请确保已完成：
 
-1.  成功安装了 Python 环境和项目依赖 (`requirements.txt`)。
-2.  完成了 `.env`, `bot_config.toml`, `model_config.toml` 三个核心文件的基础配置。
-3.  已经安装并成功登录了 **Napcat QQ 客户端**。
+1. Neo-MoFox 主程序部署（Python 环境 + 依赖安装）
+2. `config/core.toml` 和 `config/model.toml` 基础配置
+3. 已安装并登录 **Napcat QQ 客户端**
 
-如果你对上述步骤还不熟悉，请务必先返回，并严格参照主部署指南完成准备工作。
+## 启用适配器
 
-## 第一步：生成插件配置文件
+OneBot 适配器默认已启用。确认 `config/plugins/onebot_adapter/config.toml` 中：
 
-Neo-MoFox 设计得非常“聪明”，它会在第一次启动时，自动检测所有内置的插件，并为它们创建默认的配置文件。
+```toml
+[plugin]
+enabled = true
+```
 
-1.  **首次启动**:
-    *   打开你的命令行终端，进入 Neo-MoFox 项目目录。
-    *   确保你当前的目录位于 `Neo-MoFox` 项目的根目录。
-    *   执行以下命令，来启动一次 Neo-MoFox：
-        ```bash
-        uv run python bot.py
-        ```
-    *   程序启动后，你会看到大量的日志信息。当日志滚动停止，并且没有新的信息出现时，说明程序已经完成了初始化工作。
+## 配置连接参数
 
-    > **💡 第一次启动就失败了怎么办？**
-    > 如果程序在启动过程中直接报错并退出了，**99% 的可能性是你的核心配置 (`.env`, `bot_config.toml`, `model_config.toml`) 有误**。请回头仔细检查。
+### 配置监听端口
 
-2.  **生成配置并关闭**:
-    *   当程序稳定运行后，我们生成配置文件的目的就已经达成。现在，请在命令行窗口中，按下 `Ctrl + C` 来关闭程序。
+```toml
+[onebot_server]
+mode = "reverse"      # reverse/direct
+host = "localhost"    # 监听地址
+port = 8095           # 监听端口
+```
 
-## 第二步：启用并配置插件
+### 配置 Napcat 客户端
 
-经过上一步，所有内置插件的默认配置文件都已经被自动创建好了。现在，我们来正式配置它。
+在 Napcat QQ 客户端中：
+1. 点击"网络配置" → "WebSocket 客户端" → "新建"
+2. URL 填写 `ws://127.0.0.1:8095`（端口与上面的 `port` 一致）
+3. 保存
 
-1.  **找到配置文件**:
-    *   请打开以下路径的文件：
-    `config/plugin_config/onebot_adapter_plugin/config.toml`
+## 启动
 
-2.  **启用插件 (关键)**:
-    *   用你的代码编辑器打开该文件，找到 `[plugin]` 配置节，确认 `enabled` 为 `true`（默认已开启）
-        ```toml
-        [plugin]
-        enabled = true # <--- 就是这里，把它改成 true
-        ```
+```bash
+uv run main.py
+```
 
-3.  **配置 Napcat 连接 (核心)**:
-    *   在同一个文件中，向下找到 `[napcat_server]` 配置节。
-    *   这里的 `port` 值（默认为 `8095`）**必须**与你在 **Napcat QQ 客户端**的 `OneBot v11` 设置中，添加的**反向 WebSocket** 地址中的端口号**完全一致**。
-    *   请仔细核对，如果不一致，请修改此处的 `port` 值。
-
-    > **举个例子**:
-    > 如果你在 Napcat 客户端中设置的反向 WS 地址是 `ws://127.0.0.1:12345`，那么这里的 `port` 就应该被修改为 `12345`。
-
-4.  **检查内部服务连接**:
-    *   继续向下，找到 `[maibot_server]` 配置节。
-    *   这里的 `port` 值（默认为 `8000`）需要与你在 `Neo-MoFox` 根目录下的 `.env` 文件中设置的 `PORT` 值保持一致。通常情况下，你不需要修改它。
-
-## 第三步：启动与验证
-
-所有配置都已完成，现在可以正式启动了。
-
-1.  **启动顺序 (非常重要)**
-    *   **第一步：启动并登录 Napcat QQ**
-        *   打开你已经安装好的 Napcat QQ 客户端，并确保机器人 QQ 账号**成功登录**。
-    *   **第二步：运行 Neo-MoFox**
-        *   回到你的命令行终端窗口（确保虚拟环境已激活，且位于项目根目录）。
-        *   执行最终的启动命令：
-            ```bash
-            uv run python bot.py
-            ```
-
-2.  **观察日志，判断成功**
-    *   当你在日志中看到类似以下几条关键信息时，就代表你的机器人已经成功启动并连接到了 QQ 平台：
-        ```log
-        10-17 19:58:31 [Napcat 适配器] 启动消息重组器...
-        10-17 19:58:31 [Napcat 适配器] 开始启动Napcat Adapter
-        10-17 19:58:31 [Napcat 适配器] 正在启动 adapter，连接模式: reverse
-        10-17 19:58:31 [Napcat 适配器] 正在启动反向连接模式，监听地址: ws://localhost:8095
-        10-17 19:58:31 [Napcat 适配器] 消息处理器已启动
-        10-17 19:58:31 [主程序] 初始化完成，神经元放电1889次
-        10-17 19:58:31 [主程序]
-        全部系统初始化完成，{bot_name}已成功唤醒
-        =========================================================
-        Neo-MoFox(第三方修改版)
-        全部组件已成功启动!
-        =========================================================
-        🌐 项目地址: https://github.com/MoFox-Studio/Neo-MoFox
-        🏠 官方项目: https://github.com/MaiM-with-u/MaiBot
-        =========================================================
-        这是基于原版MMC的社区改版，包含增强功能和优化(同时也有更多的'特性')
-        =========================================================
-        小贴士:温馨提示：请不要在代码中留下任何魔法数字，除非你知道它的含义。
-
-        10-17 19:58:31 [主程序] 多年以后，面对AI行刑队，张三将会回想起他2023年在会议上讨论人工智能的那个下午
-        10-17 19:58:31 [主程序] 麦麦机器人启动完成，开始运行主任务...
-        10-17 19:58:31 [主程序] 程序执行完成，按 Ctrl+C 退出...
-        2025-10-17 19:58:31,252 - maim_message - INFO - {'logger_name': 'maim_message', 'event': '使用外部FastAPI应用，仅注册WebSocket路由', 'level': 'info', 'timestamp': '10-17 19:58:31', 'color': '\x1b[38;5;140m'}
-        10-17 19:58:33 [Server] 将在 127.0.0.1:8000 上启动服务器
-        10-17 19:58:33 [Napcat 适配器] 反向连接服务器已启动，监听地址: ws://localhost:8095
-        10-17 19:58:36 [Napcat 适配器] 尝试连接MoFox-Bot (第1次)
-        2025-10-17 19:58:36,240 - maim_message - INFO - {'logger_name': 'maim_message', 'event': '正在连接到 ws://127.0.0.1:3001/ws', 'level': 'info', 'timestamp': '10-17 19:58:36', 'color': '\x1b[38;5;140m'}
-        2025-10-17 19:58:36,243 - maim_message - INFO - {'logger_name': 'maim_message', 'event': '平台 qq WebSocket已连接', 'level': 'info', 'timestamp': '10-17 19:58:36', 'color': '\x1b[38;5;140m'}
-        2025-10-17 19:58:36,244 - maim_message - INFO - {'logger_name': 'maim_message', 'event': '已成功连接到 ws://127.0.0.1:3001/ws', 'level': 'info', 'timestamp': '10-17 19:58:36', 'color': '\x1b[38;5;140m'}
-        10-17 19:58:46 [Napcat 适配器] Napcat 客户端已连接: ('127.0.0.1', 38207)
-        10-17 19:58:46 [Napcat 适配器] Bot xxxxxxx(botQQ号) 连接成功
-        ```
-    *   看到 `[Napcat 适配器] Bot (bot的QQ号) 连接成功` 是成功的关键标志！
-
-3.  **测试机器人**
-    *   现在，打开你的 QQ，向你的机器人账号发送一条消息。如果它回复了你，那么…… **恭喜你，配置成功！**
+日志中出现 `[OneBot 适配器] Bot xxxxxxx 连接成功` 即表示连接建立。
 
 ## 故障排除
 
-<details>
-<summary><b>Q1: 启动成功，但日志里迟迟没有 `[Napcat 适配器] Bot xxxxxxx(botQQ号) 连接成功` 信息？</b></summary>
-
-这通常意味着 Neo-MoFox 和 Napcat QQ 客户端之间的“神经”没有接上。请按以下步骤排查：
-
-1.  **检查 Napcat QQ**: 确保 Napcat QQ 客户端本身已成功登录并处于在线状态。
-2.  **检查端口号**: 这是最常见的原因。请再次核对 `config/plugin_config/onebot_adapter_plugin/config.toml` 文件中 `[napcat_server]` 下的 `port` 值，是否与你 Napcat QQ 客户端里设置的**反向 WebSocket 端口**完全一致。
-3.  **检查防火墙**: 确保防火墙或安全组没有阻止相应的端口。
-4.  **检查 IP 地址**: 确保 `config.toml` 中的 `host` (`localhost`) 和 Napcat 中的 IP (`127.0.0.1`) 是匹配的。
-
-</details>
-
-<details>
-<summary><b>Q2: 机器人成功连接，但在 QQ 里不回复？</b></summary>
-
-这通常是配置问题或napcat服务问题。
-
-1.  **检查 Napcat QQ**: 确保 Napcat QQ 客户端本身已成功登录并处于在线状态,以及有没有连接上内置的适配器。
-2.  **检查白名单**: 检查 `config/plugin_config/onebot_adapter_plugin/config.toml` 文件中 `[features]` 部分的 `group_list` 和 `private_list`。如果你开启了白名单，请确保你测试的群聊或私聊已经被加了进去。
-3.  **查看日志**: 观察机器人后台的命令行窗口。当你给机器人发消息时，看看日志是否刷新，是否有 `ERROR` 级别的红色错误信息。
-
-</details>
+- **端口不通**：检查 `port` 值是否与 Napcat 客户端一致
+- **连接失败**：确认 Napcat QQ 已登录在线
+- **不回复消息**：检查 `model.toml` 的 API Key 是否有效，以及白名单设置

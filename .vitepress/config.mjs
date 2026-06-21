@@ -399,7 +399,15 @@ export default defineConfig({
     title: "Neo-MoFox",
     description:
       "现代化多平台 AI 聊天机器人框架，支持插件化、适配器、Agent 编排等功能。",
-    head: [["link", { rel: "icon", href: "/logos/logo-3.png" }]],
+    head: [
+      ["link", { rel: "icon", href: "/logos/logo-3.png" }],
+      ["link", { rel: "preconnect", href: "https://fonts.googleapis.com" }],
+      ["link", { rel: "preconnect", href: "https://fonts.gstatic.com", crossorigin: "" }],
+      ["link", { href: "https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap", rel: "stylesheet" }],
+      ["link", { href: "https://unpkg.com/misans@4.0.0/lib/Normal/MiSans-Regular.min.css", rel: "stylesheet" }],
+      ["link", { href: "https://unpkg.com/misans@4.0.0/lib/Normal/MiSans-Medium.min.css", rel: "stylesheet" }],
+      ["link", { href: "https://unpkg.com/misans@4.0.0/lib/Normal/MiSans-Demibold.min.css", rel: "stylesheet" }]
+    ],
     themeConfig: {
       // https://vitepress.dev/reference/default-theme-config
       nav: [

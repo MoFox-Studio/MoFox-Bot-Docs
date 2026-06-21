@@ -1,205 +1,173 @@
-/* 全局变量定义 */
+/* ========================================
+   Modern Minimalist Theme Customization
+   ======================================== */
+
 :root {
-  /* 全新蓝白主题 */
-  --vp-c-brand-1: #367BF0; /* 主品牌色 - 一种更现代、更柔和的蓝色 */
-  --vp-c-brand-2: #5C96F5; /* 品牌色的浅色变体 */
-  --vp-c-brand-3: #82B0FA; /* 品牌色的更浅变体 */
+  /* Typography - Big Tech Minimalist Stack */
+  --vp-font-family-base: 'Geist', 'MiSans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  --vp-font-family-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 
-  --vp-c-white: #FFFFFF;
-  --vp-c-black: #000000;
-  --vp-c-text-1: #2c3e50; /* 主要文本颜色 */
-  --vp-c-text-2: #3a5169; /* 次要文本颜色 */
-  --vp-c-text-3: #90a4b7; /* 辅助文本颜色 */
+  /* Primary Brand Colors - Clean Blue */
+  --vp-c-brand-1: #2563EB; /* Primary Button/Active color */
+  --vp-c-brand-2: #3B82F6; /* Hover color */
+  --vp-c-brand-3: #60A5FA; /* Subdued brand color */
 
-  /* 滚动条美化 */
-  --scrollbar-bg: #f5f5f5;
-  --scrollbar-thumb-bg: #dcdcdc;
-  --scrollbar-thumb-hover-bg: #c5c5c5;
+  /* Light Theme Specific */
+  --vp-c-bg: #FFFFFF;
+  --vp-c-bg-soft: #F9FAFB;
+  --vp-c-bg-alt: #F3F4F6;
+  
+  --vp-c-text-1: #111827; /* Near black for headings/primary text */
+  --vp-c-text-2: #4B5563; /* Medium gray for secondary text */
+  --vp-c-text-3: #9CA3AF; /* Light gray for tertiary */
+  
+  --vp-c-divider: rgba(0, 0, 0, 0.06);
+
+  /* Scrollbar */
+  --scrollbar-bg: transparent;
+  --scrollbar-thumb-bg: #D1D5DB;
+  --scrollbar-thumb-hover-bg: #9CA3AF;
 }
 
-/* 深色模式变量 */
+/* Dark Mode Variables */
 .dark {
-  --vp-c-brand-1: #4A90E2;
-  --vp-c-brand-2: #6BA6F2;
-  --vp-c-brand-3: #8ECBFF;
+  --vp-c-brand-1: #3B82F6;
+  --vp-c-brand-2: #60A5FA;
+  --vp-c-brand-3: #93C5FD;
 
-  --vp-c-text-1: #EAECEF;
-  --vp-c-text-2: #C8CDD3;
-  --vp-c-text-3: #A0A7AF;
+  --vp-c-bg: #0A0A0A;
+  --vp-c-bg-soft: #121212;
+  --vp-c-bg-alt: #1A1A1A;
 
-  /* 深色模式滚动条 */
-  --scrollbar-bg: #2c2c2c;
-  --scrollbar-thumb-bg: #4a4a4a;
-  --scrollbar-thumb-hover-bg: #636363;
+  --vp-c-text-1: #F9FAFB;
+  --vp-c-text-2: #D1D5DB;
+  --vp-c-text-3: #9CA3AF;
+
+  --vp-c-divider: rgba(255, 255, 255, 0.08);
+
+  /* Dark mode scrollbar */
+  --scrollbar-thumb-bg: #374151;
+  --scrollbar-thumb-hover-bg: #4B5563;
 }
 
-html:not(.dark) {
-  --vp-c-bg: #e5e7eb; /* 更深的灰色 */
-  --vp-c-bg-soft: #d1d5db; /* 配套的柔和背景色 */
-}
-
-/* 基础样式调整 */
+/* Base Styles */
 body {
-  font-family: 'Noto Sans SC', 'Helvetica Neue', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  transition: background-color 0.3s ease;
+  line-height: 1.7; /* Increased line-height for breathability */
+  letter-spacing: -0.01em;
 }
 
-/* 滚动条样式 */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* Scrollbar Enhancement */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
-
 ::-webkit-scrollbar-track {
   background: var(--scrollbar-bg);
-  border-radius: 4px;
 }
-
 ::-webkit-scrollbar-thumb {
   background: var(--scrollbar-thumb-bg);
   border-radius: 4px;
-  transition: background-color 0.3s ease;
 }
-
 ::-webkit-scrollbar-thumb:hover {
   background: var(--scrollbar-thumb-hover-bg);
 }
 
-/* VitePress 组件样式覆盖 */
-.VPHero .name, .VPHero .text {
-  color: var(--vp-c-brand-1);
-}
-
+/* Component Overrides */
 .VPButton.brand {
   background-color: var(--vp-c-brand-1);
   border-color: var(--vp-c-brand-1);
+  font-weight: 500;
+  border-radius: 6px;
 }
-
 .VPButton.brand:hover {
   background-color: var(--vp-c-brand-2);
   border-color: var(--vp-c-brand-2);
 }
 
-.VPNav .VPNavBarTitle .text {
-  color: var(--vp-c-brand-1);
+.VPButton.alt {
+  background-color: var(--vp-c-bg-soft);
+  border-color: var(--vp-c-divider);
+  color: var(--vp-c-text-1);
+  font-weight: 500;
+  border-radius: 6px;
+}
+.VPButton.alt:hover {
+  background-color: var(--vp-c-bg-alt);
+  border-color: var(--vp-c-divider);
 }
 
-a {
-  color: var(--vp-c-brand-1);
-  transition: color 0.25s;
-}
-
-a:hover {
-  color: var(--vp-c-brand-2);
-}
-
-/* 代码块样式优化 */
-div[class*="language-"] {
-  border-radius: 8px;
-  transition: background-color 0.3s ease;
-}
-
-/* 引用块样式优化 */
-blockquote {
-  border-left: 4px solid var(--vp-c-brand-1);
-  padding-left: 1rem;
-  margin-left: 0;
-  color: var(--vp-c-text-2);
-  transition: border-color 0.3s ease;
-}
-/* Hero section gradient text - v2 */
-
+/* Hero Section Refinement */
+.VPHero .name,
 .VPHero .text,
 .VPHero .tagline {
-  background: -webkit-linear-gradient(120deg, #367BF0 20%, #e0d7d7 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  /* Remove flashy gradients, use solid professional colors */
+  background: none;
+  -webkit-text-fill-color: initial;
+}
+.VPHero .name {
+  color: var(--vp-c-text-1);
+  font-weight: 700;
+}
+.VPHero .text {
+  color: var(--vp-c-text-2);
+  font-weight: 600;
+}
+.VPHero .tagline {
+  color: var(--vp-c-text-2);
 }
 
-/* Collapsible Sidebar Styles */
-.sidebar-collapsed .VPSidebar {
-  transform: translateX(-100%);
+/* Feature Cards */
+.VPFeature {
+  background-color: var(--vp-c-bg-soft);
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+.VPFeature:hover {
+  border-color: var(--vp-c-brand-1);
+  background-color: var(--vp-c-bg);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+.dark .VPFeature:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-.sidebar-collapsed .VPContent {
-  padding-left: 0;
-}
-
-.sidebar-collapsed .VPNavBarTitle {
-  transform: translateX(-100%);
-  opacity: 0;
-  visibility: hidden;
-}
-
-.sidebar-collapsed .sidebar-toggle-button {
-  left: 20px;
-}
-
-.VPNavBarTitle {
-  transition: all 0.3s ease;
-}
-
-.VPSidebar {
-  transition: transform 0.3s ease;
-}
-
-.VPContent {
-  transition: padding-left 0.3s ease;
-}
-
-.sidebar-toggle-button {
-  transition: all 0.3s ease;
-}
-
-.VPDocFooter .prev-next .link:hover {
-  transform: scale(1.05);
-  transition: transform 0.2s ease-in-out;
-}
-
-/* 代码块样式增强 - 为复制按钮留出空间 */
+/* Code Blocks */
 div[class*="language-"] {
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
+  border-radius: 8px;
+  margin: 1.5rem 0;
+  background-color: var(--vp-c-bg-soft);
+  border: 1px solid var(--vp-c-divider);
 }
 
+/* Hide native copy button because a custom CodeCopyEnhancer is used */
 div[class*="language-"] > button.copy {
-  display: none; /* 隐藏VitePress默认的复制按钮 */
+  display: none !important;
 }
 
-/* 确保代码块在移动端也有良好的显示 */
-@media (max-width: 640px) {
-  div[class*="language-"] {
-    border-radius: 6px;
-  }
+/* Blockquotes */
+blockquote {
+  border-left: 4px solid var(--vp-c-divider);
+  padding-left: 1rem;
+  color: var(--vp-c-text-2);
+  margin-left: 0;
+  background-color: var(--vp-c-bg-soft);
+  padding: 12px 16px;
+  border-radius: 0 8px 8px 0;
 }
 
-/* 优化代码块hover效果 */
-div[class*="language-"]:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  transition: box-shadow 0.3s ease;
-}
-
-.dark div[class*="language-"]:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
-/* 阅读进度条在移动端的优化 */
-@media (max-width: 768px) {
-  .reading-progress-bar {
-    height: 2px;
-  }
-}
-
-/* 确保进度条在所有页面顶部显示 */
-.reading-progress-bar {
-  pointer-events: none; /* 不阻止下方元素的交互 */
-}
-
-/* 为插件的背景设置一个与主题匹配的颜色 */
+/* Nolebase Git Changelog */
 .vp-nolebase-git-changelog-history-container {
   background-color: var(--vp-c-bg-soft) !important;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 8px;
 }
 
 iconify-icon {

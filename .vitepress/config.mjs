@@ -9,6 +9,23 @@ import mermaidPlugin from "./plugins/markdown-it-mermaid.js";
 import { writeFileSync, mkdirSync } from "node:fs";
 import { resolve } from "node:path";
 
+// Helper function to extract links from VitePress sidebar
+function extractLinksFromSidebar(sidebar) {
+  const links = [];
+  function traverse(items) {
+    if (Array.isArray(items)) {
+      items.forEach(item => {
+        if (item.link) links.push({ text: item.text, link: item.link });
+        if (item.items) traverse(item.items);
+      });
+    } else if (typeof items === 'object' && items !== null) {
+      Object.values(items).forEach(traverse);
+    }
+  }
+  traverse(sidebar);
+  return links;
+}
+
 const devSidebar = [
   {
     text: "开发",

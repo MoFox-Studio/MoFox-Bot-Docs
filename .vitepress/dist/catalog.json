@@ -1,0 +1,474 @@
+[
+  {
+    "text": "指南主页",
+    "link": "/docs/guides/"
+  },
+  {
+    "text": "Launcher 部署指南",
+    "link": "/docs/guides/deployment/launcher_deployment_guide"
+  },
+  {
+    "text": "Windows部署指南",
+    "link": "/docs/guides/deployment/deployment_guide"
+  },
+  {
+    "text": "Linux部署指南",
+    "link": "/docs/guides/deployment/mmc_deploy_linux"
+  },
+  {
+    "text": "Docker部署指南",
+    "link": "/docs/guides/deployment/mmc_deploy_docker"
+  },
+  {
+    "text": "Android部署指南",
+    "link": "/docs/guides/deployment/mmc_deploy_android"
+  },
+  {
+    "text": "社区部署方式介绍",
+    "link": "/docs/guides/deployment/community_way/"
+  },
+  {
+    "text": "MoFox-Community 安装器",
+    "link": "/docs/guides/deployment/community_way/mofox-community-installer"
+  },
+  {
+    "text": "模型配置快速上手",
+    "link": "/docs/guides/configuration/quick_start_model_config"
+  },
+  {
+    "text": "Bot配置文件指南",
+    "link": "/docs/guides/configuration/bot_config_guide"
+  },
+  {
+    "text": "模型配置指南(进阶)",
+    "link": "/docs/guides/configuration/model_configuration_guide"
+  },
+  {
+    "text": "模型配置FAQ",
+    "link": "/docs/guides/configuration/model_config_faq"
+  },
+  {
+    "text": "如何更换端口",
+    "link": "/docs/guides/configuration/how_to_change_port"
+  },
+  {
+    "text": "维护指南",
+    "link": "/docs/guides/usage/maintenance_guide"
+  },
+  {
+    "text": "插件安装指南",
+    "link": "/docs/guides/usage/plugin-installation-guide"
+  },
+  {
+    "text": "内置插件使用指南",
+    "link": "/docs/guides/usage/built_in_plugins_guide"
+  },
+  {
+    "text": "指令权限系统",
+    "link": "/docs/guides/usage/permission_usage"
+  },
+  {
+    "text": "WebUI 使用指南",
+    "link": "/docs/guides/usage/webui_guide"
+  },
+  {
+    "text": "MCP 使用教程",
+    "link": "/docs/guides/usage/mcp_guide"
+  },
+  {
+    "text": "Skill 使用教程",
+    "link": "/docs/guides/usage/skill_guide"
+  },
+  {
+    "text": "适配器介绍",
+    "link": "/docs/guides/adapter_list"
+  },
+  {
+    "text": "OneBot 适配器配置",
+    "link": "/docs/guides/adapter_list/onebot_v11_config"
+  },
+  {
+    "text": "最终用户许可协议",
+    "link": "/docs/guides/misc/eula"
+  },
+  {
+    "text": "如何高效提问",
+    "link": "/docs/guides/misc/how-to-ask-questions-efficiently"
+  },
+  {
+    "text": "提问的智慧(精简版)",
+    "link": "/docs/guides/misc/how-to-ask-questions-the-smart-way"
+  },
+  {
+    "text": "开发主页",
+    "link": "/docs/development/"
+  },
+  {
+    "text": "参与项目贡献",
+    "link": "/docs/development/guidelines/CONTRIBUTE"
+  },
+  {
+    "text": "开发准则",
+    "link": "/docs/development/guidelines/development_guidelines"
+  },
+  {
+    "text": "插件开发概述",
+    "link": "/docs/development/plugin_develop/"
+  },
+  {
+    "text": "插件机制原理",
+    "link": "/docs/development/plugin_develop/guide/mechanism"
+  },
+  {
+    "text": "插件结构与最佳实践",
+    "link": "/docs/development/plugin_develop/structure"
+  },
+  {
+    "text": "manifest.json 格式说明",
+    "link": "/docs/development/plugin_develop/manifest"
+  },
+  {
+    "text": "进阶开发",
+    "link": "/docs/development/plugin_develop/advanced"
+  },
+  {
+    "text": "1. 写在前面",
+    "link": "/docs/development/plugin_develop/guide/plugin-authoring/1-introduction"
+  },
+  {
+    "text": "2. 最小概念",
+    "link": "/docs/development/plugin_develop/guide/plugin-authoring/2-minimal-concept"
+  },
+  {
+    "text": "3. 第一个插件",
+    "link": "/docs/development/plugin_develop/guide/plugin-authoring/3-first-plugin"
+  },
+  {
+    "text": "4. 运行机制",
+    "link": "/docs/development/plugin_develop/guide/plugin-authoring/4-how-it-works"
+  },
+  {
+    "text": "5. 插件结构",
+    "link": "/docs/development/plugin_develop/guide/plugin-authoring/5-structure"
+  },
+  {
+    "text": "6. 配置系统",
+    "link": "/docs/development/plugin_develop/guide/plugin-authoring/6-config"
+  },
+  {
+    "text": "7. Command 与 Service",
+    "link": "/docs/development/plugin_develop/guide/plugin-authoring/7-command-and-service"
+  },
+  {
+    "text": "8. 第一个 Tool",
+    "link": "/docs/development/plugin_develop/guide/plugin-authoring/8-first-tool"
+  },
+  {
+    "text": "9. Prompt API",
+    "link": "/docs/development/plugin_develop/guide/plugin-authoring/9-prompt-api"
+  },
+  {
+    "text": "10. LLM API",
+    "link": "/docs/development/plugin_develop/guide/plugin-authoring/10-llm-api"
+  },
+  {
+    "text": "11. Tool 与 LLM",
+    "link": "/docs/development/plugin_develop/guide/plugin-authoring/11-tool-llm"
+  },
+  {
+    "text": "12. Default Chatter 与 FSM",
+    "link": "/docs/development/plugin_develop/guide/plugin-authoring/12-default-chatter-fsm"
+  },
+  {
+    "text": "13. Agent 编排",
+    "link": "/docs/development/plugin_develop/guide/plugin-authoring/13-agent-orchestration"
+  },
+  {
+    "text": "14. Action 组件",
+    "link": "/docs/development/plugin_develop/guide/plugin-authoring/14-action"
+  },
+  {
+    "text": "15. 事件系统",
+    "link": "/docs/development/plugin_develop/guide/plugin-authoring/15-event-system"
+  },
+  {
+    "text": "16. Chatter 组件",
+    "link": "/docs/development/plugin_develop/guide/plugin-authoring/16-chatter"
+  },
+  {
+    "text": "17. Router 组件",
+    "link": "/docs/development/plugin_develop/guide/plugin-authoring/17-router"
+  },
+  {
+    "text": "18. Adapter 组件",
+    "link": "/docs/development/plugin_develop/guide/plugin-authoring/18-adapter"
+  },
+  {
+    "text": "19. 消息模型",
+    "link": "/docs/development/plugin_develop/guide/plugin-authoring/19-message-model"
+  },
+  {
+    "text": "20. 总览与下一步",
+    "link": "/docs/development/plugin_develop/guide/plugin-authoring/20-overview-and-next"
+  },
+  {
+    "text": "组件总览",
+    "link": "/docs/development/plugin_develop/components/"
+  },
+  {
+    "text": "Plugin — 插件根组件",
+    "link": "/docs/development/plugin_develop/components/plugin"
+  },
+  {
+    "text": "Action — 动作组件",
+    "link": "/docs/development/plugin_develop/components/action"
+  },
+  {
+    "text": "Adapter — 适配器组件",
+    "link": "/docs/development/plugin_develop/components/adapter"
+  },
+  {
+    "text": "agent — 协助者组件",
+    "link": "/docs/development/plugin_develop/components/agent"
+  },
+  {
+    "text": "Chatter — 聊天器组件",
+    "link": "/docs/development/plugin_develop/components/chatter"
+  },
+  {
+    "text": "Command — 命令组件",
+    "link": "/docs/development/plugin_develop/components/command"
+  },
+  {
+    "text": "Config — 配置组件",
+    "link": "/docs/development/plugin_develop/components/config"
+  },
+  {
+    "text": "EventHandler — 事件处理器组件",
+    "link": "/docs/development/plugin_develop/components/event-handler"
+  },
+  {
+    "text": "Router — 路由组件",
+    "link": "/docs/development/plugin_develop/components/router"
+  },
+  {
+    "text": "Service — 服务组件",
+    "link": "/docs/development/plugin_develop/components/service"
+  },
+  {
+    "text": "Tool — 工具组件",
+    "link": "/docs/development/plugin_develop/components/tool"
+  },
+  {
+    "text": "MPDT 概述",
+    "link": "/docs/development/mpdt/"
+  },
+  {
+    "text": "安装指南",
+    "link": "/docs/development/mpdt/installation"
+  },
+  {
+    "text": "AI Skill 安装指南",
+    "link": "/docs/development/mpdt/skill-guide"
+  },
+  {
+    "text": "概述",
+    "link": "/docs/development/mpdt/commands/plugin/"
+  },
+  {
+    "text": "init - 初始化插件",
+    "link": "/docs/development/mpdt/commands/plugin/init"
+  },
+  {
+    "text": "generate - 生成组件",
+    "link": "/docs/development/mpdt/commands/plugin/generate"
+  },
+  {
+    "text": "check - 检查插件",
+    "link": "/docs/development/mpdt/commands/plugin/check"
+  },
+  {
+    "text": "bump - 升级版本",
+    "link": "/docs/development/mpdt/commands/plugin/bump"
+  },
+  {
+    "text": "build - 构建插件",
+    "link": "/docs/development/mpdt/commands/plugin/build"
+  },
+  {
+    "text": "dev - 开发模式",
+    "link": "/docs/development/mpdt/commands/plugin/dev"
+  },
+  {
+    "text": "概述",
+    "link": "/docs/development/mpdt/commands/market/"
+  },
+  {
+    "text": "publish - 发布插件",
+    "link": "/docs/development/mpdt/commands/market/publish"
+  },
+  {
+    "text": "search - 搜索插件",
+    "link": "/docs/development/mpdt/commands/market/search"
+  },
+  {
+    "text": "info - 查看信息",
+    "link": "/docs/development/mpdt/commands/market/info"
+  },
+  {
+    "text": "package-update - 更新插件",
+    "link": "/docs/development/mpdt/commands/market/package-update"
+  },
+  {
+    "text": "delete - 删除插件",
+    "link": "/docs/development/mpdt/commands/market/delete"
+  },
+  {
+    "text": "yank - 废弃版本",
+    "link": "/docs/development/mpdt/commands/market/yank"
+  },
+  {
+    "text": "概述",
+    "link": "/docs/development/mpdt/commands/config/"
+  },
+  {
+    "text": "init - 初始化配置",
+    "link": "/docs/development/mpdt/commands/config/init"
+  },
+  {
+    "text": "show - 显示配置",
+    "link": "/docs/development/mpdt/commands/config/show"
+  },
+  {
+    "text": "open - 打开配置文件",
+    "link": "/docs/development/mpdt/commands/config/open"
+  },
+  {
+    "text": "edit - 编辑配置",
+    "link": "/docs/development/mpdt/commands/config/edit"
+  },
+  {
+    "text": "概述",
+    "link": "/docs/development/mpdt/commands/depend/"
+  },
+  {
+    "text": "add - 添加依赖",
+    "link": "/docs/development/mpdt/commands/depend/add"
+  },
+  {
+    "text": "search - 搜索依赖",
+    "link": "/docs/development/mpdt/commands/depend/search"
+  },
+  {
+    "text": "info - 查看信息",
+    "link": "/docs/development/mpdt/commands/depend/info"
+  },
+  {
+    "text": "remove - 移除依赖",
+    "link": "/docs/development/mpdt/commands/depend/remove"
+  },
+  {
+    "text": "list - 列出依赖",
+    "link": "/docs/development/mpdt/commands/depend/list"
+  },
+  {
+    "text": "API 文档总览",
+    "link": "/docs/development/plugin_develop/api/"
+  },
+  {
+    "text": "Action API",
+    "link": "/docs/development/plugin_develop/api/action-api"
+  },
+  {
+    "text": "Adapter API",
+    "link": "/docs/development/plugin_develop/api/adapter-api"
+  },
+  {
+    "text": "Chat API",
+    "link": "/docs/development/plugin_develop/api/chat-api"
+  },
+  {
+    "text": "Command API",
+    "link": "/docs/development/plugin_develop/api/command-api"
+  },
+  {
+    "text": "Config API",
+    "link": "/docs/development/plugin_develop/api/config-api"
+  },
+  {
+    "text": "数据库 API",
+    "link": "/docs/development/plugin_develop/api/database-api"
+  },
+  {
+    "text": "事件 API",
+    "link": "/docs/development/plugin_develop/api/event-api"
+  },
+  {
+    "text": "LLM API",
+    "link": "/docs/development/plugin_develop/api/llm-api"
+  },
+  {
+    "text": "日志 API",
+    "link": "/docs/development/plugin_develop/api/log-api"
+  },
+  {
+    "text": "Media API",
+    "link": "/docs/development/plugin_develop/api/media-api"
+  },
+  {
+    "text": "消息查询 API",
+    "link": "/docs/development/plugin_develop/api/message-api"
+  },
+  {
+    "text": "Permission API",
+    "link": "/docs/development/plugin_develop/api/permission-api"
+  },
+  {
+    "text": "Plugin API",
+    "link": "/docs/development/plugin_develop/api/plugin-api"
+  },
+  {
+    "text": "Prompt API",
+    "link": "/docs/development/plugin_develop/api/prompt-api"
+  },
+  {
+    "text": "Router API",
+    "link": "/docs/development/plugin_develop/api/router-api"
+  },
+  {
+    "text": "消息发送 API",
+    "link": "/docs/development/plugin_develop/api/send-api"
+  },
+  {
+    "text": "Service API",
+    "link": "/docs/development/plugin_develop/api/service-api"
+  },
+  {
+    "text": "Storage API",
+    "link": "/docs/development/plugin_develop/api/storage-api"
+  },
+  {
+    "text": "Stream API",
+    "link": "/docs/development/plugin_develop/api/stream-api"
+  },
+  {
+    "text": "概览",
+    "link": "/docs/builtin_plugins/"
+  },
+  {
+    "text": "概览",
+    "link": "/docs/builtin_plugins/plugin-ui/"
+  },
+  {
+    "text": "快速入门",
+    "link": "/docs/builtin_plugins/plugin-ui/quick-start"
+  },
+  {
+    "text": "代码指南",
+    "link": "/docs/builtin_plugins/plugin-ui/code-guide"
+  },
+  {
+    "text": "组件参考",
+    "link": "/docs/builtin_plugins/plugin-ui/components"
+  }
+]

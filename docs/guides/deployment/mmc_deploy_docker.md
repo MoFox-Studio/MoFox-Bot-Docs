@@ -1,4 +1,4 @@
-﻿# <iconify-icon icon="mdi:docker" height="36"></iconify-icon> Neo-MoFox Docker 部署指南
+# <iconify-icon icon="mdi:docker" height="36"></iconify-icon> Neo-MoFox Docker 部署指南
 
 ## 概述
 
@@ -132,7 +132,7 @@ cd Neo-MoFox
     *   在 Napcat WebUI 中，点击左侧导航栏的 **网络设置**。
     *   找到 **WebSocket 客户端** 选项，点击 **新建客户端**。
     *   按照下图所示配置参数（具体地址请参考图片配置）：
-        ![Napcat 配置](../assets/napcat-docker.png)
+        ![Napcat 配置](../../assets/napcat-docker.png)
 
 > **💡 小贴士**: 若无法打开页面，请务必检查服务器的**防火墙或安全组**是否已放行 **6099** 端口。成功连接后，机器人的冒险就正式开始了！
 

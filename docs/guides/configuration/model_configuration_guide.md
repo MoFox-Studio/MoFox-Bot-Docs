@@ -71,7 +71,7 @@ api_key = [                                # API 密钥，支持多 Key 轮询
   "sk-key_1_xxxxxxxxxxxx",
   "sk-key_2_xxxxxxxxxxxx"
 ]
-推荐使用多Key轮询，提高稳定性
+# 推荐使用多Key轮询，提高稳定性
 client_type = "openai"                     # 客户端类型，通常使用 "openai"
 max_retry = 2                              # 最大重试次数
 timeout = 45                               # 超时时间（秒）

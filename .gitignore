@@ -3,5 +3,5 @@
 /cache/
 .vitepress/cache/
 /cache/
-/dist/
+dist/
 .agents/

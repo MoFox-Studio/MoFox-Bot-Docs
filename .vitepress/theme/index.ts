@@ -65,7 +65,11 @@ const theme: Theme = {
         "https://code.iconify.design/iconify-icon/3.0.0/iconify-icon.min.js";
       document.head.appendChild(iconifyScript);
     }
-    app.use(NolebaseEnhancedReadabilitiesPlugin);
+    app.use(NolebaseEnhancedReadabilitiesPlugin, {
+      layoutSwitch: {
+        disableAnimation: true,
+      },
+    });
     app.use(NolebaseGitChangelogPlugin);
     app.component("GuideCards", GuideCards);
     app.component("BibleDisplay", BibleDisplay);

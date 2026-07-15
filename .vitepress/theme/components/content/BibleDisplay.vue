@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-// No script needed for now
+// 暂时不需要脚本逻辑
 </script>
 
 <style scoped>
@@ -68,7 +68,7 @@
 }
 
 :root:not(.dark) .bible-container {
-  /* Light theme specific styles if needed */
+  /* 浅色主题专用样式（如需要） */
 }
 
 html.dark .bible-container {

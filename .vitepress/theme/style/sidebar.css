@@ -1,11 +1,11 @@
 /* ========================================
-   Modern Sidebar Styles - Minimalist
+   现代侧边栏样式 - 极简风格
    ======================================== */
 
 .VPSidebar {
   --sidebar-bg: var(--vp-c-bg);
   --sidebar-item-hover-bg: var(--vp-c-bg-alt);
-  --sidebar-item-active-bg: rgba(37, 99, 235, 0.08); /* Light blue tint */
+  --sidebar-item-active-bg: rgba(37, 99, 235, 0.08); /* 浅蓝色调 */
   --sidebar-item-active-text: var(--vp-c-brand-1);
   --sidebar-border-color: var(--vp-c-divider);
   
@@ -18,12 +18,12 @@
   --sidebar-item-active-bg: rgba(59, 130, 246, 0.15);
 }
 
-/* Spacing and Layout - Compact */
+/* 间距与布局 - 紧凑 */
 .VPSidebarNav {
   padding: 8px 8px !important;
 }
 
-/* Ensure caret (collapse button) and title are vertically aligned */
+/* 确保折叠按钮（caret）和标题垂直居中对齐 */
 .VPSidebarItem > .item {
   display: flex !important;
   align-items: center !important;
@@ -42,7 +42,7 @@
   align-items: center;
 }
 
-/* Level 0 Title (Group Headers) */
+/* 第 0 级标题（分组标题） */
 .VPSidebarItem.level-0 > .item {
   padding: 4px 10px !important;
   margin-bottom: 2px !important;
@@ -56,7 +56,7 @@
   opacity: 0.8;
 }
 
-/* Sub-items */
+/* 子项 */
 .VPSidebarItem.level-1 > .item,
 .VPSidebarItem.level-2 > .item,
 .VPSidebarItem.level-3 > .item {
@@ -74,7 +74,7 @@
   color: var(--vp-c-text-2);
 }
 
-/* Hover States */
+/* 悬停状态 */
 .VPSidebarItem.level-1 > .item:hover,
 .VPSidebarItem.level-2 > .item:hover,
 .VPSidebarItem.level-3 > .item:hover {
@@ -85,7 +85,7 @@
   color: var(--vp-c-text-1);
 }
 
-/* Active State */
+/* 激活状态 */
 .VPSidebarItem.is-active > .item {
   background: var(--sidebar-item-active-bg) !important;
 }
@@ -95,7 +95,7 @@
   font-weight: 600 !important;
 }
 
-/* Active indicator (Left border style) */
+/* 激活指示器（左侧边框样式） */
 .VPSidebarItem.is-active > .item::before {
   content: '';
   position: absolute;
@@ -108,7 +108,7 @@
   border-radius: 0 4px 4px 0;
 }
 
-/* Remove flashy animations */
+/* 移除花哨的动画 */
 .VPSidebarItem.is-active.level-1 > .item::before {
   animation: none !important;
 }
@@ -116,7 +116,7 @@
   content: none !important;
 }
 
-/* Caret/Collapse Icon */
+/* 折叠/展开图标 */
 .VPSidebarItem .caret {
   width: 14px;
   height: 14px;
@@ -126,7 +126,7 @@
   fill: var(--vp-c-text-2);
 }
 
-/* Expanded: arrow points down ˅ / Collapsed: arrow points left ‹ */
+/* 展开：箭头朝下 ˅ / 折叠：箭头朝左 ‹ */
 .VPSidebarItem .caret-icon {
   /*rtl:ignore*/
   transform: rotate(90deg) !important;
@@ -137,7 +137,7 @@
   transform: rotate(180deg) !important;
 }
 
-/* Nesting Indentation */
+/* 嵌套缩进 */
 .VPSidebarItem.level-1 > .items {
   padding-left: 12px !important;
   margin-left: 12px;
@@ -149,14 +149,14 @@
   border-left: 1px solid var(--sidebar-border-color);
 }
 
-/* Group spacing */
+/* 分组间距 */
 .VPSidebarItem.level-0:not(:first-child) {
   margin-top: 8px !important;
   padding-top: 0 !important;
   border-top: none !important;
 }
 
-/* Scrollbar */
+/* 滚动条 */
 .VPSidebar::-webkit-scrollbar {
   width: 6px;
 }

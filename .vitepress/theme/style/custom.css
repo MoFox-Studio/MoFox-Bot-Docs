@@ -109,7 +109,7 @@ blockquote {
   color: var(--vp-c-text-2);
   transition: border-color 0.3s ease;
 }
-/* Hero section gradient text - v2 */
+/* Hero 区域渐变文字 - v2 */
 
 .VPHero .text,
 .VPHero .tagline {
@@ -118,7 +118,7 @@ blockquote {
   -webkit-text-fill-color: transparent;
 }
 
-/* Collapsible Sidebar Styles */
+/* 可折叠侧边栏样式 */
 .sidebar-collapsed .VPSidebar {
   transform: translateX(-100%);
 }

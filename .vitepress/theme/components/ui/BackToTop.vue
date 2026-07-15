@@ -46,7 +46,7 @@ const scrollToBottom = () => {
 
 onMounted(() => {
   window.addEventListener('scroll', handleScroll);
-  handleScroll(); // Initial check
+  handleScroll(); // 初始检查
 });
 
 onUnmounted(() => {

@@ -1,5 +1,5 @@
 <template>
-  <!-- This component doesn't render anything visible itself, it manipulates the DOM -->
+  <!-- 该组件本身不渲染任何可见内容，仅用于操作 DOM -->
 </template>
 
 <script setup lang="ts">
@@ -74,7 +74,7 @@ onUnmounted(() => {
 </script>
 
 <style>
-/* Global styles for the copy button injected by this component */
+/* 该组件注入的复制按钮的全局样式 */
 div[class*="language-"] {
   position: relative;
 }
@@ -94,7 +94,7 @@ div[class*="language-"] {
   background-color: var(--vp-c-bg-soft);
   cursor: pointer;
   transition: all 0.2s;
-  opacity: 0; /* Hidden by default */
+  opacity: 0; /* 默认隐藏 */
 }
 
 div[class*="language-"]:hover .copy-button {

@@ -115,7 +115,7 @@ onMounted(() => {
 
   const columns = Math.floor(width / 20);
   const drops: number[] = Array(columns).fill(1);
-  const chars: string[] = 'モフォックススタジオ'.split(''); // MoFox Studio in Katakana
+  const chars: string[] = 'モフォックススタジオ'.split(''); // MoFox Studio 的片假名写法
 
   function draw(): void {
     ctx.fillStyle = 'rgba(0, 0, 0, 0.04)';
@@ -167,7 +167,7 @@ onMounted(() => {
   background-color: var(--vp-c-bg);
   color: var(--vp-c-text-1);
   transition: opacity 0.5s ease;
-  overflow: hidden; /* Prevent scrollbars from appearing during shake */
+  overflow: hidden; /* 防止抖动期间出现滚动条 */
 }
 
 .matrix-canvas {
@@ -282,7 +282,7 @@ blockquote {
   }
 }
 
-/* Self-destruct animation */
+/* 自毁动画 */
 .self-destruct {
   animation: flicker 0.1s infinite, screen-shake 0.5s infinite;
 }
@@ -307,7 +307,7 @@ blockquote {
     to { opacity: 0; transform: scale(0.8); }
 }
 
-/* Glitch effect for 404 text */
+/* 404 文字的故障效果 */
 .glitch {
   position: relative;
   animation: glitch-anim 2.5s infinite linear alternate-reverse;

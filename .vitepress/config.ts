@@ -15,7 +15,7 @@ interface CatalogLink {
   link?: string;
 }
 
-// Helper function to extract links from VitePress sidebar
+// 辅助函数：从 VitePress 侧边栏中提取链接
 function extractLinksFromSidebar(
   sidebar: DefaultTheme.Sidebar | undefined,
 ): CatalogLink[] {
@@ -515,7 +515,7 @@ export default defineConfig({
     vite: {
       plugins: [
         GitChangelog({
-          // Fill in your repository URL here
+          // 在此处填写你的仓库 URL
           repoURL: () => "https://github.com/MoFox-Studio/MoFox-Bot-Docs",
         }),
         GitChangelogMarkdownSection(),
@@ -530,7 +530,7 @@ export default defineConfig({
       },
       ssr: {
         noExternal: [
-          // If there are other packages that need to be processed by Vite, you can add them here.
+          // 如果还有其他需要由 Vite 处理的包，可以在这里添加。
           "@nolebase/vitepress-plugin-inline-link-preview",
           "@nolebase/vitepress-plugin-enhanced-readabilities",
           "@nolebase/ui",

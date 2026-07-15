@@ -15,10 +15,10 @@ const { frontmatter } = useData()
   position: fixed;
   bottom: 20px;
   right: 20px;
-  z-index: 10; /* Ensure it is above content as a watermark */
-  opacity: 0.05; /* Very subtle opacity */
+  z-index: 10; /* 确保作为水印浮于内容之上 */
+  opacity: 0.05; /* 非常微弱的透明度 */
   pointer-events: none;
-  width: 250px; /* Significantly reduced size */
+  width: 250px; /* 显著缩小的尺寸 */
   max-width: 30vw;
   display: flex;
   justify-content: center;
@@ -30,7 +30,7 @@ const { frontmatter } = useData()
   height: auto;
 }
 
-/* Optional: Hide on very small screens if needed, or adjust size */
+/* 可选：在极小屏幕上隐藏或调整大小 */
 @media (max-width: 768px) {
   .background-logo {
     width: 80%;

@@ -67,7 +67,7 @@ const cardClass = computed(() => {
   gap: 1rem;
 }
 
-/* Default (Medium) */
+/* 默认（中号） */
 .container-medium {
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
@@ -77,7 +77,7 @@ const cardClass = computed(() => {
   }
 }
 
-/* Small */
+/* 小号 */
 .container-small {
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 }
@@ -87,7 +87,7 @@ const cardClass = computed(() => {
     }
 }
 
-/* Large */
+/* 大号 */
 .container-large {
     grid-template-columns: 1fr;
 }
@@ -185,9 +185,9 @@ const cardClass = computed(() => {
   background: var(--vp-c-brand-soft);
 }
 
-/* --- Size Variations --- */
+/* --- 尺寸变体 --- */
 
-/* Small */
+/* 小号 */
 .size-small {
     padding: 1rem;
 }
@@ -210,7 +210,7 @@ const cardClass = computed(() => {
     height: 32px;
 }
 
-/* Large */
+/* 大号 */
 .size-large {
     padding: 2rem;
 }

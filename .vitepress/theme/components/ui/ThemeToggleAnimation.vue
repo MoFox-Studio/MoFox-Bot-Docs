@@ -1,5 +1,5 @@
 <template>
-  <!-- No visual output; only intercepts the VitePress theme toggle -->
+  <!-- 无视觉输出；仅拦截 VitePress 的主题切换 -->
 </template>
 
 <script setup lang="ts">
@@ -10,7 +10,7 @@ const { isDark } = useData();
 
 let toggleEls: Element[] = [];
 
-// Type the View Transition API on Document since lib typings don't include it
+// 为 Document 上的 View Transition API 补充类型定义，因为库的类型声明中未包含
 interface ViewTransition {
   ready: Promise<void>;
   finished: Promise<void>;
@@ -21,7 +21,7 @@ const onClick = async (e: Event) => {
   const mouseEvent = e as MouseEvent;
   const vt = (document as Document & { startViewTransition?: (cb: VTCallback) => ViewTransition });
 
-  // Gracefully degrade when the API is unsupported or reduced motion is requested
+  // 当 API 不支持或用户请求减少动画时优雅降级
   if (
     !vt.startViewTransition ||
     !window.matchMedia('(prefers-reduced-motion: no-preference)').matches
@@ -32,8 +32,8 @@ const onClick = async (e: Event) => {
   e.preventDefault();
   e.stopPropagation();
 
-  // Starting point of the circular reveal: the click position,
-  // falling back to the center of the toggle button.
+  // 圆形揭示动画的起点：点击位置，
+  // 回退到切换按钮的中心点。
   let x: number;
   let y: number;
   if (mouseEvent.clientX !== 0 || mouseEvent.clientY !== 0) {
@@ -78,7 +78,7 @@ const bind = (el: Element) => {
 };
 
 const findAndBind = () => {
-  // VitePress toggle buttons (desktop navbar + mobile screen menu)
+  // VitePress 切换按钮（桌面端导航栏 + 移动端屏幕菜单）
   const candidates = document.querySelectorAll(
     '.VPNavBarAppearance .VPSwitch, .VPNavBarAppearance button, .VPSidebar .VPSwitch, .VPNavScreenAppearance .VPSwitch, .VPNavScreenAppearance button'
   );
@@ -90,7 +90,7 @@ let observer: MutationObserver | null = null;
 onMounted(() => {
   findAndBind();
 
-  // Toggle buttons may be rendered asynchronously, watch for them.
+  // 切换按钮可能异步渲染，监听它们的出现。
   observer = new MutationObserver(() => {
     findAndBind();
   });
@@ -107,8 +107,8 @@ onUnmounted(() => {
 
 <style>
 /*
-  Disable the default cross-fade so our circular clip-path drives the reveal.
-  Keep both snapshots on top of each other with normal blending.
+  禁用默认的交叉淡入，改由我们的圆形 clip-path 来驱动揭示效果。
+  保留两个快照上下叠放，并使用正常的混合模式。
 */
 ::view-transition-old(root),
 ::view-transition-new(root) {
@@ -116,7 +116,7 @@ onUnmounted(() => {
   mix-blend-mode: normal;
 }
 
-/* Keep the old (pre-toggle) snapshot below the new one */
+/* 让旧（切换前）快照位于新快照之下 */
 ::view-transition-old(root) {
   z-index: 1;
 }
@@ -124,7 +124,7 @@ onUnmounted(() => {
   z-index: 9999;
 }
 
-/* Respect users who prefer reduced motion */
+/* 尊重偏好减少动画的用户 */
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-old(root),
   ::view-transition-new(root) {

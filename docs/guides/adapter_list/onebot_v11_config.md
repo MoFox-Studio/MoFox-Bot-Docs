@@ -4,6 +4,9 @@
 
 OneBot 适配器（`onebot_adapter`）是 Neo-MoFox 连接 QQ 平台的推荐方式，通过 OneBot 协议与 Napcat QQ 客户端通信。
 
+> [!NOTE]
+> 想了解 OneBot 适配器的功能特性、黑白名单、戳一戳等完整介绍？请参阅 [内置插件 · OneBot 适配器介绍](/docs/builtin_plugins/onebot/)。本页仅聚焦于连接配置与部署步骤。
+
 ## 前置条件
 
 在配置适配器之前，请确保已完成：

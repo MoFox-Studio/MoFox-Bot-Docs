@@ -523,6 +523,10 @@ export default defineConfig({
                 link: "/docs/guides/deployment/mmc_deploy_android",
               },
               {
+                text: "Android 官方部署指南 (Beta)",
+                link: "/docs/guides/deployment/mmc_deploy_android_app",
+              },
+              {
                 text: "社区安装方式",
                 collapsed: true,
                 items: [
@@ -554,6 +558,10 @@ export default defineConfig({
                 text: "模型配置指南(进阶)",
                 link: "/docs/guides/configuration/model_configuration_guide",
               },
+              {
+                text: "MCP 使用教程",
+                link: "/docs/guides/configuration/mcp_guide",
+              },
             ],
           },
           {
@@ -579,7 +587,6 @@ export default defineConfig({
               },
               { text: "指令权限系统", link: "/docs/guides/usage/permission_usage" },
               { text: "WebUI 使用指南", link: "/docs/guides/usage/webui_guide" },
-              { text: "MCP 使用教程", link: "/docs/guides/usage/mcp_guide" },
               { text: "Skill 使用教程", link: "/docs/guides/usage/skill_guide" },
             ],
           },

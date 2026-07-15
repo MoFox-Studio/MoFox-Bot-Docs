@@ -45,7 +45,7 @@ const extGuides = [
     avatar: '<iconify-icon icon="mdi:api"></iconify-icon>',
     name: 'MCP 使用教程',
     title: '通过 Model Context Protocol 扩展 AI 能力...',
-    link: './usage/mcp_guide'
+    link: './configuration/mcp_guide'
   },
   {
     avatar: '<iconify-icon icon="mdi:lightbulb-on"></iconify-icon>',

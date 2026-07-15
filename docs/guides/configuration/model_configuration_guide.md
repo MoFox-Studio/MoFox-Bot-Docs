@@ -134,6 +134,64 @@ price_out = 8.0                    # 输出价格（元 / M token）
     ```
 *   要使用此功能，你必须仔细阅读并理解对应模型供应商的 API 文档，了解它们支持哪些独特的参数。
 
+##### `extra_params` 的 HTTP 层特殊键
+
+除了透传给请求体的普通参数外，`extra_params` 还支持三个**特殊键**，用于精确控制
+HTTP 请求的不同层级。它们会被独立提取并注入到 HTTP 请求的对应位置，**不会**进入
+请求体业务字段：
+
+| 特殊键 | 类型 | 用途 |
+|---|---|---|
+| `headers` | `dict[str, str]` | 注入到 HTTP 请求头（透传给底层 SDK 的 `extra_headers`） |
+| `query` | `dict[str, Any]` | 注入到 URL 查询参数（透传给底层 SDK 的 `extra_query`） |
+| `body` | `dict[str, Any]` | 合并到请求体字段（透传给底层 SDK 的 `extra_body`，可嵌套） |
+
+若不包含这三个特殊键，`extra_params` 的行为与历史完全一致——OpenAI 兼容客户端
+会把非标准参数自动归并到请求体，Anthropic 客户端直接合并到请求体。
+
+**配置示例：**
+
+```toml
+[[models]]
+model_identifier = "custom-model-v1"
+name = "custom-model"
+api_provider = "custom"
+
+# 单行 inline table 形式（兼容 Python 自带 tomllib，推荐）
+extra_params = {headers = {"X-API-Version" = "2024-06", "X-Priority" = "high"}, query = {version = "2024-01-01"}, body = {metadata = {source = "maibot"}}, enable_thinking = false}
+```
+
+等价的多行写法（仅当本节为 `[[models]]` 数组最后一项时可用，使用子表语法）：
+
+```toml
+[[models]]
+model_identifier = "custom-model-v1"
+name = "custom-model"
+api_provider = "custom"
+
+[models.extra_params]
+enable_thinking = false
+
+[models.extra_params.headers]
+"X-API-Version" = "2024-06"
+"X-Priority" = "high"
+
+[models.extra_params.query]
+version = "2024-01-01"
+
+[models.extra_params.body.metadata]
+source = "maibot"
+```
+
+> ⚠️ **TOML 解析限制**：Python 3.11 自带的 `tomllib`（TOML 1.0）**不支持多行
+> inline table**，因此形如 `extra_params = { \n headers = {...}, \n ... }` 的
+> 多行 inline 写法会解析失败。请使用上述单行 inline 或子表语法。WebUI 编辑器
+> 不受此限制（使用支持 TOML 1.1 的 JS 解析器），保存后会自动转为单行格式。
+
+> 💡 **优先级规则**：当 `body` 与非标准参数同名时，用户显式声明的 `body` 优先级
+> 更高，可覆盖非标准参数；程序化设置的 `extra_body` 优先级最高，避免被用户配置
+> 覆盖。
+
 ## 第3章：应用层配置 (Model Tasks)
 
 ### 3.1 任务角色分析

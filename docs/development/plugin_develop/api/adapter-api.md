@@ -91,7 +91,19 @@ info = await get_bot_info_by_platform("qq")
 - `command_name`: 命令名称
 - `command_data`: 命令参数字典
 - `timeout`: 超时时间（秒），必须为正数
-- 返回: 命令执行结果字典
+- 返回: 命令执行结果字典，格式为：
+    - 成功: `{"status": "ok", "data": {...}, "message": "..."}`
+    - 失败: `{"status": "failed", "message": "错误信息"}`
+    - 错误: `{"status": "error", "message": "错误信息", "data": None}`
+
+::: warning 只有支持的适配器才能使用
+该函数依赖适配器**主动实现**命令响应协议。核心会向适配器下发 `message_segment.type == "adapter_command"` 的信封，适配器执行命令后必须通过 `core_sink` 回发 `message_segment.type == "adapter_response"` 的信封，核心才能拿到结果。
+
+- **已实现命令响应的适配器**（如 OneBot 适配器）可以正常使用。
+- **未实现的适配器**会因收不到响应而在 `timeout` 后返回 `{"status": "error", "message": "命令执行超时（Xs）"}`。
+
+适配器开发者如需支持本函数，请参考 [Adapter 组件 — 支持适配器命令](../components/adapter.md#支持适配器命令) 章节。
+:::
 
 ```python
 result = await send_adapter_command(

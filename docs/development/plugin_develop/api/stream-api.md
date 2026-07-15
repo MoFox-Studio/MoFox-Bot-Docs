@@ -4,6 +4,10 @@
 
 所有涉及 I/O 的函数均为**异步函数**，调用时需 `await`；`clear_stream_cache`、`clear_context`、`get_all_stream_ids` 为同步函数。
 
+::: tip 想了解"聊天流是什么"？
+本页是 `stream_api` 的 API 速查。如果你还不知道 `stream_id` / `ChatStream` / `StreamContext` / `ChatStreams` 表这四个名词分别指什么，请先读 [16.5 Stream：聊天流是什么](../guide/plugin-authoring/16.5-stream)。
+:::
+
 ## 导入
 
 ```python
@@ -57,11 +61,11 @@ stream = await get_or_create_stream(
 
 #### `build_stream_from_database(stream_id: str) -> ChatStream | None`
 
-从数据库记录构建 [`ChatStream`](../../components/stream.md)。未找到返回 `None`。
+从数据库记录构建 [`ChatStream`](../guide/plugin-authoring/16.5-stream#chatstream-可读字段)。未找到返回 `None`。
 
 #### `load_stream_context(stream_id: str, max_messages: int | None = None) -> StreamContext`
 
-从数据库加载 [`StreamContext`](../../components/stream.md)。`max_messages` 控制最大加载消息数，可选。
+从数据库加载 [`StreamContext`](../guide/plugin-authoring/16.5-stream#streamcontext-可读字段)。`max_messages` 控制最大加载消息数，可选。
 
 #### `refresh_stream(stream_id: str) -> ChatStream | None`
 
@@ -109,7 +113,7 @@ stream = await get_or_create_stream(
 
 清空指定流的内存上下文（仅当流已在内存中时生效）。
 
-将 [`StreamContext`](../../components/stream.md) 的 `history_messages` 和 `unread_messages` 全部清空，使 Chatter 下一轮从空白上下文开始处理。若流尚未加载到内存，返回 `False`。重启后上下文会从数据库重新加载，该操作不影响持久化记录。
+将 [`StreamContext`](../guide/plugin-authoring/16.5-stream#streamcontext-可读字段) 的 `history_messages` 和 `unread_messages` 全部清空，使 Chatter 下一轮从空白上下文开始处理。若流尚未加载到内存，返回 `False`。重启后上下文会从数据库重新加载，该操作不影响持久化记录。
 
 ```python
 from src.app.plugin_system.api.stream_api import clear_context
@@ -162,6 +166,7 @@ print(f"活跃流数: {len(active)}")
 
 ## 相关文档
 
-- [ChatStream 模型](../../components/stream.md)
+- [聊天流概念详解（16.5 Stream）](../guide/plugin-authoring/16.5-stream)
+- [Stream API 指南章节（第 24 章）](../guide/plugin-authoring/24-stream-api)
 - [Chat API](./chat-api.md)
 - [Message API](./message-api.md)

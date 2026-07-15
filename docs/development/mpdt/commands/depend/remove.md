@@ -70,20 +70,6 @@ mpdt depend remove weather-api
 ✓ 已删除插件目录: /path/to/Neo-MoFox/plugins/weather-api
 ```
 
-### 仅移除 manifest 声明
-
-使用 `--no-clean` 选项只移除 manifest.json 中的声明，不删除实际文件：
-
-```bash
-mpdt depend remove requests --no-clean
-```
-
-输出：
-```
-✓ 已从 manifest 移除 Python 包依赖: requests
-ℹ 跳过包卸载（使用 --no-clean 选项）
-```
-
 ## 行为说明
 
 ### 自动清理
@@ -95,24 +81,15 @@ mpdt depend remove requests --no-clean
    - **Python 包**：使用 `uv pip uninstall` 从虚拟环境中卸载
    - **插件**：删除 `plugins/` 目录下的 `.mfp` 文件或插件目录
 
-### 跳过清理
-
-使用 `--no-clean` 选项可以只更新 manifest.json，不删除文件：
-
-```bash
-mpdt depend remove requests --no-clean
-```
-
-这在以下情况下很有用：
-- 需要保留文件用于其他用途
-- 手动管理文件
-- 避免意外删除
+::: warning 无条件清理
+当前版本的 `mpdt depend remove` 会无条件删除相关文件。如果只需要从 manifest.json 中移除声明而保留文件，请手动编辑 `manifest.json`。
+:::
 
 ### 前置条件
 
 自动清理功能需要：
 
-1. **已配置 Neo-MoFox 路径**：使用 `mpdt config set-mofox <path>` 配置
+1. **已配置 Neo-MoFox 路径**：使用 `mpdt config edit mofox.path <path>` 配置
 2. **Python 包卸载**：需要存在 `.venv` 虚拟环境
 3. **已安装 uv**：用于卸载 Python 包
 
@@ -179,7 +156,7 @@ mpdt depend remove requests --no-clean
 **解决方案**：
 配置 Neo-MoFox 路径以启用自动清理：
 ```bash
-mpdt config set-mofox /path/to/Neo-MoFox
+mpdt config edit mofox.path /path/to/Neo-MoFox
 ```
 
 ### 未找到 uv 命令
@@ -232,16 +209,7 @@ mpdt depend remove requests
 mpdt depend remove requests
 ```
 
-### 3. 需要保留文件时使用 --no-clean
-
-只在确实需要保留文件时使用 `--no-clean`：
-
-```bash
-# 只移除 manifest 声明，保留文件
-mpdt depend remove requests --no-clean
-```
-
-### 4. 移除后验证
+### 3. 移除后验证
 
 移除依赖后，检查插件状态：
 
@@ -250,12 +218,12 @@ mpdt depend remove requests
 mpdt plugin check
 ```
 
-### 5. 配置 Neo-MoFox 路径
+### 4. 配置 Neo-MoFox 路径
 
 为了使用自动清理功能，建议先配置 Neo-MoFox 路径：
 
 ```bash
-mpdt config set-mofox /path/to/Neo-MoFox
+mpdt config edit mofox.path /path/to/Neo-MoFox
 mpdt depend remove requests  # 现在会自动卸载
 ```
 

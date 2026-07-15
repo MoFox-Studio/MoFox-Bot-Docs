@@ -35,7 +35,6 @@ GitHub Token: ghp_xxxxxxxxxxxxx
 配置文件编辑器。
 
 ```
-编辑器类型: vscode
 编辑器命令: code
 ```
 
@@ -73,7 +72,7 @@ GitHub Token 用于插件市场发布功能
 生成的配置文件示例：
 
 ```toml
-# ~/.config/mpdt/config.toml
+# ~/.mpdt/config.toml
 
 [mofox]
 path = "/home/user/Neo-MoFox"

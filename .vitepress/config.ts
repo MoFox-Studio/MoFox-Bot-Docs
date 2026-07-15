@@ -82,6 +82,10 @@ const devSidebar: DefaultTheme.SidebarItem[] = [
         collapsed: false,
         items: [
           {
+            text: "指南总览",
+            link: "/docs/development/plugin_develop/guide/plugin-authoring/",
+          },
+          {
             text: "1. 写在前面",
             link: "/docs/development/plugin_develop/guide/plugin-authoring/1-introduction",
           },
@@ -146,6 +150,10 @@ const devSidebar: DefaultTheme.SidebarItem[] = [
             link: "/docs/development/plugin_develop/guide/plugin-authoring/16-chatter",
           },
           {
+            text: "16.5. Stream（聊天流）",
+            link: "/docs/development/plugin_develop/guide/plugin-authoring/16.5-stream",
+          },
+          {
             text: "17. Router 组件",
             link: "/docs/development/plugin_develop/guide/plugin-authoring/17-router",
           },
@@ -160,6 +168,22 @@ const devSidebar: DefaultTheme.SidebarItem[] = [
           {
             text: "20. 总览与下一步",
             link: "/docs/development/plugin_develop/guide/plugin-authoring/20-overview-and-next",
+          },
+          {
+            text: "21. 适配器命令",
+            link: "/docs/development/plugin_develop/guide/plugin-authoring/21-adapter-commands",
+          },
+          {
+            text: "22. 存储框架",
+            link: "/docs/development/plugin_develop/guide/plugin-authoring/22-storage-framework",
+          },
+          {
+            text: "23. 消息 API",
+            link: "/docs/development/plugin_develop/guide/plugin-authoring/23-message-api",
+          },
+          {
+            text: "24. Stream API",
+            link: "/docs/development/plugin_develop/guide/plugin-authoring/24-stream-api",
           },
         ],
       },

@@ -24,6 +24,7 @@ mpdt plugin generate [component_type] [component_name] [path] [options]
 - `chatter` - Chatter 组件（聊天器）
 - `service` - Service 组件（服务组件）
 - `config` - Config 组件（配置组件）
+- `collection` - Collection 组件（组件集合）
 
 ### component_name
 
@@ -122,21 +123,33 @@ mpdt plugin generate service DatabaseService --root
 | `chatter` | `components/chatters/<name>.py` |
 | `service` | `components/services/<name>.py` |
 | `config` | `components/configs/<name>.py` |
+| `collection` | `components/collections/<name>.py` |
 
 使用 `--root` 选项时，生成在插件根目录。
 
 ### 自动注册
 
-生成组件后，需要在 `plugin.py` 中注册：
+生成组件后，MPDT 会自动更新 `plugin.py` 中的 `get_components()` 方法，将新组件注册到插件中：
 
 ```python
-from mofox.plugin import BasePlugin
-from components.actions.my_action import MyAction
+from src.app.plugin_system.base import BasePlugin, register_plugin
 
+from .components.actions.my_action import MyAction
+
+@register_plugin
 class MyPlugin(BasePlugin):
+    """我的插件。"""
+
     plugin_name = "my_plugin"
-    
-    def get_actions(self):
+    plugin_description = "我的插件"
+    plugin_version = "1.0.0"
+
+    configs: list[type] = []
+    dependent_components: list[str] = []
+
+    def get_components(self) -> list[type]:
+        """返回插件组件类。"""
+
         return [MyAction]
 ```
 
@@ -145,7 +158,7 @@ class MyPlugin(BasePlugin):
 生成组件后：
 
 1. **编辑组件文件**
-   实现 `execute()` 或 `call()` 方法中的业务逻辑
+   实现 `execute()` 方法中的业务逻辑
 
 2. **启动开发模式测试**
 ```bash

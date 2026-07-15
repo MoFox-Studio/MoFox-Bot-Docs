@@ -70,15 +70,14 @@ mpdt config edit github.token ghp_xxxxxxxxxxxxx
 
 ### 编辑器配置
 ```bash
-mpdt config edit editor.type vscode
 mpdt config edit editor.command "code"
 ```
 
 ## 配置文件位置
 
 配置文件存储在：
-- **Linux/macOS**: `~/.config/mpdt/config.toml`
-- **Windows**: `%APPDATA%\mpdt\config.toml`
+- **Linux/macOS**: `~/.mpdt/config.toml`
+- **Windows**: `%USERPROFILE%\.mpdt\config.toml`
 
 ## 相关文档
 

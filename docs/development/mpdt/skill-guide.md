@@ -160,7 +160,7 @@ your-workspace/
 ### 期望行为
 
 ✅ **正确识别**：AI 应该：
-- 提及 `mpdt init` 命令
+- 提及 `mpdt plugin init` 命令
 - 询问模板类型（basic/action/tool/full 等）
 - 询问作者信息和许可证
 - 提供完整的工作流步骤
@@ -231,7 +231,7 @@ MPDT 的 Skill 文件会随工具本身一起更新。
 ```
 
 **AI 会做什么**：
-1. 运行 `mpdt init translator --template tool`
+1. 运行 `mpdt plugin init translator --template tool`
 2. 询问你的作者信息和许可证
 3. 自动生成插件结构
 4. 提示下一步操作（如添加组件、启动开发模式）
@@ -245,10 +245,10 @@ MPDT 的 Skill 文件会随工具本身一起更新。
 
 **AI 会做什么**：
 1. 确认当前在插件目录中
-2. 运行 `mpdt generate action emoji_sender`
+2. 运行 `mpdt plugin generate action emoji_sender`
 3. 询问组件描述
 4. 生成组件文件
-5. 建议运行 `mpdt check` 检查
+5. 建议运行 `mpdt plugin check` 检查
 
 ### 示例 3：完整流程
 
@@ -258,10 +258,10 @@ MPDT 的 Skill 文件会随工具本身一起更新。
 ```
 
 **AI 会做什么**：
-1. `mpdt init calculator --template tool`
+1. `mpdt plugin init calculator --template tool`
 2. 生成必要的组件
-3. `mpdt check --fix`
-4. `mpdt build --bump patch`
+3. `mpdt plugin check --fix`
+4. `mpdt plugin build`
 5. 告诉你 `.mfp` 文件在 `dist/` 目录
 
 ## 进阶技巧
@@ -281,9 +281,9 @@ MPDT 的 Skill 文件会随工具本身一起更新。
 ```
 
 AI 会依次执行：
-1. `mpdt init weather --template tool`
-2. `mpdt generate action send_weather`
-3. `mpdt dev`
+1. `mpdt plugin init weather --template tool`
+2. `mpdt plugin generate action send_weather`
+3. `mpdt plugin dev`
 
 ### 调试模式
 
@@ -292,9 +292,9 @@ AI 会依次执行：
 ```
 
 AI 会：
-1. 运行 `mpdt check --level info --report markdown`
+1. 运行 `mpdt plugin check --level info --report markdown`
 2. 分析错误报告
-3. 运行 `mpdt check --fix`
+3. 运行 `mpdt plugin check --fix`
 4. 手动修复无法自动修复的问题
 
 ## 下一步
@@ -304,7 +304,7 @@ AI 会：
 1. 📖 阅读 [MPDT 概述](./index.md) 了解工具能力
 2. 🚀 按照 [安装指南](./installation.md) 安装 MPDT 本身
 3. 🧪 尝试创建你的第一个插件
-4. 📚 查看 [命令参考](./commands/init.md) 深入了解每个命令
+4. 📚 查看 [命令参考](./commands/plugin/index.md) 深入了解每个命令
 
 **记住**：Skill 文件只是让 AI 更智能地使用 MPDT，你仍然需要安装 MPDT 工具本身。
 

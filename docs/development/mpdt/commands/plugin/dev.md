@@ -86,7 +86,7 @@ mpdt plugin dev --neo-mofox-path /path/to/Neo-MoFox
 ### 指定插件路径
 
 ```bash
-mpdt plugin dev --path /path/to/my_plugin
+mpdt plugin dev /path/to/my_plugin
 ```
 
 ## 首次使用
@@ -367,3 +367,4 @@ rm -rf /path/to/Neo-MoFox/plugins/dev_bridge
 
 - [配置 Neo-MoFox 路径](../config/edit)
 - [插件开发概述](/docs/development/plugin_develop/)
+- [配置管理](../config/)

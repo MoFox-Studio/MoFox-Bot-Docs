@@ -58,7 +58,7 @@ uv pip install .
 mpdt --version
 ```
 
-如果终端输出了版本号（如 `mpdt, version 0.4.8`），那么恭喜你，安装成功！
+如果终端输出了版本号（如 `mpdt, version 0.6.4`），那么恭喜你，安装成功！
 
 ## 常见安装问题
 

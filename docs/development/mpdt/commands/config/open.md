@@ -20,7 +20,7 @@ mpdt config open
 
 会在配置的编辑器（如 VS Code）中打开：
 ```
-~/.config/mpdt/config.toml
+~/.mpdt/config.toml
 ```
 
 ## 编辑器优先级

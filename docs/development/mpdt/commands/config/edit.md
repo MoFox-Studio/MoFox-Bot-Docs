@@ -130,8 +130,8 @@ mpdt config edit github.token invalid_token
 
 ## 配置文件位置
 
-- **Linux/macOS**: `~/.config/mpdt/config.toml`
-- **Windows**: `%APPDATA%\mpdt\config.toml`
+- **Linux/macOS**: `~/.mpdt/config.toml`
+- **Windows**: `%USERPROFILE%\.mpdt\config.toml`
 
 ## 最佳实践
 

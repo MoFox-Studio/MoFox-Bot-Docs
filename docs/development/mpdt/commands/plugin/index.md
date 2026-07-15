@@ -34,7 +34,7 @@ mpdt plugin dev
 mpdt plugin check --fix
 
 # 6. 升级版本并构建
-mpdt plugin bump patch
+mpdt plugin bump --type patch
 mpdt plugin build
 ```
 
@@ -58,7 +58,7 @@ mpdt plugin dev
 ### 检查和构建
 ```bash
 mpdt plugin check --fix
-mpdt plugin bump patch
+mpdt plugin bump --type patch
 mpdt plugin build
 ```
 

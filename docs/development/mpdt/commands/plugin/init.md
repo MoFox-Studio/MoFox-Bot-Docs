@@ -27,6 +27,7 @@ mpdt plugin init [plugin_name] [options]
 - `basic` - 基础插件（仅包含根组件）*默认*
 - `action` - Action 插件（包含示例 Action）
 - `tool` - Tool 插件（包含示例 Tool）
+- `collection` - Collection 插件（包含组件集合）
 - `router` - Router 插件
 - `plus_command` - Plus Command 插件
 - `event_handler` - Event Handler 插件

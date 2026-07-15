@@ -231,7 +231,7 @@ jobs:
       - uses: actions/checkout@v3
       
       - name: Install MPDT
-        run: pip install mofox-plugin-toolkit
+        run: pip install mofox-plugin-dev-toolkit
       
       - name: Check plugin
         run: mpdt plugin check --level error

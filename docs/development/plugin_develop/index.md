@@ -72,9 +72,9 @@ const pluginGuides = [
   },
   {
     avatar: '<iconify-icon icon="material-symbols:rocket-launch"></iconify-icon>',
-    name: '进阶开发',
-    title: '跨插件通信、热重载、LLM 高级用法。',
-    link: './advanced'
+    name: ' 插件编写指南',
+    title: ' 插件编写。',
+    link: './guide/plugin-authoring'
   }
 ]
 </script>

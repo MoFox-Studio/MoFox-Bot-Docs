@@ -146,6 +146,10 @@ const devSidebar: DefaultTheme.SidebarItem[] = [
             link: "/docs/development/plugin_develop/guide/plugin-authoring/15-event-system",
           },
           {
+            text: "15.5. 内置事件参考",
+            link: "/docs/development/plugin_develop/guide/plugin-authoring/15.5-built-in-events",
+          },
+          {
             text: "16. Chatter 组件",
             link: "/docs/development/plugin_develop/guide/plugin-authoring/16-chatter",
           },

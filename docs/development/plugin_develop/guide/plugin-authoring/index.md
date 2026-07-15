@@ -72,6 +72,7 @@
 | [13](./13-agent-orchestration) | Agent 编排 | Agent 怎样用私有工具集做局部任务 |
 | [14](./14-action) | Action 组件 | LLM 调用的“主动作”，负责执行有副作用的操作 |
 | [15](./15-event-system) | 事件系统 | EventHandler 在系统时刻介入，拦截或扩展流程 |
+| [15.5](./15.5-built-in-events) | 内置事件参考 | 所有系统事件的 `params` 字段与可回写字段速查 |
 | [16](./16-chatter) | Chatter 组件 | 自己写一个完整对话器（生成器模式） |
 | [16.5](./16.5-stream) | Stream（聊天流） | 聊天流是什么：`stream_id` / `ChatStream` / `StreamContext` 四层概念与可读字段 |
 

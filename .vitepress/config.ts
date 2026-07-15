@@ -622,10 +622,86 @@ export default defineConfig({
             text: "Plugin UI",
             collapsed: false,
             items: [
-              { text: "概览", link: "/docs/builtin_plugins/plugin-ui/" },
-              { text: "快速入门", link: "/docs/builtin_plugins/plugin-ui/quick-start" },
-              { text: "代码指南", link: "/docs/builtin_plugins/plugin-ui/code-guide" },
-              { text: "组件参考", link: "/docs/builtin_plugins/plugin-ui/components" },
+              { text: "概览（含 WebUI 使用教程）", link: "/docs/builtin_plugins/plugin-ui/" },
+              {
+                text: "UI 开发指南",
+                collapsed: false,
+                items: [
+                  { text: "总览", link: "/docs/builtin_plugins/plugin-ui/ui-dev/overview" },
+                  { text: "XML 开发", link: "/docs/builtin_plugins/plugin-ui/ui-dev/xml" },
+                  { text: "组件参考", link: "/docs/builtin_plugins/plugin-ui/ui-dev/components" },
+                ],
+              },
+            ],
+          },
+          {
+            text: "Booku 记忆",
+            collapsed: false,
+            items: [
+              { text: "使用指南", link: "/docs/builtin_plugins/booku/" },
+              {
+                text: "开发指南",
+                collapsed: false,
+                items: [
+                  { text: "总览", link: "/docs/builtin_plugins/booku/dev-guide/overview" },
+                ],
+              },
+            ],
+          },
+          {
+            text: "权限管理",
+            collapsed: false,
+            items: [
+              { text: "使用指南", link: "/docs/builtin_plugins/perm/" },
+            ],
+          },
+          {
+            text: "OneBot 适配器",
+            collapsed: false,
+            items: [
+              { text: "使用指南", link: "/docs/builtin_plugins/onebot/" },
+              {
+                text: "开发指南",
+                collapsed: false,
+                items: [
+                  { text: "总览", link: "/docs/builtin_plugins/onebot/dev-guide/overview" },
+                ],
+              },
+            ],
+          },
+          {
+            text: "Skill 管理器",
+            collapsed: false,
+            items: [
+              { text: "使用指南", link: "/docs/builtin_plugins/skill/" },
+            ],
+          },
+          {
+            text: "表情插件",
+            collapsed: false,
+            items: [
+              { text: "使用指南", link: "/docs/builtin_plugins/emoji/" },
+            ],
+          },
+          {
+            text: "默认聊天器 (DFC)",
+            collapsed: false,
+            items: [
+              { text: "使用指南", link: "/docs/builtin_plugins/dfc/" },
+              {
+                text: "开发指南",
+                collapsed: false,
+                items: [
+                  { text: "总览", link: "/docs/builtin_plugins/dfc/dev-guide/overview" },
+                ],
+              },
+            ],
+          },
+          {
+            text: "实用命令",
+            collapsed: false,
+            items: [
+              { text: "使用指南", link: "/docs/builtin_plugins/ut/" },
             ],
           },
         ],

@@ -77,10 +77,10 @@ cd Neo-MoFox
 我们需要手动创建 `config` 文件夹并基于模板初始化配置文件。
 
 1.  **创建配置文件夹**:
-    在项目根目录下创建一个名为 `config` 的文件夹。
-    ```bash
-    mkdir config
-    ```
+在项目根目录下创建一个名为 `config` 的文件夹。
+```bash
+mkdir config
+```
 
 > **💡 提示**: 在 Windows 环境下，你可以直接使用文件资源管理器进行复制和重命名操作。
 
@@ -113,9 +113,9 @@ host = "0.0.0.0"
 
 2.  **验证状态**:
     *   执行以下命令检查容器运行状态：
-        ```bash
-        docker compose ps
-        ```
+```bash
+docker compose ps
+```
     *   确保 `napcat` 服务显示为 `Up` 或 `Running`。
 
 ## 第五章：连接世界——引导配置
@@ -130,7 +130,7 @@ host = "0.0.0.0"
     *   在 Napcat WebUI 中，点击左侧导航栏的 **网络设置**。
     *   找到 **WebSocket 客户端** 选项，点击 **新建客户端**。
     *   按照下图所示配置参数（具体地址请参考图片配置）：
-        ![Napcat 配置](../../assets/napcat-docker.png)
+        ![Napcat 配置](/napcat-docker.png)
 
 > **💡 小贴士**: 若无法打开页面，请务必检查服务器的**防火墙或安全组**是否已放行 **6099** 端口。成功连接后，机器人的冒险就正式开始了！
 
@@ -179,10 +179,10 @@ host = "0.0.0.0"
 <summary><b>Q4: 我修改了配置文件，但没有生效？</b></summary>
 
 *   修改项目根目录 or 插件目录下的配置文件后，需要**重启**对应的容器才能生效。
-    ```bash
-    # 重启所有服务
-    docker compose restart
-    ```
+```bash
+# 重启所有服务
+docker compose restart
+```
 </details>
 
 ## 结语：你的冒险才刚刚开始

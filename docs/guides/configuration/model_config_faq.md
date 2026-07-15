@@ -24,7 +24,7 @@
 ### 日志示例：`401 Unauthorized`
 
 ```log
-任务-'replyer' 模型-'deepseek-v3': 客户端错误 401 - API-Key错误，认证失败，请检查/config/model.toml中的配置是否正确，不再重试。
+任务-'actor' 模型-'deepseek-v3': 客户端错误 401 - API-Key错误，认证失败，请检查/config/model.toml中的配置是否正确，不再重试。
 ```
 
 ### ❓ 这是什么意思？
@@ -68,10 +68,10 @@ api_key = "sk-xxxxxxxxxxxxxxxxxx"  # ← 检查这里！
 ### 日志示例：`402 Payment Required`/`403 Forbidden`
 
 ```log
-任务-'replyer' 模型-'deepseek-v3': 客户端错误 402 - 账号余额不足，不再重试。
+任务-'actor' 模型-'deepseek-v3': 客户端错误 402 - 账号余额不足，不再重试。
 ```
 ```log
-任务-'replyer' 模型-'gpt-4': 客户端错误 403 - 模型拒绝访问，可能需要实名或余额不足，不再重试。
+任务-'actor' 模型-'gpt-4': 客户端错误 403 - 模型拒绝访问，可能需要实名或余额不足，不再重试。
 ```
 
 
@@ -107,7 +107,7 @@ api_key = "sk-xxxxxxxxxxxxxxxxxx"  # ← 检查这里！
 ### 日志示例：`403 Forbidden`
 
 ```log
-任务-'replyer' 模型-'gpt-4': 客户端错误 403 - 模型拒绝访问，可能需要实名或余额不足，不再重试。
+任务-'actor' 模型-'gpt-4': 客户端错误 403 - 模型拒绝访问，可能需要实名或余额不足，不再重试。
 ```
 
 ### ❓ 这是什么意思？
@@ -135,7 +135,7 @@ api_key = "sk-xxxxxxxxxxxxxxxxxx"  # ← 检查这里！
 ### 日志示例：`429 Too Many Requests`
 
 ```log
-任务-'replyer' 模型-'deepseek-v3': 请求过于频繁，将于10秒后重试 (2次剩余)。
+任务-'actor' 模型-'deepseek-v3': 请求过于频繁，将于10秒后重试 (2次剩余)。
 ```
 
 ```log
@@ -194,7 +194,7 @@ model_identifier = "deepseek-chat"
 api_provider = "DeepSeek"
 
 # 任务中配置多个模型，Bot 会智能调度
-[model_task_config.replyer]
+[model_task_config.actor]
 model_list = ["sf-deepseek", "ds-deepseek"]
 ```
 
@@ -255,7 +255,7 @@ retry_interval = 10
 ### 日志示例：`500 Internal Server Error`
 
 ```log
-任务-'replyer' 模型-'deepseek-v3': 服务器错误，将于10秒后重试 (2次剩余)。
+任务-'actor' 模型-'deepseek-v3': 服务器错误，将于10秒后重试 (2次剩余)。
 ```
 
 ```log
@@ -265,7 +265,7 @@ retry_interval = 10
 ### 日志示例：`503 Service Unavailable`
 
 ```log
-任务-'replyer' 模型-'deepseek-v3': 服务器错误，将于10秒后重试 (2次剩余)。
+任务-'actor' 模型-'deepseek-v3': 服务器错误，将于10秒后重试 (2次剩余)。
 ```
 
 ### ❓ 这是什么意思？
@@ -300,13 +300,11 @@ API 服务器出问题了，不是你的错！
 
 配置文件中有**三个层级**，它们必须正确关联：
 
-```toml
 # 配置链路示例（3 层）——简明说明
 
-- 供应商层（api_providers）：定义 API 源、base_url、api_key，name 用作引用。  
-- 模型层（models）：给每个模型起一个自定义 name，绑定供应商的模型标识（model_identifier）和 api_provider。  
-- 任务层（model_task_config）：在任务中引用模型层的自定义 name 列表。
-
+- **供应商层（api_providers）**：定义 API 源、base_url、api_key，name 用作引用。  
+- **模型层（models）**：给每个模型起一个自定义 name，绑定供应商的模型标识（model_identifier）和 api_provider。  
+- **任务层（model_task_config）**：在任务中引用模型层的自定义 name 列表。
 
 ```toml
 # ① 供应商层：定义 API 提供方
@@ -323,12 +321,11 @@ model_identifier = "deepseek-ai/DeepSeek-V3" # 供应商的官方模型 ID
 api_provider = "SiliconFlow"                 # 必须与上面供应商层的 name 完全一致
 
 # ③ 任务层：在任务中引用模型层的 name
-[model_task_config.replyer]
+[model_task_config.actor]
 model_list = ["my-deepseek"]                 # 使用② 模型层定义的 name
 ```
 
 提示：确保 api_provider 字符串与对应 [[api_providers]] 的 name 完全一致（包括大小写）。
-```
 
 **常见错误：**
 

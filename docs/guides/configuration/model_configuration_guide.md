@@ -21,10 +21,10 @@ graph LR
     end
 
     subgraph 能力层 [Models]
-        M1["name: deepseek-v3.1<br>provider: SiliconFlow"]
-        M2["name: qwen-14b<br>provider: SiliconFlow"]
-        M3["name: gemini-pro<br>provider: Google Gemini"]
-        M4["name: llama3-local<br>provider: Local Ollama"]
+        M1["name: deepseek-v3.1<br>api_provider: SiliconFlow"]
+        M2["name: qwen-14b<br>api_provider: SiliconFlow"]
+        M3["name: gemini-pro<br>api_provider: Google Gemini"]
+        M4["name: llama3-local<br>api_provider: Local Ollama"]
     end
 
     subgraph 应用层 [Model Tasks]
@@ -88,7 +88,7 @@ retry_interval = 10                        # 重试间隔（秒）
 ## 第2章：能力层 (Models)
 
 ### 2.1 命名与标识
-*   `model_identifier`：这是模型在服务商的模型 ID”，必须严格按照服务商的文档填写，例如 `"deepseek-ai/deepseek-v3.1"`。
+*   `model_identifier`：这是模型在服务商的模型 ID，必须严格按照服务商的文档填写，例如 `"deepseek-ai/deepseek-v3.1"`。
 *   `name`：这是你为这个模型取的“**内部代号**”，例如 `"SiliconFlow-DeepSeek-v3.1-Actor"`。这个代号必须是唯一的，并且将在应用层 (Model Tasks) 中被频繁调用。一个好的命名习惯（如 `供应商-模型名-用途`）能极大提升配置文件的可读性。
 
 ### 2.2 成本控制单元：`price_in` & `price_out`

@@ -392,6 +392,93 @@ const devSidebar: DefaultTheme.SidebarItem[] = [
     ],
   },
 ];
+// 进入站点时显示的白屏 + LOGO 启动动画（每个浏览器会话仅显示一次）
+// 通过 head 内联脚本在 HTML 解析阶段同步注入遮罩，避免文档内容闪现（FOUC）
+// 切换页面（SPA 路由）不会重新触发；同一会话刷新也不会重新触发
+const splashScript = `(function(){
+  var KEY = 'mofox-splash';
+  try { if (sessionStorage.getItem(KEY)) return; } catch (e) { return; }
+  try { sessionStorage.setItem(KEY, '1'); } catch (e) {}
+
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var MIN_DWELL = reduced ? 200 : 2000;
+  var FADE = reduced ? 0 : 500;
+  var MAX_WAIT = 4000;
+  var LOGO = '/logos/logo_with_text.png';
+
+  // 复现 VitePress 的深色模式判定（本脚本先于 VitePress 的 check-dark-mode 执行）
+  var isDark;
+  try {
+    var pref = localStorage.getItem('vitepress-theme-appearance') || 'auto';
+    var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    isDark = (!pref || pref === 'auto') ? prefersDark : pref === 'dark';
+  } catch (e) {
+    isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+  // 深色模式用站点暗背景（灰黑），避免亮瞎眼；浅色模式保持白屏
+  var bg = isDark ? '#1b1b1f' : '#ffffff';
+
+  var css =
+    'html.mofox-splash-active{overflow:hidden;}'
+    + '#mofox-splash{position:fixed;inset:0;z-index:99999;background:' + bg + ';'
+    + 'display:flex;align-items:center;justify-content:center;'
+    + 'transition:opacity ' + FADE + 'ms ease;}'
+    + '#mofox-splash.hide{opacity:0;pointer-events:none;}'
+    + '#mofox-splash .mfl{width:min(60vw,360px);max-width:360px;height:auto;'
+    + (reduced
+      ? 'opacity:1;'
+      : 'opacity:0;transform:scale(.96);animation:mofox-splash-in .5s ease .1s forwards;')
+    + '}'
+    + '@keyframes mofox-splash-in{to{opacity:1;transform:scale(1);}}';
+
+  var st = document.createElement('style');
+  st.id = 'mofox-splash-style';
+  st.textContent = css;
+  document.documentElement.appendChild(st);
+
+  var el = document.createElement('div');
+  el.id = 'mofox-splash';
+  var img = document.createElement('img');
+  img.className = 'mfl';
+  img.src = LOGO;
+  img.alt = 'MoFox';
+  img.setAttribute('width', '360');
+  el.appendChild(img);
+  document.documentElement.appendChild(el);
+  document.documentElement.classList.add('mofox-splash-active');
+
+  var start = Date.now();
+  var done = false;
+  var imgReady = img.complete;
+  var loaded = document.readyState === 'complete';
+
+  function remove() {
+    if (el.parentNode) el.parentNode.removeChild(el);
+    if (st.parentNode) st.parentNode.removeChild(st);
+    document.documentElement.classList.remove('mofox-splash-active');
+  }
+  function hide() {
+    if (done) return;
+    done = true;
+    el.classList.add('hide');
+    if (FADE <= 0) { remove(); }
+    else { setTimeout(remove, FADE + 30); }
+  }
+  function evaluate() {
+    if (done) return;
+    var elapsed = Date.now() - start;
+    if (elapsed >= MAX_WAIT) { hide(); return; }
+    if (loaded && imgReady && elapsed >= MIN_DWELL) { hide(); return; }
+    if (loaded && imgReady) { setTimeout(hide, MIN_DWELL - elapsed); }
+  }
+  function onImg() { imgReady = true; evaluate(); }
+  img.addEventListener('load', onImg);
+  img.addEventListener('error', onImg);
+  function onLoad() { loaded = true; evaluate(); }
+  if (loaded) evaluate(); else window.addEventListener('load', onLoad);
+  setTimeout(evaluate, MAX_WAIT + 50);
+})();`;
+
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
     // ── 构建结束后自动生成 catalog.json ──────────────────────────
@@ -461,6 +548,9 @@ export default defineConfig({
     description:
       "现代化多平台 AI 聊天机器人框架，支持插件化、适配器、Agent 编排等功能。",
     head: [
+      // 启动动画：预加载 LOGO，并在解析阶段同步注入白屏遮罩
+      ["link", { rel: "preload", as: "image", href: "/logos/logo_with_text.png" }],
+      ["script", {}, splashScript],
       ["link", { rel: "icon", href: "/logos/logo-3.png" }],
       ["link", { rel: "preconnect", href: "https://fonts.googleapis.com" }],
       ["link", { rel: "preconnect", href: "https://fonts.gstatic.com", crossorigin: "" }],

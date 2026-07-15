@@ -1,6 +1,6 @@
 # Command API
 
-`src.app.plugin_system.api.command_api` 提供命令注册、匹配和帮助信息。
+`src.app.plugin_system.api.command_api` 提供命令注册、匹配、执行和帮助信息。
 
 ## 导入
 
@@ -12,6 +12,7 @@ from src.app.plugin_system.api.command_api import (
     get_command_class,
     is_command,
     match_command,
+    execute_command,
     get_command_help,
     get_all_command_names,
 )
@@ -21,7 +22,7 @@ from src.app.plugin_system.api.command_api import (
 
 ### `set_prefixes(prefixes: list[str]) -> None`
 
-设置命令前缀列表（如 `["/", "!"]`）。
+设置命令前缀列表（如 `["/", "!"]`）。`prefixes` 必须是非空列表。
 
 ### `get_all_commands() -> dict[str, type[BaseCommand]]`
 
@@ -45,6 +46,20 @@ from src.app.plugin_system.api.command_api import (
 
 ```python
 path, cmd_class, args = match_command("/plugin install web_search")
+```
+
+### `execute_command(message: Message, text: str | None = None) -> tuple[bool, str]`
+
+执行命令。此函数为**异步函数**。
+
+- `message`: 消息对象
+- `text`: 命令文本，可选
+- 返回: `(是否成功, 结果描述)`
+
+```python
+from src.app.plugin_system.api.command_api import execute_command
+
+success, result = await execute_command(message=msg, text="/help")
 ```
 
 ### `get_command_help(signature: str) -> str`

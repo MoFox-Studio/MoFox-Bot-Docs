@@ -35,7 +35,7 @@ from src.app.plugin_system.api.chat_api import (
 
 ### `get_active_chatters() -> dict[str, BaseChatter]`
 
-获取当前活跃的 Chatter 实例（按 stream_id 索引）。
+获取当前活跃的 Chatter 实例（按 `stream_id` 索引）。
 
 ### `register_active_chatter(stream_id: str, chatter: BaseChatter) -> None`
 
@@ -57,15 +57,21 @@ from src.app.plugin_system.api.chat_api import (
 
 获取指定聊天流的活跃 Chatter 实例。
 
-### `get_or_create_chatter_for_stream(stream_id: str, chat_type: ChatType | str = ChatType.ALL, platform: str = "") -> BaseChatter | None`
+### `get_or_create_chatter_for_stream(stream_id: str, chat_type: ChatType | str, platform: str) -> BaseChatter | None`
 
 获取或自动创建绑定到指定聊天流的 Chatter。这是最常用的入口函数。
 
+- `stream_id`: 聊天流 ID
+- `chat_type`: 聊天类型（`private` / `group` / `discuss`），支持 [`ChatType`](../../components/types.md) 枚举或字符串
+- `platform`: 平台标识
+
 ```python
+from src.app.plugin_system.api.chat_api import get_or_create_chatter_for_stream
+
 chatter = get_or_create_chatter_for_stream(
     stream_id="group_123",
-    chat_type=ChatType.GROUP,
-    platform="qq"
+    chat_type="group",
+    platform="qq",
 )
 ```
 

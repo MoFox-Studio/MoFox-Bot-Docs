@@ -152,12 +152,12 @@ class MyAgent(BaseAgent):
 
 ### 使用 LLM 编排 Usables
 
-Agent 可以使用 `create_llm_request()` 方法创建 LLM 请求,并自动注入私有 usables:
+Agent 可以使用 `create_llm_request()` 方法创建 LLM 请求，并自动注入私有 usables：
 
 ```python
 from typing import Annotated
 from src.core.components.base.agent import BaseAgent
-from src.kernel.llm import LLMPayload, ROLE
+from src.kernel.llm import LLMPayload, ROLE, Text
 
 class SmartAgent(BaseAgent):
     agent_name = "smart_agent"
@@ -173,10 +173,10 @@ class SmartAgent(BaseAgent):
         self,
         task: Annotated[str, "任务描述"]
     ) -> tuple[bool, str]:
-        from src.app.plugin_system.api.llm_api import get_default_model_set
+        from src.app.plugin_system.api.llm_api import get_model_set_by_task
         
         # 创建 LLM 请求,自动注入私有 usables
-        model_set = await get_default_model_set()
+        model_set = get_model_set_by_task("actor")
         request = self.create_llm_request(
             model_set=model_set,
             request_name="smart_agent_task",
@@ -186,16 +186,16 @@ class SmartAgent(BaseAgent):
         # 添加任务描述
         request.add_payload(LLMPayload(
             ROLE.USER,
-            f"请帮我完成以下任务: {task}"
+            Text(f"请帮我完成以下任务: {task}")
         ))
         
         # 调用 LLM,让它决定如何使用 usables
-        response = await request.request()
+        response = await request.send(stream=False)
         
-        if response.success:
-            return True, response.content
-        else:
-            return False, f"任务失败: {response.error}"
+        answer = (response.message or "").strip()
+        if not answer:
+            return False, "LLM 返回为空"
+        return True, answer
 ```
 
 ### 手动执行私有 Usable
@@ -295,7 +295,7 @@ class TravelAgent(BaseAgent):
 from typing import Annotated
 from src.core.components.base.agent import BaseAgent
 from src.core.components.base.tool import BaseTool
-from src.kernel.llm import LLMPayload, ROLE
+from src.kernel.llm import LLMPayload, ROLE, Text
 
 class SearchTool(BaseTool):
     """搜索工具"""
@@ -336,10 +336,10 @@ class ResearchAgent(BaseAgent):
         self,
         topic: Annotated[str, "研究主题"]
     ) -> tuple[bool, str]:
-        from src.app.plugin_system.api.llm_api import get_default_model_set
+        from src.app.plugin_system.api.llm_api import get_model_set_by_task
         
         # 获取模型配置
-        model_set = await get_default_model_set()
+        model_set = get_model_set_by_task("actor")
         
         # 创建 LLM 请求,自动注入私有 usables
         request = self.create_llm_request(
@@ -351,23 +351,25 @@ class ResearchAgent(BaseAgent):
         # 添加系统提示
         request.add_payload(LLMPayload(
             ROLE.SYSTEM,
-            "你是一个研究助手,可以使用搜索和计算工具帮助用户研究主题。"
-            "请合理使用工具,并生成详细的研究报告。"
+            Text(
+                "你是一个研究助手,可以使用搜索和计算工具帮助用户研究主题。"
+                "请合理使用工具,并生成详细的研究报告。"
+            )
         ))
         
         # 添加用户任务
         request.add_payload(LLMPayload(
             ROLE.USER,
-            f"请帮我研究以下主题: {topic}"
+            Text(f"请帮我研究以下主题: {topic}")
         ))
         
         # 调用 LLM
-        response = await request.request()
+        response = await request.send(stream=False)
+        answer = (response.message or "").strip()
         
-        if response.success:
-            return True, response.content
-        else:
-            return False, f"研究失败: {response.error}"
+        if not answer:
+            return False, "LLM 返回为空"
+        return True, answer
 ```
 
 ### 示例 3: 引用外部组件
@@ -375,6 +377,7 @@ class ResearchAgent(BaseAgent):
 ```python
 from typing import Annotated
 from src.core.components.base.agent import BaseAgent
+from src.kernel.llm import LLMPayload, ROLE, Text
 
 class MultiPluginAgent(BaseAgent):
     """跨插件代理"""
@@ -392,9 +395,9 @@ class MultiPluginAgent(BaseAgent):
         self,
         task: Annotated[str, "任务描述"]
     ) -> tuple[bool, str]:
-        from src.app.plugin_system.api.llm_api import get_default_model_set
+        from src.app.plugin_system.api.llm_api import get_model_set_by_task
         
-        model_set = await get_default_model_set()
+        model_set = get_model_set_by_task("actor")
         request = self.create_llm_request(
             model_set=model_set,
             request_name="multi_plugin_agent",
@@ -403,11 +406,12 @@ class MultiPluginAgent(BaseAgent):
         
         request.add_payload(LLMPayload(
             ROLE.USER,
-            f"任务: {task}"
+            Text(f"任务: {task}")
         ))
         
-        response = await request.request()
-        return response.success, response.content if response.success else response.error
+        response = await request.send(stream=False)
+        answer = (response.message or "").strip()
+        return (True, answer) if answer else (False, "LLM 返回为空")
 ```
 
 ## 最佳实践
@@ -428,7 +432,7 @@ request = self.create_llm_request(
     model_set=model_set,
     with_usables=True
 )
-response = await request.request()
+response = await request.send(stream=False)
 
 # ❌ 不推荐: 硬编码工具调用顺序
 await self.execute_local_usable("tool1", ...)

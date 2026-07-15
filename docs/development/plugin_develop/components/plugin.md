@@ -23,6 +23,22 @@ def get_components(self) -> list[type]:
     return [MyAction, MyTool, MyChatter, MyCommand]
 ```
 
+::: tip 不要把 `BaseConfig` 子类放进 `get_components()`
+配置类必须放在 `configs` 属性中声明。加载器会优先处理 `configs`，这是实际约束，不是风格建议。
+:::
+
+## 实例属性
+
+| 属性 | 类型 | 说明 |
+| --- | --- | --- |
+| `self.config` | `BaseConfig \| None` | `configs` 列表中第一个配置类的实例，由框架在 `__init__(config=None)` 时注入；未声明配置时为 `None` |
+
+## 构造函数
+
+`BasePlugin.__init__(self, config: BaseConfig | None = None)`
+
+框架在加载插件时会传入 `configs` 中第一个可加载的配置实例。多个配置类时，仅第一个会通过 `self.config` 暴露，其余需通过 `config_api` 或 `load_for_plugin()` 显式加载。
+
 ## 可选重写的生命周期钩子
 
 ### `on_plugin_loaded() -> None`

@@ -1,6 +1,8 @@
 # Action API
 
-`src.app.plugin_system.api.action_api` 提供 Action 组件的查询、Schema 获取与缓存管理。
+`src.app.plugin_system.api.action_api` 提供 Action 组件的查询、Schema 获取、执行、缓存管理与上下文激活。
+
+Action 是偏副作用的 [`LLMUsable`](../../components/llm-usable.md) 组件，返回值约定为 `(bool, str)`。
 
 ## 导入
 
@@ -12,7 +14,9 @@ from src.app.plugin_system.api.action_api import (
     get_action_class,
     get_action_schema,
     get_action_schemas,
+    execute_action,
     clear_schema_cache,
+    modify_actions,
 )
 ```
 
@@ -53,11 +57,41 @@ group_actions = get_actions_for_chat(chat_type=ChatType.GROUP, platform="qq")
 
 批量获取适用场景下所有 Action 的 Schema 列表，用于直接传递给 LLM。
 
+### `execute_action(signature: str, plugin: BasePlugin, message: Message, **kwargs: Any) -> tuple[bool, str]`
+
+执行 Action。创建 Action 实例并调用其 `execute` 方法。此函数为**异步函数**。
+
+- `signature`: Action 组件签名
+- `plugin`: 插件实例
+- `message`: 消息对象
+- `**kwargs`: 传递给 Action 的参数
+- 返回: `(是否成功, 结果描述)`
+
+```python
+from src.app.plugin_system.api.action_api import execute_action
+
+success, result = await execute_action(
+    signature="my_plugin:action:send_msg",
+    plugin=my_plugin,
+    message=msg,
+    content="Hello",
+)
+```
+
 ### `clear_schema_cache(signature: str | None = None) -> None`
 
 清除 Schema 缓存。传入签名则清除单个，不传则清除全部。
+
+### `modify_actions(stream_id: str, message_content: str = "") -> list[str]`
+
+修改动作列表，根据上下文过滤和激活动作。此函数为**异步函数**。
+
+- `stream_id`: 聊天流 ID
+- `message_content`: 消息内容
+- 返回: 可用 Action 签名列表
 
 ## 相关文档
 
 - [Action 组件](../components/action.md)
 - [LLM API](./llm-api.md)
+- [Stream API](./stream-api.md)

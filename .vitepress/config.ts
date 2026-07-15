@@ -77,7 +77,6 @@ const devSidebar: DefaultTheme.SidebarItem[] = [
         text: "manifest.json 格式说明",
         link: "/docs/development/plugin_develop/manifest",
       },
-      { text: "进阶开发", link: "/docs/development/plugin_develop/advanced" },
       {
         text: "插件编写指南",
         collapsed: false,

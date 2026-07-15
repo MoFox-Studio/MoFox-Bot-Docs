@@ -75,6 +75,70 @@ class SendEmojiAction(BaseAction):
 | --- | --- | --- |
 | `self.chat_stream` | `ChatStream` | 当前聊天流，包含 `stream_id`、`platform` 等信息 |
 | `self.plugin` | `BasePlugin` | 所属插件实例，可通过它访问插件配置 |
+| `self._last_message` | `str \| None` | 当前触发消息的纯文本（由框架在调度前注入） |
+
+## 内置辅助方法
+
+`BaseAction` 提供了一组可直接调用的辅助方法，用于实现常见的激活判定与消息发送逻辑。
+
+### `await self._random_activation(probability) -> bool`
+
+按概率返回是否激活，`probability` 取值范围 0.0–1.0。常用于 `go_activate()` 中实现"按概率暴露给 LLM"。
+
+```python
+async def go_activate(self) -> bool:
+    return await self._random_activation(0.3)
+```
+
+### `await self._keyword_match(keywords, case_sensitive=False) -> bool`
+
+对 `self._last_message` 进行关键词包含匹配。默认不区分大小写。
+
+```python
+async def go_activate(self) -> bool:
+    return await self._keyword_match(["你好", "hello", "hi"])
+```
+
+### `await self._llm_judge_activation(judge_prompt="", action_require=None) -> bool`
+
+使用 `utils_small` 模型自动判断当前对话是否应激活本 Action。
+
+- 自动拉取最近 6 条聊天记录作为上下文
+- 自动组装 prompt，仅需传入核心判断逻辑
+- 7 秒超时保护；超时默认返回 `True`，由后续决策系统处理
+- 任何异常默认返回 `False`（不激活）
+
+```python
+async def go_activate(self) -> bool:
+    return await self._llm_judge_activation(
+        judge_prompt="当用户表达情绪或需要情感支持时激活",
+        action_require=["用户情绪低落", "需要情感支持"],
+    )
+```
+
+### `self._get_recent_chat_content(max_messages=6) -> str`
+
+返回最近 `max_messages` 条历史消息文本，格式为 `发送者: 内容`，每条一行。
+
+### `self._get_context_message_for_target(reply_to=None) -> Message | None`
+
+按 `reply_to` 消息 ID 查找上下文消息；未指定则回退到最近一条未读/历史/当前消息。用于确定发送目标（群 ID / 用户 ID）。
+
+### `await self._send_to_stream(content, stream_id=None) -> bool`
+
+向指定聊天流发送任意内容：
+
+- `content` 支持 `Message` 对象、字符串或其他类型
+- `stream_id` 留空则发送到当前 `self.chat_stream`
+- 内部通过 transport 层的 `MessageSender` 发送，并自动补齐 bot 信息与目标用户/群
+
+```python
+ok = await self._send_to_stream("Hello", stream_id=self.chat_stream.stream_id)
+```
+
+### `self.validate_associated_types() -> list[str]` *classmethod*
+
+校验类声明的 `associated_types`，返回经过验证的类型列表。Chatter 在 `modify_llm_usables` 中会自动调用，无需手动调用。
 
 ## 完整示例
 

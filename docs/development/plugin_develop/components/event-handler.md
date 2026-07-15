@@ -38,20 +38,76 @@ Handler C（weight=0）→ [未执行]
 
 ## 系统事件类型（EventType）
 
+### 生命周期与消息事件
+
 | 枚举值 | 触发时机 |
 | --- | --- |
 | `ON_START` | Bot 启动时 |
 | `ON_STOP` | Bot 停止时 |
 | `ON_MESSAGE_RECEIVED` | 收到新消息时 |
-| `ON_MESSAGE_SENT` | 消息发送完成后 |
+| `ON_MESSAGE_SENT` | 消息发送完成后（同步阶段） |
+| `AFTER_MESSAGE_SENT` | 消息发送完成后的异步阶段 |
 | `ON_NOTICE_RECEIVED` | 收到通知事件时 |
 | `ON_RECEIVED_OTHER_MESSAGE` | 收到其他类型消息时 |
+| `ON_INTERNAL_CONTEXT_REQUESTED` | 框架请求内部上下文时 |
+
+### 插件与组件事件
+
+| 枚举值 | 触发时机 |
+| --- | --- |
 | `ON_ALL_PLUGIN_LOADED` | 所有插件加载完成时 |
 | `ON_PLUGIN_UNLOADED` | 某个插件被卸载时 |
 | `ON_COMPONENT_LOADED` | 某个组件加载完成时 |
 | `ON_COMPONENT_UNLOADED` | 某个组件被卸载时 |
 
-**自定义事件**：也支持自定义字符串事件，如 `"my_plugin:custom_event"`
+### Chatter 与提示词事件
+
+| 枚举值 | 触发时机 |
+| --- | --- |
+| `ON_CHATTER_STEP` | Chatter 单步执行开始时 |
+| `AFTER_CHATTER_STEP` | Chatter 单步执行完成后 |
+| `ON_PROMPT_BUILD` | 提示词构建时 |
+
+### LLM 请求生命周期事件
+
+| 枚举值 | 触发时机 |
+| --- | --- |
+| `BEFORE_LLM_REQUEST` | 发起 LLM 请求前 |
+| `AFTER_LLM_REQUEST` | LLM 请求完成后 |
+| `ON_LLM_REQUEST_FAILED` | LLM 请求失败时 |
+
+### 工具调用生命周期事件
+
+| 枚举值 | 触发时机 |
+| --- | --- |
+| `BEFORE_TOOL_CALL` | 执行 Tool 调用前 |
+| `AFTER_TOOL_CALL` | Tool 调用完成后 |
+| `ON_TOOL_CALL_FAILED` | Tool 调用失败时 |
+
+### 动作调用生命周期事件
+
+| 枚举值 | 触发时机 |
+| --- | --- |
+| `BEFORE_ACTION_CALL` | 执行 Action 调用前 |
+| `AFTER_ACTION_CALL` | Action 调用完成后 |
+| `ON_ACTION_CALL_FAILED` | Action 调用失败时 |
+
+### 命令执行生命周期事件
+
+| 枚举值 | 触发时机 |
+| --- | --- |
+| `BEFORE_COMMAND_EXECUTE` | 执行命令前 |
+| `AFTER_COMMAND_EXECUTE` | 命令执行完成后 |
+| `ON_COMMAND_EXECUTE_FAILED` | 命令执行失败时 |
+
+### 自定义事件
+
+- `EventType.CUSTOM`：自定义事件占位枚举。
+- 也支持直接使用字符串事件名，例如 `"my_plugin:custom_event"`。
+
+::: tip 异常会被包装为 PASS
+事件管理器在调用 `execute()` 时会包一层异常保护：处理器抛异常不会让事件总线崩溃，当前实现会把异常转换为 `EventDecision.PASS`。因此**不能依赖抛异常来拦截后续处理器**，真正拦截必须显式返回 `EventDecision.STOP`。
+:::
 
 ## 事件决策（EventDecision）
 

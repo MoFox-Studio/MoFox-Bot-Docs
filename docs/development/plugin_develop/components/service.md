@@ -17,6 +17,8 @@
 plugin_name:service:service_name
 ```
 
+可通过 `MyService.get_signature()` 类方法获取（仅在框架注入 `_plugin_` 后才返回非空值）。
+
 ## 实例生命周期说明
 
 通过 `ServiceManager.get_service(signature)` 获取服务时，当前实现会**每次创建新实例**，并非全局单例。

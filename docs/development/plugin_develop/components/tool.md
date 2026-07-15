@@ -22,6 +22,24 @@
 | `associated_platforms` | `list[str]` | `[]` | 关联平台列表 |
 | `dependencies` | `list[str]` | `[]` | 组件级依赖签名列表 |
 
+## 实例属性
+
+| 属性 | 类型 | 说明 |
+| --- | --- | --- |
+| `self.plugin` | `BasePlugin` | 所属插件实例 |
+| `self.stream_id` | `str` | 当前调用绑定的聊天流 ID（由框架注入，初值为 `""`） |
+| `self.trigger_message` | `Message \| None` | 触发本次工具调用的消息（由框架注入） |
+
+## 内置辅助方法
+
+### `self._bind_runtime_context(*, stream_id=None, message=None)`
+
+由框架在调度 Tool 前调用，把 `stream_id` 与触发消息绑定到实例。一般无需手动调用。
+
+### `self.get_current_stream_id() -> str`
+
+返回当前工具调用绑定的流 ID：优先取 `self.trigger_message.stream_id`，否则回退到 `self.stream_id`。
+
 ## 必须实现的方法
 
 ### `execute(*args, **kwargs) -> tuple[bool, str | dict]`

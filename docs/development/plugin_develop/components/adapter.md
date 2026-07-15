@@ -29,11 +29,11 @@
 建议至少包含以下字段：
 
 - `bot_id`
-- `bot_nickname`
+- `bot_name`
 - `platform`
 
 ::: tip 字段对齐说明
-`send_api` 在发送链路中会读取 `bot_id` 和 `bot_nickname`。如果没有 `bot_nickname`，显示名会回退为 `Bot`。
+`send_api` 与 `BaseAction._send_to_stream` 在发送链路中会读取 `bot_id` 和 `bot_name`。如果没有 `bot_name`，显示名会回退为 `Bot`。
 :::
 
 ## 可重写方法
@@ -54,6 +54,15 @@
 - `on_adapter_unloaded()`
 - `health_check() -> bool`
 - `reconnect()`
+
+## `get_signature()` 类方法
+
+返回组件唯一签名，格式：`"plugin_name:adapter:adapter_name"`。
+
+```python
+>>> MyAdapter.get_signature()
+"my_plugin:adapter:my_adapter"
+```
 
 ## 示例
 
@@ -92,7 +101,7 @@ class MyAdapter(BaseAdapter):
     async def get_bot_info(self) -> dict[str, Any]:
         return {
             "bot_id": "123456",
-            "bot_nickname": "MyBot",
+            "bot_name": "MyBot",
             "platform": self.platform,
         }
 

@@ -18,6 +18,16 @@
 
 在该方法内通过 `self.app` 注册接口。
 
+## 其他方法
+
+| 方法 | 说明 |
+| --- | --- |
+| `get_route_path() -> str` | 返回挂载路径（自定义路径或默认 `/router/{router_name}`） |
+| `get_app() -> FastAPI` | 返回内部 FastAPI 应用实例 |
+| `startup() / shutdown()` | 路由挂载/卸载钩子，可重写以初始化或清理资源 |
+| `get_openapi_schema() -> dict` | 获取 OpenAPI schema |
+| `get_signature() -> str \| None` | 类方法，返回 `"plugin_name:router:router_name"` |
+
 ## 示例
 
 ```python

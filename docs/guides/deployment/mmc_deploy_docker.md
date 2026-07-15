@@ -88,15 +88,13 @@ cd Neo-MoFox
 
 在启动之前，我们需要对机器人进行一些基础配置。
 
-###2.  配置监听地址
-
-
-    *   **重要**: Docker 部署时，需要让服务监听所有网络接口。找到"Neo-MoFox\config\plugins\onebot_adapter\config.toml" `host = "localhost"`，将其修改为：
-        ```
-        # Napcat WebSocket 服务地址
-        # 值类型：str, 默认值："localhost"
-        host = "0.0.0.0"
-        ```
+### 2.  配置监听地址
+*   **重要**: Docker 部署时，需要让服务监听所有网络接口。找到"Neo-MoFox\config\plugins\onebot_adapter\config.toml" `host = "localhost"`，将其修改为：
+```toml
+# Napcat WebSocket 服务地址
+ # 值类型：str, 默认值："localhost"
+host = "0.0.0.0"
+ ```
 
 ### 3.2 网络预留
 

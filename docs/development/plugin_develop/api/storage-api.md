@@ -15,10 +15,10 @@ from src.app.plugin_system.api.storage_api import (
 | 函数 | 说明 |
 |------|------|
 | `save_json(store_name, name, data) -> None` | 保存 JSON 数据 |
-| `load_json(store_name, name) -> dict \| None` | 加载 JSON 数据 |
-| `delete_json(store_name, name) -> bool` | 删除 JSON 数据 |
+| `load_json(store_name, name) -> dict \| None` | 加载 JSON 数据，键不存在时返回 `None` |
+| `delete_json(store_name, name) -> bool` | 删除 JSON 数据，键不存在时返回 `False` |
 | `exists_json(store_name, name) -> bool` | 检查键是否存在 |
-| `list_json(store_name) -> list[str]` | 列出所有键名 |
+| `list_json(store_name) -> list[str]` | 列出所有键名（不含 `.json` 后缀） |
 
 ```python
 await save_json("my_plugin", "settings", {"theme": "dark"})
@@ -28,6 +28,8 @@ settings = await load_json("my_plugin", "settings")
 ## PluginDatabase
 
 插件独立 SQLite 数据库，提供标准 CRUD/QueryBuilder/AggregateQuery 接口。
+
+永远使用 SQLite，在指定路径独立存储，与主程序数据库不共享任何引擎或连接。
 
 ```python
 from src.app.plugin_system.api.storage_api import PluginDatabase
@@ -65,9 +67,19 @@ await db.close()
 
 | 方法 | 说明 |
 |------|------|
-| `db.initialize() -> None` | 初始化引擎并建表（幂等） |
+| `db.initialize() -> None` | 初始化引擎并建表（幂等），启用 WAL / NORMAL 等性能优化 pragma |
 | `db.crud(model) -> CRUDBase` | 获取 CRUD 实例 |
 | `db.query(model) -> QueryBuilder` | 获取查询构建器 |
 | `db.aggregate(model) -> AggregateQuery` | 获取聚合查询 |
-| `db.session() -> AsyncGenerator[AsyncSession]` | 获取原始 session（上下文管理器） |
-| `db.close() -> None` | 关闭数据库引擎 |
+| `db.invalidate(model) -> None` | 使原始 SQL 写入后该模型的进程内读缓存失效 |
+| `db.session() -> AsyncGenerator[AsyncSession]` | 获取原始 session（上下文管理器），会话退出时自动提交，异常时自动回滚 |
+| `db.close() -> None` | 关闭数据库引擎，释放所有连接资源 |
+
+::: warning 初始化约束
+使用 `crud`、`query`、`aggregate`、`session` 方法前必须先调用 `await db.initialize()`，否则会抛出 `RuntimeError`。
+:::
+
+## 相关文档
+
+- [Database API](./database-api.md)
+- [数据持久化](../advanced/data-persistence.md)

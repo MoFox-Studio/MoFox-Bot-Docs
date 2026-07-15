@@ -86,7 +86,23 @@ async def handle_limit(self, count: int, enabled: bool = True) -> tuple[bool, st
 | --- | --- |
 | `self.plugin` | 所属插件实例 |
 | `self.stream_id` | 当前命令的目标聊天流 ID |
+| `self.message_id` | 触发命令的消息 ID（可选，用于回复） |
+| `self._message` | 触发命令的完整 `Message` 对象（可选，用于访问图片等媒体内容） |
 
+## `match(parts)` 类方法
+
+`command_manager` 通过 `match(parts)` 判断一条命令文本是否由本 Command 处理。默认实现：若 `parts[0] == command_name` 则返回 `1`（匹配长度），否则返回 `0`。一般无需重写。
+
+## 构造函数
+
+`BaseCommand.__init__(plugin, stream_id, message_id="", message=None)`
+
+- `plugin`：所属插件实例
+- `stream_id`：聊天流 ID
+- `message_id`：触发命令的消息 ID（可选，用于回复）
+- `message`：触发命令的完整消息对象（可选，用于访问图片等媒体内容）
+
+实例化时会自动扫描所有被 `@cmd_route` 装饰的方法，构建 Trie 路由树。
 
 ## 完整示例
 

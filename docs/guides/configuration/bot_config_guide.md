@@ -23,7 +23,6 @@
 | `[plugin_deps]` | 插件依赖自动安装 |
 | `[plugin_market]` | 插件市场接入 |
 
----
 
 ## 一、Bot 基础配置 `[bot]`
 
@@ -76,7 +75,6 @@ message_buffer_max_skip = 3       # 最多连续跳过的 tick 次数
 - 收到消息后在窗口内等待后续消息一并处理，适合用户习惯连续发多条的场景。
 - `max_skip` 防止群聊高压下一直跳过导致无法响应。
 
----
 
 ## 二、聊天配置 `[chat]`
 
@@ -90,7 +88,6 @@ image_recognition_prompt = ""     # 自定义识图提示词，留空用默认
 - `max_history_messages`: 控制上下文窗口大小，值越大 LLM 消耗 token 越多。
 - `image_recognition_prompt`: 有特殊识图需求时自定义，一般留空即可。
 
----
 
 ## 三、LLM 全局配置 `[llm]`
 
@@ -102,7 +99,6 @@ default_policy = "load_balanced"  # load_balanced / round_robin
 - `load_balanced`: 负载均衡策略，优先选择当前请求最少的模型。
 - `round_robin`: 轮询策略，依次轮流使用模型列表中的模型。
 
----
 
 ## 四、LLM 统计 `[llm_stats]`
 
@@ -116,7 +112,6 @@ window_hours = 5.0               # 统计聚合窗口（小时）
 
 记录每次 LLM 请求的延迟、token 消耗等指标，方便分析模型表现。
 
----
 
 ## 五、通用遥测 `[telemetry]`
 
@@ -138,7 +133,6 @@ collect_runtime_snapshots = true
 
 本地收集框架运行数据，方便排查问题。一般保持默认即可。
 
----
 
 ## 六、云端遥测 `[cloud_telemetry]`
 
@@ -154,7 +148,6 @@ send_timeout_seconds = 10.0
 
 向云端发送匿名的运行状态数据，帮助项目了解整体健康状况。不涉及隐私内容。
 
----
 
 ## 七、人格配置 `[personality]`
 
@@ -196,7 +189,6 @@ negative_behaviors = [
 - `safety_guidelines`: 最高行为准则，任何情况必须遵守。
 - `negative_behaviors`: 明确禁止的行为列表。
 
----
 
 ## 八、数据库配置 `[database]`
 
@@ -227,7 +219,6 @@ connection_pool_size = 10
 connection_timeout = 10
 ```
 
----
 
 ## 九、权限配置 `[permissions]`
 
@@ -265,7 +256,6 @@ log_permission_denied = true
 log_permission_granted = false
 ```
 
----
 
 ## 十、HTTP 路由 `[http_router]`
 
@@ -283,7 +273,6 @@ api_keys = ["your-secret-key"]    # 留空禁用认证（不推荐）
 设置 `http_router_host = "0.0.0.0"` 会暴露到局域网（甚至公网），**必须**配置强 API Key。
 :::
 
----
 
 ## 十一、高级配置 `[advanced]`
 
@@ -294,7 +283,6 @@ trust_env = true                  # 信任系统代理和环境变量
 process_workers = 4               # TaskManager 进程池大小
 ```
 
----
 
 ## 十二、插件依赖 `[plugin_deps]`
 
@@ -307,7 +295,6 @@ skip_if_satisfied = true          # 仅在缺少依赖时才安装
 
 安装插件时自动处理其 Python 依赖。
 
----
 
 ## 十三、插件市场 `[plugin_market]`
 
@@ -326,7 +313,6 @@ timeout = 20.0
 
 让 Neo-MoFox 接入插件市场，实现插件发现、安装、订阅和自动更新。
 
----
 
 ## 常见问题
 

@@ -481,357 +481,353 @@ const splashScript = `(function(){
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-    // ── 构建结束后自动生成 catalog.json ──────────────────────────
-    async buildEnd(siteConfig) {
-      const sidebar = siteConfig.site.themeConfig.sidebar || {};
-      const catalog = extractLinksFromSidebar(sidebar);
+  // ── 构建结束后自动生成 catalog.json ──────────────────────────
+  async buildEnd(siteConfig) {
+    const sidebar = siteConfig.site.themeConfig.sidebar || {};
+    const catalog = extractLinksFromSidebar(sidebar);
 
-      const outDir = siteConfig.outDir;
-      const catalogPath = resolve(outDir, "catalog.json");
+    const outDir = siteConfig.outDir;
+    const catalogPath = resolve(outDir, "catalog.json");
 
-      mkdirSync(outDir, { recursive: true });
-      writeFileSync(catalogPath, JSON.stringify(catalog, null, 2), "utf-8");
+    mkdirSync(outDir, { recursive: true });
+    writeFileSync(catalogPath, JSON.stringify(catalog, null, 2), "utf-8");
 
-      console.log(
-        `✅ catalog.json generated with ${catalog.length} pages → ${catalogPath}`,
-      );
-    },
-    vue: {
-      template: {
-        compilerOptions: {
-          isCustomElement: (tag) => {
-            return tag.startsWith("iconify-icon");
-          },
+    console.log(
+      `✅ catalog.json generated with ${catalog.length} pages → ${catalogPath}`,
+    );
+  },
+  vue: {
+    template: {
+      compilerOptions: {
+        isCustomElement: (tag) => {
+          return tag.startsWith("iconify-icon");
         },
       },
     },
-    markdown: {
-      config(md) {
-        md.use(mermaidPlugin);
-        md.use(InlineLinkPreviewElementTransform);
-        md.use(taskLists, { enabled: false });
-      },
+  },
+  markdown: {
+    config(md) {
+      md.use(mermaidPlugin);
+      md.use(InlineLinkPreviewElementTransform);
+      md.use(taskLists, { enabled: false });
     },
-    vite: {
-      plugins: [
-        GitChangelog({
-          // 在此处填写你的仓库 URL
-          repoURL: () => "https://github.com/MoFox-Studio/MoFox-Bot-Docs",
-        }),
-        GitChangelogMarkdownSection(),
-      ],
-      optimizeDeps: {
-        exclude: [
-          "@nolebase/vitepress-plugin-inline-link-preview/client",
-          "@nolebase/vitepress-plugin-enhanced-readabilities/client",
-          "vitepress",
-          "@nolebase/ui",
-        ],
-      },
-      ssr: {
-        noExternal: [
-          // 如果还有其他需要由 Vite 处理的包，可以在这里添加。
-          "@nolebase/vitepress-plugin-inline-link-preview",
-          "@nolebase/vitepress-plugin-enhanced-readabilities",
-          "@nolebase/ui",
-        ],
-      },
-    },
-    locales: {
-      root: {
-        label: "Chinese",
-        lang: "zh-CN",
-      },
-    },
-    ignoreDeadLinks: true,
-    title: "Neo-MoFox",
-    description:
-      "现代化多平台 AI 聊天机器人框架，支持插件化、适配器、Agent 编排等功能。",
-    head: [
-      // 启动动画：预加载 LOGO，并在解析阶段同步注入白屏遮罩
-      ["link", { rel: "preload", as: "image", href: "/logos/logo_with_text.png" }],
-      ["script", {}, splashScript],
-      ["link", { rel: "icon", href: "/logos/logo-3.png" }],
-      ["link", { rel: "preconnect", href: "https://fonts.googleapis.com" }],
-      ["link", { rel: "preconnect", href: "https://fonts.gstatic.com", crossorigin: "" }],
-      ["link", { href: "https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap", rel: "stylesheet" }],
-      ["link", { href: "https://unpkg.com/misans@4.0.0/lib/Normal/MiSans-Regular.min.css", rel: "stylesheet" }],
-      ["link", { href: "https://unpkg.com/misans@4.0.0/lib/Normal/MiSans-Medium.min.css", rel: "stylesheet" }],
-      ["link", { href: "https://unpkg.com/misans@4.0.0/lib/Normal/MiSans-Demibold.min.css", rel: "stylesheet" }]
+  },
+  vite: {
+    plugins: [
+      GitChangelog({
+        // 在此处填写你的仓库 URL
+        repoURL: () => "https://github.com/MoFox-Studio/MoFox-Bot-Docs",
+      }),
+      GitChangelogMarkdownSection(),
     ],
-    themeConfig: {
-      // https://vitepress.dev/reference/default-theme-config
-      nav: [
-        { text: "主页", link: "/" },
-        { text: "指南", link: "/docs/guides/" },
-        { text: "开发", link: "/docs/development/" },
+    optimizeDeps: {
+      exclude: [
+        "@nolebase/vitepress-plugin-inline-link-preview/client",
+        "@nolebase/vitepress-plugin-enhanced-readabilities/client",
+        "vitepress",
+        "@nolebase/ui",
+      ],
+    },
+    ssr: {
+      noExternal: [
+        // 如果还有其他需要由 Vite 处理的包，可以在这里添加。
+        "@nolebase/vitepress-plugin-inline-link-preview",
+        "@nolebase/vitepress-plugin-enhanced-readabilities",
+        "@nolebase/ui",
+      ],
+    },
+  },
+  locales: {
+    root: {
+      label: "Chinese",
+      lang: "zh-CN",
+    },
+  },
+  ignoreDeadLinks: true,
+  title: "Neo-MoFox",
+  description:
+    "现代化多平台 AI 聊天机器人框架，支持插件化、适配器、Agent 编排等功能。",
+  head: [
+    // 启动动画：预加载 LOGO，并在解析阶段同步注入白屏遮罩
+    ["link", { rel: "preload", as: "image", href: "/logos/logo_with_text.png" }],
+    ["script", {}, splashScript],
+    ["link", { rel: "icon", href: "/logos/logo-3.png" }],
+    ["link", { rel: "preconnect", href: "https://fonts.googleapis.com" }],
+    ["link", { rel: "preconnect", href: "https://fonts.gstatic.com", crossorigin: "" }],
+    ["link", { href: "https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap", rel: "stylesheet" }],
+    ["link", { href: "https://unpkg.com/misans@4.0.0/lib/Normal/MiSans-Regular.min.css", rel: "stylesheet" }],
+    ["link", { href: "https://unpkg.com/misans@4.0.0/lib/Normal/MiSans-Medium.min.css", rel: "stylesheet" }],
+    ["link", { href: "https://unpkg.com/misans@4.0.0/lib/Normal/MiSans-Demibold.min.css", rel: "stylesheet" }]
+  ],
+  themeConfig: {
+    // https://vitepress.dev/reference/default-theme-config
+    nav: [
+      { text: "主页", link: "/" },
+      { text: "指南", link: "/docs/guides/" },
+      { text: "开发", link: "/docs/development/" },
+      {
+        text: "内置插件",
+        link: "/docs/builtin_plugins/",
+      },
+      {
+        text: "相关链接",
+        items: [
+          { text: "MoFox-Studio", link: "https://github.com/MoFox-Studio" },
+          {
+            text: "Neo-MoFox",
+            link: "https://github.com/MoFox-Studio/Neo-MoFox",
+          },
+          {
+            text: "Neo-MoFox Docs",
+            link: "https://github.com/MoFox-Studio/MoFox-Bot-Docs",
+          },
+          {
+            text: "Neo-MoFox-Bot-QQ群",
+            link: "https://qm.qq.com/q/jfeu7Dq7VS",
+          },
+        ],
+      },
+    ],
+
+    sidebar: {
+      "/docs/guides/": [
         {
-          text: "内置插件",
-          link: "/docs/builtin_plugins/",
+          text: "开始",
+          items: [{ text: "指南主页", link: "/docs/guides/" }],
         },
         {
-          text: "相关链接",
+          text: "部署指南",
+          collapsed: false,
           items: [
-            { text: "MoFox-Studio", link: "https://github.com/MoFox-Studio" },
             {
-              text: "Neo-MoFox",
-              link: "https://github.com/MoFox-Studio/Neo-MoFox",
+              text: "Launcher 部署指南",
+              link: "/docs/guides/deployment/launcher_deployment_guide",
             },
             {
-              text: "Neo-MoFox Docs",
-              link: "https://github.com/MoFox-Studio/MoFox-Bot-Docs",
+              text: "Windows部署指南",
+              link: "/docs/guides/deployment/deployment_guide",
+            },
+            { text: "Linux部署指南", link: "/docs/guides/deployment/mmc_deploy_linux" },
+            {
+              text: "Docker部署指南",
+              link: "/docs/guides/deployment/mmc_deploy_docker",
             },
             {
-              text: "Neo-MoFox-Bot-QQ群",
-              link: "https://qm.qq.com/q/jfeu7Dq7VS",
+              text: "Android部署指南",
+              link: "/docs/guides/deployment/mmc_deploy_android",
+            },
+            {
+              text: "Android 官方部署指南 (Beta)",
+              link: "/docs/guides/deployment/mmc_deploy_android_app",
+            },
+            {
+              text: "社区安装方式",
+              collapsed: true,
+              items: [
+                {
+                  text: "社区部署方式介绍",
+                  link: "/docs/guides/deployment/community_way/",
+                },
+                {
+                  text: "MoFox-Community 安装器",
+                  link: "/docs/guides/deployment/community_way/mofox-community-installer",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          text: "配置指南",
+          collapsed: false,
+          items: [
+            {
+              text: "模型配置快速上手",
+              link: "/docs/guides/configuration/quick_start_model_config",
+            },
+            {
+              text: "Bot配置文件指南",
+              link: "/docs/guides/configuration/bot_config_guide",
+            },
+            {
+              text: "模型配置指南(进阶)",
+              link: "/docs/guides/configuration/model_configuration_guide",
+            },
+            {
+              text: "MCP 使用教程",
+              link: "/docs/guides/configuration/mcp_guide",
+            },
+          ],
+        },
+        {
+          text: "常见问题与帮助",
+          collapsed: false,
+          items: [
+            { text: "模型配置FAQ", link: "/docs/guides/configuration/model_config_faq" },
+            { text: "如何更换端口", link: "/docs/guides/configuration/how_to_change_port" },
+            { text: "维护指南", link: "/docs/guides/usage/maintenance_guide" },
+          ],
+        },
+        {
+          text: "功能使用",
+          collapsed: false,
+          items: [
+            {
+              text: "插件安装指南",
+              link: "/docs/guides/usage/plugin-installation-guide",
+            },
+            { text: "指令权限系统", link: "/docs/guides/usage/permission_usage" },
+            { text: "WebUI 使用指南", link: "/docs/guides/usage/webui_guide" },
+            { text: "Skill 使用教程", link: "/docs/guides/usage/skill_guide" },
+          ],
+        },
+        {
+          text: "适配器",
+          collapsed: false,
+          items: [
+            { text: "适配器介绍", link: "/docs/guides/adapter_list" },
+            {
+              text: "OneBot 适配器配置",
+              link: "/docs/guides/adapter_list/onebot_v11_config",
+            },
+          ],
+        },
+        {
+          text: "其他",
+          collapsed: false,
+          items: [
+            { text: "最终用户许可协议", link: "/docs/guides/misc/eula" },
+            {
+              text: "如何高效提问",
+              link: "/docs/guides/misc/how-to-ask-questions-efficiently",
+            },
+            {
+              text: "提问的智慧(精简版)",
+              link: "/docs/guides/misc/how-to-ask-questions-the-smart-way",
             },
           ],
         },
       ],
-
-      sidebar: {
-        "/docs/guides/": [
-          {
-            text: "开始",
-            items: [{ text: "指南主页", link: "/docs/guides/" }],
-          },
-          {
-            text: "部署指南",
-            collapsed: false,
-            items: [
-              {
-                text: "Launcher 部署指南",
-                link: "/docs/guides/deployment/launcher_deployment_guide",
-              },
-              {
-                text: "Windows部署指南",
-                link: "/docs/guides/deployment/deployment_guide",
-              },
-              { text: "Linux部署指南", link: "/docs/guides/deployment/mmc_deploy_linux" },
-              {
-                text: "Docker部署指南",
-                link: "/docs/guides/deployment/mmc_deploy_docker",
-              },
-              {
-                text: "Android部署指南",
-                link: "/docs/guides/deployment/mmc_deploy_android",
-              },
-              {
-                text: "Android 官方部署指南 (Beta)",
-                link: "/docs/guides/deployment/mmc_deploy_android_app",
-              },
-              {
-                text: "社区安装方式",
-                collapsed: true,
-                items: [
-                  {
-                    text: "社区部署方式介绍",
-                    link: "/docs/guides/deployment/community_way/",
-                  },
-                  {
-                    text: "MoFox-Community 安装器",
-                    link: "/docs/guides/deployment/community_way/mofox-community-installer",
-                  },
-                ],
-              },
-            ],
-          },
-          {
-            text: "配置指南",
-            collapsed: false,
-            items: [
-              {
-                text: "模型配置快速上手",
-                link: "/docs/guides/configuration/quick_start_model_config",
-              },
-              {
-                text: "Bot配置文件指南",
-                link: "/docs/guides/configuration/bot_config_guide",
-              },
-              {
-                text: "模型配置指南(进阶)",
-                link: "/docs/guides/configuration/model_configuration_guide",
-              },
-              {
-                text: "MCP 使用教程",
-                link: "/docs/guides/configuration/mcp_guide",
-              },
-            ],
-          },
-          {
-            text: "常见问题与帮助",
-            collapsed: false,
-            items: [
-              { text: "模型配置FAQ", link: "/docs/guides/configuration/model_config_faq" },
-              { text: "如何更换端口", link: "/docs/guides/configuration/how_to_change_port" },
-              { text: "维护指南", link: "/docs/guides/usage/maintenance_guide" },
-            ],
-          },
-          {
-            text: "功能使用",
-            collapsed: false,
-            items: [
-              {
-                text: "插件安装指南",
-                link: "/docs/guides/usage/plugin-installation-guide",
-              },
-              {
-                text: "内置插件使用指南",
-                link: "/docs/guides/usage/built_in_plugins_guide",
-              },
-              { text: "指令权限系统", link: "/docs/guides/usage/permission_usage" },
-              { text: "WebUI 使用指南", link: "/docs/guides/usage/webui_guide" },
-              { text: "Skill 使用教程", link: "/docs/guides/usage/skill_guide" },
-            ],
-          },
-          {
-            text: "适配器",
-            collapsed: false,
-            items: [
-              { text: "适配器介绍", link: "/docs/guides/adapter_list" },
-              {
-                text: "OneBot 适配器配置",
-                link: "/docs/guides/adapter_list/onebot_v11_config",
-              },
-            ],
-          },
-          {
-            text: "其他",
-            collapsed: false,
-            items: [
-              { text: "最终用户许可协议", link: "/docs/guides/misc/eula" },
-              {
-                text: "如何高效提问",
-                link: "/docs/guides/misc/how-to-ask-questions-efficiently",
-              },
-              {
-                text: "提问的智慧(精简版)",
-                link: "/docs/guides/misc/how-to-ask-questions-the-smart-way",
-              },
-            ],
-          },
-        ],
-        "/docs/development/": devSidebar,
-        "/docs/builtin_plugins/": [
-          {
-            text: "内置插件",
-            items: [
-              { text: "概览", link: "/docs/builtin_plugins/" },
-            ],
-          },
-          {
-            text: "Plugin UI",
-            collapsed: false,
-            items: [
-              { text: "概览（含 WebUI 使用教程）", link: "/docs/builtin_plugins/plugin-ui/" },
-              {
-                text: "UI 开发指南",
-                collapsed: false,
-                items: [
-                  { text: "总览", link: "/docs/builtin_plugins/plugin-ui/ui-dev/overview" },
-                  { text: "XML 开发", link: "/docs/builtin_plugins/plugin-ui/ui-dev/xml" },
-                  { text: "组件参考", link: "/docs/builtin_plugins/plugin-ui/ui-dev/components" },
-                ],
-              },
-            ],
-          },
-          {
-            text: "Booku 记忆",
-            collapsed: false,
-            items: [
-              { text: "使用指南", link: "/docs/builtin_plugins/booku/" },
-              {
-                text: "开发指南",
-                collapsed: false,
-                items: [
-                  { text: "总览", link: "/docs/builtin_plugins/booku/dev-guide/overview" },
-                ],
-              },
-            ],
-          },
-          {
-            text: "权限管理",
-            collapsed: false,
-            items: [
-              { text: "使用指南", link: "/docs/builtin_plugins/perm/" },
-            ],
-          },
-          {
-            text: "OneBot 适配器",
-            collapsed: false,
-            items: [
-              { text: "使用指南", link: "/docs/builtin_plugins/onebot/" },
-              {
-                text: "开发指南",
-                collapsed: false,
-                items: [
-                  { text: "总览", link: "/docs/builtin_plugins/onebot/dev-guide/overview" },
-                ],
-              },
-            ],
-          },
-          {
-            text: "Skill 管理器",
-            collapsed: false,
-            items: [
-              { text: "使用指南", link: "/docs/builtin_plugins/skill/" },
-            ],
-          },
-          {
-            text: "表情插件",
-            collapsed: false,
-            items: [
-              { text: "使用指南", link: "/docs/builtin_plugins/emoji/" },
-            ],
-          },
-          {
-            text: "默认聊天器 (DFC)",
-            collapsed: false,
-            items: [
-              { text: "使用指南", link: "/docs/builtin_plugins/dfc/" },
-              {
-                text: "开发指南",
-                collapsed: false,
-                items: [
-                  { text: "总览", link: "/docs/builtin_plugins/dfc/dev-guide/overview" },
-                ],
-              },
-            ],
-          },
-          {
-            text: "实用命令",
-            collapsed: false,
-            items: [
-              { text: "使用指南", link: "/docs/builtin_plugins/ut/" },
-            ],
-          },
-        ],
-      },
-
-      editLink: {
-        pattern:
-          "https://github.com/MoFox-Studio/MoFox-Bot-Docs/edit/master/:path",
-        text: "在 GitHub 上编辑此页",
-      },
-
-      socialLinks: [
-        { icon: "github", link: "https://github.com/MoFox-Studio/Neo-MoFox" },
+      "/docs/development/": devSidebar,
+      "/docs/builtin_plugins/": [
+        {
+          text: "内置插件",
+          items: [
+            { text: "概览", link: "/docs/builtin_plugins/" },
+          ],
+        },
+        {
+          text: "Plugin UI",
+          collapsed: false,
+          items: [
+            { text: "概览（含 WebUI 使用教程）", link: "/docs/builtin_plugins/plugin-ui/" },
+            {
+              text: "UI 开发指南",
+              collapsed: false,
+              items: [
+                { text: "总览", link: "/docs/builtin_plugins/plugin-ui/ui-dev/overview" },
+                { text: "XML 开发", link: "/docs/builtin_plugins/plugin-ui/ui-dev/xml" },
+                { text: "组件参考", link: "/docs/builtin_plugins/plugin-ui/ui-dev/components" },
+              ],
+            },
+          ],
+        },
+        {
+          text: "Booku 记忆",
+          collapsed: false,
+          items: [
+            { text: "使用指南", link: "/docs/builtin_plugins/booku/" },
+            {
+              text: "开发指南",
+              collapsed: false,
+              items: [
+                { text: "总览", link: "/docs/builtin_plugins/booku/dev-guide/overview" },
+              ],
+            },
+          ],
+        },
+        {
+          text: "权限管理",
+          collapsed: false,
+          items: [
+            { text: "使用指南", link: "/docs/builtin_plugins/perm/" },
+          ],
+        },
+        {
+          text: "OneBot 适配器",
+          collapsed: false,
+          items: [
+            { text: "使用指南", link: "/docs/builtin_plugins/onebot/" },
+            {
+              text: "开发指南",
+              collapsed: false,
+              items: [
+                { text: "总览", link: "/docs/builtin_plugins/onebot/dev-guide/overview" },
+              ],
+            },
+          ],
+        },
+        {
+          text: "Skill 管理器",
+          collapsed: false,
+          items: [
+            { text: "使用指南", link: "/docs/builtin_plugins/skill/" },
+          ],
+        },
+        {
+          text: "表情插件",
+          collapsed: false,
+          items: [
+            { text: "使用指南", link: "/docs/builtin_plugins/emoji/" },
+          ],
+        },
+        {
+          text: "默认聊天器 (DFC)",
+          collapsed: false,
+          items: [
+            { text: "使用指南", link: "/docs/builtin_plugins/dfc/" },
+            {
+              text: "开发指南",
+              collapsed: false,
+              items: [
+                { text: "总览", link: "/docs/builtin_plugins/dfc/dev-guide/overview" },
+              ],
+            },
+          ],
+        },
+        {
+          text: "实用命令",
+          collapsed: false,
+          items: [
+            { text: "使用指南", link: "/docs/builtin_plugins/ut/" },
+          ],
+        },
       ],
-
-      search: {
-        provider: "local",
-      },
-      footer: {
-        message: "Released under the GPL-3.0 License.",
-        copyright: "Copyright © 2025 MoFox Studio",
-      },
-      docFooter: {
-        prev: "← 上一页",
-        next: "下一页 →",
-      },
-      lastUpdated: {
-        text:"最后更新"
-      }
     },
+
+    editLink: {
+      pattern:
+        "https://github.com/MoFox-Studio/MoFox-Bot-Docs/edit/master/:path",
+      text: "在 GitHub 上编辑此页",
+    },
+
+    socialLinks: [
+      { icon: "github", link: "https://github.com/MoFox-Studio/Neo-MoFox" },
+    ],
+
+    search: {
+      provider: "local",
+    },
+    footer: {
+      message: "Released under the GPL-3.0 License.",
+      copyright: "Copyright © 2025 MoFox Studio",
+    },
+    docFooter: {
+      prev: "← 上一页",
+      next: "下一页 →",
+    },
+    lastUpdated: {
+      text: "最后更新"
+    }
   },
+},
 );

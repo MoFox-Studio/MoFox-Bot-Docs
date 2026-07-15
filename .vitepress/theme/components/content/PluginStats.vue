@@ -51,7 +51,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, defineCustomElement } from 'vue';
 
 /** 新插件市场地址 */
@@ -60,15 +60,15 @@ const pluginMarketUrl = 'https://39.96.71.162/';
 /** 新插件市场 API 基地址 */
 const marketApiBase = 'https://39.96.71.162/api/v1';
 
-const totalPlugins = ref(0);
-const totalDownloads = ref(0);
-const totalAuthors = ref(0);
-const totalLikes = ref(0);
+const totalPlugins = ref<number | string>(0);
+const totalDownloads = ref<number | string>(0);
+const totalAuthors = ref<number | string>(0);
+const totalLikes = ref<number | string>(0);
 const copyIcon = ref('mdi:content-copy');
 const loading = ref(true);
 
 /** 复制市场地址到剪贴板 */
-const copyUrl = async () => {
+const copyUrl = async (): Promise<void> => {
   try {
     await navigator.clipboard.writeText(pluginMarketUrl);
     copyIcon.value = 'mdi:check';
@@ -84,8 +84,15 @@ const copyUrl = async () => {
   }
 };
 
+interface MarketStats {
+  plugins_total?: number;
+  downloads_total?: number;
+  authors_total?: number;
+  likes_total?: number;
+}
+
 /** 从新插件市场 API 获取统计数据 */
-const fetchMarketStats = async () => {
+const fetchMarketStats = async (): Promise<MarketStats> => {
   const response = await fetch(`${marketApiBase}/market/stats`);
   if (!response.ok) {
     throw new Error(`API 请求失败: ${response.status}`);
@@ -102,7 +109,7 @@ onMounted(async () => {
     totalAuthors.value = stats.authors_total ?? 0;
     totalLikes.value = stats.likes_total ?? 0;
   } catch (error) {
-    console.error('获取插件市场统计信息失败:', error.message);
+    console.error('获取插件市场统计信息失败:', (error as Error).message);
     totalPlugins.value = '—';
     totalDownloads.value = '—';
     totalAuthors.value = '—';
@@ -117,7 +124,7 @@ if (typeof window !== 'undefined') {
     template: '<span><slot></slot></span>',
   });
   if (!customElements.get('iconify-icon')) {
-    customElements.define('iconify-icon', IconifyIcon);
+    customElements.define('iconify-icon', IconifyIcon as unknown as CustomElementConstructor);
   }
 }
 </script>

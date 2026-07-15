@@ -21,21 +21,34 @@
   </div>
 </template>
 
-<script setup>
-import { defineProps, computed } from 'vue';
+<script setup lang="ts">
+import { computed } from 'vue';
 import MarkdownIt from 'markdown-it';
 
-const props = defineProps({
-  members: Array,
-  size: {
-    type: String,
-    default: 'medium', // large | medium | small
-  },
+interface TeamLink {
+  link: string;
+  icon: string;
+}
+
+interface TeamMember {
+  name: string;
+  avatar: string;
+  title: string;
+  links: TeamLink[];
+}
+
+interface Props {
+  members: TeamMember[];
+  size?: 'large' | 'medium' | 'small';
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  size: 'medium',
 });
 
 const md = new MarkdownIt({ html: true });
 
-const renderMarkdown = (content) => {
+const renderMarkdown = (content: string): string => {
   return md.render(content);
 };
 

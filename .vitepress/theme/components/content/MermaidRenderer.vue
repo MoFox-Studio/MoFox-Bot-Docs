@@ -10,18 +10,19 @@
   <div style="display: none"></div>
 </template>
 
-<script setup>
-import { onMounted, watch, onBeforeUnmount } from "vue";
+<script setup lang="ts">
+import { onMounted, watch } from "vue";
 import { useRoute } from "vitepress";
 
 const route = useRoute();
 
-let mermaidInstance = null;
+type Mermaid = typeof import("mermaid")["default"];
+let mermaidInstance: Mermaid | null = null;
 
 /**
  * 动态导入 mermaid 并渲染当前页面中的所有 mermaid 图表。
  */
-async function renderAllMermaid() {
+async function renderAllMermaid(): Promise<void> {
   if (typeof document === "undefined") return;
 
   // 动态导入 mermaid，仅在客户端执行
@@ -47,7 +48,7 @@ async function renderAllMermaid() {
   for (const el of elements) {
     if (el.getAttribute("data-processed")) continue;
 
-    const code = el.textContent;
+    const code = el.textContent ?? "";
     const id = `mermaid-svg-${Math.random().toString(36).substring(2, 11)}`;
 
     try {
@@ -57,7 +58,8 @@ async function renderAllMermaid() {
       el.classList.remove("mermaid");
     } catch (e) {
       console.error("Mermaid rendering error:", e);
-      el.innerHTML = `<p style="color: red;">Mermaid 渲染错误: ${e.message || "语法无效"}</p>`;
+      const errMsg = e instanceof Error ? e.message : "语法无效";
+      el.innerHTML = `<p style="color: red;">Mermaid 渲染错误: ${errMsg}</p>`;
       el.setAttribute("data-processed", "true");
     }
   }

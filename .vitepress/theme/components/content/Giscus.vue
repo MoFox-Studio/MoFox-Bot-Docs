@@ -4,14 +4,14 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { onMounted, watch, onUnmounted } from 'vue';
 import { useData, useRoute } from 'vitepress';
 
 const { isDark } = useData();
 const route = useRoute();
 
-const giscusAttributes = {
+const giscusAttributes: Record<string, string> = {
   "src": "https://giscus.app/client.js",
   "data-repo": "MoFox-Studio/MoFox-Bot-Docs", // 替换为你的仓库
   "data-repo-id": "R_kgDOPmLudA", // 替换为你的仓库 ID
@@ -30,7 +30,7 @@ const giscusAttributes = {
 
 let giscusScriptLoaded = false;
 
-function loadGiscus() {
+function loadGiscus(): void {
   // 如果脚本已经加载过，则先移除旧的
   if (giscusScriptLoaded) {
     const existingContainer = document.querySelector('.giscus');
@@ -47,7 +47,8 @@ function loadGiscus() {
   Object.entries(giscusAttributes).forEach(([key, value]) => {
     script.setAttribute(key, value);
   });
-  document.querySelector('.giscus').appendChild(script);
+  const container = document.querySelector('.giscus');
+  container?.appendChild(script);
   giscusScriptLoaded = true;
 }
 
@@ -59,10 +60,11 @@ onMounted(() => {
     loadGiscus();
   });
 
-  watch(isDark, (dark) => {
-    const iframe = document.querySelector('.giscus-frame');
-    if (iframe) {
-      iframe.contentWindow.postMessage(
+  watch(isDark, (dark: boolean) => {
+    const iframe = document.querySelector('.giscus-frame') as HTMLIFrameElement | null;
+    const contentWindow = iframe?.contentWindow;
+    if (contentWindow) {
+      contentWindow.postMessage(
         { giscus: { setConfig: { theme: dark ? 'noborder_dark' : 'noborder_light' } } },
         'https://giscus.app'
       );

@@ -43,10 +43,17 @@
   </div>
 </template>
 
-<script setup>
-import { ref, onMounted, computed, watch } from 'vue';
+<script setup lang="ts">
+import { ref, onMounted, computed } from 'vue';
 
-const mirrorUrls = [
+interface PluginEntry {
+  id?: string;
+  repositoryUrl?: string;
+  error?: string;
+  [key: string]: unknown;
+}
+
+const mirrorUrls: string[] = [
   'https://cdn.jsdelivr.net/gh/MoFox-Studio/MoFox-Plugin-Repo@main/plugins.json',
   'https://ghproxy.com/https://raw.githubusercontent.com/MoFox-Studio/MoFox-Plugin-Repo/main/plugins.json',
   'https://mirror.ghproxy.com/https://raw.githubusercontent.com/MoFox-Studio/MoFox-Plugin-Repo/main/plugins.json',
@@ -54,11 +61,11 @@ const mirrorUrls = [
 
 const githubUser = ref('');
 const repoName = ref('');
-const originalPlugins = ref([]);
+const originalPlugins = ref<PluginEntry[]>([]);
 const loading = ref(true);
 const copyIcon = ref('mdi:content-copy');
 
-const fetchFromMirrors = async () => {
+const fetchFromMirrors = async (): Promise<PluginEntry[]> => {
   for (const url of mirrorUrls) {
     try {
       const response = await fetch(url);
@@ -78,7 +85,7 @@ onMounted(async () => {
   try {
     originalPlugins.value = await fetchFromMirrors();
   } catch (error) {
-    console.error(error.message);
+    console.error((error as Error).message);
     originalPlugins.value = [{ error: "获取插件列表失败，请检查网络或稍后再试。" }];
   } finally {
     loading.value = false;
@@ -89,8 +96,8 @@ const generatedContent = computed(() => {
   if (loading.value) {
     return '正在加载...';
   }
-  
-  const newUserPlugin = {
+
+  const newUserPlugin: PluginEntry = {
     id: `${githubUser.value || 'your-github-username'}.${repoName.value || 'your-plugin-repo-name'}`,
     repositoryUrl: `https://github.com/${githubUser.value || 'YOUR-USERNAME'}/${repoName.value || 'YOUR-PLUGIN-REPO'}`
   };
@@ -107,7 +114,7 @@ const generatedContent = computed(() => {
   return JSON.stringify(updatedPlugins, null, 2);
 });
 
-const copyContent = async () => {
+const copyContent = async (): Promise<void> => {
   try {
     await navigator.clipboard.writeText(generatedContent.value);
     copyIcon.value = 'mdi:check';

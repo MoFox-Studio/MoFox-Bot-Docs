@@ -1,4 +1,5 @@
 import { defineConfig } from "vitepress";
+import type { DefaultTheme } from "vitepress";
 import {
   GitChangelog,
   GitChangelogMarkdownSection,
@@ -9,24 +10,40 @@ import mermaidPlugin from "./plugins/markdown-it-mermaid.js";
 import { writeFileSync, mkdirSync } from "node:fs";
 import { resolve } from "node:path";
 
+interface CatalogLink {
+  text?: string;
+  link?: string;
+}
+
 // Helper function to extract links from VitePress sidebar
-function extractLinksFromSidebar(sidebar) {
-  const links = [];
-  function traverse(items) {
-    if (Array.isArray(items)) {
-      items.forEach(item => {
-        if (item.link) links.push({ text: item.text, link: item.link });
-        if (item.items) traverse(item.items);
+function extractLinksFromSidebar(
+  sidebar: DefaultTheme.Sidebar | undefined,
+): CatalogLink[] {
+  const links: CatalogLink[] = [];
+  const visitItem = (item: DefaultTheme.SidebarItem): void => {
+    if (item.link) links.push({ text: item.text, link: item.link });
+    if (item.items) item.items.forEach(visitItem);
+  };
+  const visitSidebar = (
+    side: DefaultTheme.SidebarItem[] | DefaultTheme.SidebarMulti,
+  ): void => {
+    if (Array.isArray(side)) {
+      side.forEach(visitItem);
+    } else {
+      Object.values(side).forEach((group) => {
+        if (Array.isArray(group)) {
+          group.forEach(visitItem);
+        } else {
+          group.items.forEach(visitItem);
+        }
       });
-    } else if (typeof items === 'object' && items !== null) {
-      Object.values(items).forEach(traverse);
     }
-  }
-  traverse(sidebar);
+  };
+  if (sidebar) visitSidebar(sidebar);
   return links;
 }
 
-const devSidebar = [
+const devSidebar: DefaultTheme.SidebarItem[] = [
   {
     text: "开发",
     collapsed: false,
@@ -601,8 +618,6 @@ export default defineConfig({
         { icon: "github", link: "https://github.com/MoFox-Studio/Neo-MoFox" },
       ],
 
-      lastUpdated: true,
-
       search: {
         provider: "local",
       },
@@ -614,7 +629,9 @@ export default defineConfig({
         prev: "← 上一页",
         next: "下一页 →",
       },
-      backToTop: true,
+      lastUpdated: {
+        text:"最后更新"
+      }
     },
   },
 );

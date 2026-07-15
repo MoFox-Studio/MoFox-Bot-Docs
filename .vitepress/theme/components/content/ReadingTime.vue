@@ -14,19 +14,19 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch, nextTick } from 'vue';
 import { useData } from 'vitepress';
-import { getReadingTime } from '../../utils/readingTime.js';
+import { getReadingTime } from '../../utils/readingTime';
 
 const { page } = useData();
 const readingTimeText = ref('');
 const wordCountText = ref('');
-let observer = null;
+let observer: MutationObserver | null = null;
 
 const calculateReadingTime = () => {
   nextTick(() => {
-    const content = document.querySelector('.vp-doc');
+    const content = document.querySelector('.vp-doc') as HTMLElement | null;
     if (content && content.innerText.length > 0) {
       const { readingTime, wordCount } = getReadingTime(content.innerText);
       readingTimeText.value = readingTime;

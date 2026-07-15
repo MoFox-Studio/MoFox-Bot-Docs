@@ -51,7 +51,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vitepress';
 
@@ -60,35 +60,35 @@ const issuesUrl = 'https://github.com/MoFox-Studio/MoFox-Bot-Docs/issues';
 const clickCount = ref(0);
 const showSecretButton = ref(false);
 const isDestructing = ref(false);
-const matrixCanvas = ref(null);
+const matrixCanvas = ref<HTMLCanvasElement | null>(null);
 const matrixColor = ref('var(--vp-c-brand-1)');
 const showOverlay = ref(false);
 const showFakeError = ref(false);
 const countdown = ref(3);
 const isFinished = ref(false);
 const hostname = ref('');
-let animationFrameId;
+let animationFrameId: number | undefined;
 
-const handleTitleClick = () => {
+const handleTitleClick = (): void => {
   clickCount.value++;
   if (clickCount.value >= 5) {
     showSecretButton.value = true;
   }
 };
 
-const reloadPage = () => {
+const reloadPage = (): void => {
   router.go('/');
 };
 
-const activateSelfDestruct = () => {
+const activateSelfDestruct = (): void => {
   isDestructing.value = true;
   showSecretButton.value = false;
   matrixColor.value = '#ff3333';
   console.log('%c[SYSTEM] Self-destruct sequence initiated.', 'color: red; font-size: 16px; font-weight: bold;');
-  
+
   setTimeout(() => {
     showOverlay.value = true;
-    const timer = setInterval(() => {
+    const timer: ReturnType<typeof setInterval> = setInterval(() => {
       countdown.value--;
       if (countdown.value < 0) {
         clearInterval(timer);
@@ -109,15 +109,15 @@ onMounted(() => {
 
   const canvas = matrixCanvas.value;
   if (!canvas) return;
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext('2d')!;
   let width = canvas.width = window.innerWidth;
   let height = canvas.height = window.innerHeight;
 
   const columns = Math.floor(width / 20);
-  const drops = Array(columns).fill(1);
-  const chars = 'モフォックススタジオ'.split(''); // MoFox Studio in Katakana
+  const drops: number[] = Array(columns).fill(1);
+  const chars: string[] = 'モフォックススタジオ'.split(''); // MoFox Studio in Katakana
 
-  function draw() {
+  function draw(): void {
     ctx.fillStyle = 'rgba(0, 0, 0, 0.04)';
     ctx.fillRect(0, 0, width, height);
     ctx.fillStyle = matrixColor.value;
@@ -133,12 +133,12 @@ onMounted(() => {
     }
   }
 
-  function animate() {
+  function animate(): void {
     draw();
     animationFrameId = requestAnimationFrame(animate);
   }
 
-  const handleResize = () => {
+  const handleResize = (): void => {
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
   }

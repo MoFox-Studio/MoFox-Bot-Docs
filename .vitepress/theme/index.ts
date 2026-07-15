@@ -1,3 +1,4 @@
+import type { Theme } from "vitepress";
 import DefaultTheme from "vitepress/theme";
 import "./style/custom.css";
 import "./style/sidebar.css";
@@ -35,7 +36,7 @@ import { NolebaseInlineLinkPreviewPlugin } from "@nolebase/vitepress-plugin-inli
 
 import "@nolebase/vitepress-plugin-inline-link-preview/client/style.css";
 
-export default {
+const theme: Theme = {
   ...DefaultTheme,
   Layout() {
     return h(DefaultTheme.Layout, null, {
@@ -75,3 +76,5 @@ export default {
     app.use(NolebaseInlineLinkPreviewPlugin);
   },
 };
+
+export default theme;

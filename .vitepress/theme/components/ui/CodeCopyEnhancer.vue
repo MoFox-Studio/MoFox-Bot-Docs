@@ -2,10 +2,10 @@
   <!-- This component doesn't render anything visible itself, it manipulates the DOM -->
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { onMounted, onUnmounted } from 'vue';
 
-const copyToClipboard = async (text, button) => {
+const copyToClipboard = async (text: string, button: HTMLButtonElement): Promise<void> => {
   try {
     await navigator.clipboard.writeText(text);
     button.classList.add('copied');
@@ -21,9 +21,9 @@ const copyToClipboard = async (text, button) => {
   }
 };
 
-const addCopyButtons = () => {
+const addCopyButtons = (): void => {
   const blocks = document.querySelectorAll('div[class*="language-"]');
-  
+
   blocks.forEach((block) => {
     if (block.querySelector('.copy-button')) return;
 
@@ -31,7 +31,7 @@ const addCopyButtons = () => {
     button.className = 'copy-button';
     button.innerHTML = '<span class="icon">📋</span>';
     button.title = 'Copy code';
-    
+
     button.addEventListener('click', () => {
       const code = block.querySelector('code');
       if (code) {
@@ -43,12 +43,12 @@ const addCopyButtons = () => {
   });
 };
 
-let observer;
+let observer: MutationObserver | null = null;
 
 onMounted(() => {
   addCopyButtons();
-  
-  observer = new MutationObserver((mutations) => {
+
+  observer = new MutationObserver((mutations: MutationRecord[]) => {
     let shouldUpdate = false;
     mutations.forEach((mutation) => {
       if (mutation.addedNodes.length > 0) {

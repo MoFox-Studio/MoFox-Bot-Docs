@@ -2,7 +2,7 @@
   <div class="reading-progress-bar" :style="{ width: progress + '%' }"></div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
 
 const progress = ref(0);

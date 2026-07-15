@@ -12,15 +12,17 @@
   </div>
 </template>
 
-<script setup>
-import { defineProps } from 'vue'
+<script setup lang="ts">
+interface GuideItem {
+  name: string;
+  link: string;
+  avatar: string;
+  title: string;
+}
 
-defineProps({
-  guides: {
-    type: Array,
-    required: true
-  }
-})
+defineProps<{
+  guides: GuideItem[];
+}>();
 </script>
 
 <style scoped>

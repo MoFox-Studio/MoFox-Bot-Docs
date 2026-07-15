@@ -2,12 +2,14 @@
 
 本教程适用于已经在 QQ 开放平台创建机器人应用，并已取得 AppID 和 AppSecret 的用户。教程以 Neo-MoFox 中的基础私聊和群聊接入为主。
 
-## 1. 确认插件目录
+## 1. 开始使用
 
-确认 Neo-MoFox 中存在以下目录：
+- 从 `http://39.96.71.162/plugin/qqbot_adapter` 下载qqbot适配器
+
+并确认 Neo-MoFox 中存在以下目录：
 
 ```text
-plugins/qqbot_adapter/
+plugins/qqbot_adapter.mfp
 ```
 
 ## 2. 配置注意项
@@ -30,8 +32,6 @@ WebSocket 连接已建立
 Ready! Bot: 我的机器人 (id=xxx)
 QQ Bot 适配器已就绪
 ```
-
-若出现 `等待 READY 超时`、Token 获取失败或持续重连，请查看 [故障排查](troubleshooting.md)。
 
 ## 4. 启用 Markdown 回复
 

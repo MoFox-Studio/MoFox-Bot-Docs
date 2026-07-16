@@ -10,6 +10,12 @@ const adapterCards = [
     title: '通过 OneBot 协议连接 QQ 平台（推荐）...',
     link: './onebot_v11_config'
   },
+  {
+    avatar: '<span class="iconify" data-icon="mdi:robot"></span>',
+    name: 'QQ Bot 适配器（社区）',
+    title: '直连 QQ 官方机器人（小龙虾 Bot），社区插件...',
+    link: './qqbot_adapter_config'
+  },
 ]
 </script>
 

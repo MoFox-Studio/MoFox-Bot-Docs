@@ -41,6 +41,15 @@
     background-image: url(https://api.iconify.design/logos:hexo.svg);
   }
 
+    &[href^='https://39.96.71.162/']::before {
+    width: 16px;
+    height: 18px;
+    margin-left: 2px;
+    margin-right: 4px;
+    background-image: url(/logos/logo-no-text.png);
+  }
+
+
   &[href^='https://git-scm.com']::before {
     width: 18px;
     height: 18px;

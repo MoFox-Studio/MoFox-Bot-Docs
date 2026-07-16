@@ -689,6 +689,10 @@ export default defineConfig({
               text: "OneBot 适配器配置",
               link: "/docs/guides/adapter_list/onebot_v11_config",
             },
+            {
+              text: "QQ Bot 适配器配置（社区）",
+              link: "/docs/guides/adapter_list/qqbot_adapter_config",
+            },
           ],
         },
         {

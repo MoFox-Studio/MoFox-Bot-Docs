@@ -1,6 +1,14 @@
 ﻿# 模型配置问题排查指南
 
-> 遇到问题？对照日志找答案！本指南收集了真实的错误日志示例，帮你快速定位问题.
+> 遇到问题？对照日志找答案！本指南收集了真实的错误日志示例，帮你快速定位问题。
+>
+> 日志基本格式说明：
+> - `LLM 请求失败：` — 不可重试的错误（如 401/402/403 认证、余额、权限），直接放弃。
+> - `LLM 请求暂时失败：` — 可重试的错误（如 429/500/503 限流、服务器、网络错误），会自动重试。
+> - `LLM 请求将重试：` — 即将重试，附带重试次数、下一个模型和延迟秒数。
+> - `LLM 重试已耗尽：` — 重试次数用完，最终放弃。
+>
+> 日志中的 `reason=` 字段为底层 SDK 原始错误信息，实际内容可能因供应商而异，示例中做了简化展示。
 
 
 
@@ -8,14 +16,14 @@
 
 | 问题类型 | 日志关键词 | 快速跳转 |
 |---------|----------|---------|
-| 🔑 **认证失败** | `401`, `Unauthorized`, `api_key` | [→ API Key 问题](#-api-key-认证问题) |
-| 💰 **余额不足** | `402`, `Payment Required` | [→ 账户余额问题](#-账户余额问题) |
-| 🚫 **权限不足** | `403`, `Forbidden` | [→ 权限问题](#-权限不足问题) |
-| ⚡ **请求限流** | `429`, `Too Many Requests`, `请求过于频繁` | [→ 限流问题](#-请求限流问题) |
-| 🌐 **网络错误** | `Connection`, `Timeout`, `连接异常` | [→ 网络问题](#-网络连接问题) |
-| 💥 **服务器错误** | `500`, `503`, `服务器错误` | [→ 服务端问题](#-服务器端问题) |
-| ⚙️ **配置错误** | `not found`, `模型未找到`, `TOML` | [→ 配置问题](#️-配置文件问题) |
-| 📝 **格式错误** | `parse`, `float`, `字符串` | [→ 格式问题](#-toml-格式错误) |
+| 🔑 **认证失败** | `401`, `LLMAuthenticationError`, `api_key` | [→ API Key 问题](#-api-key-认证问题) |
+| 💰 **余额不足** | `402`, `Payment Required`, `LLMAPIError` | [→ 账户余额问题](#-账户余额问题) |
+| 🚫 **权限不足** | `403`, `Forbidden`, `LLMAPIError` | [→ 权限问题](#-权限不足问题) |
+| ⚡ **请求限流** | `429`, `LLMRateLimitError`, `Rate limit` | [→ 限流问题](#-请求限流问题) |
+| 🌐 **网络错误** | `ConnectionError`, `Timeout`, `暂时失败` | [→ 网络问题](#-网络连接问题) |
+| 💥 **服务器错误** | `500`, `503`, `status_code`, `Internal server` | [→ 服务端问题](#-服务器端问题) |
+| ⚙️ **配置错误** | `未找到`, `Initialization failed`, `重试已耗尽` | [→ 配置问题](#️-配置文件问题) |
+| 📝 **格式错误** | `Invalid value`, `Fatal error`, `column` | [→ 格式问题](#-toml-格式错误) |
 
 
 
@@ -24,7 +32,7 @@
 ### 日志示例：`401 Unauthorized`
 
 ```log
-任务-'actor' 模型-'deepseek-v3': 客户端错误 401 - API-Key错误，认证失败，请检查/config/model.toml中的配置是否正确，不再重试。
+LLM 请求失败：model=deepseek-v3, request=actor, error_type=LLMAuthenticationError, reason=Error code: 401 - 'Invalid API key'
 ```
 
 ### ❓ 这是什么意思？
@@ -50,7 +58,7 @@ api_key = "sk-xxxxxxxxxxxxxxxxxx"  # ← 检查这里！
 |-------|------|
 | ✅ Key 是否完整 | 复制时可能漏掉了开头或结尾 |
 | ✅ 是否有多余空格 | Key 前后不能有空格 |
-| ✅ 引号是否正确 | 必须使用英文引号 `"` 而不是中文引号 `"` |
+| ✅ 引号是否正确 | 必须使用英文引号 `"` 而不是中文引号 `“` |
 | ✅ Key 是否过期 | 登录供应商后台检查 Key 状态 |
 | ✅ Key 是否被禁用 | 某些 Key 可能因安全原因被吊销 |
 
@@ -68,10 +76,10 @@ api_key = "sk-xxxxxxxxxxxxxxxxxx"  # ← 检查这里！
 ### 日志示例：`402 Payment Required`/`403 Forbidden`
 
 ```log
-任务-'actor' 模型-'deepseek-v3': 客户端错误 402 - 账号余额不足，不再重试。
+LLM 请求失败：model=deepseek-v3, request=actor, error_type=LLMAPIError, reason=Error code: 402 - 'Insufficient balance'
 ```
 ```log
-任务-'actor' 模型-'gpt-4': 客户端错误 403 - 模型拒绝访问，可能需要实名或余额不足，不再重试。
+LLM 请求失败：model=gpt-4, request=actor, error_type=LLMAPIError, reason=Error code: 403 - 'Model access denied'
 ```
 
 
@@ -107,7 +115,7 @@ api_key = "sk-xxxxxxxxxxxxxxxxxx"  # ← 检查这里！
 ### 日志示例：`403 Forbidden`
 
 ```log
-任务-'actor' 模型-'gpt-4': 客户端错误 403 - 模型拒绝访问，可能需要实名或余额不足，不再重试。
+LLM 请求失败：model=gpt-4, request=actor, error_type=LLMAPIError, reason=Error code: 403 - 'Model access denied'
 ```
 
 ### ❓ 这是什么意思？
@@ -135,11 +143,12 @@ api_key = "sk-xxxxxxxxxxxxxxxxxx"  # ← 检查这里！
 ### 日志示例：`429 Too Many Requests`
 
 ```log
-任务-'actor' 模型-'deepseek-v3': 请求过于频繁，将于10秒后重试 (2次剩余)。
+LLM 请求暂时失败：model=deepseek-v3, request=actor, error_type=LLMRateLimitError, reason=Error code: 429 - 'Rate limit exceeded'
+LLM 请求将重试：request=actor, retry_count=1, next_model=deepseek-v3, delay_seconds=10.00
 ```
 
 ```log
-任务-'utils_small' 模型-'qwen3-8b': 请求过于频繁，已达最大重试次数，放弃。
+LLM 重试已耗尽：request=utils_small, retry_count=3, last_error=LLMRateLimitError: Error code: 429 - 'Rate limit exceeded'
 ```
 
 ### ❓ 这是什么意思？
@@ -201,11 +210,14 @@ model_list = ["sf-deepseek", "ds-deepseek"]
 
 ## 🌐 网络连接问题
 
-### 日志示例：严重网络错误（高额惩罚）
+### 日志示例：网络连接错误
 
 ```log
-模型 'deepseek-v3' 发生严重错误 (NetworkConnectionError)，增加高额惩罚值: 5
+LLM 请求暂时失败：model=deepseek-v3, request=actor, error_type=ConnectionError, reason=Failed to connect to api.siliconflow.cn
+LLM 请求将重试：request=actor, retry_count=1, next_model=deepseek-v3, delay_seconds=10.00
 ```
+
+> 💡 负载均衡策略会在内部对失败模型静默施加惩罚值以降低其被选中的概率，但**不会输出额外的惩罚日志**。你只会看到上面的"暂时失败"和"将重试"日志。
 
 ### ❓ 这是什么意思？
 
@@ -216,7 +228,7 @@ Bot 无法与 API 服务器建立网络连接。
 **第一步：测试网络连通性**
 
 在终端中运行：
-```powershell
+```bash
 # 测试 SiliconFlow
 curl https://api.siliconflow.cn/v1/models
 
@@ -255,17 +267,15 @@ retry_interval = 10
 ### 日志示例：`500 Internal Server Error`
 
 ```log
-任务-'actor' 模型-'deepseek-v3': 服务器错误，将于10秒后重试 (2次剩余)。
-```
-
-```log
-模型 'deepseek-v3' 发生服务器错误 (状态码: 500)，增加高额惩罚值: 5
+LLM 请求暂时失败：model=deepseek-v3, request=actor, error_type=LLMAPIError, status_code=500, reason=Error code: 500 - 'Internal server error'
+LLM 请求将重试：request=actor, retry_count=1, next_model=deepseek-v3, delay_seconds=10.00
 ```
 
 ### 日志示例：`503 Service Unavailable`
 
 ```log
-任务-'actor' 模型-'deepseek-v3': 服务器错误，将于10秒后重试 (2次剩余)。
+LLM 请求暂时失败：model=deepseek-v3, request=actor, error_type=LLMAPIError, status_code=503, reason=Error code: 503 - 'Service unavailable'
+LLM 请求将重试：request=actor, retry_count=1, next_model=deepseek-v3, delay_seconds=10.00
 ```
 
 ### ❓ 这是什么意思？
@@ -284,12 +294,12 @@ API 服务器出问题了，不是你的错！
 
 ## ⚙️ 配置文件问题
 
-### 日志示例：模型'xxxxxx/xxxxxxxxxx'不存在"
+### 日志示例：模型不存在
 
-或者在模型选择阶段：
+当任务配置中引用的模型名称在 `[[models]]` 中没有定义时，会在构建模型集时抛出异常：
 
 ```log
-没有可用的模型供当前请求选择。
+Initialization failed: 模型 'deepseek-ai/DeepSeek-V3' 未找到
 ```
 
 ### ❓ 这是什么意思？
@@ -341,7 +351,13 @@ model_list = ["my-deepseek"]                 # 使用② 模型层定义的 name
 ### 日志示例：配置文件格式错误
 
 ```log
-配置文件解析失败: Invalid value for 'api_key' at line 5
+Initialization failed: Invalid value (at line 5, column 12)
+```
+
+或启动时直接报错退出：
+
+```log
+[Fatal error: Invalid value (at line 5, column 12)]
 ```
 
 ### ❓ 这是什么意思？
@@ -383,11 +399,11 @@ price_in = 0.5
 
 1. **查看完整日志**
    - 日志位置：`你的安装目录/logs/` 目录
-   - 按日期命名：`app_YYYYMMDD_HHMMSS.log.jsonl`
+   - 按启动会话命名：`mofox_YYYYMMDD_HHMMSS_<微秒>_<会话ID>_<YYYY-MM-DD>.log`
 
 2. **加入社区求助**
    - 💬 QQ 交流群：[点击加入](https://qm.qq.com/q/jfeu7Dq7VS)
-   - 🐙 GitHub Issues：[提交问题](https://github.com/MoFox-Studio/MoFox_Bot/issues)
+   - 🐙 GitHub Issues：[提交问题](https://github.com/MoFox-Studio/Neo-MoFox/issues)
 
 3. **提问时请附上：**
    - 完整的错误日志（隐藏 API Key！）
@@ -399,4 +415,3 @@ price_in = 0.5
 > 📖 **相关文档**
 > - [模型配置快速上手](./quick_start_model_config.md)
 > - [模型配置高级指南](./model_configuration_guide.md)
-> - [MoFox_Bot 常见问题](./core_FAQ.md)

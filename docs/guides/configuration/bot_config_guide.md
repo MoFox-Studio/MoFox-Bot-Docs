@@ -9,7 +9,7 @@
 
 | 配置节 | 用途 |
 |--------|------|
-| `[bot]` | 基础运行参数、UI、路径、启动行为 |
+| `[bot]` | 基础运行参数、路径、启动行为 |
 | `[chat]` | 聊天模式、历史消息、识图提示词 |
 | `[llm]` | LLM 全局策略（模型调度策略） |
 | `[llm_stats]` | LLM 请求统计 |
@@ -28,15 +28,12 @@
 
 ```toml
 [bot]
-ui_level = "verbose"              # UI 级别：minimal / standard / verbose
-ui_refresh_interval = 1.0         # 仪表盘刷新间隔（秒）
 log_level = "INFO"                # 日志级别：DEBUG / INFO / WARNING / ERROR / CRITICAL
 plugins_dir = "plugins"           # 插件目录
 logs_dir = "logs"                 # 日志目录
 data_dir = "data"                 # 数据目录
 ```
 
-- `ui_level`: `verbose` 适合调试（实时仪表盘），`standard`/`minimal` 适合生产。
 - `log_level`: 开发和排查问题时用 `DEBUG`，日常 `INFO`。
 
 ### 启动与关闭
@@ -96,7 +93,7 @@ image_recognition_prompt = ""     # 自定义识图提示词，留空用默认
 default_policy = "load_balanced"  # load_balanced / round_robin
 ```
 
-- `load_balanced`: 负载均衡策略，优先选择当前请求最少的模型。
+- `load_balanced`: 动态负载均衡策略，综合考虑 token 使用量、延迟、失败惩罚等多个维度评分，选择分值最低（即最优）的模型。
 - `round_robin`: 轮询策略，依次轮流使用模型列表中的模型。
 
 
@@ -117,7 +114,7 @@ window_hours = 5.0               # 统计聚合窗口（小时）
 
 ```toml
 [telemetry]
-enabled = true
+enabled = false                   # 默认关闭，排查问题时可手动开启
 max_records = 100000
 max_age_days = 30                 # 事件保留天数，0 不按时间清理
 detail_enabled = false            # 是否记录高敏感调试明细

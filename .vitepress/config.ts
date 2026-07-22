@@ -320,6 +320,10 @@ const devSidebar: DefaultTheme.SidebarItem[] = [
             link: "/docs/development/plugin_develop/api/adapter-api",
           },
           {
+            text: "Agent API",
+            link: "/docs/development/plugin_develop/api/agent-api",
+          },
+          {
             text: "Chat API",
             link: "/docs/development/plugin_develop/api/chat-api",
           },
@@ -729,8 +733,11 @@ export default defineConfig({
               collapsed: false,
               items: [
                 { text: "总览", link: "/docs/builtin_plugins/plugin-ui/ui-dev/overview" },
-                { text: "XML 开发", link: "/docs/builtin_plugins/plugin-ui/ui-dev/xml" },
-                { text: "组件参考", link: "/docs/builtin_plugins/plugin-ui/ui-dev/components" },
+                { text: "XML 入门", link: "/docs/builtin_plugins/plugin-ui/ui-dev/xml" },
+                { text: "XML 组件参考", link: "/docs/builtin_plugins/plugin-ui/ui-dev/xml-components" },
+                { text: "HTML 开发", link: "/docs/builtin_plugins/plugin-ui/ui-dev/html" },
+                { text: "HTML 组件参考", link: "/docs/builtin_plugins/plugin-ui/ui-dev/html-components" },
+                { text: "HTML sys API", link: "/docs/builtin_plugins/plugin-ui/ui-dev/html-sys-api" },
               ],
             },
           ],

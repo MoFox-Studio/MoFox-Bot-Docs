@@ -49,15 +49,15 @@ from src.app.plugin_system.api.prompt_api import (
 `add_system_reminder` 仅负责把 reminder 写进 store。它**不会自动进入所有 LLM 请求**。实际是否注入，取决于调用方是否在创建请求时显式使用了 `with_reminder`（如 `create_llm_request(..., with_reminder="actor")`）。
 :::
 
-#### `add_system_reminder(bucket: str | SystemReminderBucket, name: str, content: str, insert_type: str | SystemReminderInsertType = "fixed", consume: str | SystemReminderConsumeType = "forever") -> None`
+#### `add_system_reminder(bucket: str | SystemReminderBucket, name: str, content: str, insert_type: str | SystemReminderInsertType = SystemReminderInsertType.FIXED, consume: str | SystemReminderConsumeType = SystemReminderConsumeType.FOREVER) -> None`
 
 添加（或覆盖）一条全局 system reminder。
 
 - `bucket`: bucket 名称（推荐使用 `SystemReminderBucket` 预设值，如 `actor` / `sub_actor`）
 - `name`: reminder 名称
 - `content`: reminder 内容
-- `insert_type`: 插入位置类型，支持 `fixed` 和 `dynamic`
-- `consume`: 消费模式，支持 `forever` 和 `once`
+- `insert_type`: 插入位置类型，支持字符串 `"fixed"` / `"dynamic"` 或 `SystemReminderInsertType` 枚举
+- `consume`: 消费模式，支持字符串 `"forever"` / `"once"` 或 `SystemReminderConsumeType` 枚举
 
 #### `get_system_reminder(bucket: str | SystemReminderBucket, names: list[str] | None = None) -> str`
 
@@ -72,7 +72,7 @@ reminder = get_system_reminder("chat")
 
 以下函数以 `stream:{stream_id}:{bucket}` 作为 bucket key 实现按聊天流隔离的 reminder 读写。Chatter 通过 `create_request(with_reminder=...)` 调用时自动同时拾取全局 bucket 和当前流私有 bucket，无需插件感知底层命名约定。
 
-#### `add_stream_reminder(stream_id: str, bucket: str, name: str, content: str, insert_type: str | SystemReminderInsertType = "fixed", consume: str | SystemReminderConsumeType = "forever") -> None`
+#### `add_stream_reminder(stream_id: str, bucket: str, name: str, content: str, insert_type: str | SystemReminderInsertType = SystemReminderInsertType.FIXED, consume: str | SystemReminderConsumeType = SystemReminderConsumeType.FOREVER) -> None`
 
 向指定聊天流的私有 bucket 写入（覆盖）一条 system reminder。仅对指定聊天流可见，其他流不受影响。
 

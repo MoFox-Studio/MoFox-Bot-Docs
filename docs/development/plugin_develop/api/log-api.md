@@ -1,6 +1,6 @@
 # Log API
 
-`src.app.plugin_system.api.log_api` 提供日志记录器的创建，并导出 `COLOR` 枚举与 `Logger` 类型。
+`src.app.plugin_system.api.log_api` 提供日志记录器的创建，并导出 `COLOR` 枚举与 `Logger` 类型（后者为 `src.kernel.logger.Logger` 的再导出，不在模块 `__all__` 中但可直接导入使用）。
 
 ## 导入
 

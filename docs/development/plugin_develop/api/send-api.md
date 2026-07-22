@@ -29,7 +29,7 @@ from src.app.plugin_system.api.send_api import (
 
 - `stream_id`: 聊天流 ID
 - `platform`: 平台名称（可选，会从 `stream_id` 推断）
-- `adapter_signature`: 目标适配器组件签名（可选），格式为 `plugin_name:adapter:adapter_name`；指定后直接通过该适配器发送，不再按 `platform` 推断，且 `platform` 参数被忽略
+- `adapter_signature`: 目标适配器组件签名（可选），格式为 `plugin_name:adapter:my_adapter`；指定后直接通过该适配器发送，不再按 `platform` 推断，且 `platform` 参数被忽略
 
 ### `send_text(content: str, stream_id: str, platform: str | None = None, reply_to: str | None = None, adapter_signature: str | None = None) -> bool`
 

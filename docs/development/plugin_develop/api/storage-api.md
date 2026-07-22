@@ -1,10 +1,10 @@
 # Storage API
 
-`src.app.plugin_system.api.storage_api` 提供两种独立存储能力：JSON 文件存储和 PluginDatabase（SQLite）。
+`src.app.plugin_system.api.storage_api` 提供两种独立存储能力：JSON 文件存储（基于 `JSONStore`）和 PluginDatabase（SQLite）。
 
 ## JSON 存储
 
-简单键值存储，每个 `store_name` 对应 `data/json_storage/<store_name>/` 目录，不同插件互不干扰。
+简单键值存储，每个 `store_name` 对应 `data/json_storage/<store_name>/` 目录，不同插件互不干扰。底层使用 `src.kernel.storage.JSONStore`。
 
 ```python
 from src.app.plugin_system.api.storage_api import (
@@ -23,6 +23,18 @@ from src.app.plugin_system.api.storage_api import (
 ```python
 await save_json("my_plugin", "settings", {"theme": "dark"})
 settings = await load_json("my_plugin", "settings")
+```
+
+### `JSONStore`
+
+`src.app.plugin_system.api.storage_api` 同时导出底层 `JSONStore` 类，可直接构造以使用自定义目录或更细粒度的控制：
+
+```python
+from src.app.plugin_system.api.storage_api import JSONStore
+
+store = JSONStore("data/my_plugin/custom_store")
+await store.save("key", {"a": 1})
+data = await store.load("key")
 ```
 
 ## PluginDatabase
@@ -72,7 +84,7 @@ await db.close()
 | `db.query(model) -> QueryBuilder` | 获取查询构建器 |
 | `db.aggregate(model) -> AggregateQuery` | 获取聚合查询 |
 | `db.invalidate(model) -> None` | 使原始 SQL 写入后该模型的进程内读缓存失效 |
-| `db.session() -> AsyncGenerator[AsyncSession]` | 获取原始 session（上下文管理器），会话退出时自动提交，异常时自动回滚 |
+| `db.session() -> AsyncGenerator[AsyncSession, None]` | 获取原始 session（上下文管理器），会话退出时自动提交，异常时自动回滚 |
 | `db.close() -> None` | 关闭数据库引擎，释放所有连接资源 |
 
 ::: warning 初始化约束

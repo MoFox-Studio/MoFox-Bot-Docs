@@ -85,13 +85,45 @@ request = llm_api.create_llm_request(model_set, request_name="chat")
 registry = create_tool_registry(tools=action_instances)
 ```
 
-#### `exec_llm_usable(...) -> tuple[bool, Any]`
+#### `exec_llm_usable(usable_cls: type[LLMUsable], *, plugin: BasePlugin, stream_id: str | None = None, message: Message | None = None, kwargs: dict[str, Any] | None = None, task_observer: Callable[[asyncio.Task[None]], None] | None = None) -> tuple[bool, object]`
 
-执行单个 [`LLMUsable`](../../components/llm-usable.md) 组件。此函数为**异步函数**。
+执行单个 [`LLMUsable`](../../components/llm-usable.md) 组件并规范化返回结果。此函数为**异步函数**。
 
-#### `run_tool_call(...) -> list`
+- `usable_cls`: 要执行的 Tool、Action 或 Agent 类
+- `plugin`: 组件所属插件实例
+- `stream_id`: 当前对话流 ID（可选）
+- `message`: 触发本次调用的消息（可选）
+- `kwargs`: 传给 `execute` 的参数字典（可选）
+- `task_observer`: 任务观察回调（可选）
+- 返回: `(是否执行成功, 结果内容)`
 
-执行一次响应中的一批工具调用，并保持 `TOOL_RESULT` 写回顺序。此函数为**异步函数**。
+```python
+from src.app.plugin_system.api.llm_api import exec_llm_usable
+
+success, result = await exec_llm_usable(
+    MyAction,
+    plugin=my_plugin,
+    stream_id=stream_id,
+    message=msg,
+    kwargs={"content": "Hello"},
+)
+```
+
+#### `run_tool_call(*, calls: Sequence[ToolCall], response: ToolResultReceiver, usable_map: ToolRegistry, trigger_msg: Message | None, plugin: BasePlugin, stream_id: str | None = None, resolve_component_plugin: Callable[[str | None], BasePlugin] | None = None, logger_name: str = "chatter", display_name: str = "", task_observer: Callable[[asyncio.Task[None]], None] | None = None) -> list[tuple[bool, bool]]`
+
+执行一次 LLM 响应中的全部普通 tool calls，结果按原始 `calls` 顺序写回 `response` 的 `TOOL_RESULT` payload，避免上下文顺序漂移。此函数为**异步函数**。
+
+- `calls`: 本次 LLM 响应返回的 tool call 列表
+- `response`: 当前响应对象；会被追加 `TOOL_RESULT` payload
+- `usable_map`: 可调用组件注册表，用 call name 查找组件类
+- `trigger_msg`: 触发本轮对话的消息；为 `None` 时会跳过实际执行
+- `plugin`: 默认插件实例；无法解析组件归属插件时使用
+- `stream_id`: 当前对话流 ID（可选）
+- `resolve_component_plugin`: 根据组件签名解析其所属插件的回调（可选）
+- `logger_name`: 写日志时使用的 logger 名称，默认 `"chatter"`
+- `display_name`: 日志前缀中显示的 chatter 名称，默认 `""`
+- `task_observer`: 任务观察回调（可选）
+- 返回: 与 `calls` 顺序一致的结果列表，每项为 `(是否已写回 TOOL_RESULT, execute 是否成功)`
 
 ### LLM 统计查询
 

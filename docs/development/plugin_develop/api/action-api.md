@@ -28,7 +28,7 @@ from src.app.plugin_system.api.action_api import (
 
 ```python
 actions = get_all_actions()
-# {"plugin_name:action:action_name": ActionClass, ...}
+# {"plugin_name:action:name": ActionClass, ...}
 ```
 
 ### `get_actions_for_plugin(plugin_name: str) -> dict[str, type[BaseAction]]`
@@ -47,7 +47,7 @@ group_actions = get_actions_for_chat(chat_type=ChatType.GROUP, platform="qq")
 
 ### `get_action_class(signature: str) -> type[BaseAction] | None`
 
-通过签名（格式 `plugin_name:action:action_name`）获取 Action 类，未找到返回 `None`。
+通过签名（格式 `plugin_name:action:name`）获取 Action 类，未找到返回 `None`。
 
 ### `get_action_schema(signature: str) -> dict[str, Any] | None`
 

@@ -46,12 +46,12 @@ result = await publish_event("my_plugin:user_action", {"action": "click"})
 
 ### 临时监听器
 
-`create_temporary_handler(event_names: list[EventType | str], handle_func: Callable, priority: int = 0) -> str`
+`create_temporary_handler(event_names: list[EventType | str], handle_func: Callable[[str, dict[str, Any]], tuple[EventDecision, dict[str, Any]] | Any], priority: int = 0) -> str`
 
 创建运行时临时事件监听器。临时监听器执行后，只要回调返回的 `decision` 不是 `PASS`，就会自动从所有订阅事件上清除。返回临时监听器 ID，可用于手动注销。此函数为**异步函数**。
 
 - `event_names`: 需要订阅的事件名称列表
-- `handle_func`: 监听器回调，签名与 EventBus 订阅者协议一致，返回 `(EventDecision, dict[str, Any])`
+- `handle_func`: 监听器回调，签名 `(event_name: str, kwargs: dict[str, Any]) -> tuple[EventDecision, dict[str, Any]] | Any`，与 EventBus 订阅者协议一致
 - `priority`: 监听器优先级
 
 `unregister_temporary_handler(temporary_id: str) -> bool`

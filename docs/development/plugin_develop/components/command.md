@@ -12,18 +12,21 @@
 
 ```python
 from src.core.components.base.command import BaseCommand, cmd_route
+from src.app.plugin_system.api.send_api import send_text
 
 
 class TimeCommand(BaseCommand):
-    command_name = "time"
+    name = "time"
     command_prefix = "/"
 
     @cmd_route("set")
     async def handle_set(self, seconds: int) -> tuple[bool, str]:
+        await send_text(f"已设置为 {seconds} 秒", stream_id=self.stream_id)
         return True, f"已设置为 {seconds} 秒"
 
     @cmd_route("get")
     async def handle_get(self) -> tuple[bool, str]:
+        await send_text("当前值：30 秒", stream_id=self.stream_id)
         return True, "当前值：30 秒"
 ```
 
@@ -31,8 +34,8 @@ class TimeCommand(BaseCommand):
 
 | 属性 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| `command_name` | `str` | `""` | 命令名称 |
-| `command_description` | `str` | `""` | 描述 |
+| `name` | `str` | `""` | 命令名称 |
+| `description` | `str` | `""` | 描述 |
 | `command_prefix` | `str` | `"/"` | 命令前缀 |
 | `permission_level` | `PermissionLevel` | `PermissionLevel.USER` | 最低权限 |
 | `chat_type` | `ChatType` | `ChatType.ALL` | 聊天类型限制 |
@@ -91,7 +94,7 @@ async def handle_limit(self, count: int, enabled: bool = True) -> tuple[bool, st
 
 ## `match(parts)` 类方法
 
-`command_manager` 通过 `match(parts)` 判断一条命令文本是否由本 Command 处理。默认实现：若 `parts[0] == command_name` 则返回 `1`（匹配长度），否则返回 `0`。一般无需重写。
+`command_manager` 通过 `match(parts)` 判断一条命令文本是否由本 Command 处理。默认实现：若 `parts[0] == name` 则返回 `1`（匹配长度），否则返回 `0`。一般无需重写。
 
 ## 构造函数
 
@@ -112,8 +115,8 @@ from src.core.components.types import PermissionLevel, ChatType
 
 
 class AdminCommand(BaseCommand):
-    command_name = "admin"
-    command_description = "管理员命令"
+    name = "admin"
+    description = "管理员命令"
     command_prefix = "/"
     permission_level = PermissionLevel.OPERATOR
     chat_type = ChatType.GROUP
@@ -129,8 +132,8 @@ class AdminCommand(BaseCommand):
 
 
 class HelpCommand(BaseCommand):
-    command_name = "help"
-    command_description = "帮助命令"
+    name = "help"
+    description = "帮助命令"
 
     @cmd_route()
     async def root(self) -> tuple[bool, str]:

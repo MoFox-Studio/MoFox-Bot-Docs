@@ -147,8 +147,8 @@ from .tool import EchoFormatterTool
 class EchoService(BaseService):
     """EchoDemo 的核心回显能力。"""
 
-    service_name = "echo_service"
-    service_description = "提供基础的回显与文本处理能力"
+    name = "echo_service"
+    description = "提供基础的回显与文本处理能力"
 
     async def build_reply_prompt(self, text: str, mode: str) -> str:
         """构建一段供后续模型使用的 prompt。"""
@@ -414,8 +414,8 @@ for call in response.call_list:
 class EchoCommand(BaseCommand):
     """最小回显命令。"""
 
-    command_name = "echo"
-    command_description = "一个用于演示插件系统的最小回显命令"
+    name = "echo"
+    description = "一个用于演示插件系统的最小回显命令"
     command_prefix = "/"
 
     async def _get_service(self) -> EchoService:

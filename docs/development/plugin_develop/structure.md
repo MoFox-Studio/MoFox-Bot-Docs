@@ -105,7 +105,7 @@ class GreetAction(BaseAction):
 | --- | --- | --- |
 | 插件名称 | `snake_case` | `my_plugin` |
 | 组件类名 | `PascalCase` | `SendGreetingAction` |
-| 属性名 | `snake_case` | `action_name = "send_greeting"` |
+| 属性名 | `snake_case` | `name = "send_greeting"` |
 | 配置节名 | `snake_case` | `@config_section("server_settings")` |
 
 ## 常见最佳实践

@@ -320,8 +320,8 @@ logger = get_logger("echo_demo_event")
 class EchoMessageLogger(BaseEventHandler):
     """在消息接收事件发生时记录一条轻量日志。"""
 
-    handler_name = "echo_message_logger"
-    handler_description = "监听消息接收事件，输出 echo_demo 的调试日志"
+    name = "echo_message_logger"
+    description = "监听消息接收事件，输出 echo_demo 的调试日志"
     weight = 0
     init_subscribe = [EventType.ON_MESSAGE_RECEIVED]
 
@@ -418,7 +418,7 @@ await event_api.publish_event(
 
 ```python
 class EchoPolishObserver(BaseEventHandler):
-    handler_name = "echo_polish_observer"
+    name = "echo_polish_observer"
     init_subscribe = ["echo_demo:text_polished"]
 
     async def execute(self, event_name: str, params: dict[str, Any]):
@@ -483,8 +483,8 @@ class EchoPolishObserver(BaseEventHandler):
 
 | 属性 | 类型 | 说明 |
 |------|------|------|
-| `handler_name` | `str` | 处理器名称 |
-| `handler_description` | `str` | 处理器描述 |
+| `name` | `str` | 处理器名称 |
+| `description` | `str` | 处理器描述 |
 | `weight` | `int` | 处理器权重，数值越大执行顺序越靠前，默认 `0` |
 | `intercept_message` | `bool` | 是否具有拦截消息能力，默认 `False` |
 | `init_subscribe` | `list[EventType \| str]` | 初始化时自动订阅的事件类型列表 |
@@ -506,7 +506,7 @@ class EchoPolishObserver(BaseEventHandler):
 | `unsubscribe(event)` | 取消订阅一个事件 |
 | `get_subscribed_events() -> list` | 获取当前已订阅的所有事件 |
 | `is_subscribed(event) -> bool` | 检查是否已订阅某个事件 |
-| `get_signature() -> str \| None` | 返回组件签名，格式为 `{plugin}:event_handler:{handler_name}` |
+| `get_signature() -> str \| None` | 返回组件签名，格式为 `{plugin}:event_handler:{name}` |
 
 ### EventDecision 枚举值
 

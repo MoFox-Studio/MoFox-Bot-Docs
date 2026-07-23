@@ -293,10 +293,10 @@ const sys = window.__plugin_sys_<pageId>;
 ::: warning sys 是唯一通道
 与系统的所有交互（变量池、API 调用、UI 反馈、路由、主题）都通过 `sys.*` 完成。裸 `window.fetch` 虽然也被代理（注入 Token），但**不做 BaseResponse 解包**，仅用于兼容第三方库。
 
-要拿系统数据，请用 `sys.request` / `sys.api`，详见 [sys API](./sys-api)。
+要拿系统数据，请用 `sys.request` / `sys.api`，详见 [HTML sys API](./html-sys-api)。
 :::
 
-完整 API 参考：[sys API](./sys-api)。这里列出主要能力：
+完整 API 参考：[HTML sys API](./html-sys-api)。这里列出主要能力：
 
 | 命名空间 | 作用 |
 |----------|------|
@@ -375,7 +375,7 @@ chart.data = { xAxis: ['Mon','Tue'], series: [{ name:'访问', data: [120, 200] 
 - **不做 BaseResponse 解包** —— `fetch` 保持透传 `Response` 语义，方便第三方库工作
 - 沙箱销毁时自动还原原始方法
 
-要拿到解包后的业务数据，请用 `sys.request(url, options)` 或 `sys.api(id, params)` —— 详见 [sys API](./sys-api#sys-request-url-options)。
+要拿到解包后的业务数据，请用 `sys.request(url, options)` 或 `sys.api(id, params)` —— 详见 [HTML sys API · sys.request](./html-sys-api#sys-request-url-options)。
 
 ## 静态资源访问
 
@@ -437,5 +437,5 @@ GET /webui/static/plugin-ui/{plugin_name}/{page_id}/{variant}/asset/{rel_path}
 ## 下一步
 
 - [HTML 组件参考](./html-components) — 所有 `sys-*` 自定义元素的属性、事件、命令式用法
-- [sys API](./sys-api) — `sys` 桥接对象的完整 API 参考
+- [HTML sys API](./html-sys-api) — `sys` 桥接对象的完整 API 参考
 - [XML 入门](./xml) — 对比 XML 轨的声明式写法

@@ -34,8 +34,8 @@
 
 | 属性 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| `chatter_name` | `str` | `""` | 聊天器名称 |
-| `chatter_description` | `str` | `""` | 描述 |
+| `name` | `str` | `""` | 聊天器名称 |
+| `description` | `str` | `""` | 描述 |
 | `associated_platforms` | `list[str]` | `[]` | 限制平台 |
 | `chat_type` | `ChatType` | `ChatType.ALL` | 聊天类型限制 |
 | `dependencies` | `list[str]` | `[]` | 组件级依赖 |
@@ -95,7 +95,7 @@
 快速创建 `LLMRequest`，自动加载任务模型集与上下文管理器：
 
 - `task`：模型任务名称（对应 `config/model.toml` 中的 task key），默认 `"actor"`
-- `request_name`：请求名称，默认使用 `chatter_name`
+- `request_name`：请求名称，默认使用 `name`
 - `with_reminder`：可选的 system reminder bucket 名（也接受 `SystemReminderBucket` 枚举）；传入后会自动登记**全局** + **流私有**两个 bucket，无需插件侧额外处理
 
 ```python
@@ -142,8 +142,8 @@ from src.kernel.llm import LLMPayload, ROLE, Text
 
 
 class SimpleChatter(BaseChatter):
-    chatter_name = "simple_chatter"
-    chatter_description = "基础对话"
+    name = "simple_chatter"
+    description = "基础对话"
 
     async def execute(self) -> AsyncGenerator[Wait | Success | Failure, None]:
         unread_text, unread_messages = await self.fetch_unreads()

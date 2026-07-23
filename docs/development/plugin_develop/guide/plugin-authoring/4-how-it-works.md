@@ -224,7 +224,7 @@ echo_demo:command:echo
 - `BasePlugin` 告诉系统“这是插件根类”。
 - `get_components()` 告诉系统“这个插件包含哪些组件”。
 - `BaseCommand` 告诉系统“这是组件类型”。
-- `command_name` 参与生成最终组件签名和命令入口。
+- `name` 参与生成最终组件签名和命令入口。
 
 这就是为什么我一直不建议一开始只把示例代码复制进去就算结束。
 

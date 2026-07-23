@@ -208,8 +208,8 @@ from src.app.plugin_system.base import BaseAction
 class EchoSendAction(BaseAction):
     """把文本发送回当前会话。"""
 
-    action_name = "echo_send"
-    action_description = "将给定文本直接发送到当前聊天流。适合在已经确定回复内容时使用。"
+    name = "echo_send"
+    description = "将给定文本直接发送到当前聊天流。适合在已经确定回复内容时使用。"
     primary_action = True
 
     async def execute(
@@ -394,8 +394,8 @@ primary_action = False
 
 | 属性 | 类型 | 说明 |
 |------|------|------|
-| `action_name` | `str` | Action 名称，schema 中注册为 `action-{action_name}` |
-| `action_description` | `str` | Action 描述，告知模型此 Action 的用途 |
+| `name` | `str` | Action 名称，schema 中注册为 `action-{name}` |
+| `description` | `str` | Action 描述，告知模型此 Action 的用途 |
 | `primary_action` | `bool` | 是否为插件主动作，默认 `False` |
 | `chatter_allow` | `list[str]` | 允许使用此 Action 的 Chatter 名称列表，为空则不限制 |
 | `chat_type` | `ChatType` | 支持的聊天类型（`ALL` / `PRIVATE` / `GROUP`） |
@@ -417,8 +417,8 @@ primary_action = False
 | `go_activate() -> bool` | 激活判定，默认返回 `True`，可重写以实现条件激活 |
 | `_random_activation(probability: float) -> bool` | 工具方法，按概率随机激活 |
 | `_keyword_match(keywords, ...) -> bool` | 工具方法，基于关键词匹配激活 |
-| `to_schema() -> dict` | 生成 LLM Tool Schema，schema 名称为 `action-{action_name}` |
-| `get_signature() -> str \| None` | 返回组件签名，格式为 `{plugin}:action:{action_name}` |
+| `to_schema() -> dict` | 生成 LLM Tool Schema，schema 名称为 `action-{name}` |
+| `get_signature() -> str \| None` | 返回组件签名，格式为 `{plugin}:action:{name}` |
 
 ### execute 参数规范
 

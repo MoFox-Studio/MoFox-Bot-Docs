@@ -29,8 +29,8 @@ Handler C（weight=0）→ [未执行]
 
 | 属性 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| `handler_name` | `str` | `""` | 处理器名称（必须设置，在插件内唯一）|
-| `handler_description` | `str` | `""` | 处理器功能描述 |
+| `name` | `str` | `""` | 处理器名称（必须设置，在插件内唯一）|
+| `description` | `str` | `""` | 处理器功能描述 |
 | `weight` | `int` | `0` | 处理器优先级，数值越大越先执行 |
 | `intercept_message` | `bool` | `False` | 元数据字段（实际拦截由 `execute()` 返回值决定）|
 | `init_subscribe` | `list[EventType \| str]` | `[]` | 初始订阅的事件类型列表 |
@@ -153,7 +153,7 @@ async def execute(
 | 属性 | 类型 | 说明 |
 | --- | --- | --- |
 | `self.plugin` | `BasePlugin` | 所属插件实例，可访问插件配置 |
-| `self.signature` | `str` | 组件签名，格式为 `"plugin_name:event_handler:handler_name"` |
+| `self.signature` | `str` | 组件签名，格式为 `"plugin_name:event_handler:name"` |
 
 ## 完整示例
 
@@ -172,8 +172,8 @@ logger = get_logger("message_logger")
 class MessageLogHandler(BaseEventHandler):
     """记录所有收到的消息"""
 
-    handler_name = "message_logger"
-    handler_description = "记录消息日志到 Logger"
+    name = "message_logger"
+    description = "记录消息日志到 Logger"
     weight = 100  # 高权重，优先执行
     init_subscribe = [EventType.ON_MESSAGE_RECEIVED]
 
@@ -206,8 +206,8 @@ logger = get_logger("blacklist_filter")
 class BlacklistFilter(BaseEventHandler):
     """黑名单消息过滤器"""
 
-    handler_name = "blacklist_filter"
-    handler_description = "过滤黑名单用户的消息"
+    name = "blacklist_filter"
+    description = "过滤黑名单用户的消息"
     weight = 200  # 更高权重，确保在日志记录之前执行
     init_subscribe = [EventType.ON_MESSAGE_RECEIVED]
 
@@ -243,8 +243,8 @@ logger = get_logger("startup")
 class StartupHandler(BaseEventHandler):
     """Bot 启动时执行初始化"""
 
-    handler_name = "startup_init"
-    handler_description = "启动时预热缓存"
+    name = "startup_init"
+    description = "启动时预热缓存"
     init_subscribe = [EventType.ON_ALL_PLUGIN_LOADED]
 
     async def execute(
@@ -274,8 +274,8 @@ from src.kernel.event import EventDecision
 class MessageEnricher(BaseEventHandler):
     """为消息添加额外信息"""
 
-    handler_name = "message_enricher"
-    handler_description = "为消息添加时间戳和元数据"
+    name = "message_enricher"
+    description = "为消息添加时间戳和元数据"
     weight = 150
     init_subscribe = [EventType.ON_MESSAGE_RECEIVED]
 
@@ -306,8 +306,8 @@ logger = get_logger("custom_handler")
 class CustomEventHandler(BaseEventHandler):
     """处理自定义事件"""
 
-    handler_name = "custom_handler"
-    handler_description = "处理用户自定义动作事件"
+    name = "custom_handler"
+    description = "处理用户自定义动作事件"
     # 订阅自定义字符串事件
     init_subscribe = ["my_plugin:user_action"]
 
@@ -408,7 +408,7 @@ async def execute(
 ) -> tuple[EventDecision, dict[str, Any]]:
     # ✅ 修改参数以供后续处理器使用
     params["processed"] = True
-    params["handler"] = self.handler_name
+    params["handler"] = self.name
     
     return EventDecision.SUCCESS, params
 ```

@@ -147,7 +147,7 @@ mpdt plugin check --no-style
 检查组件代码规范：
 
 - ✓ 组件类继承正确的基类
-- ✓ 必需属性存在（如 `action_name`、`tool_name`）
+- ✓ 必需属性存在（如 `name`、`description`）
 - ✓ 必需方法实现（如 `execute()`）
 - ✓ 装饰器使用正确
 

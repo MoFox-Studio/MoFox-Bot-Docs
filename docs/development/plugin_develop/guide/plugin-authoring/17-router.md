@@ -117,8 +117,8 @@ EventHandler 处理的是：
 
 它会给你一套很明确的骨架：
 
-- `router_name`
-- `router_description`
+- `name`
+- `description`
 - `custom_route_path`
 - `cors_origins`
 - `register_endpoints()`
@@ -159,7 +159,7 @@ EventHandler 处理的是：
 如果你不写 `custom_route_path`，默认会走：
 
 ```text
-/router/{router_name}
+/router/{name}
 ```
 
 比如：
@@ -214,8 +214,8 @@ from src.app.plugin_system.base import BaseRouter
 class EchoApiRouter(BaseRouter):
     """为插件提供一个最小 HTTP API。"""
 
-    router_name = "echo_api"
-    router_description = "提供最小健康检查和回显接口"
+    name = "echo_api"
+    description = "提供最小健康检查和回显接口"
     custom_route_path = "/api/echo"
     cors_origins = ["*"]
 
@@ -224,7 +224,7 @@ class EchoApiRouter(BaseRouter):
 
         @self.app.get("/health")
         async def health() -> dict[str, str]:
-            return {"status": "ok", "router": self.router_name}
+            return {"status": "ok", "router": self.name}
 
         @self.app.post("/echo")
         async def echo(payload: dict[str, str] = Body(...)) -> dict[str, str]:
@@ -385,8 +385,8 @@ Chatter 关心的是：
 
 | 属性 | 类型 | 说明 |
 |------|------|------|
-| `router_name` | `str` | Router 名称（同时作为 FastAPI 应用的 `title`） |
-| `router_description` | `str` | Router 描述 |
+| `name` | `str` | Router 名称（同时作为 FastAPI 应用的 `title`） |
+| `description` | `str` | Router 描述 |
 | `custom_route_path` | `str \| None` | 自定义挂载路径，如 `"/api/v1/my_plugin"`；为 `None` 时使用默认路径 |
 | `cors_origins` | `list[str] \| None` | CORS 允许的来源列表，`None` 表示不启用 CORS |
 | `dependencies` | `list[str]` | 组件级依赖（其他组件签名列表） |
@@ -407,7 +407,7 @@ Chatter 关心的是：
 | `get_app() -> FastAPI` | 返回 `self.app` 实例 |
 | `startup()` | 启动钩子，Router 挂载完成后调用，可重写 |
 | `shutdown()` | 关闭钩子，Router 卸载前调用，可重写 |
-| `get_signature() -> str \| None` | 返回组件签名，格式为 `{plugin}:router:{router_name}` |
+| `get_signature() -> str \| None` | 返回组件签名，格式为 `{plugin}:router:{name}` |
 
 ### register_endpoints 示例
 

@@ -88,7 +88,6 @@ stream_id = sha256(key.encode()).hexdigest()
 | 在 Action 里 | `self.chat_stream.stream_id`（Action 拿到的是 `ChatStream` 对象本身） |
 | 收到一条 `Message` | `message.stream_id`（已经填好） |
 | 想按 platform + group_id 现算一个 | `ChatStream.generate_stream_id("qq", group_id="123456")` |
-| 想反查 stream 信息 | `stream_api.get_stream_info(stream_id)` 或 `stream_manager.get_stream_info(stream_id)` |
 
 本章后面所有示例里的 `stream_id` 变量，都默认它是上面任一方式拿到的哈希值，而不是原始字符串。
 
@@ -366,7 +365,7 @@ ok = await send_api.send_text(
 )
 ```
 
-格式和第 21 章一致：`{plugin_name}:adapter:{adapter_name}`。
+格式和第 21 章一致：`{plugin_name}:adapter:{name}`。
 
 ### 23.5.4 `processed_plain_text`：别忽略这个字段
 

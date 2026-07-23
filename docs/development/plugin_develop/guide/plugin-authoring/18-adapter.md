@@ -264,9 +264,9 @@ from src.app.plugin_system.base import BaseAdapter
 class DemoBridgeAdapter(BaseAdapter):
     """一个只演示双向翻译边界的最小 Adapter。"""
 
-    adapter_name = "demo_bridge"
+    name = "demo_bridge"
     adapter_version = "0.1.0"
-    adapter_description = "演示平台原始数据与 MessageEnvelope 之间的互转"
+    description = "演示平台原始数据与 MessageEnvelope 之间的互转"
     platform = "demo"
 
     async def from_platform_message(self, raw: dict[str, Any]) -> MessageEnvelope:
@@ -525,9 +525,9 @@ mofox-wire 除了定义 `MessageEnvelope`，还提供了 Adapter 的基础传输
 
 | 属性 | 类型 | 说明 |
 |------|------|------|
-| `adapter_name` | `str` | 适配器名称 |
+| `name` | `str` | 适配器名称 |
 | `adapter_version` | `str` | 适配器版本，如 `"1.0.0"` |
-| `adapter_description` | `str` | 适配器描述 |
+| `description` | `str` | 适配器描述 |
 | `platform` | `str` | 平台标识，如 `"qq"`、`"telegram"` |
 | `dependencies` | `list[str]` | 组件级依赖（其他组件签名列表） |
 
@@ -551,7 +551,7 @@ mofox-wire 除了定义 `MessageEnvelope`，还提供了 Adapter 的基础传输
 | `health_check() -> bool` | 健康检查，返回平台连接是否正常（可重写） |
 | `reconnect()` | 重连平台（可重写） |
 | `get_bot_info() -> dict` | 获取 Bot 基础信息（可重写） |
-| `get_signature() -> str \| None` | 返回组件签名，格式为 `{plugin}:adapter:{adapter_name}` |
+| `get_signature() -> str \| None` | 返回组件签名，格式为 `{plugin}:adapter:{name}` |
 
 ### from_platform_message 示例
 

@@ -165,7 +165,7 @@ Plugin UI 系统提供两种渲染模式：
 |------|------|
 | [UI 开发指南 · 总览](./ui-dev/overview) | 整体架构、核心概念、前提条件 |
 | [UI 开发指南 · XML 入门](./ui-dev/xml) | XML 轨语法、语法糖、管道指令、API 模板、表达式、移动端适配 |
-| [UI 开发指南 · XML 组件参考](./ui-dev/components) | XML 轨所有内置组件的属性与用法 |
+| [UI 开发指南 · XML 组件参考](./ui-dev/xml-components) | XML 轨所有内置组件的属性与用法 |
 | [UI 开发指南 · HTML 开发](./ui-dev/html) | HTML 轨资源结构、Shadow DOM 沙箱、sys 注入 |
 | [UI 开发指南 · HTML 组件参考](./ui-dev/html-components) | HTML 轨 `sys-*` 自定义元素的命令式用法 |
-| [UI 开发指南 · sys API](./ui-dev/sys-api) | `sys` 桥接对象的完整 API 参考 |
+| [UI 开发指南 · HTML sys API](./ui-dev/html-sys-api) | `sys` 桥接对象的完整 API 参考 |

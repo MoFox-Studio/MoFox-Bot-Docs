@@ -264,8 +264,8 @@ from .tool import EchoFormatterTool, EchoSummaryTool, EchoToneTool
 class EchoPolishAgent(BaseAgent):
     """负责在多个文本工具之间做内部编排。"""
 
-    agent_name = "echo_polish"
-    agent_description = "把一段原始文本整理成可直接发送的简洁回复"
+    name = "echo_polish"
+    description = "把一段原始文本整理成可直接发送的简洁回复"
 
     usables = [
         EchoFormatterTool,
@@ -513,8 +513,8 @@ EchoPolishAgent
 
 | 属性 | 类型 | 说明 |
 |------|------|------|
-| `agent_name` | `str` | Agent 名称，schema 中注册为 `agent-{agent_name}` |
-| `agent_description` | `str` | Agent 描述，告知模型此 Agent 的用途 |
+| `name` | `str` | Agent 名称，schema 中注册为 `agent-{name}` |
+| `description` | `str` | Agent 描述，告知模型此 Agent 的用途 |
 | `usables` | `list[type[LLMUsable] | str]` | 私有 usables 列表（类或组件签名字符串），不进入全局注册表 |
 | `chatter_allow` | `list[str]` | 允许使用此 Agent 的 Chatter 名称列表，为空则不限制 |
 | `chat_type` | `ChatType` | 支持的聊天类型（`ALL` / `PRIVATE` / `GROUP`） |
@@ -537,9 +537,9 @@ EchoPolishAgent
 | `execute_local_usable(usable_name, ...) -> tuple[bool, Any]` | 按名称执行私有 usable，支持 Tool / Action / Agent 三类路由 |
 | `get_local_usables() -> list[type[LLMUsable]]` | 返回已解析的私有 usables 类列表 |
 | `get_local_usable_schemas() -> list[dict]` | 返回私有 usables 的 schema 列表 |
-| `to_schema() -> dict` | 生成 LLM Tool Schema，schema 名称为 `agent-{agent_name}` |
+| `to_schema() -> dict` | 生成 LLM Tool Schema，schema 名称为 `agent-{name}` |
 | `go_activate() -> bool` | Agent 激活判定，默认返回 `True`，可重写以实现条件激活 |
-| `get_signature() -> str \| None` | 返回组件签名，格式为 `{plugin}:agent:{agent_name}` |
+| `get_signature() -> str \| None` | 返回组件签名，格式为 `{plugin}:agent:{name}` |
 
 ### usables 的两种写法
 
@@ -547,7 +547,7 @@ EchoPolishAgent
 
 ```python
 class EchoPolishAgent(BaseAgent):
-    agent_name = "echo_polish"
+    name = "echo_polish"
     usables = [
         FormatterTool,           # 直接引用组件类
         "echo_demo:tool:tone",   # 组件签名字符串（运行时解析）

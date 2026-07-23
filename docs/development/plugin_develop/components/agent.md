@@ -23,8 +23,8 @@
 
 | 属性 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| `agent_name` | `str` | `""` | Agent 名称(必须设置,在插件内唯一) |
-| `agent_description` | `str` | `""` | 向 LLM 描述该 Agent 的功能 |
+| `name` | `str` | `""` | Agent 名称(必须设置,在插件内唯一) |
+| `description` | `str` | `""` | 向 LLM 描述该 Agent 的功能 |
 | `chatter_allow` | `list[str]` | `[]` | 允许调用的 Chatter 名称列表,空列表表示全部允许 |
 | `chat_type` | `ChatType` | `ChatType.ALL` | 支持的聊天类型 |
 | `associated_platforms` | `list[str]` | `[]` | 关联平台,空列表表示所有平台 |
@@ -70,8 +70,8 @@ async def execute(
 
 ```python
 class DataAnalysisAgent(BaseAgent):
-    agent_name = "data_analysis"
-    agent_description = "数据分析代理"
+    name = "data_analysis"
+    description = "数据分析代理"
 
     async def go_activate(self) -> bool:
         # 仅在用户权限足够时激活
@@ -100,8 +100,8 @@ from src.core.components.base.tool import BaseTool
 
 class CalculatorTool(BaseTool):
     """计算器工具(Agent 私有)"""
-    tool_name = "calculator"
-    tool_description = "执行数学计算"
+    name = "calculator"
+    description = "执行数学计算"
     
     async def execute(
         self,
@@ -116,8 +116,8 @@ class CalculatorTool(BaseTool):
 
 class DataAnalysisAgent(BaseAgent):
     """数据分析代理"""
-    agent_name = "data_analysis"
-    agent_description = "分析数据并生成报告"
+    name = "data_analysis"
+    description = "分析数据并生成报告"
     
     # 定义私有 usables
     usables = [CalculatorTool]
@@ -140,8 +140,8 @@ class DataAnalysisAgent(BaseAgent):
 
 ```python
 class MyAgent(BaseAgent):
-    agent_name = "my_agent"
-    agent_description = "我的代理"
+    name = "my_agent"
+    description = "我的代理"
     
     # 引用其他插件的组件作为私有 usables
     usables = [
@@ -160,8 +160,8 @@ from src.core.components.base.agent import BaseAgent
 from src.kernel.llm import LLMPayload, ROLE, Text
 
 class SmartAgent(BaseAgent):
-    agent_name = "smart_agent"
-    agent_description = "智能代理,可以使用多个工具完成复杂任务"
+    name = "smart_agent"
+    description = "智能代理,可以使用多个工具完成复杂任务"
     
     usables = [
         WeatherTool,
@@ -236,8 +236,8 @@ from src.core.components.base.tool import BaseTool
 
 class WeatherTool(BaseTool):
     """天气查询工具"""
-    tool_name = "weather"
-    tool_description = "查询城市天气"
+    name = "weather"
+    description = "查询城市天气"
     
     async def execute(
         self,
@@ -249,8 +249,8 @@ class WeatherTool(BaseTool):
 
 class TravelAgent(BaseAgent):
     """旅行助手代理"""
-    agent_name = "travel_agent"
-    agent_description = "帮助用户规划旅行,查询天气、推荐景点等"
+    name = "travel_agent"
+    description = "帮助用户规划旅行,查询天气、推荐景点等"
     
     usables = [WeatherTool]
     
@@ -299,8 +299,8 @@ from src.kernel.llm import LLMPayload, ROLE, Text
 
 class SearchTool(BaseTool):
     """搜索工具"""
-    tool_name = "search"
-    tool_description = "搜索网络信息"
+    name = "search"
+    description = "搜索网络信息"
     
     async def execute(
         self,
@@ -311,8 +311,8 @@ class SearchTool(BaseTool):
 
 class CalculatorTool(BaseTool):
     """计算器"""
-    tool_name = "calculator"
-    tool_description = "执行数学计算"
+    name = "calculator"
+    description = "执行数学计算"
     
     async def execute(
         self,
@@ -327,8 +327,8 @@ class CalculatorTool(BaseTool):
 
 class ResearchAgent(BaseAgent):
     """研究助手代理"""
-    agent_name = "research_agent"
-    agent_description = "帮助用户进行资料研究,可以搜索信息、进行计算等"
+    name = "research_agent"
+    description = "帮助用户进行资料研究,可以搜索信息、进行计算等"
     
     usables = [SearchTool, CalculatorTool]
     
@@ -381,8 +381,8 @@ from src.kernel.llm import LLMPayload, ROLE, Text
 
 class MultiPluginAgent(BaseAgent):
     """跨插件代理"""
-    agent_name = "multi_plugin_agent"
-    agent_description = "可以使用多个插件的功能"
+    name = "multi_plugin_agent"
+    description = "可以使用多个插件的功能"
     
     # 引用其他插件的组件
     usables = [
@@ -441,13 +441,13 @@ await self.execute_local_usable("tool2", ...)
 
 ### 3. 提供清晰的描述
 
-`agent_description` 和参数描述直接影响 LLM 的调用准确性:
+`description` 和参数描述直接影响 LLM 的调用准确性:
 
 ```python
 # ✅ 好的描述
 class MyAgent(BaseAgent):
-    agent_name = "my_agent"
-    agent_description = (
+    name = "my_agent"
+    description = (
         "帮助用户进行数据分析,支持: "
         "1. 统计计算 "
         "2. 数据可视化 "
@@ -463,8 +463,8 @@ class MyAgent(BaseAgent):
 
 # ❌ 不好的描述
 class MyAgent(BaseAgent):
-    agent_name = "my_agent"
-    agent_description = "分析数据"  # 太简单
+    name = "my_agent"
+    description = "分析数据"  # 太简单
     
     async def execute(self, data: str, type: str) -> tuple[bool, str]:  # 缺少注解
         ...
@@ -498,7 +498,7 @@ async def execute(
 ) -> tuple[bool, str]:
     from src.app.plugin_system.api.log_api import get_logger
     
-    logger = get_logger(f"agent.{self.agent_name}")
+    logger = get_logger(f"agent.{self.name}")
     logger.info(f"开始执行任务: {task}")
     
     try:
@@ -528,7 +528,7 @@ async def execute(
 
 ```python
 usables = [
-    "other_plugin:tool:tool_name",
+    "other_plugin:tool:calculator",
     MyLocalTool,  # 或直接使用类
 ]
 ```

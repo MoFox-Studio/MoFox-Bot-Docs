@@ -273,7 +273,7 @@ from src.app.plugin_system.types import ChatStream, PermissionLevel
 class ClearContextCommand(BaseCommand):
     """清空聊天上下文命令（仅主人可用）。"""
 
-    command_name = "清空上下文"
+    name = "清空上下文"
     permission_level: PermissionLevel = PermissionLevel.OWNER
 
     @cmd_route()

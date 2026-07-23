@@ -13,8 +13,8 @@
 
 | 属性 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| `action_name` | `str` | `""` | 动作名称（必须设置，在插件内唯一）|
-| `action_description` | `str` | `""` | 向 LLM 描述该动作的功能（越详细 LLM 越准确）|
+| `name` | `str` | `""` | 动作名称（必须设置，在插件内唯一）|
+| `description` | `str` | `""` | 向 LLM 描述该动作的功能（越详细 LLM 越准确）|
 | `primary_action` | `bool` | `False` | 是否为主动作，主动作每轮对话只能执行一次 |
 | `chatter_allow` | `list[str]` | `[]` | 允许调用的 Chatter 名称列表，空列表表示全部允许 |
 | `chat_type` | `ChatType` | `ChatType.ALL` | 支持的聊天类型 |
@@ -61,8 +61,8 @@ async def execute(
 
 ```python
 class SendEmojiAction(BaseAction):
-    action_name = "send_emoji"
-    action_description = "发送表情包"
+    name = "send_emoji"
+    description = "发送表情包"
 
     async def go_activate(self) -> bool:
         # 仅示例：30% 概率向 LLM 暴露该 Action
@@ -157,8 +157,8 @@ logger = get_logger("my_plugin")
 class SendTextAction(BaseAction):
     """发送文本消息到当前聊天"""
 
-    action_name = "send_text"
-    action_description = "向当前聊天发送一条文本消息"
+    name = "send_text"
+    description = "向当前聊天发送一条文本消息"
     primary_action = True  # 每轮对话只能发一次主消息
 
     async def execute(
@@ -185,8 +185,8 @@ from src.app.plugin_system.api.send_api import send_emoji
 class SendEmojiAction(BaseAction):
     """发送一张表情包"""
 
-    action_name = "send_emoji"
-    action_description = "根据情绪或关键词发送合适的表情包给用户"
+    name = "send_emoji"
+    description = "根据情绪或关键词发送合适的表情包给用户"
     primary_action = False  # 非主动作，可在主消息之外额外使用
 
     async def execute(
@@ -217,8 +217,8 @@ from src.core.components.base.action import BaseAction
 class QueryWeatherAction(BaseAction):
     """查询城市天气并发送结果"""
 
-    action_name = "query_weather"
-    action_description = "查询指定城市的实时天气情况，并将结果发送给用户"
+    name = "query_weather"
+    description = "查询指定城市的实时天气情况，并将结果发送给用户"
     primary_action = True
 
     async def execute(
@@ -253,7 +253,7 @@ ChatType.ALL       # 所有类型（默认）
 
 ## `get_signature()` 类方法
 
-返回组件唯一签名，格式：`"plugin_name:action:action_name"`。
+返回组件唯一签名，格式：`"plugin_name:action:name"`。
 
 ```python
 >>> SendTextAction.get_signature()

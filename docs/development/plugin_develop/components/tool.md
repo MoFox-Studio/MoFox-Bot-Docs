@@ -15,8 +15,8 @@
 
 | 属性 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| `tool_name` | `str` | `""` | 工具名称（必须设置，在插件内唯一）|
-| `tool_description` | `str` | `""` | 向 LLM 描述工具的功能 |
+| `name` | `str` | `""` | 工具名称（必须设置，在插件内唯一）|
+| `description` | `str` | `""` | 向 LLM 描述工具的功能 |
 | `chatter_allow` | `list[str]` | `[]` | 允许使用的 Chatter 列表，空列表表示全部 |
 | `chat_type` | `ChatType` | `ChatType.ALL` | 支持的聊天类型 |
 | `associated_platforms` | `list[str]` | `[]` | 关联平台列表 |
@@ -72,8 +72,8 @@ from src.core.components.base.tool import BaseTool
 class CalculatorTool(BaseTool):
     """数学表达式计算器"""
 
-    tool_name = "calculator"
-    tool_description = "计算数学表达式，支持加减乘除、幂运算等基本运算"
+    name = "calculator"
+    description = "计算数学表达式，支持加减乘除、幂运算等基本运算"
 
     async def execute(
         self,
@@ -101,8 +101,8 @@ from src.app.plugin_system.api.database_api import get_by, get_multi
 class UserInfoTool(BaseTool):
     """查询用户信息"""
 
-    tool_name = "get_user_info"
-    tool_description = "通过用户 ID 查询用户的基本信息，包括昵称、加入时间等"
+    name = "get_user_info"
+    description = "通过用户 ID 查询用户的基本信息，包括昵称、加入时间等"
 
     async def execute(
         self,
@@ -133,8 +133,8 @@ from src.core.components.base.tool import BaseTool
 class WeatherQueryTool(BaseTool):
     """查询实时天气数据"""
 
-    tool_name = "query_weather"
-    tool_description = "查询指定城市的当前天气数据，返回温度、湿度、天气描述等信息"
+    name = "query_weather"
+    description = "查询指定城市的当前天气数据，返回温度、湿度、天气描述等信息"
 
     async def execute(
         self,

@@ -241,8 +241,8 @@ from src.app.plugin_system.types import LLMPayload, ROLE, Text
 class ReceptionChatter(BaseChatter):
     """一个最小的接待型 Chatter。"""
 
-    chatter_name = "reception_chatter"
-    chatter_description = "负责对当前会话的未读消息做最小响应"
+    name = "reception_chatter"
+    description = "负责对当前会话的未读消息做最小响应"
 
     async def execute(self) -> AsyncGenerator[Wait | Failure | Stop, None]:
         """执行一轮最小对话流程。"""
@@ -416,8 +416,8 @@ yield Stop(0)
 
 | 属性 | 类型 | 说明 |
 |------|------|------|
-| `chatter_name` | `str` | Chatter 名称 |
-| `chatter_description` | `str` | Chatter 描述 |
+| `name` | `str` | Chatter 名称 |
+| `description` | `str` | Chatter 描述 |
 | `associated_platforms` | `list[str]` | 关联的平台列表，为空则不限制 |
 | `chat_type` | `ChatType` | 支持的聊天类型（`ALL` / `PRIVATE` / `GROUP`） |
 | `dependencies` | `list[str]` | 组件级依赖（其他组件签名列表） |
@@ -441,7 +441,7 @@ yield Stop(0)
 | `fetch_unreads(time_format) -> tuple[str, list[Message]]` | 读取未读消息，返回格式化文本和消息列表（不修改上下文） |
 | `flush_unreads(unread_messages) -> int` | 将指定的未读消息批次移入历史记录，返回实际 flush 数量 |
 | `create_request(model_set, ...) -> LLMRequest` | 快速创建 LLMRequest 对象 |
-| `get_signature() -> str \| None` | 返回组件签名，格式为 `{plugin}:chatter:{chatter_name}` |
+| `get_signature() -> str \| None` | 返回组件签名，格式为 `{plugin}:chatter:{name}` |
 
 ### ChatterResult 类型
 

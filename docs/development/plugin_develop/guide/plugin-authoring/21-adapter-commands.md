@@ -360,7 +360,7 @@ data = result.get("data")
 当你想读的是“适配器本身的属性”，比如：
 
 - `adapter.platform`
-- `adapter.adapter_name`
+- `adapter.name`
 - `adapter.get_signature()`
 - `await adapter.get_bot_info()`
 
@@ -559,7 +559,7 @@ class MutePlugin(BasePlugin):
 适配器签名格式统一为：
 
 ```text
-{plugin_name}:adapter:{adapter_name}
+{plugin_name}:adapter:{name}
 ```
 
 例如：

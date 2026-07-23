@@ -10,9 +10,9 @@
 
 | 属性 | 类型 | 说明 |
 | --- | --- | --- |
-| `adapter_name` | `str` | 适配器名称 |
+| `name` | `str` | 适配器名称 |
 | `adapter_version` | `str` | 版本 |
-| `adapter_description` | `str` | 描述 |
+| `description` | `str` | 描述 |
 | `platform` | `str` | 平台标识（如 `qq`） |
 | `dependencies` | `list[str]` | 组件级依赖 |
 
@@ -105,7 +105,7 @@ from src.core.components.base.adapter import BaseAdapter
 
 
 class MyAdapter(BaseAdapter):
-    adapter_name = "my_adapter"
+    name = "my_adapter"
     adapter_version = "1.0.0"
     platform = "my_platform"
 
@@ -196,7 +196,7 @@ class MyAdapter(BaseAdapter):
 
 ## `get_signature()` 类方法
 
-返回组件唯一签名，格式：`"plugin_name:adapter:adapter_name"`。
+返回组件唯一签名，格式：`"plugin_name:adapter:name"`。
 
 ```python
 >>> MyAdapter.get_signature()
@@ -213,7 +213,7 @@ from src.core.components.base.adapter import BaseAdapter
 
 
 class MyAdapter(BaseAdapter):
-    adapter_name = "my_adapter"
+    name = "my_adapter"
     adapter_version = "1.0.0"
     platform = "my_platform"
 

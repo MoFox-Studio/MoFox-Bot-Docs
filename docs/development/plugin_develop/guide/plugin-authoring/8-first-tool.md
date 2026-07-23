@@ -84,8 +84,8 @@ from src.app.plugin_system.base import BaseTool
 class EchoFormatterTool(BaseTool):
     """对文本做简单格式化。"""
 
-    tool_name = "echo_formatter"
-    tool_description = "对输入文本进行简单格式化，例如转大写、转小写或标题格式化"
+    name = "echo_formatter"
+    description = "对输入文本进行简单格式化，例如转大写、转小写或标题格式化"
 
     async def execute(
         self,
@@ -113,10 +113,10 @@ class EchoFormatterTool(BaseTool):
 
 写一个 Tool，最先需要明确的通常有三个点：
 
-### **1. tool_name**
+### **1. name**
 
 ```python
-tool_name = "echo_formatter"
+name = "echo_formatter"
 ```
 
 这不是普通的内部变量名，而是这个 Tool 在系统中的公开名称之一。
@@ -127,10 +127,10 @@ tool_name = "echo_formatter"
 - 不要太模糊。
 - 尽量一眼就知道这东西是干什么的。
 
-### **2. tool_description**
+### **2. description**
 
 ```python
-tool_description = "对输入文本进行简单格式化，例如转大写、转小写或标题格式化"
+description = "对输入文本进行简单格式化，例如转大写、转小写或标题格式化"
 ```
 
 这个描述不是凑字数的。对于 Tool 来说，它的意义比一般注释更实际。因为 Tool 天然是要“被理解后再使用”的能力组件。
@@ -320,8 +320,8 @@ Tool 也不例外。
 
 | 属性 | 类型 | 默认值 | 说明 |
 |------|------|--------|------|
-| `tool_name` | `str` | `""` | 工具名称，如 `"echo_formatter"`，影响 schema 生成和模型侧工具名 |
-| `tool_description` | `str` | `""` | 工具描述，直接暴露给模型，影响调用时机判断 |
+| `name` | `str` | `""` | 工具名称，如 `"echo_formatter"`，影响 schema 生成和模型侧工具名 |
+| `description` | `str` | `""` | 工具描述，直接暴露给模型，影响调用时机判断 |
 | `chatter_allow` | `list[str]` | `[]` | 允许调用此工具的 Chatter 列表，空列表表示所有 |
 | `chat_type` | `ChatType` | `ChatType.ALL` | 支持的聊天类型 |
 | `associated_platforms` | `list[str]` | `[]` | 关联的平台列表 |
@@ -333,7 +333,7 @@ Tool 也不例外。
 |------|------|------|
 | `execute()` | `async, *args, **kwargs → tuple[bool, str\|dict]` | **抽象方法**，必须实现。参数应使用 `Annotated[type, "描述"]` 注解以便 schema 正确生成 |
 | `to_schema()` | `cls → dict[str, Any]` | 基于 `execute()` 签名和 `Annotated` 注解，自动生成 OpenAI Tool Calling 格式的 schema |
-| `get_signature()` | `cls → str \| None` | 返回 `plugin_name:tool:tool_name` 格式的签名 |
+| `get_signature()` | `cls → str \| None` | 返回 `plugin_name:tool:name` 格式的签名 |
 
 ### `Annotated` 参数描述约定
 

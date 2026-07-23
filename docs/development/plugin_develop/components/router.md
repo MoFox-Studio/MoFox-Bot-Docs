@@ -6,8 +6,8 @@
 
 | 属性 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| `router_name` | `str` | `""` | 路由名称 |
-| `router_description` | `str` | `""` | 描述 |
+| `name` | `str` | `""` | 路由名称 |
+| `description` | `str` | `""` | 描述 |
 | `custom_route_path` | `str | None` | `None` | 自定义挂载路径 |
 | `cors_origins` | `list[str] | None` | `None` | CORS 白名单；`None` 表示不启用 |
 | `dependencies` | `list[str]` | `[]` | 组件级依赖 |
@@ -22,11 +22,11 @@
 
 | 方法 | 说明 |
 | --- | --- |
-| `get_route_path() -> str` | 返回挂载路径（自定义路径或默认 `/router/{router_name}`） |
+| `get_route_path() -> str` | 返回挂载路径（自定义路径或默认 `/router/{name}`） |
 | `get_app() -> FastAPI` | 返回内部 FastAPI 应用实例 |
 | `startup() / shutdown()` | 路由挂载/卸载钩子，可重写以初始化或清理资源 |
 | `get_openapi_schema() -> dict` | 获取 OpenAPI schema |
-| `get_signature() -> str \| None` | 类方法，返回 `"plugin_name:router:router_name"` |
+| `get_signature() -> str \| None` | 类方法，返回 `"plugin_name:router:name"` |
 
 ## 示例
 
@@ -43,8 +43,8 @@ class WebhookPayload(BaseModel):
 
 
 class WebhookRouter(BaseRouter):
-    router_name = "webhook"
-    router_description = "Webhook 接收"
+    name = "webhook"
+    description = "Webhook 接收"
     custom_route_path = "/api/webhook"
     cors_origins = ["*"]
 

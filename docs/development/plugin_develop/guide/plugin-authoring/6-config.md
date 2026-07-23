@@ -254,8 +254,8 @@ from .config import EchoDemoConfig
 class EchoCommand(BaseCommand):
     """最小回显命令。"""
 
-    command_name = "echo"
-    command_description = "一个用于演示插件系统的最小回显命令"
+    name = "echo"
+    description = "一个用于演示插件系统的最小回显命令"
     command_prefix = "/"
 
     @cmd_route("ping")

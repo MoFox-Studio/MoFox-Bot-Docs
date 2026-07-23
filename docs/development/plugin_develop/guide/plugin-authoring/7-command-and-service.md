@@ -120,8 +120,8 @@ from src.app.plugin_system.base import BaseService
 class EchoService(BaseService):
     """EchoDemo 的核心回显能力。"""
 
-    service_name = "echo_service"
-    service_description = "提供基础的回显与文本处理能力"
+    name = "echo_service"
+    description = "提供基础的回显与文本处理能力"
 
     async def ping(self) -> str:
         """返回最简单的连通性响应。"""
@@ -162,8 +162,8 @@ from .service import EchoService
 class EchoCommand(BaseCommand):
     """最小回显命令。"""
 
-    command_name = "echo"
-    command_description = "一个用于演示插件系统的最小回显命令"
+    name = "echo"
+    description = "一个用于演示插件系统的最小回显命令"
     command_prefix = "/"
 
     async def _get_service(self) -> EchoService:
@@ -308,8 +308,8 @@ Service 更像：
 
 | 属性 | 类型 | 默认值 | 说明 |
 |------|------|--------|------|
-| `command_name` | `str` | `""` | 命令名称，用于组件签名和路由识别 |
-| `command_description` | `str` | `""` | 命令描述 |
+| `name` | `str` | `""` | 命令名称，用于组件签名和路由识别 |
+| `description` | `str` | `""` | 命令描述 |
 | `command_prefix` | `str` | `"/"` | 命令触发前缀 |
 | `permission_level` | `PermissionLevel` | `PermissionLevel.USER` | 执行权限级别 |
 | `chat_type` | `ChatType` | `ChatType.ALL` | 支持的聊天类型 |
@@ -320,7 +320,7 @@ Service 更像：
 
 | 方法 | 签名 | 说明 |
 |------|------|------|
-| `get_signature()` | `cls → str \| None` | 返回 `plugin_name:command:command_name` 格式的签名 |
+| `get_signature()` | `cls → str \| None` | 返回 `plugin_name:command:name` 格式的签名 |
 
 ### 相关装饰器
 
@@ -348,8 +348,8 @@ async def handle_get(self) -> tuple[bool, str]:
 
 | 属性 | 类型 | 默认值 | 说明 |
 |------|------|--------|------|
-| `service_name` | `str` | `""` | 服务名称，用于组件签名和注册 |
-| `service_description` | `str` | `""` | 服务描述 |
+| `name` | `str` | `""` | 服务名称，用于组件签名和注册 |
+| `description` | `str` | `""` | 服务描述 |
 | `version` | `str` | `"1.0.0"` | 服务版本 |
 | `dependencies` | `list[str]` | `[]` | 组件级依赖列表 |
 
@@ -357,7 +357,7 @@ async def handle_get(self) -> tuple[bool, str]:
 
 | 方法 | 签名 | 说明 |
 |------|------|------|
-| `get_signature()` | `cls → str \| None` | 返回 `plugin_name:service:service_name` 格式的签名 |
+| `get_signature()` | `cls → str \| None` | 返回 `plugin_name:service:name` 格式的签名 |
 
 `BaseService` 不强制要求实现任何抽象方法，插件作者可以自由定义业务方法。对外暴露时可实现 `typing.Protocol` 所定义的接口（如 `MemoryService`、`ConfigService` 等），以便其他插件通过 `service_api` 按协议调用。
 

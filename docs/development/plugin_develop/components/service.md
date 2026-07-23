@@ -6,15 +6,15 @@
 
 | 属性 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| `service_name` | `str` | `""` | 服务名称（插件内唯一）|
-| `service_description` | `str` | `""` | 功能描述 |
+| `name` | `str` | `""` | 服务名称（插件内唯一）|
+| `description` | `str` | `""` | 功能描述 |
 | `version` | `str` | `"1.0.0"` | 服务版本 |
 | `dependencies` | `list[str]` | `[]` | 组件级依赖 |
 
 ## 签名格式
 
 ```
-plugin_name:service:service_name
+plugin_name:service:name
 ```
 
 可通过 `MyService.get_signature()` 类方法获取（仅在框架注入 `_plugin_` 后才返回非空值）。
@@ -43,8 +43,8 @@ logger = get_logger("memory_service")
 class MemoryStorageService(BaseService):
     """简单的内存键值存储服务"""
 
-    service_name = "memory_storage"
-    service_description = "提供简单的内存键值存储，支持 get/set/delete"
+    name = "memory_storage"
+    description = "提供简单的内存键值存储，支持 get/set/delete"
     version = "1.0.0"
 
     def __init__(self, plugin):
@@ -78,8 +78,8 @@ class MemoryStorageService(BaseService):
 # 在其他插件的 Action 或 Tool 中获取并使用 Service
 
 class UseMemoryAction(BaseAction):
-    action_name = "save_note"
-    action_description = "保存一条笔记"
+    name = "save_note"
+    description = "保存一条笔记"
 
     async def execute(
         self,

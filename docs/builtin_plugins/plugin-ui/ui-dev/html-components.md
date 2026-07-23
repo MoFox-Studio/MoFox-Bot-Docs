@@ -5,7 +5,7 @@ HTML 轨与 XML 轨**共享同一套 `sys-*` 组件源**（`components/plugin-ui
 - **标签名**：HTML 自定义元素名必须含连字符，故 XML 轨的裸名布局标签在 HTML 轨一律加 `sys-` 前缀（`<vbox>` → `<sys-vbox>`，`<card>` → `<sys-card>` 等）；基础 / 高级组件在两种轨道下标签名一致（`<sys-text>` / `<sys-table>` 等）
 - **调用方式**：XML 轨是声明式（管道指令、占位符、bind: 双向绑定），HTML 轨是命令式（`querySelector` 取元素、读写属性、`addEventListener` 监听事件）
 
-本文只描述 HTML 轨下的命令式用法。组件 SFC 的 props / events 与 XML 轨一致，完整 props 表见 [XML 组件参考](./components)。
+本文只描述 HTML 轨下的命令式用法。组件 SFC 的 props / events 与 XML 轨一致，完整 props 表见 [XML 组件参考](./xml-components)。
 
 ::: tip 属性类型约定
 HTML 自定义元素的 attribute **永远是字符串**。布尔属性可用三种写法等价于 `true`：
@@ -765,5 +765,5 @@ $('#save').addEventListener('click', async () => {
 ## 相关文档
 
 - [HTML 开发](./html) — HTML 轨快速入门、沙箱环境、资源结构
-- [sys API](./sys-api) — `sys` 桥接对象完整 API
-- [XML 组件参考](./components) — XML 轨下的组件用法对照
+- [HTML sys API](./html-sys-api) — `sys` 桥接对象完整 API
+- [XML 组件参考](./xml-components) — XML 轨下的组件用法对照

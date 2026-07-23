@@ -96,8 +96,8 @@ Action 和 Tool 都实现了 `LLMUsable` 接口。框架会：
 
 ```python
 class SendText(BaseAction):
-    action_name = "send_text"
-    action_description = "向用户发送文本消息"
+    name = "send_text"
+    description = "向用户发送文本消息"
 
     async def execute(
         self,

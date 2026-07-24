@@ -78,6 +78,10 @@ const devSidebar: DefaultTheme.SidebarItem[] = [
         link: "/docs/development/plugin_develop/manifest",
       },
       {
+        text: "贡献插件到插件市场",
+        link: "/docs/development/plugin_develop/contributing-to-market",
+      },
+      {
         text: "插件编写指南",
         collapsed: false,
         items: [
@@ -188,6 +192,10 @@ const devSidebar: DefaultTheme.SidebarItem[] = [
           {
             text: "24. Stream API",
             link: "/docs/development/plugin_develop/guide/plugin-authoring/24-stream-api",
+          },
+          {
+            text: "25. Service API",
+            link: "/docs/development/plugin_develop/guide/plugin-authoring/25-service-api",
           },
         ],
       },

@@ -97,6 +97,7 @@
 | [22](./22-storage-framework) | 存储框架 | `storage_api`：JSON 存储 + `PluginDatabase`（独立 SQLite + CRUD/QueryBuilder） |
 | [23](./23-message-api) | 消息 API | `message_api` 查历史消息 + `send_api` 发送新消息 |
 | [24](./24-stream-api) | Stream API | `stream_api`：聊天流的创建、查询、上下文加载与清空 |
+| [25](./25-service-api) | Service API | `service_api`：按签名查询 / 取得跨插件 Service 实例 |
 
 ---
 
@@ -125,9 +126,9 @@ from src.app.plugin_system import api, base, types
 3. **接上模型**（第 9–11 章）
 4. **组织完整对话**（第 12–16 章）
 5. **接通外部**（第 17–19 章）
-6. **回到日常入口**（第 20–24 章）
+6. **回到日常入口**（第 20–25 章）
 
-走到第 6 阶段，你已经能独立写出：查历史消息 → 组织上下文 → 调模型 → 把结果发回去 → 顺便调平台 API → 把状态存进自己的 SQLite → 按需清空聊天流上下文 的完整插件。
+走到第 6 阶段，你已经能独立写出：查历史消息 → 组织上下文 → 调模型 → 把结果发回去 → 顺便调平台 API → 把状态存进自己的 SQLite → 按需清空聊天流上下文 → 跨插件复用别人暴露的 Service 能力 的完整插件。
 
 ## 下一步去哪
 

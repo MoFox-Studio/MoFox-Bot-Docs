@@ -31,7 +31,7 @@ plugin dev   plugin check   config edit   market publish   market package-update
 - `id` / `name` / `version` / `author`
 - `categories`（必须是有效分类）
 - `tags`
-- `entry_point` 与 `min_core_version`
+- `entry_point` 与版本声明（`api_version` 声明所用 API 模块版本；`min_core_version` 声明核心能力版本；按需填写，详见 [manifest.json 格式说明](./manifest.md)）
 
 如果尚未创建插件，使用 [mpdt plugin init](../mpdt/commands/plugin/init) 一键生成标准结构。
 

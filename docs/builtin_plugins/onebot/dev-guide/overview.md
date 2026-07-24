@@ -186,5 +186,6 @@ envelope["message_segment"] = {
 ## 版本
 
 - Plugin: `2.0.0`
-- min_core_version: `1.0.0`
+- min_core_version: `1.2.0RC1`
+- api_version: `event_api`, `log_api`（均为 `1.0.0`）
 - Python 依赖：`pillow>=12.1.0`（必需）

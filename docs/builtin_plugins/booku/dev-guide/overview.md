@@ -309,4 +309,5 @@ await kservice.ingest_document(
 ## 版本
 
 - Plugin: `1.0.0`
-- min_core_version: `1.2.0-alpha.3`
+- min_core_version: `1.2.0RC1`
+- api_version: `llm_api`, `log_api`, `storage_api`（均为 `1.0.0`）

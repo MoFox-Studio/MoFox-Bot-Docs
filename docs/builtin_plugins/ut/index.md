@@ -53,4 +53,5 @@
 
 - Plugin: `1.0.0`
 - Manifest: `plugins/utility_commands/manifest.json`
-- min_core_version: `1.0.0`
+- min_core_version: `1.2.0RC1`
+- api_version: `log_api`, `send_api`, `stream_api`（均为 `1.0.0`）

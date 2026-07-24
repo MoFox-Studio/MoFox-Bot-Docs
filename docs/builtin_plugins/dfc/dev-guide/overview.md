@@ -394,4 +394,5 @@ async def run_chat(stream_id: str) -> None:
 ## 版本
 
 - Plugin: `1.1.0`
-- min_core_version: `1.2.0-alpha`
+- min_core_version: `1.2.0RC1`
+- api_version: `adapter_api`, `chat_api`, `database_api`, `event_api`, `llm_api`, `log_api`, `prompt_api`, `send_api`, `stream_api`（均为 `1.0.0`）

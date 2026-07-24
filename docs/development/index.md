@@ -19,6 +19,12 @@ const devGuides = [
     link: './guidelines/CONTRIBUTE'
   },
   {
+    avatar: '<iconify-icon icon="material-symbols:edit-document"></iconify-icon>',
+    name: '文档编辑指南',
+    title: '从安装 Node.js 到本地预览，再到配置侧边栏/顶栏入口。',
+    link: './docs-editing/'
+  },
+  {
     avatar: '<iconify-icon icon="material-symbols:extension"></iconify-icon>',
     name: '插件开发',
     title: '从零开始，创造属于你自己的插件。',

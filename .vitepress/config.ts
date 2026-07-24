@@ -61,6 +61,26 @@ const devSidebar: DefaultTheme.SidebarItem[] = [
     ],
   },
   {
+    text: "文档编辑指南",
+    collapsed: false,
+    items: [
+      { text: "概述", link: "/docs/development/docs-editing/" },
+      {
+        text: "安装 Node.js 环境",
+        link: "/docs/development/docs-editing/nodejs-install",
+      },
+      {
+        text: "编辑文档内容",
+        link: "/docs/development/docs-editing/edit-docs",
+      },
+      { text: "启动与预览", link: "/docs/development/docs-editing/run-server" },
+      {
+        text: "侧边栏与顶栏配置",
+        link: "/docs/development/docs-editing/sidebar-nav-config",
+      },
+    ],
+  },
+  {
     text: "插件开发",
     collapsed: false,
     items: [

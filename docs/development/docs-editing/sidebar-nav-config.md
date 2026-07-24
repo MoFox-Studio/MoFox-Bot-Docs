@@ -258,4 +258,4 @@ const devSidebar: DefaultTheme.SidebarItem[] = [
 - [ ] 顶栏与侧边栏没有重复条目。
 - [ ] `config.ts` 中的代码风格与现有保持一致（双引号、尾逗号、缩进 2 空格）。
 
-完成后即可推送分支并向 [`MoFox-Bot-Docs`](https://github.com/MoFox-Studio/MoFox-Bot-Docs) 仓库的 `dev` 分支提交 PR，感谢你的贡献！
+完成后即可推送分支并向 [`MoFox-Bot-Docs`](https://github.com/MoFox-Studio/MoFox-Bot-Docs) 仓库的 `master` 分支提交 PR，感谢你的贡献！

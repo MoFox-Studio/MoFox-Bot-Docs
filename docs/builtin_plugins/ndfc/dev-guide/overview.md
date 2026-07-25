@@ -39,7 +39,6 @@ from plugins.neo_default_chatter.utils.event_publisher import NdfcEvent
 init_subscribe = [NdfcEvent.FETCH_UNREADS]
 ```
 
----
 
 ## NeoChatterService 接口
 
@@ -67,7 +66,6 @@ session = service.create_session(
 NDFC 的设计选择：会话行为完全自包含，**不暴露任何运行时替换点**。需要差异化「是否响应」或「响应前注入什么」时，通过订阅 `neo_default_chatter:*` 事件实现，而不是改写 session 内部。
 :::
 
----
 
 ## ConversationSession 接口
 
@@ -146,7 +144,6 @@ NDFC 典型接收这些恢复来源：
 
 session 只接收统一的 `WaitResumeEvent`，不关心外部恢复事件来自哪个子系统。
 
----
 
 ## 事件 Hook 体系
 
@@ -212,7 +209,6 @@ unread_msgs = await NdfcPublisher.fetch_unreads(chat_stream.stream_id)
 
 第三方一般**不直接调用** `NdfcPublisher`——它是 NDFC 内部 session 用的发布器。第三方想手动触发 NDFC 事件（罕见场景）用框架 `event_api.publish_event(NdfcEvent.X, ...)`。
 
----
 
 ## Tier I — 系统事件（零代码改动，只需文档化）
 
@@ -247,7 +243,6 @@ class MySystemPromptExt(BaseEventHandler):
         return EventDecision.SUCCESS, params
 ```
 
----
 
 ## Tier II / III — NDFC 自定义事件（16 个）
 
@@ -498,7 +493,6 @@ class PreprocessDecision:
 这两个 handler 不是「默认实现兜底」，而是 NDFC 自带的具体预处理策略（概率门 + 子代理判定），属于业务逻辑而非基础设施。`defaults/` 下的 handler 都是「无策略的默认行为」，性质不同。
 :::
 
----
 
 ## 第三方扩展模式速查
 
@@ -544,7 +538,7 @@ class MyNegBehaviorExt(BaseEventHandler):
 class GroupOnlyFetch(BaseEventHandler):
     name = "group_only_fetch"
     weight = 200
-    init_subscribe = [NdfcEvent.FETCH_UNREADS]
+    init_subscribe = ["neo_default_chatter:fetch_unreads"]
 
     async def execute(self, event_name, params):
         chat_stream = ...  # 从 stream_api 拿
@@ -562,7 +556,7 @@ telemetry / 统计 / 日志，不修改行为：
 class TurnAuditor(BaseEventHandler):
     name = "turn_auditor"
     weight = 1000  # 最先执行，但只观察
-    init_subscribe = [NdfcEvent.SESSION_TRANSITION]
+    init_subscribe = ["neo_default_chatter:session_transition"]
 
     async def execute(self, event_name, params):
         await my_audit_log(
@@ -595,7 +589,6 @@ class LLMRequestInspector(BaseEventHandler):
         return EventDecision.SUCCESS, params
 ```
 
----
 
 ## 关键约束与陷阱
 
@@ -642,7 +635,6 @@ EventBus 在第一个 handler 执行前记录 `expected_keys = set(initial_param
 
 典型例子：`neo_default_chatter:inject_unread_payload` 的 `response` 字段。默认 handler 直接修改 `response` 对象，session 读回时看的是对象本身的内部状态。
 
----
 
 ## 从 DFC 适配器迁移
 
@@ -666,7 +658,6 @@ EventBus 在第一个 handler 执行前记录 `expected_keys = set(initial_param
 | `plain_text_adapter` | 不事件化（极冷路径） | — |
 | `stream_event_observer` | Tier I `before_llm_request` / `after_llm_request` | 订阅系统事件 |
 
----
 
 ## 完整使用示例
 
@@ -715,7 +706,7 @@ from plugins.neo_default_chatter.utils.event_publisher import NdfcEvent
 class NoInternalDetailsHandler(BaseEventHandler):
     name = "no_internal_details"
     weight = 200
-    init_subscribe = [NdfcEvent.BUILD_NEGATIVE_EXTRA]
+    init_subscribe = [neo_default_chatter:build_negative_extra]
 
     async def execute(self, event_name, params):
         params["fragments"].append(
@@ -745,7 +736,6 @@ class MyCustomFetch(BaseEventHandler):
             return EventDecision.PASS, params  # 失败回退默认实现
 ```
 
----
 
 ## 设计边界
 

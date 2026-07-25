@@ -151,5 +151,5 @@ inject_sub_actor_reminder = true
 
 - Plugin: `1.0.0`
 - Manifest: `plugins/skill_manager/manifest.json`
-- min_core_version: `1.2.0RC1`
+- min_core_version: `1.2.0-rc.2`
 - api_version: `send_api`（`1.0.0`）

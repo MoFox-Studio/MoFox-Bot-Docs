@@ -834,6 +834,20 @@ export default defineConfig({
           ],
         },
         {
+          text: "Neo-Default-Chatter (NDFC)",
+          collapsed: false,
+          items: [
+            { text: "使用指南", link: "/docs/builtin_plugins/ndfc/" },
+            {
+              text: "开发指南",
+              collapsed: false,
+              items: [
+                { text: "总览", link: "/docs/builtin_plugins/ndfc/dev-guide/overview" },
+              ],
+            },
+          ],
+        },
+        {
           text: "实用命令",
           collapsed: false,
           items: [

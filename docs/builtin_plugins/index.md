@@ -13,6 +13,7 @@ Neo-MoFox 内置了一系列官方插件，提供核心功能和扩展能力。
 | **Skill 管理器** (skill_manager) | 技能索引与按需加载，LLM 可调用外部程序 | [查看文档](./skill/) |
 | **表情插件** (emoji_like / emoji_sender) | 智能贴表情回应与表情包收藏发送 | [查看文档](./emoji/) |
 | **默认聊天器** (default_chatter / DFC) | 默认聊天执行核心，可复用的会话引擎 | [查看文档](./dfc/) |
+| **Neo-Default-Chatter** (neo_default_chatter / NDFC) | 新一代事件驱动会话核心，全部 seam 经 EventBus 暴露 | [查看文档](./ndfc/) |
 | **实用命令** (utility_commands) | 常用运维命令集合，如 `/清空上下文` | [查看文档](./ut/) |
 
 

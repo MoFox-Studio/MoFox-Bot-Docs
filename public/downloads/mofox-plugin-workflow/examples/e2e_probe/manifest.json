@@ -1,0 +1,56 @@
+{
+    "name": "e2e_probe",
+    "version": "1.0.0",
+    "display_name": "关键词提醒探针",
+    "summary": "群聊关键词命中时发提醒",
+    "description": "e2e_probe：监听消息，命中配置的关键词时在当前流回复提醒；提供命令管理关键词",
+    "author": "workflow_e2e",
+    "maintainers": [
+        "workflow_e2e"
+    ],
+    "categories": [
+        "tool"
+    ],
+    "tags": [
+        "keyword",
+        "reminder"
+    ],
+    "dependencies": {
+        "plugins": [],
+        "components": []
+    },
+    "include": [
+        {
+            "component_type": "config",
+            "component_name": "config",
+            "dependencies": [],
+            "enabled": true
+        },
+        {
+            "component_type": "service",
+            "component_name": "probe_service",
+            "dependencies": [],
+            "enabled": true
+        },
+        {
+            "component_type": "event_handler",
+            "component_name": "probe_handler",
+            "dependencies": [
+                "e2e_probe:service:probe_service"
+            ],
+            "enabled": true
+        },
+        {
+            "component_type": "command",
+            "component_name": "probe",
+            "dependencies": [
+                "e2e_probe:service:probe_service"
+            ],
+            "enabled": true
+        }
+    ],
+    "entry_point": "plugin.py",
+    "min_core_version": "1.0.0",
+    "python_dependencies": [],
+    "dependencies_required": true
+}

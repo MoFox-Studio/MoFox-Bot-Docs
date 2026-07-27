@@ -432,20 +432,63 @@ sys.format.currency(1234567, { currency: 'CNY', notation: 'compact' })
 
 ## sys.i18n — 国际化
 
-调用主站 `i18n` 工具，复用 WebUI 已注册的翻译字典。
+引用翻译字典。**框架会自动给 key 加上 `pluginName.` 前缀**，所以插件作者写短 key 即可命中本插件注册的 bundle。
 
 ```typescript
 sys.i18n.t(key: string, params?: Record<string, string>): string
 ```
 
 ```javascript
-sys.i18n.t('common.save')               // '保存'
-sys.i18n.t('common.welcome', { name: '张三' })  // '欢迎你，张三'
+// 假设当前插件为 my_plugin，已通过 register_ui_page(i18n_path=...) 注册了 bundle
+// 框架实际查找 'my_plugin.welcome'
+sys.i18n.t('welcome')                    // '欢迎使用'（zh-CN）或 'Welcome'（en-US）
+
+// 带参数替换（{name} 占位符会被替换）
+sys.i18n.t('greeting', { name: '张三' })  // '你好，张三'
+
+// 在通知消息中使用
+sys.ui.toast(sys.i18n.t('saveSuccess'), 'success')
 ```
 
-::: warning 字典与主站共享
-`sys.i18n` 复用主站的翻译字典，**插件无法注册自己的字典**。如果需要插件自己的多语言文案，建议在 `sys.vars` 中存一份字典对象，自行查找。
+### 注册插件自己的 bundle
+
+在 `register_ui_page` 时传 `i18n_path`（相对插件根目录的 JSON 文件）：
+
+```python
+await ui_service.register_ui_page(
+    plugin_name="my_plugin",
+    page_id="main",
+    title="我的插件",
+    mode="html",
+    assets={...},
+    i18n_path="i18n/i18n.json",
+)
+```
+
+JSON 结构：
+
+```json
+{
+  "zh-CN": { "welcome": "欢迎使用", "greeting": "你好，{name}" },
+  "en-US": { "welcome": "Welcome", "greeting": "Hello, {name}" }
+}
+```
+
+### 命名空间与回退链
+
+| 顺序 | 查找位置 | 说明 |
+|------|----------|------|
+| 1 | `pluginMessages[currentLocale].<pluginName>.<key>` | 本插件 bundle（当前语言） |
+| 2 | `messages[currentLocale].<key>` | WebUI 内置 messages（当前语言） |
+| 3 | `pluginMessages['zh-CN'].<pluginName>.<key>` | 本插件 bundle（默认语言） |
+| 4 | `messages['zh-CN'].<key>` | WebUI 内置 messages（默认语言） |
+| 5 | 返回 key 字面量 | 兜底 |
+
+::: tip 自动加前缀
+`sys.i18n.t('welcome')` 实际查找 `my_plugin.welcome`。插件作者无需手写前缀，框架自动处理。同一插件的 XML 轨 `{t('welcome')}` 与 HTML 轨 `sys.i18n.t('welcome')` 行为完全一致。
 :::
+
+详见 [国际化](./html#国际化-i18n)。
 
 ## sys.destroy() — 销毁
 

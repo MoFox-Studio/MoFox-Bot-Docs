@@ -310,7 +310,7 @@ const sys = window.__plugin_sys_<pageId>;
 | `sys.theme` | 当前主题（`mode` / `primary`，只读） |
 | `sys.route` | 路由（`current` / `back()` / `go(plugin, page)`） |
 | `sys.format` | 格式化辅助（`date` / `number` / `currency`） |
-| `sys.i18n` | 文案翻译（`t(key, params?)`） |
+| `sys.i18n` | 文案翻译（`t(key, params?)`，自动加 `pluginName.` 前缀命中本插件 bundle，详见下方[国际化](#国际化-i18n)章节） |
 
 ## 用 `sys-*` 组件构建 UI
 
@@ -395,6 +395,323 @@ GET /webui/static/plugin-ui/{plugin_name}/{page_id}/{variant}/asset/{rel_path}
 插件内部资源（图片 / 字体）可直接用上述 URL 在 HTML / CSS 中引用（fetch 代理会带 Token）。但**业务数据请通过你自己的 Router 暴露 API**，前端用 `sys.request('/your-plugin/...')` 调用，不要直接读文件。
 :::
 
+## 国际化 (i18n)
+
+HTML 轨通过 `sys.i18n.t(key, params?)` 引用翻译。**框架会自动给 key 加上 `pluginName.` 前缀**，所以插件作者写短 key 即可命中本插件注册的 bundle，与 WebUI 内置 messages 互不冲突。
+
+### 设计要点
+
+- **零侵入**：插件作者无需导入 WebUI 内部 i18n 模块，无需在 manifest 声明 i18n 依赖
+- **懒加载**：bundle 随页面 `/schema` 接口一起返回，无独立请求；不打开页面不加载
+- **命名空间隔离**：插件 key 自动落入 `<pluginName>.<key>`，不会与 WebUI 或其他插件冲突
+- **统一回退链**：plugin locale → plugin DEFAULT_LOCALE → 静态 messages → DEFAULT_LOCALE → key 字面量
+- **双轨一致**：XML `{t('key')}` 与 HTML `sys.i18n.t('key')` 行为一致，都自动加前缀
+
+### 数据流
+
+```
+插件 on_plugin_loaded
+    │  await service.register_ui_page(..., i18n_path='i18n/i18n.json')
+    ▼
+后端 PluginUIService
+    │  _resolve_plugin_root(plugin_name)     ← 复用 HTML 轨的根目录解析
+    │  PluginUIValidators.validate_i18n(metadata, plugin_root)
+    │      ├─ 路径穿越校验（resolve_safe）
+    │      ├─ 文件大小 ≤ 256 KB
+    │      └─ JSON 解析 + 顶层结构校验（dict[str, dict | null]）
+    ▼
+PluginUIManager.register(metadata, plugin_root, i18n_bundle)
+    │  存入 RegisteredPage.i18n（内存态，进程重启清空）
+    ▼
+GET /webui/api/plugin-ui/schema/{plugin_name}/{page_id}
+    │  PageSchemaResponse.i18n = RegisteredPage.i18n
+    ▼
+前端 PluginUIView.loadPage
+    │  registerPluginI18n(pluginName, pageId, schema.i18n)
+    │  → 把 bundle 在每个 locale 下包一层 {pluginName: ...} 后深合并
+    │  → 写入响应式 pluginMessages store
+    ▼
+HTML 脚本调用
+    │  sys.i18n.t('welcome')
+    │  → sys-bridge 的 sysI18n.t
+    │  → i18nT('my_plugin.welcome')   ← 自动加 pluginName 前缀
+    │  → 命中 pluginMessages['zh-CN'].my_plugin.welcome
+```
+
+### 注册 bundle
+
+#### 1. 准备 JSON 文件
+
+单文件包含所有 locale，结构与 WebUI 内置 `messages` 一致：
+
+```json
+{
+  "zh-CN": {
+    "title": "用户信息",
+    "welcome": "欢迎使用",
+    "greeting": "你好，{name}",
+    "counter": { "title": "计数器", "reset": "重置" },
+    "save": "保存",
+    "saveSuccess": "保存成功"
+  },
+  "en-US": {
+    "title": "User Info",
+    "welcome": "Welcome",
+    "greeting": "Hello, {name}",
+    "counter": { "title": "Counter", "reset": "Reset" },
+    "save": "Save",
+    "saveSuccess": "Saved successfully"
+  }
+}
+```
+
+**约定**：
+
+| 项 | 规则 |
+|---|---|
+| 顶层键 | locale 名（`zh-CN` / `en-US`，与 `UISettings.language` 严格匹配） |
+| locale 值 | 嵌套 dict（支持任意深度点路径）或 `null`（表示该 locale 无翻译，走 fallback） |
+| 占位符 | `{name}` 语法，运行时由 `t()` 替换 |
+| 文件大小 | ≤ 256 KB |
+| 路径 | 相对插件根目录，必须以 `.json` 结尾，禁含 `..` 跨目录 |
+
+#### 2. 在 `register_ui_page` 中声明
+
+`i18n_path` 与 `mode` 无关，XML / HTML 两种模式都可选用。声明后框架会强制解析插件根目录做路径穿越校验：
+
+```python
+await ui_service.register_ui_page(
+    plugin_name="my_plugin",
+    page_id="home",
+    title="我的页面",
+    mode="html",
+    assets={
+        "entry_html": "ui/index.html",
+        "styles": ["ui/style.css"],
+        "scripts": ["ui/main.js"],
+    },
+    i18n_path="i18n/i18n.json",   # ← 相对插件根目录
+)
+```
+
+#### 3. 校验规则
+
+`PluginUIValidators.validate_i18n(metadata, plugin_root)` 在注册时执行：
+
+1. **路径格式**：`.json` 后缀
+2. **路径穿越**：`resolve_safe(i18n_path, plugin_root)` 复用 HTML 轨的路径穿越检查
+3. **文件存在**：不存在抛 `AssetMissingError`
+4. **大小校验**：超过 256 KB 抛 `AssetSizeError`
+5. **JSON 解析**：`json.JSONDecodeError` → `ValueError`
+6. **结构校验**：顶层必须是 `dict`；每个 locale 键必须是字符串；每个 locale 值必须是 `dict` 或 `null`
+
+### 在 HTML 脚本中引用翻译
+
+`sys.i18n.t(key, params?)` 与 XML 轨的 `{t('key')}` 行为完全一致：自动加 `pluginName.` 前缀。
+
+```javascript
+// 简单 key（自动加 pluginName 前缀 → 实际查找 'my_plugin.welcome'）
+document.querySelector('#title').textContent = sys.i18n.t('welcome')
+
+// 嵌套 key（点路径）
+document.querySelector('#counter-title').textContent = sys.i18n.t('counter.title')
+
+// 带参数（{name} 占位符会被替换）
+const name = sys.vars.username
+document.querySelector('#greeting').textContent = sys.i18n.t('greeting', { name })
+
+// 在通知消息中使用
+sys.ui.toast(sys.i18n.t('saveSuccess'), 'success')
+
+// 在 confirm 对话框中使用
+const ok = await sys.ui.confirm(sys.i18n.t('confirmDelete'))
+```
+
+**函数签名**：
+
+```typescript
+sys.i18n.t(key: string, params?: Record<string, string>): string
+```
+
+- `key` — 翻译键，**不需要**写 `pluginName.` 前缀，框架自动加
+- `params`（可选）— 普通对象 `{ name: '张三' }`，每个 `{paramKey}` 占位符会被 `params.paramKey` 的值替换
+
+::: tip 自动加前缀
+`sys.i18n.t('welcome')` 实际查找 `my_plugin.welcome`。插件作者无需手写前缀，框架自动处理。同一插件的 XML 轨 `{t('welcome')}` 与 HTML 轨 `sys.i18n.t('welcome')` 行为完全一致，命中同一份 bundle。
+:::
+
+### 命名空间与回退链
+
+#### 自动前缀
+
+bundle 注册时，框架会在每个 locale 的内容外包一层 `{pluginName: ...}` 后深合并到全局 `pluginMessages` store：
+
+```
+// 输入 bundle
+{
+  'zh-CN': { greeting: '你好', counter: { title: '计数器' } },
+  'en-US': { greeting: 'Hello', counter: { title: 'Counter' } },
+}
+
+// 注册到 pluginMessages（pluginName='my_plugin'）
+{
+  'zh-CN': { my_plugin: { greeting: '你好', counter: { title: '计数器' } } },
+  'en-US': { my_plugin: { greeting: 'Hello', counter: { title: 'Counter' } } },
+}
+```
+
+`sys.i18n.t('greeting')` → 实际查找 `my_plugin.greeting` → 命中 `pluginMessages['zh-CN'].my_plugin.greeting` = `你好`。
+
+#### 回退链
+
+```
+pluginMessages[currentLocale]            ← 插件 bundle（含 pluginName 前缀）
+  ↓ 未命中
+messages[currentLocale]                  ← WebUI 内置静态 messages
+  ↓ 未命中
+pluginMessages[DEFAULT_LOCALE='zh-CN']   ← 插件 bundle 默认 locale
+  ↓ 未命中
+messages[DEFAULT_LOCALE]                 ← WebUI 默认 locale
+  ↓ 未命中
+返回 key 字面量
+```
+
+#### 多页面同名 key 冲突
+
+同一插件的多个页面各自注册 bundle 时，`<pluginName>.<key>` 命名空间共享：
+
+- 不同 key → 自然不冲突
+- 同 key → 后注册覆盖先注册（`deepMerge` 行为：对象递归合并，叶子值后者覆盖前者）
+
+切页时框架会先 `unregisterPluginI18n(prevPlugin, prevPage)` 再注册新页，避免上一页 key 残留污染当前页。
+
+### 生命周期与清理
+
+| 事件 | 行为 |
+|---|---|
+| 插件加载（`on_plugin_loaded`） | 插件调 `register_ui_page(i18n_path=...)` → 后端校验 + 解析 + 缓存到 `RegisteredPage.i18n` |
+| 用户打开插件页面 | 前端 `PluginUIView.loadPage` 拉取 schema → `registerPluginI18n(pluginName, pageId, schema.i18n)` |
+| 用户切换页面 | 先 `unregisterPluginI18n(prevPlugin, prevPage)` 再注册新页 |
+| 用户离开 `/plugin-ui` 路由 | `onBeforeUnmount` 调 `unregisterPluginI18n` |
+| 后端 `unregister_ui_page` | 内存 Registry 删除条目；前端不主动感知，下次 `/list` 拉取时自然消失 |
+| 进程重启 | Registry 全部清空 |
+
+> 后端 `unregister_ui_page` 不会推送给前端。如果用户已打开页面、插件被卸载，前端仍会缓存 bundle 直到下次切页或离开路由。
+
+### 完整示例
+
+#### 目录结构
+
+```
+my_plugin/
+├── manifest.json
+├── plugin.py
+├── ui/
+│   ├── index.html
+│   ├── style.css
+│   └── main.js
+└── i18n/
+    └── i18n.json        ← 翻译 bundle
+```
+
+#### `i18n/i18n.json`
+
+```json
+{
+  "zh-CN": {
+    "title": "用户信息",
+    "welcome": "欢迎使用",
+    "greeting": "你好，{name}",
+    "save": "保存",
+    "saveSuccess": "保存成功"
+  },
+  "en-US": {
+    "title": "User Info",
+    "welcome": "Welcome",
+    "greeting": "Hello, {name}",
+    "save": "Save",
+    "saveSuccess": "Saved successfully"
+  }
+}
+```
+
+#### `ui/index.html`
+
+```html
+<sys-card title="用户信息" variant="elevated">
+  <sys-vbox gap="0.75rem">
+    <sys-text id="welcome" variant="headline"></sys-text>
+    <sys-text id="greeting" variant="body"></sys-text>
+    <sys-input id="username" label="用户名" placeholder="请输入用户名"></sys-input>
+    <sys-button id="save-btn" variant="filled" icon="save">保存</sys-button>
+  </sys-vbox>
+</sys-card>
+```
+
+#### `ui/main.js`
+
+```javascript
+const host = document.querySelector('.html-sandbox-host')
+const root = host?.shadowRoot
+const $ = (sel) => root?.querySelector(sel)
+
+// 用 sys.i18n.t() 填充所有翻译文本
+$('#welcome').textContent = sys.i18n.t('welcome')
+
+// 带参数的翻译
+function updateGreeting() {
+  const name = $('#username').value || '匿名'
+  $('#greeting').textContent = sys.i18n.t('greeting', { name })
+}
+
+// 按钮文字也走翻译
+$('#save-btn').textContent = sys.i18n.t('save')
+
+$('#username').addEventListener('change', updateGreeting)
+updateGreeting()
+
+$('#save-btn').addEventListener('click', async () => {
+  const name = $('#username').value
+  await sys.request('/my-plugin/users', {
+    method: 'POST',
+    body: JSON.stringify({ name }),
+  })
+  sys.ui.toast(sys.i18n.t('saveSuccess'), 'success')
+})
+```
+
+#### `plugin.py`
+
+```python
+async def on_plugin_loaded(self) -> None:
+    ui_service = get_service("neo-mofox-webui:service:plugin_ui")
+    await ui_service.register_ui_page(
+        plugin_name="my_plugin",
+        page_id="home",
+        title="我的页面",
+        mode="html",
+        assets={
+            "entry_html": "ui/index.html",
+            "styles": ["ui/style.css"],
+            "scripts": ["ui/main.js"],
+        },
+        i18n_path="i18n/i18n.json",
+    )
+```
+
+切换 WebUI 语言（设置页 → 语言 → English）即可看到全部文本切换为 en-US bundle 的内容。
+
+### 限制与边界
+
+| 项 | 当前限制 |
+|---|---|
+| 文件大小 | ≤ 256 KB |
+| 文件格式 | JSON（YAML 暂不支持） |
+| bundle 结构 | 单文件多 locale |
+| 命名空间 | 强制 `pluginName.` 前缀（不可自定义） |
+| 卸载推送 | 前端不主动感知后端卸载（切页时才清理） |
+| `title` 字段 | `register_ui_page` 的 `title` 参数不参与 i18n，直接作为列表显示名 |
+
 ## 完整示例
 
 仓库自带的 `examples/demo_html_plugin/` 是一份完整可运行的 HTML 轨示例，覆盖：
@@ -439,3 +756,4 @@ GET /webui/static/plugin-ui/{plugin_name}/{page_id}/{variant}/asset/{rel_path}
 - [HTML 组件参考](./html-components) — 所有 `sys-*` 自定义元素的属性、事件、命令式用法
 - [HTML sys API](./html-sys-api) — `sys` 桥接对象的完整 API 参考
 - [XML 入门](./xml) — 对比 XML 轨的声明式写法
+- [国际化](#国际化-i18n) — 插件自定义翻译 bundle（上方章节）

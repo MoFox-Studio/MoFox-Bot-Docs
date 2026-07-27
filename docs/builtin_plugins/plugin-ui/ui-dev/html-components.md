@@ -765,5 +765,6 @@ $('#save').addEventListener('click', async () => {
 ## 相关文档
 
 - [HTML 开发](./html) — HTML 轨快速入门、沙箱环境、资源结构
-- [HTML sys API](./html-sys-api) — `sys` 桥接对象完整 API
+- [HTML sys API](./html-sys-api) — `sys` 桥接对象完整 API（含 `sys.i18n` 自动加 pluginName 前缀的翻译能力）
 - [XML 组件参考](./xml-components) — XML 轨下的组件用法对照
+- [国际化](./html#国际化-i18n) — 插件自定义翻译 bundle（HTML 轨通过 `sys.i18n.t('key')` 引用，自动命中本插件 bundle）

@@ -104,7 +104,7 @@ class MyPlugin(BasePlugin):
 
 | 方法 | 签名 | 说明 |
 |------|------|------|
-| `register_ui_page` | `register_ui_page(*, plugin_name, page_id, title, mode, icon=None, description=None, order=100, xml=None, assets=None, mobile_xml=None, mobile_assets=None)` | 注册页面；同 `plugin_name+page_id` 视为更新 |
+| `register_ui_page` | `register_ui_page(*, plugin_name, page_id, title, mode, icon=None, description=None, order=100, xml=None, assets=None, mobile_xml=None, mobile_assets=None, i18n_path=None)` | 注册页面；同 `plugin_name+page_id` 视为更新 |
 | `unregister_ui_page` | `unregister_ui_page(plugin_name, page_id) -> bool` | 卸载单个页面；不存在返回 `False`（幂等） |
 | `unregister_plugin_pages` | `unregister_plugin_pages(plugin_name) -> int` | 批量卸载该插件所有页面 |
 | `list_pages` | `list_pages(*, plugin_filter=None) -> list[PageSummary]` | 列出已注册页面 |
@@ -118,15 +118,17 @@ class MyPlugin(BasePlugin):
 | `"xml"` | `xml` | `assets`、`mobile_assets` |
 | `"html"` | `assets` | `xml`、`mobile_xml` |
 
+**`i18n_path` 与 mode 无关**：两种模式都可选用。声明后框架会强制解析插件根目录做路径穿越校验（XML 模式不再用占位值）。详见 [国际化](./html#国际化-i18n)。
+
 **可能抛出的异常**：
 
 | 异常 | 触发条件 |
 |------|----------|
-| `ValueError` | 参数格式不合法 / mode 与字段不一致 |
+| `ValueError` | 参数格式不合法 / mode 与字段不一致 / i18n JSON 解析或结构不合法 |
 | `XMLValidationError` | XML 内容校验失败 |
-| `AssetPathError` | 路径穿越或不合法 |
-| `AssetMissingError` | 引用的文件不存在 |
-| `AssetSizeError` | 文件超过 5 MB |
+| `AssetPathError` | 路径穿越或不合法（含 i18n_path） |
+| `AssetMissingError` | 引用的文件不存在（含 i18n_path） |
+| `AssetSizeError` | 文件超过大小限制（HTML 资源 5 MB；i18n 文件 256 KB） |
 
 ## 文档结构
 
@@ -320,7 +322,8 @@ XML 轨提供一组语法糖，让声明式 XML 既能描述静态布局，又�
 | 逻辑运算 | `&& \|\|` | `{a && b}` |
 | 算术运算 | `+ - * / %` | `{price * count}` |
 | 字面量 | 数字、字符串、布尔、null | `{42}`, `{'hello'}`, `{true}`, `{null}` |
-| 内置函数 | `empty()` / `len()` / `keys()` / `values()` | `{len(items)}`, `{empty(name)}` |
+| 对象字面量 | `{'k': v, ...}` | `{'name': username}`（用于 `t()` 参数，详见 [国际化](./html#国际化-i18n)） |
+| 内置函数 | `empty()` / `len()` / `keys()` / `values()` / `str()` / `t()` 等 | `{len(items)}`, `{t('save')}` |
 | 属性访问器 | `.length`, `.keys` | `{list.length}` |
 | 数组索引 | `[0]` | `{items[0]}` |
 
@@ -332,6 +335,11 @@ XML 轨提供一组语法糖，让声明式 XML 既能描述静态布局，又�
 | `len(x)` | 数组长度或对象键数 | `{len(items) > 0}` |
 | `keys(x)` | 对象的键数组 | `{keys(config)}` |
 | `values(x)` | 对象的值数组 | `{values(config)}` |
+| `str(x)` | 转字符串（用于把数字等塞进 `t()` 参数） | `{t('count', {'n': str(len(items))})}` |
+| `int(x)` | 转整数 | `{int('42')}` |
+| `float(x)` | 转浮点 | `{float('3.14')}` |
+| `bool(x)` | 转布尔 | `{bool('true')}` |
+| `t(key, params?)` | 翻译本插件注册的 i18n key（自动加 `pluginName.` 前缀） | `{t('welcome')}`，详见 [国际化](./html#国际化-i18n) |
 
 ### 逻辑或默认值 `||`
 
@@ -351,6 +359,154 @@ XML 轨提供一组语法糖，让声明式 XML 既能描述静态布局，又�
 ```xml
 <sys-text hidden="{counter &lt;= 5}">超过 5 才显示</sys-text>
 ```
+
+## 国际化 (i18n)
+
+XML 轨支持插件自定义翻译 bundle。在 `register_ui_page` 时传 `i18n_path` 指向一个 JSON 文件，之后在 XML 中用 `{t('key')}` 引用本插件注册的翻译。
+
+### 注册 bundle
+
+JSON 文件结构（与 WebUI 内置 messages 一致，单文件含所有 locale）：
+
+```json
+{
+  "zh-CN": {
+    "welcome": "欢迎使用",
+    "greeting": "你好，{name}",
+    "counter": { "title": "计数器", "reset": "重置" }
+  },
+  "en-US": {
+    "welcome": "Welcome",
+    "greeting": "Hello, {name}",
+    "counter": { "title": "Counter", "reset": "Reset" }
+  }
+}
+```
+
+注册时传入路径（相对插件根目录）：
+
+```python
+await ui_service.register_ui_page(
+    plugin_name="my_plugin",
+    page_id="main",
+    title="我的插件",
+    mode="xml",
+    xml=XML_CONTENT,
+    i18n_path="i18n/i18n.json",   # ← 相对插件根目录
+)
+```
+
+**校验规则**：
+
+| 项 | 限制 |
+|---|---|
+| 文件大小 | ≤ 256 KB |
+| 扩展名 | `.json` |
+| 路径 | 相对插件根目录，禁含 `..` 跨目录（路径穿越校验） |
+| 顶层结构 | 必须是 `dict`，键为 locale 名（`zh-CN` / `en-US`） |
+| locale 值 | 嵌套 dict 或 `null`（`null` = 该 locale 无翻译，走 fallback） |
+
+### 在 XML 中引用翻译 — `t()` 内置函数
+
+`t()` 会自动给 key 加上 `pluginName.` 前缀，所以插件作者写短 key 即可：
+
+```xml
+<!-- 简单 key -->
+<sys-text variant="title">{t('welcome')}</sys-text>
+
+<!-- 嵌套 key（点路径） -->
+<card title="{t('counter.title')}">
+  <sys-button on-click="set: counter=0">{t('counter.reset')}</sys-button>
+</card>
+
+<!-- 带参数（{name} 占位符会被替换） -->
+<sys-text>{t('greeting', {'name': username})}</sys-text>
+
+<!-- 在管道指令中也可使用 -->
+<sys-button on-click="api: save | notify: {t('saveSuccess')}, 'success'">
+  {t('save')}
+</sys-button>
+
+<!-- 多参数 + 函数调用 -->
+<sys-text>{t('dataList.count', {'count': str(len(items))})}</sys-text>
+```
+
+**`t()` 函数签名**：
+
+```
+t(key: string, params?: {'name': value, ...}): string
+```
+
+- `key` — 字符串字面量（单引号或双引号都行），**不需要**写 `pluginName.` 前缀
+- `params`（可选）— 对象字面量 `{'name': expr}`，键必须是字符串字面量，值可以是任意表达式
+- 每个 `{paramKey}` 占位符会被 `params.paramKey` 的求值字符串替换
+
+### 命名空间与回退链
+
+框架在注册时把 bundle 在每个 locale 下包一层 `{pluginName: ...}` 后深合并到全局 store。查询顺序：
+
+```
+pluginMessages[currentLocale]          ← 插件 bundle（含 pluginName 前缀）
+  ↓ 未命中
+messages[currentLocale]                ← WebUI 内置静态 messages
+  ↓ 未命中
+pluginMessages[DEFAULT_LOCALE='zh-CN'] ← 插件默认 locale
+  ↓ 未命中
+messages[DEFAULT_LOCALE]               ← WebUI 默认 locale
+  ↓ 未命中
+返回 key 字面量
+```
+
+所以插件作者不用担心与 WebUI 或其他插件的 key 冲突。
+
+### 完整示例
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<page version="3.1" xmlns:bind="urn:neo-mofox:bind">
+  <definitions>
+    <var name="username" default="''" />
+    <api id="saveUser" method="POST" url="/api/users"
+         body='{"name": "{username}"}' />
+  </definitions>
+
+  <card title="{t('title')}">
+    <vbox gap="0.75rem">
+      <sys-text variant="title">{t('welcome')}</sys-text>
+      <sys-input label="{t('form.nameLabel')}" bind:value="username" />
+      <sys-text>{t('greeting', {'name': username})}</sys-text>
+      <sys-button on-click="api: saveUser | notify: {t('saveSuccess')}, 'success'">
+        {t('save')}
+      </sys-button>
+    </vbox>
+  </card>
+</page>
+```
+
+对应的 `i18n/i18n.json`：
+
+```json
+{
+  "zh-CN": {
+    "title": "用户信息",
+    "welcome": "欢迎使用",
+    "form": { "nameLabel": "用户名" },
+    "greeting": "你好，{name}",
+    "save": "保存",
+    "saveSuccess": "保存成功"
+  },
+  "en-US": {
+    "title": "User Info",
+    "welcome": "Welcome",
+    "form": { "nameLabel": "Username" },
+    "greeting": "Hello, {name}",
+    "save": "Save",
+    "saveSuccess": "Saved successfully"
+  }
+}
+```
+
+切换 WebUI 语言（设置页 → 语言）即可看到全部文本切换。
 
 ## 管道指令
 
@@ -817,4 +973,5 @@ XML 轨内置 25 个 Material Design 3 风格组件。下面是按分类的速�
 - [XML 组件参考](./xml-components) — 所有内置 XML 组件的完整属性、事件、用法
 - [HTML 开发](./html) — 用原生 HTML/CSS/JS 写自定义页面（命令式）
 - [HTML sys API](./html-sys-api) — `sys` 桥接对象完整 API（HTML 轨核心，XML 轨也可用）
+- [国际化](./html#国际化-i18n) — 插件自定义翻译 bundle 的完整设计、命名空间、回退链
 - [总览](./overview) — 整体架构与前提条件

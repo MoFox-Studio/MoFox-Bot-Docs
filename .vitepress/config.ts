@@ -102,6 +102,10 @@ const devSidebar: DefaultTheme.SidebarItem[] = [
         link: "/docs/development/plugin_develop/contributing-to-market",
       },
       {
+        text: "Agent 插件开发工作流",
+        link: "/docs/development/plugin_develop/workflow",
+      },
+      {
         text: "插件编写指南",
         collapsed: false,
         items: [

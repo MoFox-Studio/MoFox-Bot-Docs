@@ -75,6 +75,12 @@ const pluginGuides = [
     name: ' 插件编写指南',
     title: ' 插件编写。',
     link: './guide/plugin-authoring'
+  },
+  {
+    avatar: '<iconify-icon icon="material-symbols:account-tree"></iconify-icon>',
+    name: 'Agent 插件开发工作流',
+    title: '从需求澄清到真实加载/卸载验证的交付流程。',
+    link: './workflow'
   }
 ]
 </script>

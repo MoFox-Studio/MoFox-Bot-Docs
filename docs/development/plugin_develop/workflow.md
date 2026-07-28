@@ -28,8 +28,7 @@
 - [真实加载/卸载验证器](/downloads/mofox-plugin-workflow/skills/mofox-plugin-workflow/scripts/verify_plugin.py)
 - [全流程命令定义](/downloads/mofox-plugin-workflow/commands/mofox-plugin.toml)
 - [仅验证命令定义](/downloads/mofox-plugin-workflow/commands/mofox-verify.toml)
-- [可加载样例插件的入口文件](/downloads/mofox-plugin-workflow/examples/e2e_probe/plugin.py)
-- [样例行为测试](/downloads/mofox-plugin-workflow/examples/e2e_probe_tests/test_probe.py)
+- [仅保留元数据的样例 manifest](/downloads/mofox-plugin-workflow/examples/e2e_probe/manifest.json)
 
 具体安装方式、六阶段流程、组件规则、测试模式和提交边界均以随附的原始工作流文件为准。
 

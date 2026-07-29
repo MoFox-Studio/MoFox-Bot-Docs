@@ -613,7 +613,19 @@ EventBus 在第一个 handler 执行前记录 `expected_keys = set(initial_param
 
 ### 30 秒超时
 
-每个 handler 默认 30 秒超时，超时也会被降级为 `PASS`。可通过 `set_event_handler_timeout(seconds)` 调整。
+每个 handler 默认 30 秒超时，超时也会被降级为 `PASS`。
+
+**三层调整方式**（按作用域从小到大）：
+
+1. **订阅者级（推荐）**：在 handler 类上声明 `timeout: float | None`。`None` 沿用全局默认（30s），`<= 0` 禁用超时，正数表示自定义秒数。EventManager 注册时会透传给 EventBus，仅作用于当前 handler，并发场景下不会互相影响。
+2. **全局调整**：调用 `set_event_handler_timeout(seconds)` 修改全局默认，影响所有未显式声明 `timeout` 的处理器。
+3. **配置文件**：Bot 配置 `advanced.event_handler_timeout` 字段，框架启动时自动应用。
+
+::: warning NDFC 长耗时 handler 必须显式声明 timeout
+NDFC 的 `RunToolCallDefaultHandler` 内部会执行 agent 工具调用，agent.execute 可能做多次 LLM 编排，**远超 30s 全局默认超时**。该 handler 已显式声明 `timeout = 0` 禁用超时——若不这么做，agent 执行期间被 EventBus 强制 cancel，`results` 会静默丢失为 `[]`，上层 follow_up 决策直接退化。
+
+第三方替换或协作的 handler 若涉及 LLM 调用，也应同步显式声明 `timeout`，不要依赖全局默认。
+:::
 
 ### weight 排序：高 = 先执行
 

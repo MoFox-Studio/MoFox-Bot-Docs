@@ -396,6 +396,10 @@ const devSidebar: DefaultTheme.SidebarItem[] = [
             link: "/docs/development/plugin_develop/api/permission-api",
           },
           {
+            text: "Person API",
+            link: "/docs/development/plugin_develop/api/person-api",
+          },
+          {
             text: "Plugin API",
             link: "/docs/development/plugin_develop/api/plugin-api",
           },

@@ -23,6 +23,7 @@ Neo-MoFox 为插件开发者提供了一套完整的 API 接口，涵盖消息�
 | [Media API](./media-api) | 图片/表情识别与信息管理 |
 | [Message API](./message-api) | 消息查询、计数与可读格式化 |
 | [Permission API](./permission-api) | 用户身份标识生成与权限管理 |
+| [Person API](./person-api) | 用户记录管理、名称变更历史、印象与态度维护 |
 | [Plugin API](./plugin-api) | 插件加载、卸载、重载与查询 |
 | [Prompt API](./prompt-api) | 提示词模板注册与系统提醒（含流隔离） |
 | [Router API](./router-api) | HTTP Router 查询、挂载与卸载 |

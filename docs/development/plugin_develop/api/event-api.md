@@ -15,6 +15,7 @@ from src.app.plugin_system.api.event_api import (
     create_temporary_handler,
     unregister_temporary_handler,
     get_event_stats,
+    set_event_handler_timeout,
 )
 ```
 
@@ -42,7 +43,7 @@ result = await publish_event("my_plugin:user_action", {"action": "click"})
 |------|------|
 | `register_handler(signature: str, handler: BaseEventHandler) -> None` | 注册事件处理器（异步） |
 | `unregister_handler(signature: str) -> None` | 注销事件处理器（同步） |
-| `build_subscription_map() -> None` | 构建事件订阅映射表，遍历所有已注册的事件处理器并注册到 EventBus，处理器按权重降序排序（异步） |
+| `build_subscription_map() -> None` | 构建事件订阅映射表，遍历所有已注册的事件处理器并注册到 EventBus，处理器按权重降序排序，并透传 `BaseEventHandler.timeout` 作为订阅者级超时（异步） |
 
 ### 临时监听器
 
@@ -67,6 +68,28 @@ result = await publish_event("my_plugin:user_action", {"action": "click"})
 - `handler_count`: 处理器总数
 - `event_type_count`: 事件类型总数
 - `total_subscriptions`: 总订阅数
+
+### 超时配置
+
+`set_event_handler_timeout(timeout_seconds: float) -> None`
+
+设置 EventBus 的**全局默认**事件处理器超时时间。同步函数。
+
+- `timeout_seconds > 0`：使用此秒数作为全局默认超时
+- `timeout_seconds <= 0`：禁用全局超时检查
+
+```python
+from src.app.plugin_system.api.event_api import set_event_handler_timeout
+
+set_event_handler_timeout(60)  # 全局默认调到 60 秒
+set_event_handler_timeout(0)   # 全局禁用超时检查
+```
+
+::: warning 全局 vs 订阅者级
+本函数影响**所有未显式声明 `timeout` 的处理器**，属于进程级全局开关。推荐在启动时（如 `ON_START` 事件中）一次性调用。
+
+长耗时处理器（agent 工具调用、多轮 LLM 编排等）应通过 `BaseEventHandler.timeout` 类属性声明订阅者级超时，而非调全局值——避免影响其他 handler。详见 [EventHandler 组件](../components/event-handler.md)。
+:::
 
 ## 相关文档
 

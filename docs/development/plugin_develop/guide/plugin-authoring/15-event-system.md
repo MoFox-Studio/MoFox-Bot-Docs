@@ -489,6 +489,7 @@ class EchoPolishObserver(BaseEventHandler):
 | `intercept_message` | `bool` | 是否具有拦截消息能力，默认 `False` |
 | `init_subscribe` | `list[EventType \| str]` | 初始化时自动订阅的事件类型列表 |
 | `dependencies` | `list[str]` | 组件级依赖（其他组件签名列表） |
+| `timeout` | `float \| None` | 订阅者级超时秒数，默认 `None` 沿用全局 30s；`<= 0` 禁用超时（用于 agent / LLM 编排等长耗时 handler） |
 
 ### 实例属性
 

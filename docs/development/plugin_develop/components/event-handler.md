@@ -35,6 +35,7 @@ Handler C（weight=0）→ [未执行]
 | `intercept_message` | `bool` | `False` | 元数据字段（实际拦截由 `execute()` 返回值决定）|
 | `init_subscribe` | `list[EventType \| str]` | `[]` | 初始订阅的事件类型列表 |
 | `dependencies` | `list[str]` | `[]` | 组件级依赖签名列表 |
+| `timeout` | `float \| None` | `None` | 订阅者级超时秒数。`None` 沿用全局默认（30s），`<= 0` 禁用超时保护，正数表示自定义秒数。长耗时处理器（如 agent 工具调用、多轮 LLM 编排）应设为 `0` |
 
 ## 系统事件类型（EventType）
 
@@ -438,6 +439,30 @@ async def execute(
 目前 `unsubscribe()` 对自定义字符串事件的支持有限。如需频繁动态取消订阅，建议优先使用 `EventType` 枚举事件。
 :::
 
-::: danger 异步处理注意
-`execute()` 是异步方法，可以安全地调用其他异步操作。但应避免长时间阻塞，以免影响事件处理性能。
+::: tip 异步处理与超时机制
+`execute()` 是异步方法，可以安全地调用其他异步操作。EventBus 默认对每个处理器施加 **30 秒超时保护**：超时会被降级为 `EventDecision.PASS`（等价于该处理器被静默跳过），不会让事件总线崩溃。
+
+调整超时的三种方式：
+
+1. **订阅者级（推荐）**：在 handler 类上声明 `timeout` 类属性。`None` 沿用全局默认，`<= 0` 禁用超时（适用于 agent 工具调用、多轮 LLM 编排等长耗时场景），正数表示自定义秒数。EventManager 在注册时会把该值透传给 EventBus，仅作用于当前 handler，互不影响。
+
+   ```python
+   class LongRunningHandler(BaseEventHandler):
+       name = "long_running"
+       init_subscribe = ["my_plugin:long_event"]
+       timeout = 0  # 禁用超时保护
+   ```
+
+2. **全局调整**：调用 `set_event_handler_timeout(seconds)` 修改全局默认值，影响所有未显式声明 `timeout` 的处理器。建议在启动时（如 `ON_START` 事件中）一次性设置。
+
+   ```python
+   from src.app.plugin_system.api.event_api import set_event_handler_timeout
+   set_event_handler_timeout(60)  # 全局默认调到 60 秒
+   set_event_handler_timeout(0)   # 全局禁用超时检查
+   ```
+
+3. **配置文件**：在 Bot 配置的 `advanced.event_handler_timeout` 字段设置，框架启动时会自动调用 `set_event_handler_timeout` 应用配置值。
+
+::: danger 长耗时 handler 必须显式声明 timeout
+默认 30s 全局超时对大多数 handler 够用，但**任何调用 LLM、agent 工具或多轮编排的 handler 都可能超过 30s**。这类 handler 若不显式设 `timeout = 0`（或更大的正数），会在执行中被 EventBus 强制 `cancel`，结果被静默吞掉——上游拿到空 payload 但无法感知失败。
 :::

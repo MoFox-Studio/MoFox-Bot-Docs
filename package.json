@@ -19,8 +19,14 @@
     "typecheck": "vue-tsc --noEmit -p .vitepress/tsconfig.json"
   },
   "dependencies": {
+    "@docsearch/css": "^5.0.2",
+    "@docsearch/js": "^5.0.2",
     "markdown-it": "^14.1.0",
     "markdown-it-task-lists": "^2.1.1",
     "vite": "^7.3.2"
+  },
+  "overrides": {
+    "@docsearch/css": "^5.0.2",
+    "@docsearch/js": "^5.0.2"
   }
 }

@@ -68,11 +68,11 @@ uv 是一个速度极快的 Python 包管理器，Neo-MoFox 使用它来管理�
         ```
     *   如果显示出 uv 的版本号，则证明安装成功。
 
-### 1.3 Napcat QQ 客户端
+### 1.3 SnowLuma QQ 客户端
 
-Napcat QQ 是一个 QQ 客户端，也是 Neo-MoFox 与 QQ 平台沟通的桥梁。
+SnowLuma QQ 是一个 QQ 客户端，也是 Neo-MoFox 与 QQ 平台沟通的桥梁。
 
-在继续下一步之前，请**务必参考 [NapCatQQ 官方文档](https://napcat.napneko.icu/)，完成客户端的安装、配置，并确保你的 QQ 账号能够成功登录**。这是整个部署流程的重要前置条件。
+在继续下一步之前，请**务必参考 [SnowLuma 官方文档](https://snowluma.github.io/guide/deploy/index.html)，完成客户端的安装、配置，并确保你的 QQ 账号能够成功登录**。这是整个部署流程的重要前置条件。
 
 
 ## 第二章：获取核心 — 克隆项目
@@ -218,10 +218,10 @@ Neo-MoFox 拥有强大的插件管理系统。在我们第一次启动程序时�
 
 ### 6.2 配置连接参数
 
-这是整个部署流程中关键的一步，目的是让 Neo-MoFox (服务端) 与 Napcat QQ (客户端) 能够互相通信。我们将分别配置两端，并确保它们的信息完全一致。
+这是整个部署流程中关键的一步，目的是让 Neo-MoFox (服务端) 与 SnowLuma QQ (客户端) 能够互相通信。我们将分别配置两端，并确保它们的信息完全一致。
 
 *   **第一部分：配置 Neo-MoFox 监听端口**
-        *   找到 `[onebot_server]` 配置节的 `port` 小节，这里定义了 Neo-MoFox 将在哪个端口上“监听”来自 Napcat 客户端的连接请求。
+        *   找到 `[onebot_server]` 配置节的 `port` 小节，这里定义了 Neo-MoFox 将在哪个端口上“监听”来自 SnowLuma 客户端的连接请求。
 
     ```toml
     # OneBot WebSocket 服务器配置
@@ -241,20 +241,22 @@ Neo-MoFox 拥有强大的插件管理系统。在我们第一次启动程序时�
     
     *   **请记下这个 `port` 值 (默认为 `8095`)**。除非 `8095` 端口已被其他程序占用，否则我们推荐保持默认设置。如果需要修改，请确保选择一个未被占用的端口。
 
-*   **第二部分：配置 Napcat 客户端连接地址**
-    *   现在，回到 Napcat QQ 客户端，我们将告诉它去连接 Neo-MoFox 正在监听的端口。
-    *   **步骤一：新建 Websocket 客户端**
-        *   在 Napcat 客户端中，点击左侧菜单的"网络配置"。
-        *   在右侧选择 `Websocket客户端` 标签页，然后点击"新建"按钮。
+*   **第二部分：配置 SnowLuma 连接 Neo-MoFox**
+    *   现在，回到 SnowLuma，我们需要在它的 WebUI 中添加一个「WS 客户端」节点，让它主动去连接 Neo-MoFox 正在监听的端口。
+    *   **步骤一：打开节点配置**
+        *   浏览器访问 `http://服务器IP:5099`，使用 SnowLuma 启动日志中打印的一次性密码登录 WebUI。
+        *   点击左侧菜单的「节点配置」，在账号列表中选择你的机器人账号（每个账号拥有独立的 OneBot 端点配置）。
+        *   在上方的分类标签中切换到「WS 客户端」页签，然后点击「新建WS 客户端」。
 
-        ![点击新建 Websocket 客户端](/napcat_add_ws_client.png)
+        ![在节点配置的 WS 客户端页签新建客户端](/snowluma_config_ws_clients.png)
 
     *   **步骤二：填写反向 WebSocket 地址**
-        *   在弹出的配置窗口中，将 `URL` 填写为 `ws://127.0.0.1:8095`。
+        *   在弹出的「新建 WebSocket 反向客户端」窗口中，将「目标 URL」填写为 `ws://127.0.0.1:8095`。若 SnowLuma 与 Neo-MoFox 不在同一台机器上，请填写 `ws://<Neo-MoFox所在机器的IP>:<端口>`。
         *   **核心要点**：此处的端口号 (`8095`) **必须**与你在**第一部分**中 Neo-MoFox 配置文件里看到的 `port` 值**完全一致**。如果两边不一致，通信将百分之百失败。
-        *   填写完毕后，点击"保存"。
+        *   其余选项保持默认：「角色」选择 `Universal`，「消息格式」选择 `数组`；若 Neo-MoFox 的 `access_token` 为空，「授权 Token」留空即可。
+        *   点击「创建节点」，然后在页面右上角点击「保存」。
 
-        ![配置反向 WebSocket](/napcat_ws_config.png)
+        ![新建 WebSocket 反向客户端弹窗](/snowluma_ws_client_form.png)
 
 完成以上步骤，机器人的“神经系统”就已经成功搭建。它现在知道了该如何与 QQ 世界进行通信。
 
@@ -268,8 +270,8 @@ Neo-MoFox 拥有强大的插件管理系统。在我们第一次启动程序时�
 
 请严格按照以下顺序来启动各个组件。
 
-1.  **第一步：启动并登录 Napcat QQ**
-    *   打开你已经安装好的 Napcat QQ 客户端。
+1.  **第一步：启动并登录 SnowLuma QQ**
+    *   打开你已经安装好的 SnowLuma QQ 客户端。
     *   确保你的机器人 QQ 账号已经**成功登录**，并且客户端处于正常运行状态。
 
 2.  **第二步：运行 Neo-MoFox**
@@ -284,7 +286,7 @@ Neo-MoFox 拥有强大的插件管理系统。在我们第一次启动程序时�
 > **⚠️ 重要提示**:
 > 这个命令行窗口就是机器人的生命,**请不要关闭它**，最小化即可。一旦关闭，机器人就会下线。
 > 如果需要关闭机器人，请在这个窗口中按下 `Ctrl + C`，程序会进行优雅关闭。
-> 以后的启动流程也是一样的，**先启动 Napcat QQ 客户端，确保它在线，再启动 Neo-MoFox**。
+> 以后的启动流程也是一样的，**先启动 SnowLuma QQ 客户端，确保它在线，再启动 Neo-MoFox**。
 
 ### 7.2 观察日志，判断成功
 
@@ -338,14 +340,14 @@ Neo-MoFox 拥有强大的插件管理系统。在我们第一次启动程序时�
 当机器人没有按照预期工作时，请不要灰心。99% 的问题都可以通过仔细检查配置和日志来解决。
 
 <details>
-<summary><b>Q1: 启动成功，但日志里迟迟没有 `Napcat client connected` 信息？</b></summary>
+<summary><b>Q1: 启动成功，但日志里迟迟没有 `SnowLuma client connected` 信息？</b></summary>
 
-这通常意味着 Neo-MoFox 和 Napcat QQ 客户端之间的“神经”没有接上。请按以下步骤排查：
+这通常意味着 Neo-MoFox 和 SnowLuma QQ 客户端之间的“神经”没有接上。请按以下步骤排查：
 
-1.  **检查 Napcat QQ**: 确保 Napcat QQ 客户端本身已成功登录并处于在线状态。
-2.  **检查端口号**: 这是最常见的原因。请再次核对 `config/plugins/onebot_adapter/config.toml` 文件中 `[onebot_server]` 下的 `port` 值，是否与你 Napcat QQ 客户端里设置的**反向 WebSocket 端口**完全一致。
+1.  **检查 SnowLuma QQ**: 确保 SnowLuma QQ 客户端本身已成功登录并处于在线状态。
+2.  **检查端口号**: 这是最常见的原因。请再次核对 `config/plugins/onebot_adapter/config.toml` 文件中 `[onebot_server]` 下的 `port` 值，是否与你 SnowLuma「节点配置 → WS 客户端」中「目标 URL」里的端口**完全一致**。
 3.  **检查防火墙**: 确保 Windows 防火墙或任何第三方杀毒软件没有阻止 Neo-MoFox 的网络连接。可以尝试暂时关闭防火墙进行测试。
-4.  **检查 IP 地址**: 确保 `config.toml` 中的 `host` (`localhost`) 和 Napcat 中的 IP (`127.0.0.1`) 是匹配的。通常保持默认即可。
+4.  **检查 IP 地址**: 确保 `config.toml` 中的 `host` (`localhost`) 和 SnowLuma 中的 IP (`127.0.0.1`) 是匹配的。通常保持默认即可。
 
 </details>
 
@@ -354,7 +356,7 @@ Neo-MoFox 拥有强大的插件管理系统。在我们第一次启动程序时�
 
 这通常是配置问题或模型服务问题。
 
-1.  **检查 Napcat QQ**: 确保 Napcat QQ 客户端本身已成功登录并处于在线状态。
+1.  **检查 SnowLuma QQ**: 确保 SnowLuma QQ 客户端本身已成功登录并处于在线状态。
 2.  **检查模型配置**: 确认 `config/model.toml` 里的 API Key 是**有效且可用**的。可以检查一下你的模型服务商后台，看看 Key 是否填错、账户是否欠费。
 3.  **检查白名单**: 检查 `config/plugins/onebot_adapter/config.toml` 文件中 `[features]` 部分的 `group_list` 和 `private_list`。如果你开启了白名单，请确保你测试的群聊或私聊已经被加了进去。
 4.  **查看日志**: 观察机器人后台的命令行窗口。当你给机器人发消息时，看看日志是否刷新。如果有 `ERROR` 级别的红色错误信息，通常能定位到问题所在。

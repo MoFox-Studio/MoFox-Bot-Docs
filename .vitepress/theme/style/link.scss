@@ -150,6 +150,14 @@
     background-image: url(https://raw.githubusercontent.com/NapNeko/NapCatDocs/refs/heads/main/src/public/favicon.ico);
   }
 
+  &[href^='https://snowluma.github.io/']::before {
+    width: 16px;
+    height: 16px;
+    margin-left: 2px;
+    margin-right: 4px;
+    background-image: url(https://snowluma.github.io/logo.svg);
+  }
+
   &[href^='https://www.python.org']::before {
     width: 16px;
     height: 16px;

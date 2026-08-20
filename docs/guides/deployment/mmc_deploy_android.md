@@ -147,17 +147,22 @@ uv --version
 
 - 如果显示出 uv 的版本号，则证明安装成功。
 
-### 1.4 Napcat QQ
+### 1.4 SnowLuma QQ
 
-Napcat QQ 是一个 QQ 客户端，也是 Neo-MoFox 与 QQ 平台沟通的桥梁。
+SnowLuma QQ 是一个 QQ 客户端，也是 Neo-MoFox 与 QQ 平台沟通的桥梁。
+
+SnowLuma 的手机部署属于**实验性**路径，请参考官方文档在 Ubuntu 环境中手动安装：
+
+- [SnowLuma 手机部署](https://snowluma.github.io/guide/deploy/mobile.html)
+- [SnowLuma Linux 手动部署](https://snowluma.github.io/guide/deploy/linux-manual.html)
+
+大致步骤为：安装 Node.js ≥ 22、安装 Linux QQ（`/opt/QQ/qq`）及依赖，然后从 [GitHub Releases](https://github.com/SnowLuma/SnowLuma/releases) 下载对应架构的 `-lite` 发行包并运行：
 
 ```bash
-curl -o \
-napcat.sh \
-https://nclatest.znin.net/NapNeko/NapCat-Installer/main/script/install.sh \
-&& sudo bash napcat.sh \
---docker n \
---cli y
+# 手机（arm64）请选择 SnowLuma-<TAG>-linux-arm64-lite.tar.gz
+tar -xzf SnowLuma-<TAG>-linux-arm64-lite.tar.gz
+cd SnowLuma-<TAG>-linux-arm64-lite
+node ./index.mjs
 ```
 
 ## 第二章：克隆项目
@@ -256,7 +261,7 @@ Neo-MoFox 拥有强大的配置管理系统。在我们第一次启动程序时�
 
 ## 第六章：连接 QQ — OneBot 适配器配置
 
-现在，机器人的“身份”和“大脑”都有了，但我们还需要让它能够连接到 QQ 平台，让它能够接收和发送消息，我们通过配置官方内置的 **Napcat 适配器插件**来完成。
+现在，机器人的“身份”和“大脑”都有了，但我们还需要让它能够连接到 QQ 平台，让它能够接收和发送消息，我们通过配置官方内置的 **SnowLuma 适配器插件**来完成。
 
 ### 6.1 启用并配置插件
 
@@ -272,17 +277,17 @@ Neo-MoFox 拥有强大的配置管理系统。在我们第一次启动程序时�
 
         ```toml
         [plugin]
-        # 是否启用 Napcat 适配器
+        # 是否启用 SnowLuma 适配器
         # 值类型：bool, 默认值：true
         enabled = true  # 默认已开启
         ```
 
 ### 6.2 配置连接参数
 
-这是整个部署流程中关键的一步，目的是让 Neo-MoFox (服务端) 与 Napcat QQ (客户端) 能够互相通信。我们将分别配置两端，并确保它们的信息完全一致。
+这是整个部署流程中关键的一步，目的是让 Neo-MoFox (服务端) 与 SnowLuma QQ (客户端) 能够互相通信。我们将分别配置两端，并确保它们的信息完全一致。
 
 - **第一部分：配置 Neo-MoFox 监听端口**
-        *   找到 `[onebot_server]` 配置节的 `port` 小节，这里定义了 Neo-MoFox 将在哪个端口上“监听”来自 Napcat 客户端的连接请求。
+        *   找到 `[onebot_server]` 配置节的 `port` 小节，这里定义了 Neo-MoFox 将在哪个端口上“监听”来自 SnowLuma 客户端的连接请求。
         ```toml
         # OneBot WebSocket 服务器配置
         [onebot_server]
@@ -300,34 +305,37 @@ Neo-MoFox 拥有强大的配置管理系统。在我们第一次启动程序时�
         ```
   - **请记下这个 `port` 值 (默认为 `8095`)**。除非 `8095` 端口已被其他程序占用，否则我们推荐保持默认设置。如果需要修改，请确保选择一个未被占用的端口。
 
-- **第二部分：配置 Napcat 客户端连接地址**
-  - 现在，回到 Napcat QQ 客户端，我们将告诉它去连接 Neo-MoFox 正在监听的端口。
-  - **步骤一：新建 Websocket 客户端**
-    - 在 Napcat 客户端中，点击左侧菜单的"网络配置"。
-    - 在右侧选择 `Websocket客户端` 标签页，然后点击"新建"按钮。
+- **第二部分：配置 SnowLuma 连接 Neo-MoFox**
+  - 现在，回到 SnowLuma，我们需要在它的 WebUI 中添加一个「WS 客户端」节点，让它主动去连接 Neo-MoFox 正在监听的端口。
+  - **步骤一：打开节点配置**
+    - 浏览器访问 `http://服务器IP:5099`，使用 SnowLuma 启动日志中打印的一次性密码登录 WebUI。
+    - 点击左侧菜单的「节点配置」，在账号列表中选择你的机器人账号（每个账号拥有独立的 OneBot 端点配置）。
+    - 在上方的分类标签中切换到「WS 客户端」页签，然后点击「新建WS 客户端」。
 
-        ![点击新建 Websocket 客户端](/napcat_add_ws_client.png)
+        ![在节点配置的 WS 客户端页签新建客户端](/snowluma_config_ws_clients.png)
 
   - **步骤二：填写反向 WebSocket 地址**
-    - 在弹出的配置窗口中，将 `URL` 填写为 `ws://127.0.0.1:8095`。
+    - 在弹出的「新建 WebSocket 反向客户端」窗口中，将「目标 URL」填写为 `ws://127.0.0.1:8095`。若 SnowLuma 与 Neo-MoFox 不在同一台机器上，请填写 `ws://<Neo-MoFox所在机器的IP>:<端口>`。
     - **核心要点**：此处的端口号 (`8095`) **必须**与你在**第一部分**中 Neo-MoFox 配置文件里看到的 `port` 值**完全一致**。如果两边不一致，通信将百分之百失败。
-    - 填写完毕后，点击"保存"。
+    - 其余选项保持默认：「角色」选择 `Universal`，「消息格式」选择 `数组`；若 Neo-MoFox 的 `access_token` 为空，「授权 Token」留空即可。
+    - 点击「创建节点」，然后在页面右上角点击「保存」。
 
-        ![配置反向 WebSocket](/napcat_ws_config.png)
+        ![新建 WebSocket 反向客户端弹窗](/snowluma_ws_client_form.png)
 
 ## 第七章：启动
 
 所有准备工作和配置都已完成，现在，是时候唤醒你的机器人了！
 
-### 7.1 第一步：启动并登录 Napcat QQ
+### 7.1 第一步：启动并登录 SnowLuma QQ
 
 - 执行以下内容
 
 ```bash
-xvfb-run -a /root/Napcat/opt/QQ/qq --no-sandbox
+export DISPLAY=:1
+/opt/QQ/qq --no-sandbox --disable-gpu --disable-software-rasterizer --disable-gpu-compositing &
 ```
 
-- - 你可以在这个目录找到Web Ui的登陆token/root/Napcat/opt/QQ/resources/app/app_launcher/napcat/config/webui.json  摁音量上键-查看IP-浏览器输入ip:6099（建议使用平板或电脑连接手机热点之后进入）-输入token-扫码登陆-右侧网络配置-新建-Websocket客户端-随便取一个名字-改url ws://localhost:8082（最后4个数字替换成自己设置的端口号）-保存
+- - 浏览器输入 `http://IP:5099` 进入 SnowLuma WebUI（建议使用平板或电脑连接手机热点之后进入），使用 SnowLuma 启动日志中打印的一次性密码登录，然后到「节点配置」- 选账号 - 「WS 客户端」页签 - 新建WS 客户端 - 随便取一个名字 - 目标 URL 填 `ws://127.0.0.1:8095`（端口替换成你在 `config.toml` 里设置的 `port` 值）- 创建节点 - 保存
 
 ### 7.2 第二步：运行 Neo-MoFox
 
@@ -388,8 +396,11 @@ uv run main.py
 ```bash
 # 1. 登录 Ubuntu 环境
 proot-distro login ubuntu
-# 2. 启动napcat
-xvfb-run -a /root/Napcat/opt/QQ/qq --no-sandbox
+# 2. 启动snowluma（与 QQ 的 WebUI 登录见上文 7.1）
+export DISPLAY=:1
+/opt/QQ/qq --no-sandbox --disable-gpu --disable-software-rasterizer --disable-gpu-compositing &
+# SnowLuma 本体（保持运行）
+node /root/SnowLuma-<TAG>-linux-arm64-lite/index.mjs
 # 3. 进入 Neo-MoFox 项目目录
 cd ~/Neo-MoFox_Deployment/Neo-MoFox
 
@@ -404,4 +415,4 @@ screen -dmS neomofox bash -c "uv run main.py; exec bash"
 
 至此，你已经成功走完了 Neo-MoFox 的部署全程。但这仅仅是一个开始。Neo-MoFox 的真正魅力，在于其强大的可塑性和扩展性。你可以像搭乐高一样，通过调整配置文件，来塑造它的性格、学习它的表达、开启或关闭它的各项功能。
 
-（ps：作为一个高三学生，寻思在armbian或者手机这种不会被家长找茬的低功耗设备中部署，却发现教程一堆错误，而且napcat使用起来也是各种不会，故重写这个教程。）
+（ps：作为一个高三学生，寻思在armbian或者手机这种不会被家长找茬的低功耗设备中部署，却发现教程一堆错误，而且snowluma使用起来也是各种不会，故重写这个教程。）

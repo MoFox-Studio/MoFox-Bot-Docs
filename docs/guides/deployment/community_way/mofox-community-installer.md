@@ -15,7 +15,7 @@ sudo curl -fsSL "https://raw.githubusercontent.com/MoFox-Elysia/MoFox-Installer/
 1. **系统检查与准备** - 检查系统资源、权限、架构和网络
 2. **软件选择** - 交互式选择需要安装的软件
 3. **软件安装** - 自动安装选择的软件包
-4. **配置管理** - 配置Neo-MoFox和NapcatQQ
+4. **配置管理** - 配置Neo-MoFox和SnowLuma
 5. **快速安装模式** - 检测到现有安装时的优化流程
 
 ---
@@ -54,14 +54,14 @@ sudo curl -fsSL "https://raw.githubusercontent.com/MoFox-Elysia/MoFox-Installer/
 
 ---
 
-### 2. NapcatQQ配置函数组
+### 2. SnowLuma配置函数组
 
-#### `configure_napcat_token()`
-**功能**: 修改Napcat的webui.json配置文件中的token
+#### `configure_snowluma_token()`
+**功能**: 修改SnowLuma的webui.json配置文件中的token
 **用户交互**:
 ```bash
 # 当脚本显示以下内容时：
-正在检查Napcat配置文件...
+正在检查SnowLuma配置文件...
 当前token: xxxxxxxx
 
 # 您可以选择：
@@ -69,18 +69,18 @@ sudo curl -fsSL "https://raw.githubusercontent.com/MoFox-Elysia/MoFox-Installer/
 # 输入 y 修改token，或按回车跳过
 ```
 
-#### `run_napcat_in_screen()`
-**功能**: 在screen会话中运行NapcatQQ
+#### `run_snowluma_in_screen()`
+**功能**: 在screen会话中运行SnowLuma
 **输出信息**:
 - 显示启动状态
 - 提供查看screen会话的命令
 
-#### `show_napcat_latest_log()`
-**功能**: 显示Napcat的最新日志文件
+#### `show_snowluma_latest_log()`
+**功能**: 显示SnowLuma的最新日志文件
 **显示最后23行日志内容**
 
-#### `check_napcat_login_status()`
-**功能**: 检查NapcatQQ登录状态
+#### `check_snowluma_login_status()`
+**功能**: 检查SnowLuma登录状态
 **用户交互**:
 ```bash
 # 脚本会显示日志并询问：
@@ -92,16 +92,16 @@ n - 等待10秒后再次检查
 r - 重新显示日志
 ```
 
-#### `update_napcat_auto_login_account()`
+#### `update_snowluma_auto_login_account()`
 **功能**: 从配置文件提取QQ号并更新autoLoginAccount
 **自动执行**，无需用户输入
 
-#### `configure_napcat_onebot()`
+#### `configure_snowluma_onebot()`
 **功能**: 创建或更新onebot配置文件
 **自动执行**，创建标准配置
 
-#### `configure_napcat_complete()`
-**功能**: NapcatQQ完整配置流程
+#### `configure_snowluma_complete()`
+**功能**: SnowLuma完整配置流程
 **按步骤执行上述所有配置函数**
 
 ---
@@ -120,13 +120,13 @@ r - 重新显示日志
 请选择 [1/2/3]: 
 ```
 
-#### `check_napcat_directory()`
-**功能**: 检查NapcatQQ文件夹是否存在
+#### `check_snowluma_directory()`
+**功能**: 检查SnowLuma文件夹是否存在
 **用户交互**:
 ```bash
-# 当检测到现有Napcat安装时，显示：
-请选择NapcatQQ安装操作：
-1) 跳过安装NapcatQQ
+# 当检测到现有SnowLuma安装时，显示：
+请选择SnowLuma安装操作：
+1) 跳过安装SnowLuma
 2) 正常安装 (忽略现有目录，可能覆盖)
 请选择 [1/2]: 
 ```
@@ -162,8 +162,8 @@ r - 重新显示日志
 
 ### 5. 软件安装函数
 
-#### `install_napcatqq()`
-**功能**: 安装NapcatQQ
+#### `install_snowlumaqq()`
+**功能**: 安装SnowLuma
 **流程**:
 1. 下载安装脚本
 2. 执行安装
@@ -258,8 +258,8 @@ r - 重新显示日志
 选择安装的软件
 ============================================
 
-# 询问NapcatQQ安装（如果之前未选择）
-是否安装 NapcatQQ？(y/N): 
+# 询问SnowLuma安装（如果之前未选择）
+是否安装 SnowLuma？(y/N): 
 
 # 询问1Panel安装（暂时无法使用）
 是否安装 1panle？-暂时无法使用，请选择不安装(y/N): 
@@ -339,7 +339,7 @@ Armbian软件自动安装脚本 v2.7.6
 ============================================
 选择安装的软件
 ============================================
-是否安装 NapcatQQ？(y/N): 
+是否安装 SnowLuma？(y/N): 
 是否安装 1panle？-暂时无法使用，请选择不安装(y/N): 
 是否安装 coplar？(y/N): 
 ```

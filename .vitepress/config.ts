@@ -9,11 +9,117 @@ import taskLists from "markdown-it-task-lists";
 import mermaidPlugin from "./plugins/markdown-it-mermaid.js";
 import { writeFileSync, mkdirSync } from "node:fs";
 import { resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 
 interface CatalogLink {
   text?: string;
   link?: string;
 }
+
+// ── Algolia DocSearch v5 ────────────────────────────────────────────────
+// 应用程序 ID / 搜索 API 密钥（可安全暴露于前端）
+const algoliaAppId = "JZV5IVO9JD";
+const algoliaApiKey = "e39ee94d8116ce8958647991de0f9637";
+const algoliaIndexName = "Mofox-Docs";
+// Agent Studio 代理 ID（Ask AI 后端）
+const algoliaAgentId = "6773c344-d728-4199-9a50-49177872618b";
+
+// DocSearch 界面中文翻译
+const algoliaZhTranslations = {
+  button: {
+    buttonText: "搜索",
+    buttonAriaLabel: "搜索",
+  },
+  modal: {
+    searchBox: {
+      clearButtonTitle: "清除",
+      clearButtonAriaLabel: "清除查询",
+      closeButtonText: "关闭",
+      closeButtonAriaLabel: "关闭",
+      placeholderText: "搜索文档或向 AI 提问",
+      placeholderTextAskAi: "再问一个问题...",
+      placeholderTextAskAiStreaming: "正在回答...",
+      searchInputLabel: "搜索",
+      backToKeywordSearchButtonText: "返回关键词搜索",
+      backToKeywordSearchButtonAriaLabel: "返回关键词搜索",
+      newConversationPlaceholder: "提问",
+      conversationHistoryTitle: "我的对话历史",
+      startNewConversationText: "开始新的对话",
+      viewConversationHistoryText: "对话历史",
+      threadDepthErrorPlaceholder: "对话已达上限",
+    },
+    newConversation: {
+      newConversationTitle: "我今天能帮你什么？",
+      newConversationDescription:
+        "我会搜索你的文档，快速帮你找到设置指南、功能细节和故障排除提示。",
+    },
+    footer: {
+      selectText: "选择",
+      submitQuestionText: "提交问题",
+      selectKeyAriaLabel: "回车键",
+      navigateText: "导航",
+      navigateUpKeyAriaLabel: "向上箭头",
+      navigateDownKeyAriaLabel: "向下箭头",
+      closeText: "关闭",
+      backToSearchText: "返回搜索",
+      closeKeyAriaLabel: "Esc 键",
+      poweredByText: "由…提供支持",
+    },
+    errorScreen: {
+      titleText: "无法获取结果",
+      helpText: "你可能需要检查网络连接。",
+    },
+    startScreen: {
+      recentSearchesTitle: "最近",
+      noRecentSearchesText: "暂无最近搜索",
+      saveRecentSearchButtonTitle: "保存此搜索",
+      removeRecentSearchButtonTitle: "从历史记录中移除此搜索",
+      favoriteSearchesTitle: "收藏",
+      removeFavoriteSearchButtonTitle: "从收藏中移除此搜索",
+      recentConversationsTitle: "最近对话",
+      removeRecentConversationButtonTitle: "从历史记录中移除此对话",
+    },
+    noResultsScreen: {
+      noResultsText: "未找到相关结果",
+      suggestedQueryText: "尝试搜索",
+      reportMissingResultsText: "认为此查询应该有结果？",
+      reportMissingResultsLinkText: "告诉我们。",
+    },
+    resultsScreen: {
+      askAiPlaceholder: "询问 AI：",
+      noResultsAskAiPlaceholder: "文档里没找到？让 Ask AI 帮忙：",
+    },
+    askAiScreen: {
+      disclaimerText: "回答由 AI 生成，可能会出错。请核实。",
+      relatedSourcesText: "相关来源",
+      thinkingText: "思考中...",
+      copyButtonText: "复制",
+      copyButtonCopiedText: "已复制！",
+      copyButtonTitle: "复制",
+      likeButtonTitle: "喜欢",
+      dislikeButtonTitle: "不喜欢",
+      thanksForFeedbackText: "感谢你的反馈！",
+      preToolCallText: "搜索中...",
+      duringToolCallText: "搜索中...",
+      afterToolCallText: "已搜索",
+      stoppedStreamingText: "你已停止此回复",
+      errorTitleText: "聊天错误",
+      startNewConversationButtonText: "开始新的对话",
+    },
+  },
+};
+
+// Algolia DocSearch v5 选项（使用 indices + askAi.agentId 的 v5 配置）
+// VitePress 内置类型仍基于 DocSearch v4，此处用自定义组件与 v5 API 对接
+const algoliaSearchOptions = {
+  appId: algoliaAppId,
+  apiKey: algoliaApiKey,
+  indices: [algoliaIndexName],
+  askAi: {
+    agentId: algoliaAgentId,
+  },
+  translations: algoliaZhTranslations,
+} as unknown as DefaultTheme.AlgoliaSearchOptions;
 
 // 辅助函数：从 VitePress 侧边栏中提取链接
 function extractLinksFromSidebar(
@@ -560,6 +666,17 @@ export default defineConfig({
       }),
       GitChangelogMarkdownSection(),
     ],
+    resolve: {
+      alias: [
+        // 覆盖内置搜索组件，改用 DocSearch v5 + Agent Studio (Ask AI)
+        {
+          find: /^.*\/VPAlgoliaSearchBox\.vue$/,
+          replacement: fileURLToPath(
+            new URL("./theme/components/VPAlgoliaSearchBox.vue", import.meta.url),
+          ),
+        },
+      ],
+    },
     optimizeDeps: {
       exclude: [
         "@nolebase/vitepress-plugin-inline-link-preview/client",
@@ -876,7 +993,8 @@ export default defineConfig({
     ],
 
     search: {
-      provider: "local",
+      provider: "algolia",
+      options: algoliaSearchOptions,
     },
     footer: {
       message: "Released under the GPL-3.0 License.",

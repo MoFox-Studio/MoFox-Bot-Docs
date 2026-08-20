@@ -10,6 +10,7 @@ import BackgroundLogo from "./components/ui/BackgroundLogo.vue";
 import ReadingProgress from "./components/ui/ReadingProgress.vue";
 import CodeCopyEnhancer from "./components/ui/CodeCopyEnhancer.vue";
 import ThemeToggleAnimation from "./components/ui/ThemeToggleAnimation.vue";
+import AiAssistant from "./components/ui/AiAssistant.vue";
 
 // 内容/功能组件
 import MermaidRenderer from "./components/content/MermaidRenderer.vue";
@@ -55,6 +56,7 @@ const theme: Theme = {
         h(ReadingProgress),
         h(CodeCopyEnhancer),
         h(ThemeToggleAnimation),
+        h(AiAssistant),
       ],
     });
   },

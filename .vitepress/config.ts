@@ -7,6 +7,7 @@ import {
 import { InlineLinkPreviewElementTransform } from "@nolebase/vitepress-plugin-inline-link-preview/markdown-it";
 import taskLists from "markdown-it-task-lists";
 import mermaidPlugin from "./plugins/markdown-it-mermaid.js";
+import docsApiPlugin from "./plugins/docs-api.js";
 import { writeFileSync, mkdirSync } from "node:fs";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -184,6 +185,13 @@ const devSidebar: DefaultTheme.SidebarItem[] = [
         text: "侧边栏与顶栏配置",
         link: "/docs/development/docs-editing/sidebar-nav-config",
       },
+    ],
+  },
+  {
+    text: "文档站点 API",
+    collapsed: false,
+    items: [
+      { text: "文档 JSON API", link: "/docs/development/docs-api" },
     ],
   },
   {
@@ -665,6 +673,7 @@ export default defineConfig({
         repoURL: () => "https://github.com/MoFox-Studio/MoFox-Bot-Docs",
       }),
       GitChangelogMarkdownSection(),
+      docsApiPlugin(),
     ],
     resolve: {
       alias: [

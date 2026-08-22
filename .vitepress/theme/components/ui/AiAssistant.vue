@@ -8,6 +8,17 @@
     }"
   >
     <div v-if="hasConversation" ref="panelEl" class="ai-assistant-panel">
+      <div class="ai-assistant-header">
+        <span class="ai-assistant-title">MoFox AI</span>
+        <button
+          class="ai-assistant-close"
+          type="button"
+          aria-label="关闭 AI 助手"
+          @click="close"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
       <div ref="messagesEl" class="ai-assistant-messages">
         <div
           v-for="message in messages"
@@ -340,6 +351,17 @@ function handleChunk(chunk: AgentChunk) {
   scrollToBottom();
 }
 
+function close() {
+  abortController?.abort();
+  abortController = null;
+  messages.value = [];
+  hasConversation.value = false;
+  streaming.value = false;
+  focused.value = false;
+  input.value = "";
+  if (inputEl.value) inputEl.value.style.height = "auto";
+}
+
 onUnmounted(() => {
   abortController?.abort();
 });
@@ -378,7 +400,6 @@ onUnmounted(() => {
 .ai-assistant-panel {
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
   width: 100%;
   max-height: 0;
   opacity: 0;
@@ -389,11 +410,48 @@ onUnmounted(() => {
 .ai-assistant--chat .ai-assistant-panel {
   max-height: min(60vh, 520px);
   opacity: 1;
-  overflow-y: auto;
+  overflow: hidden;
   border-bottom: 1px solid var(--vp-c-divider);
 }
 
+.ai-assistant-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  padding: 8px 10px 8px 14px;
+  border-bottom: 1px solid var(--vp-c-divider);
+}
+
+.ai-assistant-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--vp-c-text-1);
+}
+
+.ai-assistant-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--vp-c-text-3);
+  cursor: pointer;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.ai-assistant-close:hover {
+  color: var(--vp-c-text-1);
+  background: var(--vp-c-bg-alt);
+}
+
 .ai-assistant-messages {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 10px;

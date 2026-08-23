@@ -10,8 +10,7 @@ import MarkdownIt from "markdown-it";
  * 在开发服务器（docs:dev）与构建产物（docs:build / 静态托管）中提供一致的 API：
  *
  *   GET /api/docs/index.json                获取所有文档（元信息）
- *   GET /api/docs/search.json?q=关键词       按标题 / 路径 / id 搜索文档
- *   GET /api/docs/search-content.json?q=关键词  按文档正文文字搜索
+ *   GET /api/docs/llms.json                 LLM 检索索引（按 section 排序，替代 search）
  *   GET /api/docs/<id>.json                 获取指定文档（含正文文本）
  *
  * 开发模式：由 Vite 中间件实时扫描 docs/ 目录并返回 JSON。
@@ -135,17 +134,51 @@ function toMeta(doc: DocsApiDocDetail): DocsApiDoc {
   return { id: doc.id, path: doc.path, title: doc.title, description: doc.description };
 }
 
-function findDocs(
-  docs: DocsApiDocDetail[],
-  query: string,
-  field: "meta" | "content",
-): DocsApiDocDetail[] {
-  const q = query.trim().toLowerCase();
-  if (!q) return docs;
-  return docs.filter((doc) => {
-    const hay = field === "content" ? doc.content : `${doc.title}\n${doc.path}\n${doc.id}`;
-    return hay.toLowerCase().includes(q);
+// ── LLM 索引（llms.json，替代 search 作为 LLM 入口）──────────────────
+
+function sectionOf(id: string): string {
+  const [top, sub] = id.split("/");
+  return top === "guides" && sub ? `${top}/${sub}` : top;
+}
+
+const SECTION_PRIORITY: Record<string, number> = {
+  "guides/deployment": 1,
+  "guides/index": 1.5,
+  "guides/configuration": 2,
+  "guides/usage": 3,
+  "guides/adapter_list": 4,
+  "guides/misc": 5,
+  development: 6,
+  builtin_plugins: 7,
+};
+
+function toLlmsEntry(doc: DocsApiDocDetail) {
+  return {
+    id: doc.id,
+    path: doc.path,
+    title: doc.title,
+    description: doc.description,
+    preview: doc.content.slice(0, 500),
+    section: sectionOf(doc.id),
+  };
+}
+
+function llmsIndex(docs: DocsApiDocDetail[]) {
+  const ordered = [...docs].sort((a, b) => {
+    const pa = SECTION_PRIORITY[sectionOf(a.id)] ?? 99;
+    const pb = SECTION_PRIORITY[sectionOf(b.id)] ?? 99;
+    if (pa !== pb) return pa - pb;
+    return a.path.localeCompare(b.path);
   });
+  return {
+    title: "Neo-MoFox Docs",
+    description:
+      "Neo-MoFox 文档库 LLM 索引，替代 search 接口作为文档检索入口。按 section 分组排序，" +
+      "先依据 title / description / preview 判断相关性，再通过 GET /api/docs/<id>.json 获取完整正文。",
+    version: 1,
+    total: ordered.length,
+    docs: ordered.map(toLlmsEntry),
+  };
 }
 
 // ── JSON 响应工具 ────────────────────────────────────────────────────
@@ -191,17 +224,8 @@ export default function docsApiPlugin(): Plugin {
         return;
       }
 
-      if (relPath === "search.json") {
-        const q = url.searchParams.get("q") ?? "";
-        const results = findDocs(all, q, "meta").map(toMeta);
-        json(res, 200, { query: q, total: results.length, results });
-        return;
-      }
-
-      if (relPath === "search-content.json") {
-        const q = url.searchParams.get("q") ?? "";
-        const results = findDocs(all, q, "content");
-        json(res, 200, { query: q, total: results.length, results });
+      if (relPath === "llms.json") {
+        json(res, 200, llmsIndex(all));
         return;
       }
 
@@ -266,25 +290,10 @@ export default function docsApiPlugin(): Plugin {
         "utf-8",
       );
 
-      // 标题 / 路径搜索索引（完整元信息，客户端过滤）
+      // LLM 索引（按 section 排序、含简介与预览，替代 search 作为检索入口）
       await fs.writeFile(
-        resolve(apiDir, "search.json"),
-        JSON.stringify(
-          { query: "", total: docs.length, results: docs.map(toMeta) },
-          null,
-          2,
-        ),
-        "utf-8",
-      );
-
-      // 正文搜索索引（含完整正文文本，客户端过滤）
-      await fs.writeFile(
-        resolve(apiDir, "search-content.json"),
-        JSON.stringify(
-          { query: "", total: docs.length, results: docs },
-          null,
-          2,
-        ),
+        resolve(apiDir, "llms.json"),
+        JSON.stringify(llmsIndex(docs), null, 2),
         "utf-8",
       );
 

@@ -16,9 +16,9 @@ const myGuides = [
   },
   {
     avatar: '<iconify-icon icon="material-symbols:android"></iconify-icon>',
-    name: 'Android 部署指南',
-    title: '为 Android 用户准备的部署教程...',
-    link: './deployment/mmc_deploy_android'
+    name: 'Android 官方部署指南',
+    title: '使用 MoFox Android App 完成正式版部署...',
+    link: './deployment/mmc_deploy_android_app'
   },
   {
     avatar: '<iconify-icon icon="mdi:docker"></iconify-icon>',

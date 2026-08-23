@@ -779,11 +779,7 @@ export default defineConfig({
               link: "/docs/guides/deployment/mmc_deploy_docker",
             },
             {
-              text: "Android部署指南",
-              link: "/docs/guides/deployment/mmc_deploy_android",
-            },
-            {
-              text: "Android 官方部署指南 (Beta)",
+              text: "Android 官方部署指南",
               link: "/docs/guides/deployment/mmc_deploy_android_app",
             },
             {

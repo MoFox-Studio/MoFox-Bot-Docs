@@ -7,7 +7,7 @@
 Compose 会启动以下两个服务：
 
 - `mofox`：Neo-MoFox 主程序；
-- `snowluma`：QQ 客户端、SnowLuma WebUI、VNC/noVNC 和 OneBot 11 服务。
+- `snowluma`：QQ 客户端、SnowLuma WebUI、noVNC 和 OneBot 11 服务。
 
 配置、数据、日志和插件目录会保存在宿主机中；SnowLuma 数据则保存在 Docker 命名卷中。
 
@@ -18,7 +18,7 @@ Compose 会启动以下两个服务：
 - 支持 Docker Desktop 或 Docker Engine 的 64 位操作系统；
 - 至少 2 核 CPU、4 GB 内存和 10 GB 可用磁盘空间；
 - 已安装 Git、Docker Engine 和 Docker Compose；
-- 能够访问 GitHub、Docker Hub及所使用的模型 API 服务。
+- 能够访问 GitHub、Docker Hub 及所使用的模型 API 服务。
 
 执行以下命令确认 Docker 可用：
 
@@ -34,12 +34,11 @@ docker compose version
 | `8000` | Neo-MoFox WebUI | 否，建议仅在可信网络使用 |
 | `5099` | SnowLuma WebUI | 否 |
 | `6081` | noVNC 网页 | 否 |
-| `5900` | VNC 客户端 | 否 |
 | `3000` | OneBot HTTP | 否 |
 | `3001` | OneBot WebSocket | 否 |
 
 > [!WARNING]
-> 不要把 VNC、WebUI 或 OneBot 端口直接暴露到公网。确需远程访问时，请使用防火墙白名单、VPN 或带身份认证的反向代理。
+> 不要把 noVNC、WebUI 或 OneBot 端口直接暴露到公网。确需远程访问时，请使用防火墙白名单、VPN 或带身份认证的反向代理。
 
 ## 2. 获取项目
 
@@ -59,16 +58,23 @@ git pull --ff-only
 
 ## 3. 启动前配置
 
-### 3.1 修改 VNC 密码
+### 3.1 设置 noVNC 密码
 
-打开项目根目录的 `docker-compose.yml`，将 SnowLuma 的默认 VNC 密码改为随机强密码：
+最新 Compose 不再内置默认密码。启动前必须通过 `SNOWLUMA_VNC_PASSWORD` 环境变量提供随机强密码，否则 Docker Compose 会拒绝启动。
 
-```yaml
-environment:
-  VNC_PASSWD: 请替换为随机强密码
+:::code-group
+
+```bash [Linux/macOS]
+export SNOWLUMA_VNC_PASSWORD='请替换为随机强密码'
 ```
 
-请勿继续使用示例中的默认密码，也不要把修改后的密码提交到公开仓库。
+```powershell [Windows PowerShell]
+$env:SNOWLUMA_VNC_PASSWORD = '请替换为随机强密码'
+```
+
+:::
+
+该变量只在当前终端会话中有效，请在同一个终端中执行后续的 `docker compose` 命令。不要把真实密码写进公开脚本、截图或代码仓库。
 
 ### 3.2 确认数据挂载
 
@@ -113,15 +119,15 @@ Compose 已设置 `MOFOX_ACCEPT_STARTUP_AGREEMENTS=1`，用于在无交互环境
 ## 5. 登录 QQ
 
 1. 在浏览器打开 `http://服务器IP:6081` 进入 noVNC；
-2. 使用第 3.1 节设置的 VNC 密码登录；
+2. 使用第 3.1 节通过环境变量设置的密码登录；
 3. 在 QQ 客户端中完成扫码或账号登录；
 4. 打开 `http://服务器IP:5099`，确认 SnowLuma 已正常运行。
 
-也可以使用 VNC 客户端连接 `服务器IP:5900`。完成登录后，请及时关闭不需要的外部端口访问规则。
+当前 Compose 不再向宿主机发布 `5900` 端口。完成登录后，请及时关闭不需要的外部端口访问规则。
 
 ## 6. 连接 SnowLuma 与 Neo-MoFox
 
-SnowLuma 提供 OneBot 11 WebSocket 服务，容器内地址为 `snowluma:3001`。Neo-MoFox 与 SnowLuma 位于同一个 Compose 默认网络中，因此应使用服务名通信，不要填写 `localhost`。
+Neo-MoFox 使用反向 WebSocket 模式监听 `8095` 端口，SnowLuma 作为 WebSocket 客户端主动连接。两个容器位于同一个 Compose 默认网络中，因此 SnowLuma 应使用 Neo-MoFox 的容器名 `mofox-bot`，不能填写 `localhost` 或宿主机地址。
 
 首次启动 Neo-MoFox 后，编辑 `config/plugins/onebot_adapter/config.toml`：
 
@@ -134,13 +140,22 @@ qq_id = "你的机器人QQ号"
 qq_nickname = "机器人昵称"
 
 [onebot_server]
-mode = "direct"
-host = "snowluma"
-port = 3001
+mode = "reverse"
+host = "0.0.0.0"
+port = 8095
 access_token = ""
 ```
 
-同时在 SnowLuma WebUI 中确认 OneBot WebSocket 服务已启用并监听 `0.0.0.0:3001`。如果设置了 Access Token，SnowLuma 与 Neo-MoFox 两端必须填写相同的值。
+随后在 SnowLuma WebUI 中完成以下设置：
+
+1. 打开“节点配置”，选择已经登录的 QQ 账号；
+2. 进入“WS 客户端”，新建一个 WebSocket 反向客户端；
+3. 将目标 URL 设置为 `ws://mofox-bot:8095`；
+4. 消息格式选择“数组”，角色选择 `Universal`；
+5. 如果 Neo-MoFox 设置了 Access Token，两端填写相同的值；留空时两端都不设置；
+6. 保存并启用节点。
+
+`8095` 只用于 Compose 内部网络通信，不需要映射到宿主机或在公网防火墙中放行。
 
 修改后重启 Neo-MoFox：
 
@@ -175,7 +190,9 @@ Compose 为 Neo-MoFox WebUI 预留了 `8000` 端口。若当前镜像尚未安�
 
 ### 容器启动后立即退出
 
-执行 `docker compose logs mofox snowluma`，从第一条明确错误开始排查。常见原因包括镜像拉取失败、端口冲突、文件权限错误或宿主机资源不足。
+如果提示 `Set SNOWLUMA_VNC_PASSWORD to a strong password`，说明当前终端没有设置 `SNOWLUMA_VNC_PASSWORD`。按照第 3.1 节设置后，在同一终端重新启动。
+
+其他情况可执行 `docker compose logs mofox snowluma`，从第一条明确错误开始排查。常见原因包括镜像拉取失败、端口冲突、文件权限错误或宿主机资源不足。
 
 ### 无法打开 noVNC 或 SnowLuma WebUI
 
@@ -186,8 +203,8 @@ Compose 为 Neo-MoFox WebUI 预留了 `8000` 端口。若当前镜像尚未安�
 
 ### QQ 已登录但机器人没有响应
 
-- 确认 SnowLuma 的 OneBot WebSocket 服务监听 `3001`；
-- 确认 Neo-MoFox 使用 `direct` 模式连接 `snowluma:3001`；
+- 确认 Neo-MoFox 使用 `reverse` 模式监听 `0.0.0.0:8095`；
+- 确认 SnowLuma 的 WS 客户端目标为 `ws://mofox-bot:8095`；
 - 确认两端 Access Token 一致；
 - 检查 `qq_id` 是否与 SnowLuma 中登录的 QQ 一致；
 - 同时查看 `docker compose logs -f mofox snowluma`。

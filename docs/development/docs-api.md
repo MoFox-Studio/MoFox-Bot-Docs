@@ -16,8 +16,7 @@ MoFox-Bot-Docs 内置了一个文档 JSON API，允许外部程序（或本站�
 | 接口 | 说明 | 返回 |
 | --- | --- | --- |
 | `GET /api/docs/index.json` | 获取所有文档（元信息） | `{ total, docs[] }` |
-| `GET /api/docs/search.json?q=关键词` | 按标题 / 路径 / id 搜索文档 | `{ query, total, results[] }` |
-| `GET /api/docs/search-content.json?q=关键词` | 按文档正文文字搜索文档 | `{ query, total, results[] }` |
+| `GET /api/docs/llms.json` | LLM 检索索引（按 section 排序，含简介与预览） | `{ title, description, version, total, docs[] }` |
 | `GET /api/docs/<id>.json` | 获取指定文档（含正文文本） | `{ id, path, title, description, content }` |
 
 ## 数据字段说明
@@ -32,7 +31,7 @@ MoFox-Bot-Docs 内置了一个文档 JSON API，允许外部程序（或本站�
 | `description` | string | 简介（取自正文首段，截断为 200 字符） |
 | `content` | string | **纯文本正文**（Markdown 已被转换为文本，便于直接使用 / 全文检索） |
 
-`index.json` 与 `search.json` 只包含元信息（不含 `content`），适合做目录或列表；`search-content.json` 与单个文档接口包含 `content` 字段。
+`index.json` 与 `llms.json` 只包含元信息与预览（不含完整 `content`），适合做目录或检索；`<id>.json` 单个文档接口包含完整 `content` 字段。
 
 ## 1. 获取所有文档
 
@@ -54,54 +53,36 @@ GET /api/docs/index.json
 }
 ```
 
-## 2. 搜索指定文档（按标题 / 路径）
+## 2. LLM 检索索引（推荐 LLM / 外部程序使用）
 
-按标题、路径或 id 做不区分大小写的模糊匹配：
+`llms.json` 是面向 LLM 的检索入口，用于**查找文档**（替代已移除的 `search.json` / `search-content.json`）。它是一份按 `section` 分组排序的完整清单，`guides/deployment` 排在首位，且每篇文档附带 `description` 与正文前 500 字符的 `preview`：
 
 ```http
-GET /api/docs/search.json?q=mcp
+GET /api/docs/llms.json
 ```
 
 ```json
 {
-  "query": "mcp",
-  "total": 1,
-  "results": [
+  "title": "Neo-MoFox Docs",
+  "description": "Neo-MoFox 文档库 LLM 索引……",
+  "version": 1,
+  "total": 150,
+  "docs": [
     {
-      "id": "guides/configuration/mcp_guide",
-      "path": "/docs/guides/configuration/mcp_guide",
-      "title": "MCP 使用教程",
-      "description": "……"
-    }
-  ]
-}
-```
-
-## 3. 通过文档正文文字搜索
-
-按文档正文的纯文本内容匹配，命中结果会包含 `content` 字段：
-
-```http
-GET /api/docs/search-content.json?q=Owner
-```
-
-```json
-{
-  "query": "Owner",
-  "total": 14,
-  "results": [
-    {
-      "id": "builtin_plugins/perm/index",
-      "path": "/docs/builtin_plugins/perm/",
-      "title": "权限管理",
+      "id": "guides/deployment/deployment_guide",
+      "path": "/docs/guides/deployment/deployment_guide",
+      "title": "Neo-MoFox Windows 部署指南",
       "description": "……",
-      "content": "……"
+      "preview": "……",
+      "section": "guides/deployment"
     }
   ]
 }
 ```
 
-## 4. 获取指定文档
+**推荐用法**：先拉取 `llms.json`，依据 `title` / `description` / `preview` 判断哪些文档与查询相关，再用 `GET /api/docs/<id>.json` 获取完整正文。由于列表已按 section 排序、且部署类文档排在前面，只需浏览前几十条即可覆盖高频问题。
+
+## 3. 获取指定文档
 
 `<id>` 为文档唯一标识（见 `index.json` 中的 `id` 字段）。返回的 `content` 是**纯文本正文**：
 
@@ -123,32 +104,19 @@ GET /api/docs/guides/configuration/bot_config_guide.json
 目录页（`index.md`）的 id 形如 `guides/index`，因此它的接口是 `/api/docs/guides/index.json`。
 :::
 
-## 静态托管下的搜索
+## 关于搜索
 
-在静态托管下，`search.json` 与 `search-content.json` 直接返回**完整索引**（`query` 为空、包含全部文档），由调用方在客户端过滤——因为纯静态托管无法按查询参数动态返回结果。开发服务器的这两个接口则支持 `?q=` 服务端过滤，方便用 `curl` 调试。
-
-```js
-// 示例：静态托管下客户端过滤
-const { results } = await fetch("/api/docs/search.json").then((r) => r.json());
-const hits = results.filter((doc) => doc.title.includes("docker"));
-```
+搜索接口（`search.json` / `search-content.json`）**已移除**，检索文档请使用 `llms.json`：纯静态托管无法按查询参数动态返回结果，而 `llms.json` 本身即完整、有序的清单，拉取后在客户端（或 LLM 本地）依据 `preview` 判断相关性即可，无需服务端过滤。
 
 ## 客户端助手模块
 
-本站还提供了一个与 API 配套的 TypeScript 助手模块，封装了上述四个操作，开发环境与静态环境行为一致：
+本站还提供了一个与 API 配套的 TypeScript 助手模块，封装了获取列表与单篇文档的操作，开发环境与静态环境行为一致：
 
 ```ts
 // .vitepress/theme/utils/docsApi.ts
-import {
-  getAllDocs,
-  searchDocs,
-  searchDocsContent,
-  getDoc,
-} from "./docsApi";
+import { getAllDocs, getDoc } from "./docsApi";
 
 const all = await getAllDocs();          // 所有文档元信息
-const hit = await searchDocs("webui");   // 按标题搜索
-const full = await searchDocsContent("Owner"); // 按正文搜索
 const doc = await getDoc("guides/configuration/bot_config_guide"); // 指定文档
 ```
 
@@ -156,4 +124,4 @@ const doc = await getDoc("guides/configuration/bot_config_guide"); // 指定文�
 
 - **`/api/docs/<id>.json` 不存在时返回什么？** 开发服务器返回 `404` 与 `{ "error": "not_found", "message": "文档不存在: <id>" }`；静态托管下访问不存在的文件会落到站点的 404 页面。
 - **新增 / 修改文档后需要做什么？** 开发服务器会通过文件监听自动刷新缓存；静态托管需要重新执行 `npm run docs:build` 以重新生成 JSON 文件。
-- **文件生成在哪里？** 构建产物的 `api/docs/` 目录，共三类文件：`index.json`（列表）、`search.json` / `search-content.json`（搜索索引）、以及每篇文档一个的 `<id>.json`。
+- **文件生成在哪里？** 构建产物的 `api/docs/` 目录，共三类文件：`index.json`（列表）、`llms.json`（LLM 检索索引）、以及每篇文档一个的 `<id>.json`。

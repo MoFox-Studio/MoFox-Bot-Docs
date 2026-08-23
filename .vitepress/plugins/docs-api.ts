@@ -34,7 +34,10 @@ export interface DocsApiDocDetail extends DocsApiDoc {
 // ── Markdown 文本提取 ────────────────────────────────────────────────
 
 function markdownToText(src: string): string {
-  let body = src.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n?/, "").trim();
+  let body = src
+    .replace(/^\uFEFF/, "")
+    .replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n?/, "")
+    .trim();
   body = body.replace(/<script[\s\S]*?<\/script>/gi, "");
   body = body.replace(/<style[\s\S]*?<\/style>/gi, "");
 
@@ -55,13 +58,17 @@ function markdownToText(src: string): string {
 }
 
 function extractTitle(src: string): string {
-  const body = src.replace(/^---[\s\S]*?\n---/, "");
+  const body = src.replace(/^\uFEFF/, "").replace(/^---[\s\S]*?\n---/, "");
   const match = body.match(/^#\s+(.+?)\s*$/m);
-  return match ? match[1].trim() : "";
+  if (!match) return "";
+  return match[1].replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
 }
 
 function extractDescription(src: string): string {
-  let body = src.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n?/, "").trim();
+  let body = src
+    .replace(/^\uFEFF/, "")
+    .replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n?/, "")
+    .trim();
   body = body.replace(/<script[\s\S]*?<\/script>/gi, "");
 
   for (const raw of body.split(/\r?\n/)) {

@@ -811,6 +811,10 @@ export default defineConfig({
               link: "/docs/guides/configuration/bot_config_guide",
             },
             {
+              text: "人格编写指南",
+              link: "/docs/guides/configuration/personality-writing-guide",
+            },
+            {
               text: "模型配置指南(进阶)",
               link: "/docs/guides/configuration/model_configuration_guide",
             },

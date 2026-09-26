@@ -1,5 +1,9 @@
 # Neo-Default-Chatter（neo_default_chatter / NDFC）
 
+::: warning dev 分支专属
+NDFC 目前仅在 Neo-MoFox 的 **`dev` 分支**中提供，尚未进入正式发布版（`main`）。如需使用，请切换到 dev 分支或安装 dev 构建版本（2026.9.27）。
+:::
+
 NDFC 是 Neo-MoFox 的新一代聊天执行核心，定位为「可复用的会话逻辑中台」。它采用 **EventBus 事件驱动**架构，把会话流水线上的全部可替换 seam 都以事件形式暴露给第三方插件——订阅事件即可「换函数」，不再需要像 DFC 那样构造聚合 Protocol 适配器。
 
 > 全名 **Neo-Default-Chatter**，插件标识 `neo_default_chatter`，简称 **NDFC**。
@@ -42,14 +46,16 @@ NDFC 与 DFC 是同位替代关系，二者择一即可。典型切换步骤：
 |------|--------|------|
 | `enabled` | `false` | 是否启用 NDFC（默认关闭，与 DFC 二选一） |
 | `native_multimodal` | `false` | 原生多模态模式：图片直接 base64 打包进 LLM payload，跳过 VLM 识别环节。需确保 actor 模型支持多模态输入 |
-| `image_placeholder_template` | `"[图片-{idx}]"` | 文本侧图片占位符模板，`{idx}` 为从 1 开始的序号，与请求体里的 base64 图片一一对应 |
 | `enable_stop_direct_message_wake` | `false` | 是否允许私聊 / @Bot 消息按概率提前解除 stop 冷却 |
 | `stop_direct_message_wake_probability` | `0.5` | stop 冷却期间收到私聊 / @Bot 消息时的提前唤醒概率（0.0~1.0） |
 | `reinforce_negative_behaviors` | `true` | 是否在每轮 user 提示词的 extra 板块中再次强调负面行为约束 |
 | `default_stop_minutes` | `5.0` | `stop_conversation` 工具未传入 `minutes` 时的默认冷却分钟数 |
+| `typing_delay_per_char` | `0.5` | `send_text` 模拟打字延迟时每个字符的等待秒数，总延迟 = min(字符数 × 该值, `typing_delay_max_seconds`)。设为 `0` 关闭打字延迟 |
+| `typing_delay_max_seconds` | `10.0` | 单条消息打字延迟的最大等待秒数上限 |
 | `enable_cooldown` | `true` | 是否启用回复后冷却。关闭可避免 LLM 设过长冷却导致无法回复 |
 | `enable_action_suspend` | `true` | 是否启用纯 Action 回合的 SUSPEND 挂起机制。关闭后纯 Action 结果会像常规工具结果一样继续 follow-up |
 | `actor_task_name` | `"actor"` | 主会话 LLM 任务名，对应 `config/model.toml` 中的 task key |
+| `introduce` | （内置引言文本） | 系统提示词的引言板块，定义 AI 的基本定位与存在方式。支持包含 `<introduce>` 等结构标签，留空则该板块不渲染 |
 
 ### `[plugin.theme_guide]` 场景引导
 
@@ -64,8 +70,12 @@ NDFC 与 DFC 是同位替代关系，二者择一即可。典型切换步骤：
 
 ### `[plugin.preprocess_probability_bypass]` 预处理 · 概率直通
 
-控制 `neo_default_chatter:preprocess` 事件中的「概率直通处理器」（`ProbabilityBypassHandler`，weight=100）。
+控制 `neo_default_chatter:preprocess` 事件中的「概率直通处理器」（`ProbabilityBypassHandler`，weight=1）。
 当随机值低于放行概率时直接放行给主 chatter，跳过 SubAgent LLM 判定；未命中则交给 SubAgent 处理器。
+
+::: info 预处理链的订阅顺序
+`preprocess` 事件按 weight 从高到低串行执行：`PrivateChatBypassHandler`（weight=2，私聊直接放行）→ `ProbabilityBypassHandler`（weight=1，概率直通）→ `SubAgentDecisionHandler`（weight=0，LLM 判定）。第三方插件用更高 weight 订阅即可替换或协作。
+:::
 
 | 字段 | 默认值 | 说明 |
 |------|--------|------|
@@ -81,13 +91,13 @@ NDFC 与 DFC 是同位替代关系，二者择一即可。典型切换步骤：
 
 ### `[plugin.preprocess_sub_agent]` 预处理 · SubAgent 判定
 
-控制 `neo_default_chatter:preprocess` 事件中的 SubAgent 处理器（`SubAgentDecisionHandler`，weight=50）。
+控制 `neo_default_chatter:preprocess` 事件中的 SubAgent 处理器（`SubAgentDecisionHandler`，weight=0）。
 当概率直通门未命中时，发起一次轻量 LLM 单轮判定，让模型决定本轮消息是否值得主 chatter 立即回复。
 
 | 字段 | 默认值 | 说明 |
 |------|--------|------|
 | `enabled` | `true` | 是否启用 SubAgent 轻量 LLM 判定。关闭后概率直通门未命中时也会直接放行给主 chatter |
-| `task_name` | `"actor"` | 判定请求使用的 LLM 任务名，对应 `config/model.toml` 中的 task key（建议指向轻量 / 低成本模型任务） |
+| `task_name` | `"sub_actor"` | 判定请求使用的 LLM 任务名，对应 `config/model.toml` 中的 task key（建议指向轻量 / 低成本模型任务） |
 | `request_name` | `"neo_default_chatter:preprocess:sub_agent_decision"` | LLM 请求名，用于统计与日志识别 |
 | `max_context_messages` | `8` | 拼入判定 prompt 的最近历史消息条数上限。值越大越准但越耗 token；`0` 表示只看本轮未读消息 |
 | `max_unread_messages` | `10` | 拼入判定 prompt 的本轮未读消息条数上限。超过会截断保留最近若干条 |
@@ -99,11 +109,12 @@ NDFC 与 DFC 是同位替代关系，二者择一即可。典型切换步骤：
 [plugin]
 enabled = true
 native_multimodal = false
-image_placeholder_template = "[图片-{idx}]"
 enable_stop_direct_message_wake = false
 stop_direct_message_wake_probability = 0.5
 reinforce_negative_behaviors = true
 default_stop_minutes = 5.0
+typing_delay_per_char = 0.5
+typing_delay_max_seconds = 10.0
 enable_cooldown = true
 enable_action_suspend = true
 actor_task_name = "actor"
@@ -121,7 +132,7 @@ unread_message_bonus = 0.05
 
 [plugin.preprocess_sub_agent]
 enabled = true
-task_name = "actor"
+task_name = "sub_actor"
 request_name = "neo_default_chatter:preprocess:sub_agent_decision"
 max_context_messages = 8
 max_unread_messages = 10

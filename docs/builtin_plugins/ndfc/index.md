@@ -46,8 +46,8 @@ NDFC 与 DFC 是同位替代关系，二者择一即可。典型切换步骤：
 |------|--------|------|
 | `enabled` | `false` | 是否启用 NDFC（默认关闭，与 DFC 二选一） |
 | `native_multimodal` | `false` | 原生多模态模式：图片直接 base64 打包进 LLM payload，跳过 VLM 识别环节。需确保 actor 模型支持多模态输入 |
-| `enable_stop_direct_message_wake` | `false` | 是否允许私聊 / @Bot 消息按概率提前解除 stop 冷却 |
-| `stop_direct_message_wake_probability` | `0.5` | stop 冷却期间收到私聊 / @Bot 消息时的提前唤醒概率（0.0~1.0） |
+| `enable_stop_direct_message_wake` | `false` | 是否允许私聊消息按概率提前解除 stop 冷却（默认 handler 仅在私聊场景计算唤醒概率，群聊 @Bot 不触发） |
+| `stop_direct_message_wake_probability` | `0.5` | stop 冷却期间收到私聊消息时的提前唤醒概率（0.0~1.0） |
 | `reinforce_negative_behaviors` | `true` | 是否在每轮 user 提示词的 extra 板块中再次强调负面行为约束 |
 | `default_stop_minutes` | `5.0` | `stop_conversation` 工具未传入 `minutes` 时的默认冷却分钟数 |
 | `typing_delay_per_char` | `0.5` | `send_text` 模拟打字延迟时每个字符的等待秒数，总延迟 = min(字符数 × 该值, `typing_delay_max_seconds`)。设为 `0` 关闭打字延迟 |
@@ -110,7 +110,7 @@ NDFC 与 DFC 是同位替代关系，二者择一即可。典型切换步骤：
 enabled = true
 native_multimodal = false
 enable_stop_direct_message_wake = false
-stop_direct_message_wake_probability = 0.5
+stop_direct_message_wake_probability = 0.5  # 仅私聊生效
 reinforce_negative_behaviors = true
 default_stop_minutes = 5.0
 typing_delay_per_char = 0.5

@@ -29,7 +29,7 @@ test('exchanges only at the GitHub endpoint and returns only access_token', asyn
     assert.equal(url, 'https://github.com/login/oauth/access_token')
     assert.equal(init.method, 'POST')
     assert.equal(init.headers.Accept, 'application/json')
-    assert.equal(init.redirect, 'error')
+    assert.equal(init.redirect, 'manual')
     assert.deepEqual(JSON.parse(init.body), {
       client_id: env.GH_CLIENT_ID, client_secret: env.GH_CLIENT_SECRET, code: 'test_authorization_code',
     })
@@ -140,6 +140,21 @@ test('maps non-OK, invalid JSON, missing token and network failures to safe erro
     assert.equal(response.headers.get('Access-Control-Allow-Origin'), origin)
     assert.ok(!(await response.text()).includes('private'))
   }
+})
+
+test('rejects an upstream redirect without forwarding credentials', async () => {
+  let calls = 0
+  const worker = successWorker({ fetchImpl: async (_, init) => {
+    calls += 1
+    assert.equal(init.redirect, 'manual')
+    return new Response(null, { status: 307, headers: { Location: 'https://untrusted.example/token' } })
+  } })
+  const response = await worker.fetch(request(), env)
+  assert.equal(calls, 1)
+  assert.equal(response.status, 502)
+  const body = await response.text()
+  assert.ok(!body.includes(env.GH_CLIENT_SECRET))
+  assert.ok(!body.includes('untrusted.example'))
 })
 
 test('times out a hanging upstream and aborts the request', async () => {

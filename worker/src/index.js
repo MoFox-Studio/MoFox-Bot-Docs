@@ -176,7 +176,9 @@ export function createWorker({ fetchImpl = fetch, now = Date.now, timeoutMs = 10
               client_secret: env.GH_CLIENT_SECRET,
               code: input.code,
             }),
-            redirect: 'error',
+            // workerd only supports manual/follow. Reject redirects below,
+            // without forwarding the Client Secret to another destination.
+            redirect: 'manual',
             signal: controller.signal,
           })
           if (!upstream.ok) return { unavailable: true }

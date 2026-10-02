@@ -15,8 +15,10 @@ const visible = computed(() => (active ? active.value === props.value : true));
 </script>
 
 <template>
+  <!-- 用 v-if 而非 v-show：未选中的面板不进入 DOM，
+       侧栏大纲（按 DOM 提取标题）就只列出当前面板的标题，切换时实时更新 -->
   <div
-    v-show="visible"
+    v-if="visible"
     class="method-tab-panel"
     role="tabpanel"
     :data-method="value"

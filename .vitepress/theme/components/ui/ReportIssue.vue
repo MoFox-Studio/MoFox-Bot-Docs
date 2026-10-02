@@ -8,14 +8,8 @@
     aria-label="在本页开 Issue"
     title="在本页开 Issue（自动附带当前页面信息）"
   >
-    <!-- GitHub issue-opened 图标 -->
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-      <path fill="currentColor" d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z" />
-      <path
-        fill="currentColor"
-        d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.5 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0Z"
-      />
-    </svg>
+    <!-- 报告问题（bug）图标 -->
+    <iconify-icon icon="mdi:bug-outline" aria-hidden="true"></iconify-icon>
   </a>
 </template>
 
@@ -98,9 +92,8 @@ onMounted(() => {
   background-color: var(--vp-c-bg-soft);
 }
 
-.report-issue-button svg {
-  width: 1.1rem;
-  height: 1.1rem;
-  fill: currentColor;
+.report-issue-button iconify-icon {
+  font-size: 1.25rem;
+  color: currentColor;
 }
 </style>

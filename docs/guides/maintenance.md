@@ -12,8 +12,6 @@ Bot 跑起来之后，日常维护就三件事：备份、搬家、看日志。�
 | `data/` | 运行数据：数据库（`MoFox.db`）、记忆、缓存等 |
 | `plugins/` | 你装的所有插件 |
 
-根目录的 `eula.md` 和 `PRIVACY.md` 是协议文件，程序会自动生成，想备份也行，不备也无所谓。
-
 ::: tip 改过目录名的话
 这三个目录名对应 `config/core.toml` 里 `[bot]` 节的 `plugins_dir`、`data_dir`、`logs_dir` 字段（默认值就是 `plugins`、`data`、`logs`）。如果你改过，备份你自己改的那个目录。
 :::
@@ -89,8 +87,6 @@ docker compose logs -f
 
 - **`data/media_cache/`**：收发媒体的缓存（图片、表情、视频、语音等），可以放心清理——停掉 Bot 后清空即可，之后需要时 Bot 会自己重新缓存。程序其实自带自动清理（`[bot]` 节的 `media_cache_cleanup_*` 和 `media_file_cleanup_*` 配置项，已识别的媒体默认保留 7 天），一般不用手动管。
 - **`data/chroma_db/`**：记忆插件（如 booku_memory）存放向量记忆的数据库，也会变大，但**不要清理**——删掉后记忆索引就没了。
-
-<!-- VERIFY: 删除 chroma_db 后记忆是否会在后续使用中自动重建（重新嵌入），未在源码中找到明确的重建逻辑，需向开发者确认 -->
 
 想省空间的顺序：优先清 `media_cache/`，别碰 `chroma_db/`；日志占的地方交给自动清理就好。
 

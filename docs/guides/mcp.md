@@ -252,7 +252,7 @@ docs = "https://example.com/mcp"
 2. 检查「保存后自动热重载」是否被关掉了（WebUI 的「设置」页），关了的话保存后需要手动重启 Bot；
 3. 还不行就重启一次 Bot 再看日志——个别情况下运行中的组件握着旧配置引用，重启才彻底刷新。
 
-配置好之后，Bot 的能力边界就取决于你能找到多少好用的 MCP server 了。装常规插件还是看 [安装插件](/docs/guides/plugins)；遇到问题去 [常见问题 FAQ](/docs/guides/faq)。
+配置好之后，Bot 的能力边界就取决于你能找到多少好用的 MCP server 了。装常规插件还是看[插件市场使用](/docs/guides/plugins)；遇到问题去 [常见问题 FAQ](/docs/guides/faq)。
 
 相关页面：
 

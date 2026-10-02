@@ -23,7 +23,7 @@
 - **请求检查器**：把发给大模型的每次请求摊开来看，进阶调试利器。
 - **个性化**：主题色、壁纸都能换，还支持从壁纸自动取色。
 
-## 三种获取方式
+## 两种获取方式
 
 按你的安装方式选一种即可，装好之后都进入「[打开开关](#打开开关-core-toml-的-http-router)」这一步。
 
@@ -45,26 +45,6 @@
 2. 在最新版本中找到以 **`.mfp`** 结尾的插件包并下载（`.mfp` 是 Neo-MoFox 的插件包格式）。
 3. 把 `.mfp` 文件放进 Neo-MoFox 的 `plugins/` 目录，**保持文件名不变**（插件加载器靠文件名识别插件）。
 4. 重启 Neo-MoFox。
-
-### 方式三：git clone webui-static 分支【进阶】
-
-喜欢用 Git 管理更新、或想跟进最新开发版的用户可以用这个方式：
-
-1. 进入 Neo-MoFox 的插件目录：
-   ```bash
-
-   cd /path/to/Neo-MoFox/plugins
-   ```
-
-2. 克隆 `webui-static` 分支（这个分支自带构建好的网页文件，开箱即用）：
-   ```bash
-
-   git clone -b webui-static https://github.com/ikun-1145141/Neo-MoFox-Webui webui
-   ```
-
-3. 完成后 `plugins/webui/` 目录里应有 `manifest.json`、`plugin.py`、`static/` 等文件。
-
-以后想更新，在 `plugins/webui/` 里执行 `git pull origin webui-static` 再重启 Neo-MoFox 即可。
 
 ::: details 想改 WebUI 界面代码？
 那需要走完整开发环境部署：克隆整个仓库、安装 Node.js、`npm install` 后用 `npm run dev` 启动前端开发服务器。这属于开发者玩法，普通用户用不到，详见 WebUI 仓库的 INSTALL.md。
@@ -218,7 +198,7 @@ Bot 的核心配置、模型配置等都能在这里改：网页上给出带说�
 3. **地址对不对？** 浏览器访问的端口要和 `http_router_port` 一致（默认 8000）。
 4. **是不是从别的设备访问？** `http_router_host` 为 `"127.0.0.1"` 时只有本机能打开，手机访问请改成 `"0.0.0.0"` 并重启。
 5. **防火墙放行了吗？** 本机防火墙、云服务器的安全组都要放行对应端口。
-6. **插件装上了吗？** 启动日志里应有 WebUI 插件的加载信息；没有的话回到「三种获取方式」检查安装。
+6. **插件装上了吗？** 启动日志里应有 WebUI 插件的加载信息；没有的话回到「两种获取方式」检查安装。
 7. **端口被占用了？** 换一个 `http_router_port` 数字，重启后再试。
 
 ### 登录密钥忘了 / 提示密码错误
@@ -245,4 +225,4 @@ Bot 的核心配置、模型配置等都能在这里改：网页上给出带说�
 
 - [常见问题 FAQ](/docs/guides/faq) —— 更多疑难杂症集中解答
 - [更新与升级](/docs/guides/update) —— Bot 和插件的更新方法
-- [插件使用](/docs/guides/plugins) —— 插件系统的完整介绍
+- [插件市场使用](/docs/guides/plugins) —— 插件的安装与插件市场的完整介绍

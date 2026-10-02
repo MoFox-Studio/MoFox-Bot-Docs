@@ -281,6 +281,5 @@ access_token = ""          # 可选鉴权令牌
 
 ## 下一步
 
-- **想装更多插件**：看[插件指南](/docs/guides/plugins)，有 WebUI 插件市场一键安装、让 Bot 帮你查市场、手动安装 `.mfp` 包和文件夹插件等方式（core.toml 的 `[plugin_market]` 节还能开启订阅自动下载与自动更新）。
-- **想让 Bot 自己找插件**：装上 mofox_market 后直接在聊天里吩咐它去市场搜，见[插件指南](/docs/guides/plugins)。
+- **想装更多插件**：看[插件市场使用](/docs/guides/plugins)，有 WebUI 一键安装、上插件市场下载 `.mfp` 包、安装本地插件包等方式（core.toml 的 `[plugin_market]` 节还能开启订阅自动下载与自动更新）。
 - **某个插件行为奇怪**：先看对应插件深度文档（[内置插件总览](/docs/builtin_plugins/)），再翻[常见问题](/docs/guides/faq)。

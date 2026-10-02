@@ -169,10 +169,6 @@ uv run main.py                               # 启动
 
 ![图片：文本编辑器打开 config/model.toml 文件](/guide/manual/model-toml-editor.png)
 
-<MethodTabs dimension="config" :options="[{ value: 'file', label: '配置文件', icon: 'mdi:file-document-outline' }, { value: 'webui', label: 'WebUI', icon: 'mdi:monitor-dashboard' }]">
-
-<MethodTab value="file">
-
 用文本编辑器（记事本、VS Code 都行）打开 `config/model.toml`，找到最上方的 `[[api_providers]]` 一节，把 `api_key` 换成你自己的钥匙：
 ```toml
 
@@ -213,18 +209,6 @@ model_list = ["my-model"]                  # 这个任务用哪些模型（填�
 ::: tip Key 没填对会怎样？
 程序启动时默认会做一次「LLM 接口连通性预检」，Key 填错或没填，日志里会有相应报错提示，照着改就行。
 :::
-
-</MethodTab>
-
-<MethodTab value="webui">
-
-装好 [WebUI（网页控制台）](/docs/guides/webui)之后，可以直接在浏览器里选择服务商、粘贴 API Key、给各个任务分配模型，保存即时生效，不用手动编辑文件，更适合不喜欢碰配置文件的玩家。
-
-→ 配置入口和截图详见 [WebUI 指南](/docs/guides/webui)。
-
-</MethodTab>
-
-</MethodTabs>
 
 ## 第 5 步：接入 QQ
 
@@ -534,10 +518,6 @@ MOFOX_ACCEPT_STARTUP_AGREEMENTS=1 uv run main.py   # 临时设置环境变量并
 
 ![图片：文本编辑器打开 config/model.toml 文件](/guide/manual/model-toml-editor.png)
 
-<MethodTabs dimension="config" :options="[{ value: 'file', label: '配置文件', icon: 'mdi:file-document-outline' }, { value: 'webui', label: 'WebUI', icon: 'mdi:monitor-dashboard' }]">
-
-<MethodTab value="file">
-
 用文本编辑器打开 `config/model.toml`，找到最上方的 `[[api_providers]]` 一节，把 `api_key` 换成你自己的钥匙：
 ```toml
 
@@ -578,18 +558,6 @@ model_list = ["my-model"]                  # 这个任务用哪些模型（填�
 ::: tip Key 没填对会怎样？
 程序启动时默认会做一次「LLM 接口连通性预检」，Key 填错或没填，日志里会有相应报错提示，照着改就行。
 :::
-
-</MethodTab>
-
-<MethodTab value="webui">
-
-装好 [WebUI（网页控制台）](/docs/guides/webui)之后，可以直接在浏览器里选择服务商、粘贴 API Key、给各个任务分配模型，保存即时生效，不用手动编辑文件，更适合不喜欢碰配置文件的玩家。
-
-→ 配置入口和截图详见 [WebUI 指南](/docs/guides/webui)。
-
-</MethodTab>
-
-</MethodTabs>
 
 ## 第 5 步：接入 QQ
 

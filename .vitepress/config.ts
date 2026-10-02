@@ -797,7 +797,7 @@ export default defineConfig({
           text: "扩展",
           collapsed: false,
           items: [
-            { text: "安装插件", link: "/docs/guides/plugins" },
+            { text: "插件市场使用", link: "/docs/guides/plugins" },
             { text: "MCP 接入", link: "/docs/guides/mcp" },
           ],
         },

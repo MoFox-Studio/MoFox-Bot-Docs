@@ -3,7 +3,7 @@ const startGuides = [
   {
     avatar: '<iconify-icon icon="material-symbols:psychology"></iconify-icon>',
     name: 'Neo-MoFox 是什么',
-    title: '先花五分钟搞懂它能干什么、怎么工作的',
+    title: '了解 Bot、模型与 QQ 接入分别负责什么',
     link: './about'
   },
   {
@@ -15,13 +15,13 @@ const startGuides = [
   {
     avatar: '<iconify-icon icon="mdi:compass-outline"></iconify-icon>',
     name: '部署方式怎么选',
-    title: '一张表帮你选出最适合自己的安装方式',
+    title: '按设备、管理方式和运行要求选择教程',
     link: './choose'
   },
   {
     avatar: '<iconify-icon icon="mdi:mouse-pointer-click-outline"></iconify-icon>',
     name: '文档使用指南',
-    title: '每页右上角那排按钮怎么用？搜索、深色模式、报告问题一篇讲清',
+    title: '使用搜索、导航与 GitHub 反馈入口',
     link: './docs-guide'
   },
 ]
@@ -30,42 +30,69 @@ const deployGuides = [
   {
     avatar: '<iconify-icon icon="mdi:rocket-launch-outline"></iconify-icon>',
     name: '启动器部署（推荐）',
-    title: '点鼠标就能装好，新手首选，全流程一条龙',
+    title: '在 Windows / Linux 桌面上按向导安装和管理实例',
     link: './launcher'
   },
   {
     avatar: '<iconify-icon icon="material-symbols:android"></iconify-icon>',
     name: '安卓 App 部署',
-    title: '用手机或平板把 Bot 装进兜里，随时挂机',
+    title: '在兼容的安卓设备上安装、配置并设置后台保活',
     link: './android'
   },
   {
     avatar: '<iconify-icon icon="mdi:docker"></iconify-icon>',
     name: 'Docker 部署',
-    title: '服务器用户的最爱，一条命令拉起全部服务',
+    title: '用 Docker Compose 部署，并管理端口、数据与日志',
     link: './docker'
   },
   {
     avatar: '<iconify-icon icon="mdi:console"></iconify-icon>',
     name: '手动命令行部署',
-    title: '自己动手装，最灵活，也最懂你的 Bot',
+    title: '自行准备环境、配置模型并连接 QQ 协议端',
     link: './manual'
   },
 ]
 
-const advancedGuides = [
+const configGuides = [
+  {
+    avatar: '<iconify-icon icon="mdi:monitor-dashboard"></iconify-icon>',
+    name: 'WebUI 安装与使用',
+    title: '通过网页查看状态、修改配置和管理插件',
+    link: './webui'
+  },
   {
     avatar: '<iconify-icon icon="mdi:cog-outline"></iconify-icon>',
     name: '核心配置要点',
-    title: 'core.toml 里哪些值得改、哪些不用碰',
+    title: '找到核心配置文件，了解常用设置与生效方式',
     link: './core-config'
+  },
+  {
+    avatar: '<iconify-icon icon="mdi:file-document-edit-outline"></iconify-icon>',
+    name: 'TOML 与编辑器',
+    title: '手动改配置前，先了解语法与编辑方法',
+    link: './toml'
   },
   {
     avatar: '<iconify-icon icon="mdi:face-woman-shimmer-outline"></iconify-icon>',
     name: '人设指南',
-    title: '手把手调教出你喜欢的性格',
+    title: '设置 Bot 的名字、性格和表达习惯',
     link: './persona'
   },
+  {
+    avatar: '<iconify-icon icon="mdi:brain"></iconify-icon>',
+    name: '进阶模型配置',
+    title: '配置服务商、模型与任务分配',
+    link: './advanced-model'
+  },
+  {
+    avatar: '<iconify-icon icon="mdi:puzzle-edit-outline"></iconify-icon>',
+    name: '插件配置怎么改',
+    title: '找到插件配置，修改设置并确认生效',
+    link: './plugin-config'
+  },
+]
+
+const extensionGuides = [
   {
     avatar: '<iconify-icon icon="mdi:puzzle-outline"></iconify-icon>',
     name: '安装插件',
@@ -73,10 +100,43 @@ const advancedGuides = [
     link: './plugins'
   },
   {
+    avatar: '<iconify-icon icon="mdi:view-grid-outline"></iconify-icon>',
+    name: '内置插件一览',
+    title: '了解已有插件，按需查看各插件的使用文档',
+    link: './builtin'
+  },
+  {
+    avatar: '<iconify-icon icon="mdi:connection"></iconify-icon>',
+    name: 'MCP 接入',
+    title: '配置本地或远程 MCP 服务，为 Bot 接入外部工具',
+    link: './mcp'
+  },
+]
+
+const maintenanceGuides = [
+  {
     avatar: '<iconify-icon icon="mdi:update"></iconify-icon>',
     name: '更新与回滚',
-    title: '保持最新，也可能随时后悔（有后悔药）',
+    title: '按部署方式更新，遇到问题时回滚并检查运行状态',
     link: './update'
+  },
+  {
+    avatar: '<iconify-icon icon="mdi:source-branch"></iconify-icon>',
+    name: '更新通道：main 与 dev',
+    title: '了解稳定通道与开发通道的选择和切换',
+    link: './channels'
+  },
+  {
+    avatar: '<iconify-icon icon="mdi:backup-restore"></iconify-icon>',
+    name: '备份、迁移与日志',
+    title: '保存配置与数据，迁移实例并查看排查信息',
+    link: './maintenance'
+  },
+  {
+    avatar: '<iconify-icon icon="mdi:help-circle-outline"></iconify-icon>',
+    name: '常见问题 FAQ',
+    title: '从常见现象查找原因和处理方法',
+    link: './faq'
   },
 ]
 
@@ -190,13 +250,15 @@ const artists = [
 
 # Neo-MoFox 指南
 
-欢迎来到 Neo-MoFox 的官方使用文档。这里没有门槛——哪怕你从没碰过命令行，跟着文档一步一步走，也能把自己的 AI Bot 跑起来。
+这里是 Neo-MoFox 的使用指南。从第一次安装到修改配置、扩展功能和日常维护，可以按自己当前要做的事进入对应文档。
 
-我们建议按下面的顺序学习，每一步都有对应的文档：
+第一次使用，建议按这个顺序开始：
 
-1. **认识它**：先看看 [Neo-MoFox 是什么](./about)，再翻翻[新手名词小课堂](./glossary)，把"配置文件""API Key"这些词搞明白。
-2. **装起来**：在[部署方式怎么选](./choose)里挑一条路线（推荐用[启动器](./launcher)），那篇文档会从零带你走到 Bot 上线。
-3. **用起来**：了解[核心配置](./core-config)、写一份[人设](./persona)、装几个[插件](./plugins)，把 Bot 调教成你喜欢的样子。
+1. **认识项目**：阅读 [Neo-MoFox 是什么](./about)。遇到不熟悉的术语，再查 [新手名词小课堂](./glossary)。
+2. **选一条部署路线**：先看 [部署方式怎么选](./choose)，再跟着选定的教程完成安装、配置与上线验证。
+3. **按需调整**：Bot 能正常回复后，再学习 [WebUI](./webui)、[核心配置](./core-config) 和 [人设](./persona)。
+
+已经装好了？直接从下方的配置、扩展和维护入口继续。使用搜索和反馈按钮的方法见 [文档使用指南](./docs-guide)。
 
 ## 开始之前
 
@@ -204,13 +266,25 @@ const artists = [
 
 ## 选择你的部署方式
 
-四条路线都能到达终点，区别只是"你愿意动手多少"。不确定就选第一个。
+先确认运行设备与管理方式。Windows / Linux 桌面新手可以从启动器开始；安卓设备、Linux 服务器或需要自行管理源码时，选择对应教程。只需跟完其中一条路线。
 
 <GuideCards :guides="deployGuides" />
 
-## 装好之后
+## 配置与使用
 
-<GuideCards :guides="advancedGuides" />
+<GuideCards :guides="configGuides" />
+
+## 扩展功能
+
+<GuideCards :guides="extensionGuides" />
+
+## 更新与日常维护
+
+<GuideCards :guides="maintenanceGuides" />
+
+排查问题时先记录报错和相关日志，并查看部署教程的常见问题部分。需要反馈文档中的错误，可以使用文档页右上角的反馈按钮；说明当前步骤、预期结果和实际现象，会更容易定位。
+
+想写插件或参与项目？进入 [开发指南](../development/index)。
 
 ## 团队成员
 

@@ -20,9 +20,14 @@
 <MethodTab value="webui">
 
 1. 打开 WebUI 的「插件配置」页面（WebUI 本身怎么装见 [WebUI 指南](/docs/guides/webui)），选择要改的插件。
-2. 在表单里修改、保存，重启 Bot 生效。
 
-![图片：WebUI 插件配置页，选择插件后在表单里修改](/guide/webui/config-plugins.png)
+![WebUI 插件配置入口：先在左侧选择要修改的插件，右侧才会显示配置表单](/guide/webui/config-plugins.png)
+
+2. 选中插件后，右侧会显示它的配置表单。下面以 OneBot 适配器的账号设置为例：左侧是选中的插件，顶部显示配置文件路径，右侧可以修改字段并点「保存」。图中的号码和昵称是示例，实际字段以你安装的插件版本为准。
+
+![实际 WebUI 界面中的插件配置表单：选中 OneBot 适配器后编辑账号字段，右上角有保存按钮；图中使用示例配置](/guide/webui/config-plugin-form.png)
+
+3. 保存后重启 Bot，让修改生效。
 
 </MethodTab>
 

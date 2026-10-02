@@ -152,8 +152,7 @@ access_token = ""          # 可选鉴权令牌
 
 **怎么用**：同样全自动。Bot 觉得气氛到位了就会自己调 `send_emoji_meme` 发表情，不需要命令。想让它多发，可以在配置的 `custom_instructions` 里写"在什么场景多用表情包"。
 
-![表情包发送器收集、标记与发送的功能流程示意](/guide/builtin/emoji-send.svg)
-
+<!-- TODO-SCREENSHOT: QQ 群聊截图，Bot 回复一段文字后紧跟一张表情包图片，体现发送效果；需打码群号与成员昵称 -->
 
 **常用配置**（`config/plugins/emoji_sender/config.toml`）：
 
@@ -186,8 +185,7 @@ access_token = ""          # 可选鉴权令牌
   - `/skill refresh`——重新扫描 `skill/` 目录
 - **Bot（AI）**：自动调用 `get_skill` / `get_reference` 工具按需加载技能内容，你不用管。
 
-![技能目录、刷新索引与查看技能列表的命令使用示意](/guide/builtin/skill-list.svg)
-
+<!-- TODO-SCREENSHOT: 聊天界面截图，展示 /skill list 命令的输出：已索引技能名称与描述列表 -->
 
 **常用配置**（`config/plugins/skill_manager/config.toml`）：
 
@@ -225,8 +223,7 @@ access_token = ""          # 可选鉴权令牌
 
 子命令中英文都认：`status/查看`、`set/设置`、`reset/重置`、`allow/授权`、`deny/禁止`、`clear/清除`、`list/名单`、`plugins/插件`、`help/帮助`。指定用户时直接 @ 对方，或手写 `qq:123456`。
 
-![主人、管理员、用户与访客的权限等级示意](/guide/builtin/permission-levels.svg)
-
+<!-- TODO-SCREENSHOT: 聊天界面截图，展示 /权限 插件 或 /权限 查看 的命令输出：插件与命令列表或用户权限状态 -->
 
 **常用配置**：无。权限级别全局分四档：`owner`（主人）> `operator`（管理员）> `user`（默认）> `guest`（访客）；更细的全局权限策略（如是否允许 operator 提升他人）在 core.toml 的 `[permissions]` 节，见[核心配置](/docs/guides/core-config)。
 

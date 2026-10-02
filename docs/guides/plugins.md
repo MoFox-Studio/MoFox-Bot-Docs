@@ -81,8 +81,6 @@
 `.zip` 包同样直接放进 `plugins/`。拿到的是源码文件夹时，把**整个插件文件夹**（内含 `manifest.json`、`plugin.py` 等）复制进 `plugins/` 即可；以后升级就整个文件夹覆盖替换。不要把插件放进 `config`、`data`、`logs` 等目录。
 :::
 
-![把插件包或完整源码目录放入 Neo-MoFox/plugins 的路径示意](/guide/plugins/plugins-folder.svg)
-
 </MethodTab>
 
 </MethodTabs>

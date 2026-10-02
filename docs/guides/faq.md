@@ -67,8 +67,7 @@
   1. 打开 `config/model.toml`，检查 `[api_providers]` 里的 `api_key` 是否正确、有没有多余空格；
   2. 去服务商控制台确认 key 有效、额度没用完；
   3. 检查 `base_url` 是否完整（一般要带 `/v1`，如 `https://api.siliconflow.cn/v1`）；
-  4. `client_type` 要和服务商匹配（Gemini 官方接口用 `gemini` 或 `aiohttp_gemini`，OpenAI 兼容接口用 `openai`）；
-  5. `api_key` 支持填列表轮询——如果配了多个 key，其中一个失效也会出现**间歇性** 401，逐个排查。
+  4. `client_type` 要和服务商匹配（Gemini 官方接口用 `gemini` 或 `aiohttp_gemini`，OpenAI 兼容接口用 `openai`）。
 
 ### 回复超时
 

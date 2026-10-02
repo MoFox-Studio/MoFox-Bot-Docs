@@ -26,7 +26,7 @@
 | --- | --- | --- |
 | `name` | `"SiliconFlow"` | 服务商的代号（自己起），模型通过这个名字引用它 |
 | `base_url` | `https://api.siliconflow.cn/v1` | API 基础地址，问服务商要或看它的接入文档 |
-| `api_key` | 占位符 | 密钥；**支持单个字符串，也支持列表轮询**（见下） |
+| `api_key` | 占位符 | 密钥，去服务商官网申请 |
 | `client_type` | `"openai"` | 客户端类型，决定用哪种协议对话（见下） |
 | `max_retry` | `2` | 请求失败后的最大重试次数 |
 | `timeout` | `30` | 单次请求超时（秒） |
@@ -66,13 +66,6 @@ retry_interval = 10
 源码的客户端注册表（`registry.py`）当前**默认只内置了 `openai`、`anthropic`、`openai_response` 三种客户端**，`gemini`、`aiohttp_gemini`、`bedrock` 属于预留，未注册时会回退到 openai 客户端。想用 Gemini 系模型，更稳妥的办法是通过 OpenAI 兼容渠道（如 OpenRouter 或硅基流动）接入，`client_type` 填 `openai`。
 :::
 
-**多 Key 轮询**：`api_key` 除了填一个字符串，还可以填一个列表——Bot 会**自动在多个 Key 之间轮流使用**，把请求分摊开，单个 Key 的限流压力小很多：
-
-```toml
-# 多个 Key 轮流用
-api_key = ["sk-key-one", "sk-key-two", "sk-key-three"]
-```
-
 </MethodTab>
 
 <MethodTab value="webui">
@@ -106,8 +99,8 @@ api_key = ["sk-key-one", "sk-key-two", "sk-key-three"]
 在表单里添加、编辑、删除都先改在页面里，**点右上角的「保存」按钮才真正写入 `config/model.toml`**（有未保存改动时按钮才会亮）。写入后重启 Bot 生效。
 :::
 
-::: tip 想填多个 Key 轮询？
-表单里的 API Key 输入框一次只能填一个。想配多 Key 轮询，点右上角「代码模式」切换成 TOML 编辑器，把对应服务商的 `api_key` 改成列表（写法见左侧「配置文件」标签），改完点「保存」即可。
+::: tip 右上角的「代码模式」
+点「代码模式」可以把整个编辑器切换成整份 `config/model.toml` 的 TOML 文本编辑，适合批量调整或处理表单不支持的内容（比如给任务清单新增一个自定义任务）；改完点「保存」，再点「表单模式」切回卡片视图，两边双向同步。
 :::
 
 </MethodTab>
@@ -287,7 +280,7 @@ concurrency_count = 1
 
 ## 场景示例
 
-### ① 主模型 + 便宜小模型分工
+### 主模型 + 便宜小模型分工
 
 <MethodTabs dimension="config" :options="[{ value: 'file', label: '配置文件', icon: 'mdi:file-document-outline' }, { value: 'webui', label: 'WebUI', icon: 'mdi:monitor-dashboard' }]">
 
@@ -380,56 +373,6 @@ embedding_dimension = 1024
 ::: warning 每类任务要用对口型
 `vlm` 要选**支持看图**的多模态模型；`voice` 要选**语音识别（ASR）**模型；`embedding` 要选**嵌入**模型；`tool_use` 要选**支持原生工具调用**的模型。拿聊天模型去干这些活，是配不出效果的。
 :::
-
-</MethodTab>
-
-</MethodTabs>
-
-### ② 多 Key 轮询
-
-<MethodTabs dimension="config" :options="[{ value: 'file', label: '配置文件', icon: 'mdi:file-document-outline' }, { value: 'webui', label: 'WebUI', icon: 'mdi:monitor-dashboard' }]">
-
-<MethodTab value="file">
-
-只有一个服务商、但手里有多个 Key？直接把 Key 列起来，Bot 自动轮流用：
-
-```toml
-[[api_providers]]
-name = "SiliconFlow"
-base_url = "https://api.siliconflow.cn/v1"
-client_type = "openai"
-max_retry = 2
-timeout = 30
-retry_interval = 10
-
-# 多个 Key 轮流使用，分摊限流压力
-api_key = [
-    "sk-key-one",
-    "sk-key-two",
-    "sk-key-three",
-]
-```
-
-</MethodTab>
-
-<MethodTab value="webui">
-
-表单里的 API Key 输入框一次只能填一个 Key，所以多 Key 轮询要走「代码模式」：
-
-1. 在「模型配置」编辑器点右上角「代码模式」，页面变成整份 `config/model.toml` 的 TOML 编辑器。
-2. 找到对应服务商那段，把 `api_key` 从单个字符串改成列表：
-
-```toml
-api_key = [
-    "sk-key-one",
-    "sk-key-two",
-    "sk-key-three",
-]
-```
-
-3. 点右上角「保存」写入配置。Bot 会自动在几个 Key 之间轮流使用，分摊限流压力。
-
-代码模式和表单模式是双向同步的：切回「表单模式」（按钮会变成「表单模式」，点了切回）就能看到服务商卡片还在，只是 Key 部分以代码为准。
 
 </MethodTab>
 

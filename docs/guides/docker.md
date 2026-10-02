@@ -141,10 +141,11 @@ docker logs snowluma 2>&1 | grep -E "临时密码|initial credentials" | tail -n
 
 ![图片：浏览器打开 SnowLuma WebUI（5099 端口）的登录页](/guide/snowluma/login.png)
 
-2. 进入「节点配置 → OneBot 协议端点 → WS 客户端」，新建一个反向 WS 客户端。
-3. 目标 URL 按你的情况填：
+2. 进入「节点配置 → OneBot 协议端点 → WS 客户端」，点「新建 WS 客户端」。表单里的**「目标 URL」输入框**，填的就是 Neo-MoFox 那台机器的 ip:port（写成 `ws://` 开头的地址），按你的情况填：
    - **照本篇用 Docker 跑**：填 `ws://mofox-bot:8095`。`mofox-bot` 是 Neo-MoFox 容器的名字，两个容器在同一个 compose 网络里可以直接用容器名互访；`8095` 是 Neo-MoFox OneBot 适配器的默认反向 WS 端口（compose 里没有把它映射到公网，外部访问不到，这是正常且安全的）。
    - **Neo-MoFox 跑在宿主机**（没走 Docker）：填 `ws://<宿主机IP>:8095`。
+
+   表单其他选项保持默认即可（截图里的 `ws://127.0.0.1:8080/ws` 只是 SnowLuma 自带的占位示例，别照抄它）。
 4. 保存后，客户端列表里显示「已连接」即接入成功。
 
 ![SnowLuma 节点配置中的 WS 客户端列表](/guide/snowluma/snowluma_node_config.png)

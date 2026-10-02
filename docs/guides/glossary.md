@@ -17,7 +17,7 @@
 
 **Neo-MoFox 角色**：[协议端](#协议端) · [适配器](#适配器) · [插件](#插件) · [WebUI](#webui)
 
-**版本与容器**：[分支（main 与 dev）](#分支main-与-dev) · [Docker 与镜像](#docker-与镜像)
+**版本与容器**：[分支（main 与 dev）](#分支-main-与-dev) · [Docker 与镜像](#docker-与镜像)
 :::
 
 ## Python

@@ -14,6 +14,8 @@
 
 三层之间靠「名字」串起来：模型用 `api_provider` 指向服务商的名字，任务用 `model_list` 指向模型的名字。WebUI 模型配置编辑器里的三个标签页「供应商配置 / 模型配置 / 任务配置」正好对应这三层，按顺序添加就行。
 
+下文截图来自实际 WebUI 的浅色界面，使用演示配置。`vendor/Strong-Model-X`、`vendor/Cheap-Model-Mini` 和价格只是示例；实际模型 ID、能力与价格请按服务商控制台填写，API Key 输入框留空展示。
+
 ## 第一步：添加服务商（去哪买服务）
 
 <MethodTabs dimension="config" :options="[{ value: 'file', label: '配置文件', icon: 'mdi:file-document-outline' }, { value: 'webui', label: 'WebUI', icon: 'mdi:monitor-dashboard' }]">
@@ -73,7 +75,7 @@ retry_interval = 10
 1. 打开 WebUI，进入「配置」页面，点顶部的「模型配置」标签。
 2. 默认就在「供应商配置」页。每家服务商一张卡片，卡片上显示 API 地址、客户端类型、超时时间、最大重试：
 
-![图片：WebUI 模型配置的供应商配置页，DeepSeek、SiliconFlow 等服务商各一张卡片](/guide/webui/config-model.png)
+![WebUI 供应商配置页：SiliconFlow 示例卡片显示 API 地址、协议、超时与重试，右上角有添加按钮](/guide/webui/config-model.png)
 
 3. 点「供应商」标题旁的「添加」按钮，在弹出的对话框里填写：
 
@@ -84,7 +86,7 @@ retry_interval = 10
 | 提供商名称 | `name` | 自己起的代号，比如 `SiliconFlow`，下一步添加模型时选它 |
 | Base URL | `base_url` | 服务商的 API 地址，比如 `https://api.siliconflow.cn/v1` |
 | API Key | `api_key` | 去服务商官网申请的密钥；输入框按密码处理，粘贴后不显示明文 |
-| 客户端类型 | `client_type` | 下拉选择。绝大多数服务商（DeepSeek、硅基流动、OpenRouter 等）选 OpenAI；Claude 官方选 Anthropic |
+| 客户端类型 | `client_type` | 下拉选择。绝大多数兼容服务商（DeepSeek、硅基流动、OpenRouter 等）选 OpenAI；所需协议未出现在选项里时，切到「代码模式」填写对应的 `client_type` |
 | 最大重试次数 / 超时时间 / 重试间隔 | `max_retry` / `timeout` / `retry_interval` | 默认 3 / 30 / 10 即可 |
 
 4. 点对话框右下角「添加」，新服务商就会出现在卡片列表里。
@@ -162,7 +164,7 @@ max_context = 131072
 
 1. 在「模型配置」编辑器里切到「模型配置」标签页。这里每个模型一张卡片，显示模型标识、所属供应商、输入输出价格、上下文长度：
 
-![图片：WebUI 模型配置标签页，每个模型一张卡片](/guide/webui/config-model-list.png)
+![WebUI 模型配置页：每个模型一张卡片，显示内部代号、服务商真实 ID、所属供应商与统计价格；图中为演示数据](/guide/webui/config-model-list.png)
 
 2. 点「模型」标题旁的「添加」按钮，在弹出的对话框里填写：
 
@@ -171,7 +173,7 @@ max_context = 131072
 | 对话框字段 | 对应配置项 | 怎么填 |
 | --- | --- | --- |
 | 模型名称 | `name` | 内部代号自己起，第三步分配任务时选它 |
-| 模型标识符 | `model_identifier` | 发给 API 的真实 ID，照抄服务商的模型名。输入框可以直接手动输入，也可以点开下拉从服务商拉取真实模型列表里搜（需要这家服务商的 Key 有效） |
+| 模型标识符 | `model_identifier` | 发给 API 的真实 ID，从服务商控制台复制到输入框，注意大小写和路径前缀 |
 | 所属提供商 | `api_provider` | 下拉选择第一步添加的服务商 |
 | 输入价格 / 缓存命中输入价格 / 输出价格 | `price_in` / `cache_hit_price_in` / `price_out` | 每百万 Token 的价格，只影响用量统计；白嫖渠道全填 0 |
 | 最大上下文长度 | `max_context` | 按服务商标注填 |
@@ -256,13 +258,13 @@ concurrency_count = 1
 
 1. 在「模型配置」编辑器里切到「任务配置」标签页。九个内置任务每个一张卡片，显示模型列表、最大 Tokens、温度：
 
-![图片：WebUI 任务配置标签页，utils、actor 等任务各一张卡片](/guide/webui/config-model-tasks.png)
+![WebUI 任务配置页：actor 使用强模型，sub_actor 与 utils 使用便宜模型，卡片显示最大 Tokens 与温度](/guide/webui/config-model-tasks.png)
 
 2. 点任务卡片右侧的「编辑」，在弹出的对话框里调整：
 
-![图片：编辑任务对话框，任务名称不可修改，模型列表为多选](/guide/webui/config-model-task-edit.png)
+![编辑 actor 任务的实际对话框：模型选 my-strong-model，最大 Tokens 为 2000，温度为 0.8](/guide/webui/config-model-task-edit.png)
 
-- **模型列表**：下拉多选，选项就是第二步里添加的模型（内部代号）；可以选多个，多个时按调度策略自动分摊（见核心配置的 `[llm]`）。
+- **模型列表**：每一行下拉选择一个模型，选项就是第二步里添加的模型（内部代号）；需要多个模型时点「添加模型」增加一行。多个时按调度策略自动分摊（见核心配置的 `[llm]`）。
 - **最大 Tokens**：任务最大输出 Token 数。主聊天 `actor` 觉得回复总被截断就调大。
 - **温度**：判断类任务（`utils_small`）调低更稳，主聊天 `actor` 调高更活。
 
@@ -363,12 +365,19 @@ embedding_dimension = 1024
 
 1. **供应商配置**：添加你的服务商（第一步的流程），比如硅基流动。
 2. **模型配置**：添加两个模型（第二步的流程）——一个强模型，内部代号起 `my-strong-model`，价格按实际填；一个便宜模型，代号 `my-cheap-model`，价格全填 0。
+
+![场景示例的两个模型卡片：my-strong-model 与 my-cheap-model 都属于 SiliconFlow，真实 ID 与价格需自行替换](/guide/webui/config-model-list.png)
+
 3. **任务配置**：逐个点「编辑」改模型列表：
    - `actor`（主聊天）选 `my-strong-model`，最大 Tokens 调到 2000，温度调到 0.8；
    - `tool_use`（工具调用）、`vlm`（看图）也选 `my-strong-model`；
    - `sub_actor`、`utils`、`utils_small` 选 `my-cheap-model`，最大 Tokens 分别 800 / 800 / 500；
    - `voice` 换成专门的语音识别模型、`embedding` 换成嵌入模型——这两类拿聊天模型配不出效果。
 4. 点右上角「保存」，重启 Bot。
+
+![给主聊天任务分配强模型：actor 的模型列表选择 my-strong-model，同时设置输出长度与温度](/guide/webui/config-model-task-edit.png)
+
+上图是 `actor` 的填写位置。`sub_actor`、`utils`、`utils_small` 同样进入各自的「编辑」对话框，把模型列表换为 `my-cheap-model`；对话框里保存后，还要保存整份模型配置。
 
 ::: warning 每类任务要用对口型
 `vlm` 要选**支持看图**的多模态模型；`voice` 要选**语音识别（ASR）**模型；`embedding` 要选**嵌入**模型；`tool_use` 要选**支持原生工具调用**的模型。拿聊天模型去干这些活，是配不出效果的。

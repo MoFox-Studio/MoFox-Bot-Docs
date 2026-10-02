@@ -77,7 +77,7 @@ main 和 dev 分支每次有推送，CI 都会自动构建并推送对应镜像�
 
 <MethodTab value="manual">
 
-手动方式就是直接切分支，用 [git](/docs/guides/glossary#分支main-与-dev) 的 switch 或 checkout 都行：
+手动方式就是直接切分支，用 [git](/docs/guides/glossary#分支-main-与-dev) 的 switch 或 checkout 都行：
 ```bash
 
 cd Neo-MoFox

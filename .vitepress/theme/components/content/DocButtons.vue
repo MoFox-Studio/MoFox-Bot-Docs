@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { computed } from "vue";
-import { useData } from "vitepress";
+import { computed, onMounted, ref, watch } from "vue";
+import { useData, useRoute } from "vitepress";
 import {
   NolebaseEnhancedReadabilitiesMenu,
   NolebaseEnhancedReadabilitiesScreenMenu,
 } from "@nolebase/vitepress-plugin-enhanced-readabilities/client";
-import { useIssueUrl } from "../../utils/reportIssue";
+import { useIssueDraft } from "../../utils/reportIssue";
+import { beginGitHubLogin, GitHubAuthError, useGitHubAuth } from "../../utils/oauth";
+import IssueModal from "../ui/IssueModal.vue";
 
 /**
  * 文档内嵌的「真按钮」演示区（文档使用指南页使用）。
@@ -15,7 +17,7 @@ import { useIssueUrl } from "../../utils/reportIssue";
  * - theme        切换浅色 / 深色主题
  * - readability  原装的阅读增强菜单（布局切换、聚光灯）
  * - github       打开 Neo-MoFox 仓库
- * - issue        在本页开 Issue（自动附带页面信息）
+ * - issue        与顶栏共用 GitHub 登录与站内 Issue 表单，保留直接提交兜底
  *
  * 用法（markdown 中）：<DocButtons :items="['search']" /> 或 <DocButtons /> 显示全部。
  */
@@ -24,8 +26,33 @@ const props = defineProps({
   items: { type: Array<String>, default: () => ["search", "theme", "readability", "github", "issue"] },
 });
 
-const { isDark } = useData();
-const issueUrl = useIssueUrl();
+const { isDark, frontmatter } = useData();
+const route = useRoute();
+const draft = useIssueDraft();
+const auth = useGitHubAuth();
+const modalOpen = ref(false);
+const loginError = ref("");
+const feedbackEnabled = computed(() => frontmatter.value.layout !== "home" && frontmatter.value.feedback !== false);
+
+onMounted(auth.initialize);
+watch(() => route.path, () => { modalOpen.value = false; loginError.value = ""; });
+
+function login() {
+  loginError.value = "";
+  try {
+    beginGitHubLogin();
+  } catch (error) {
+    loginError.value = error instanceof GitHubAuthError ? error.message : "暂时无法登录 GitHub，请直接使用下方链接提交反馈。";
+    modalOpen.value = true;
+  }
+}
+
+async function openFeedback() {
+  if (typeof window === "undefined") return;
+  await draft.refresh();
+  if (!auth.token.value) login();
+  else modalOpen.value = true;
+}
 
 const GITHUB_URL = "https://github.com/MoFox-Studio/Neo-MoFox";
 
@@ -36,6 +63,7 @@ function toggleTheme() {
 }
 
 function openSearch() {
+  if (typeof window === "undefined") return;
   // 顶栏的 DocSearch 按钮（自定义 VPAlgoliaSearchBox 挂载在 #docsearch 容器里）
   const button = document.querySelector<HTMLElement>("#docsearch .DocSearch-Button")
     ?? document.querySelector<HTMLElement>(".DocSearch-Button");
@@ -104,17 +132,26 @@ function openSearch() {
     </a>
 
     <!-- 报告问题 -->
-    <a
-      v-if="show('issue')"
+    <button
+      v-if="show('issue') && feedbackEnabled"
+      type="button"
       class="doc-btn"
-      :href="issueUrl"
-      target="_blank"
-      rel="noopener noreferrer"
-      title="在本页开 Issue（自动附带当前页面信息）"
+      :title="auth.token.value ? '在本页开 Issue（自动附带当前页面信息）' : '登录 GitHub 并反馈本页'"
+      @click="openFeedback"
     >
       <iconify-icon icon="mdi:bug-outline" width="20" height="20" aria-hidden="true" />
       <span class="doc-btn-label">报告本页问题</span>
-    </a>
+    </button>
+    <IssueModal
+      v-if="show('issue')"
+      :open="modalOpen"
+      :initial-title="draft.title.value"
+      :initial-body="draft.body.value"
+      :fallback-url="draft.issueUrl.value"
+      :login-message="loginError || auth.message.value"
+      @close="modalOpen = false"
+      @login="login"
+    />
   </div>
 </template>
 

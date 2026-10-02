@@ -87,11 +87,13 @@ NDFC 与 DFC 是同位替代关系，二者择一即可。典型切换步骤：
 | 字段 | 默认值 | 说明 |
 |------|--------|------|
 | `enabled` | `true` | 是否启用 SubAgent 轻量 LLM 判定。关闭后概率直通门未命中时也会直接放行给主 chatter |
-| `task_name` | `"actor"` | 判定请求使用的 LLM 任务名，对应 `config/model.toml` 中的 task key（建议指向轻量 / 低成本模型任务） |
+| `task_name` | `"sub_actor"` | 判定请求使用的 LLM 任务名，对应 `config/model.toml` 中的 task key（建议指向轻量 / 低成本模型任务） |
 | `request_name` | `"neo_default_chatter:preprocess:sub_agent_decision"` | LLM 请求名，用于统计与日志识别 |
 | `max_context_messages` | `8` | 拼入判定 prompt 的最近历史消息条数上限。值越大越准但越耗 token；`0` 表示只看本轮未读消息 |
 | `max_unread_messages` | `10` | 拼入判定 prompt 的本轮未读消息条数上限。超过会截断保留最近若干条 |
 | `decision_temperature` | `0.2` | 判定请求的温度参数，越低判定越确定（建议保持较低温度以保证一致性） |
+
+这项 `task_name` 负责消息判定，默认使用 `sub_actor`；主会话的 `[plugin].actor_task_name` 默认使用 `actor`。请确认 `config/model.toml` 中配置了对应模型任务。
 
 ### 配置示例
 
@@ -121,7 +123,7 @@ unread_message_bonus = 0.05
 
 [plugin.preprocess_sub_agent]
 enabled = true
-task_name = "actor"
+task_name = "sub_actor"
 request_name = "neo_default_chatter:preprocess:sub_agent_decision"
 max_context_messages = 8
 max_unread_messages = 10

@@ -14,19 +14,21 @@
 
 | 插件 | 干嘛的 | 要不要配置 | 去哪看详情 |
 | --- | --- | --- | --- |
-| default_chatter | 默认聊天器，Bot 的"说话大脑" | 装好即用，可微调 | [深度文档](/docs/builtin_plugins/) |
-| neo_default_chatter | 新一代事件驱动聊天器（默认关闭） | 想用再开 | [深度文档](/docs/builtin_plugins/) |
-| onebot_adapter | OneBot 11 适配器，负责连接 QQ | **必填**：Bot 的 QQ 号 | [深度文档](/docs/builtin_plugins/) |
-| booku_memory | 长期记忆 + 短期便签 | 建议检查模型任务 | [深度文档](/docs/builtin_plugins/) |
-| emoji_sender | 让 Bot 收藏并发送表情包 | 装好即用，需要 VLM | [深度文档](/docs/builtin_plugins/) |
-| skill_manager | 技能索引与按需加载 | 装好即用 | [深度文档](/docs/builtin_plugins/) |
-| perm_plugin | 聊天框里管权限（`/权限`） | 零配置 | [深度文档](/docs/builtin_plugins/) |
-| utility_commands | 实用运维命令（`/清空上下文`） | 零配置 | [深度文档](/docs/builtin_plugins/) |
+| default_chatter | 默认聊天器，Bot 的"说话大脑" | 装好即用，可微调 | [默认聊天器文档](/docs/builtin_plugins/dfc/) |
+| neo_default_chatter | 新一代事件驱动聊天器（默认关闭） | 想用再开 | [NDFC 文档](/docs/builtin_plugins/ndfc/) |
+| onebot_adapter | OneBot 11 适配器，负责连接 QQ | **必填**：Bot 的 QQ 号和昵称 | [OneBot 适配器文档](/docs/builtin_plugins/onebot/) |
+| booku_memory | 长期记忆 + 短期便签 | 建议检查模型任务 | [Booku 记忆文档](/docs/builtin_plugins/booku/) |
+| emoji_sender | 让 Bot 收藏并发送表情包 | 需要 VLM 和 embedding 模型任务 | [表情插件文档](/docs/builtin_plugins/emoji/) |
+| skill_manager | 技能索引与按需加载 | 装好即用 | [Skill 管理器文档](/docs/builtin_plugins/skill/) |
+| perm_plugin | 聊天框里管权限（`/权限`） | 零配置 | [权限管理文档](/docs/builtin_plugins/perm/) |
+| utility_commands | 实用运维命令（`/清空上下文`） | 零配置 | [实用命令文档](/docs/builtin_plugins/ut/) |
 
 > 下表「常用配置」里的字段名与配置文件一致，改法见[插件配置怎么改](/docs/guides/plugin-config)，改完重载或重启生效。
 
 
 ## default_chatter — 默认聊天器
+
+完整配置和工作原理见[默认聊天器文档](/docs/builtin_plugins/dfc/)。
 
 **一句话定位**：Bot 的默认"说话大脑"，消息进来后由它决定回不回、回什么、要不要调用工具，是所有聊天能力的中枢。
 
@@ -40,7 +42,7 @@
 | `theme_guide.private` | 内置文案 | 私聊场景的额外提示词，教 Bot 在私聊里如何拿捏分寸 |
 | `theme_guide.group` | 内置文案 | 群聊场景的额外提示词，让 Bot 像个正常群友一样参与 |
 | `enable_sub_agent` | `true` | 群聊消息先经过一个轻量 [sub-agent](/docs/guides/glossary) 过滤，判断值不值得回复 |
-| `enable_programmatic_controller` | `true` | 本地概率直通：被 @、被回复等强提及直接放行，省一轮 LLM 判定 |
+| `enable_programmatic_controller` | `true` | 本地概率直通：被 @、被回复等强提及会提高放行概率，命中后省一轮 LLM 判定 |
 | `enable_cooldown` | `true` | 回复后冷却生效；如果 Bot 经常"装死"太久，可以关掉 |
 | `enable_interest_filter` | `false` | 兴趣值过滤：先给消息打兴趣分再决定回不回（见下方 details） |
 | `enable_sub_agent_collaboration` | `false` | 子代理协作模式：把 MCP 工具委托给子代理执行 |
@@ -52,14 +54,16 @@
 `[plugin.interest]` 节在 `enable_interest_filter = true` 时生效：`reply_threshold`（回复阈值 0.72）、`semantic_weight` / `mentioned_weight`（语义与提及的权重 0.6 / 0.4）等。开启后插件会用最近的消息自动训练一个本地小模型（`[plugin.semantic_training]` 节可调采样与训练参数），不需要你额外准备什么。
 :::
 
-**需要额外条件吗**：需要 [model.toml](/docs/guides/glossary#toml) 里配置好 `actor` 模型任务（主对话模型），这是 Bot 能说话的前提，见[核心配置](/docs/guides/core-config)。兴趣值过滤的训练默认用 `utils` 任务标注，无需额外服务。
+**需要额外条件吗**：需要 [model.toml](/docs/guides/glossary#toml) 里配置好 `actor` 模型任务（主对话模型），这是 Bot 能说话的前提，见[进阶模型配置](/docs/guides/advanced-model)。兴趣值过滤的训练默认用 `utils` 任务标注，无需额外服务。
 
 
 ## neo_default_chatter — 新一代聊天器
 
-**一句话定位**：事件驱动架构重写的聊天器（NDFC），把会话流程拆成一串可插拔的事件处理器，原生支持多模态，是 default_chatter 的"新版本"。
+启用方法和事件扩展说明见[NDFC 文档](/docs/builtin_plugins/ndfc/)。
 
-**怎么用**：它**默认关闭**。想尝鲜的话，把 `enabled` 改成 `true` 即可；两个聊天器建议只开一个，免得框架自动选择时行为不好预期。它的定位、提示词结构与 default_chatter 类似，但多了"模拟打字延迟"等细节体验。
+**一句话定位**：另一套可选的聊天器（NDFC），把会话流程拆成一串可插拔的事件处理器，支持原生多模态；与 default_chatter 使用不同的扩展方式。
+
+**怎么用**：它**默认关闭**。想尝鲜的话，先关闭 default_chatter，再把 NDFC 的 `enabled` 改成 `true`，重载插件或重启 Bot；两个聊天器建议只开一个。它的定位、提示词结构与 default_chatter 类似，但多了"模拟打字延迟"等细节体验。
 
 **常用配置**（`config/plugins/neo_default_chatter/config.toml`）：
 
@@ -87,6 +91,8 @@
 
 
 ## onebot_adapter — OneBot 11 适配器
+
+连接方式和全部配置项见[OneBot 适配器文档](/docs/builtin_plugins/onebot/)。
 
 **一句话定位**：Bot 与 QQ 之间的"翻译官"，通过 [OneBot 11](/docs/guides/glossary#onebot) 协议对接 SnowLuma、NapCat 等协议端，收发消息、图片、视频、戳一戳。
 
@@ -123,6 +129,8 @@ access_token = ""          # 可选鉴权令牌
 
 ## booku_memory — Booku 记忆
 
+存储、检索和记忆闪回设置见[Booku 记忆文档](/docs/builtin_plugins/booku/)。
+
 **一句话定位**：Bot 的长期记忆系统。重要的事会被沉淀成一条条"记忆"，聊天时自动检索相关内容，让 Bot 记得住你是谁、聊过什么。
 
 **怎么用**：不需要命令，全自动。Bot 在聊天中会自己调用 `memory_command` 工具来搜索、写入、更新记忆，也会用 `temporary_memo` 记短期便签（默认 2 小时自动过期）。你只要正常聊天，剩下交给它。另外它自带一个网页管理界面：浏览器打开 `http://127.0.0.1:<HTTP路由端口>/booku-memory`（端口是 core.toml 里的 `http_router_port`，默认 8000），可以直观查看和管理记忆条目。
@@ -147,6 +155,8 @@ access_token = ""          # 可选鉴权令牌
 
 
 ## emoji_sender — 表情包发送器
+
+表情回应、收藏与发送设置见[表情插件文档](/docs/builtin_plugins/emoji/)。
 
 **一句话定位**：让 Bot 拥有自己的表情包库：定时"刷"到候选表情 → VLM 判断值不值得收藏并打上情感标签 → 聊天时按情绪和语义挑一张发出去。
 
@@ -176,6 +186,8 @@ access_token = ""          # 可选鉴权令牌
 
 ## skill_manager — Skill 管理器
 
+技能格式、目录结构和脚本执行说明见[Skill 管理器文档](/docs/builtin_plugins/skill/)。
+
 **一句话定位**：给 Bot 装"技能包"的入口：扫描本地 `skill/` 目录，把写有 SKILL.md 的技能登记造册，Bot 需要时自动读取对应技能说明书再干活。
 
 **怎么用**：两层用法——
@@ -203,10 +215,12 @@ access_token = ""          # 可选鉴权令牌
 `get_script` 能在子进程里真跑脚本（统一 15 秒超时保护）。看不懂的话保持默认关闭就好；要开，请确认技能来源可信，并留意 `script_execution_permission_level` 的权限门槛。
 :::
 
-**需要额外条件吗**：无模型依赖，装好即用。技能本身去哪找、怎么写，属于进阶玩法，见[内置插件深度文档](/docs/builtin_plugins/)。
+**需要额外条件吗**：无额外模型依赖，装好即用。技能本身去哪找、怎么写，见[Skill 管理器文档](/docs/builtin_plugins/skill/)。
 
 
 ## perm_plugin — 权限管理
+
+全部子命令和授权示例见[权限管理文档](/docs/builtin_plugins/perm/)。
 
 **一句话定位**：在聊天框里直接管权限的命令工具，主人不用碰配置文件就能给谁升管理员、给谁开某个插件的权限。
 
@@ -231,6 +245,8 @@ access_token = ""          # 可选鉴权令牌
 
 
 ## utility_commands — 实用命令
+
+命令参数和使用示例见[实用命令文档](/docs/builtin_plugins/ut/)。
 
 **一句话定位**：运维小工具收纳箱，目前提供 `/清空上下文`：让 Bot 在某个聊天里"失忆"，从零开始积累对话。
 

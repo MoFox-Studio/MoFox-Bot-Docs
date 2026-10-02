@@ -165,7 +165,9 @@ uv run main.py                               # 启动
 
 ## 第 4 步：填模型 API Key
 
-机器人「思考」靠的是大语言模型（LLM）服务，你需要去模型服务商那里申请一个 [API Key](/docs/guides/glossary#api-key)——它就像一把钥匙，程序拿着它才能调用模型，费用按用量记在你的账户上。项目的默认配置以硅基流动（SiliconFlow）为例，注册后在后台就能创建 Key。
+机器人「思考」靠的是大语言模型（LLM）服务，你需要去模型服务商那里申请一个 [API Key](/docs/guides/glossary#api-key)——它就像一把钥匙，程序拿着它才能调用模型，费用按用量记在你的账户上。项目的默认配置以[硅基流动（SiliconFlow）](https://cloud.siliconflow.cn/i/0ww8zcOn)为例，注册后在控制台就能创建 Key。
+
+上面的硅基流动入口是本站原有的邀请链接；也可以直接打开[硅基流动控制台](https://cloud.siliconflow.cn/)。
 
 ![图片：文本编辑器打开 config/model.toml 文件](/guide/manual/model-toml-editor.png)
 
@@ -250,14 +252,12 @@ ws://127.0.0.1:8095
 
 ### 告诉 Neo-MoFox 它的 QQ 号
 
-![图片：文本编辑器打开 onebot_adapter 插件配置文件](/guide/manual/onebot-config-editor.png)
+首次启动后，程序会在 `config/plugins/onebot_adapter/config.toml` 生成适配器配置。用文本编辑器打开它，找到 `[bot]`，下面高亮的两行都要填写：
 
-首次启动后，程序会在 `config/plugins/onebot_adapter/config.toml` 生成适配器配置。用文本编辑器打开它：
-```toml
-
+```toml {2,3}
 [bot]
 qq_id = "123456789"        # 必填：机器人的 QQ 号（就是协议端登录的那个号）
-qq_nickname = "小狐狸"      # 机器人的昵称
+qq_nickname = "小狐狸"      # 必填：机器人的昵称，不能留空
 
 [onebot_server]
 mode = "reverse"           # 连接模式，默认反向 WebSocket，不用改
@@ -266,7 +266,7 @@ port = 8095                # 监听端口，必须和协议端里填的一致
 access_token = ""          # 可选：访问令牌，两边留空，或两边填同一个值
 ```
 
-把 `qq_id` 改成机器人的 QQ 号（**必填**，不填收不到消息），`qq_nickname` 起个你喜欢的名字，保存。
+**`qq_id` 和 `qq_nickname` 都是必填项，不能留空。** `qq_id` 填协议端登录的机器人 QQ 号，`qq_nickname` 填你希望 Bot 使用的昵称；把示例值换成自己的信息后保存。
 
 ::: warning 启动顺序有讲究
 建议**先启动 Neo-MoFox，再启动协议端**。Neo-MoFox 的启动日志里出现「适配器启动完成」，说明它这边已经开始监听 8095；协议端连上后，它的管理界面/日志会显示反向 WS 已连接。连不上？看文末[常见问题](#常见问题)里「QQ 连不上」一条。
@@ -314,7 +314,7 @@ git pull    # 拉取最新代码
 
 新版本新增了配置项也不用怕：启动时程序会自动把新增配置补进你的 `config` 文件，**你已经改过的值全部保留**。
 
-更多玩法见 [更新指南](/docs/guides/update)；想尝鲜开发中的新功能，可以参考 [更新渠道说明](/docs/guides/channels) 切换[分支](/docs/guides/glossary#分支main-与-dev)（分支 = 开发中的平行版本，类似「体验服」）。
+更多玩法见 [更新指南](/docs/guides/update)；想尝鲜开发中的新功能，可以参考 [更新渠道说明](/docs/guides/channels) 切换[分支](/docs/guides/glossary#分支-main-与-dev)（分支 = 开发中的平行版本，类似「体验服」）。
 
 ## 常见问题
 
@@ -337,7 +337,7 @@ git pull    # 拉取最新代码
 1. 协议端里的反向 WS 地址是不是 `ws://127.0.0.1:8095`（IP 和端口都不能错）；
 2. Neo-MoFox 是不是已经启动了（要**先启动它**，协议端才连得上）；
 3. `access_token` 两边是否一致（要么都留空，要么填同一个值）；
-4. `config/plugins/onebot_adapter/config.toml` 里的 `qq_id` 是否已经填了；
+4. `config/plugins/onebot_adapter/config.toml` 里的 `qq_id` 和 `qq_nickname` 是否都已填写，QQ 号是否与协议端登录的账号一致；
 5. 打开协议端的日志看具体报错——大部分原因都会写在那里。
 
 #### 提示端口被占用（8095 或 8000）
@@ -514,7 +514,9 @@ MOFOX_ACCEPT_STARTUP_AGREEMENTS=1 uv run main.py   # 临时设置环境变量并
 
 ## 第 4 步：填模型 API Key
 
-机器人「思考」靠的是大语言模型（LLM）服务，你需要去模型服务商那里申请一个 [API Key](/docs/guides/glossary#api-key)——它就像一把钥匙，程序拿着它才能调用模型，费用按用量记在你的账户上。项目的默认配置以硅基流动（SiliconFlow）为例，注册后在后台就能创建 Key。
+机器人「思考」靠的是大语言模型（LLM）服务，你需要去模型服务商那里申请一个 [API Key](/docs/guides/glossary#api-key)——它就像一把钥匙，程序拿着它才能调用模型，费用按用量记在你的账户上。项目的默认配置以[硅基流动（SiliconFlow）](https://cloud.siliconflow.cn/i/0ww8zcOn)为例，注册后在控制台就能创建 Key。
+
+上面的硅基流动入口是本站原有的邀请链接；也可以直接打开[硅基流动控制台](https://cloud.siliconflow.cn/)。
 
 ![图片：文本编辑器打开 config/model.toml 文件](/guide/manual/model-toml-editor.png)
 
@@ -599,14 +601,12 @@ ws://127.0.0.1:8095
 
 ### 告诉 Neo-MoFox 它的 QQ 号
 
-![图片：文本编辑器打开 onebot_adapter 插件配置文件](/guide/manual/onebot-config-editor.png)
+首次启动后，程序会在 `config/plugins/onebot_adapter/config.toml` 生成适配器配置。用文本编辑器打开它，找到 `[bot]`，下面高亮的两行都要填写：
 
-首次启动后，程序会在 `config/plugins/onebot_adapter/config.toml` 生成适配器配置。用文本编辑器打开它：
-```toml
-
+```toml {2,3}
 [bot]
 qq_id = "123456789"        # 必填：机器人的 QQ 号（就是协议端登录的那个号）
-qq_nickname = "小狐狸"      # 机器人的昵称
+qq_nickname = "小狐狸"      # 必填：机器人的昵称，不能留空
 
 [onebot_server]
 mode = "reverse"           # 连接模式，默认反向 WebSocket，不用改
@@ -615,7 +615,7 @@ port = 8095                # 监听端口，必须和协议端里填的一致
 access_token = ""          # 可选：访问令牌，两边留空，或两边填同一个值
 ```
 
-把 `qq_id` 改成机器人的 QQ 号（**必填**，不填收不到消息），`qq_nickname` 起个你喜欢的名字，保存。
+**`qq_id` 和 `qq_nickname` 都是必填项，不能留空。** `qq_id` 填协议端登录的机器人 QQ 号，`qq_nickname` 填你希望 Bot 使用的昵称；把示例值换成自己的信息后保存。
 
 ::: warning 启动顺序有讲究
 建议**先启动 Neo-MoFox，再启动协议端**。Neo-MoFox 的启动日志里出现「适配器启动完成」，说明它这边已经开始监听 8095；协议端连上后，它的管理界面/日志会显示反向 WS 已连接。连不上？看文末[常见问题](#常见问题-1)里「QQ 连不上」一条。
@@ -684,7 +684,7 @@ git pull    # 拉取最新代码
 
 新版本新增了配置项也不用怕：启动时程序会自动把新增配置补进你的 `config` 文件，**你已经改过的值全部保留**。
 
-更多玩法见 [更新指南](/docs/guides/update)；想尝鲜开发中的新功能，可以参考 [更新渠道说明](/docs/guides/channels) 切换[分支](/docs/guides/glossary#分支main-与-dev)（分支 = 开发中的平行版本，类似「体验服」）。
+更多玩法见 [更新指南](/docs/guides/update)；想尝鲜开发中的新功能，可以参考 [更新渠道说明](/docs/guides/channels) 切换[分支](/docs/guides/glossary#分支-main-与-dev)（分支 = 开发中的平行版本，类似「体验服」）。
 
 ## 常见问题
 
@@ -707,7 +707,7 @@ git pull    # 拉取最新代码
 1. 协议端里的反向 WS 地址是不是 `ws://127.0.0.1:8095`（IP 和端口都不能错）；
 2. Neo-MoFox 是不是已经启动了（要**先启动它**，协议端才连得上）；
 3. `access_token` 两边是否一致（要么都留空，要么填同一个值）；
-4. `config/plugins/onebot_adapter/config.toml` 里的 `qq_id` 是否已经填了；
+4. `config/plugins/onebot_adapter/config.toml` 里的 `qq_id` 和 `qq_nickname` 是否都已填写，QQ 号是否与协议端登录的账号一致；
 5. 打开协议端的日志看具体报错——大部分原因都会写在那里。
 
 #### 提示端口被占用（8095 或 8000）

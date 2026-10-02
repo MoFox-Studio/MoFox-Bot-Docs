@@ -88,7 +88,7 @@ nickname = "小狐狸"   # 等号左边是设置项，右边是给它的值
 
 替机器人登录 QQ、收发消息的工具。QQ 官方没有给聊天机器人开正式入口，所以需要这么一个「代为进出」的角色。打个比方：机器人不自己拿手机，雇了个 24 小时盯着手机的秘书——消息来了递进来，要回复的发出去。在 Neo-MoFox 体系里，常用的协议端是 **SnowLuma** 和 **NapCat**，它们都遵循 OneBot v11 这个「通用插座标准」，所以核心自带的适配器能即插即用；Docker 方案里，协议端和机器人本体会作为两个搭档一起启动。
 
-<!-- VERIFY: NapCat 未出现在 Neo-MoFox 项目源码中（源码仅提及 SnowLuma），此处按任务方说明列出，发布前请核对官方推荐的协议端列表 -->
+<!-- 已核实：Neo-MoFox 官方 Docker Compose 默认搭配 SnowLuma；启动器平台下拉里两种都支持（SnowLuma 默认推荐，NapCat 仅 Windows x64），故 NapCat 作为常见协议端之一列出。 -->
 
 ## 适配器
 
@@ -104,7 +104,7 @@ QQ 世界和机器人大脑之间的**翻译官**。两边的「话」格式不�
 
 ## 环境变量
 
-提前塞给程序的「便签设置」——不用改配置文件，就能传过去的临时开关或参数。像出门前在门口贴张便签「记得带伞」：程序一睁眼先看便签再干活。在 Neo-MoFox 里最常见于 Docker 方案：`MOFOX_ACCEPT_STARTUP_AGREEMENTS=1` 相当于提前替机器人勾好「我已阅读并同意用户协议」；SnowLuma 容器则需要你设置 `SNOWLUMA_VNC_PASSWORD` 作为访问密码。这些便签通常写在 `docker-compose.yml` 里，部署教程会让你原样照抄，照做即可。
+提前塞给程序的「便签设置」——不用改配置文件，就能传过去的临时开关或参数。像出门前在门口贴张便签「记得带伞」：程序一睁眼先看便签再干活。在 Neo-MoFox 里最常见于 Docker 方案：`MOFOX_ACCEPT_STARTUP_AGREEMENTS=1` 相当于提前替机器人勾好「我已阅读并同意用户协议」；SnowLuma 容器则需要你设置 `SNOWLUMA_VNC_PASSWORD`，作为远程桌面（noVNC）的访问密码。这些便签通常写在 `docker-compose.yml` 里，部署教程会让你原样照抄，照做即可。
 
 不用 Docker、在终端里临时设置一个长这样（Windows 用 PowerShell）：
 ```powershell

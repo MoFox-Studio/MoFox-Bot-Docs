@@ -49,13 +49,13 @@
 ### 端口被占（8095 / 8000）
 
 - **现象**：启动时报「address already in use」「端口被占用」，或协议端连不上。
-- **原因**：两个常用默认端口被其他程序占了：**8095** 是 OneBot 适配器（[NapCat](/docs/guides/glossary#napcat) 反向 WebSocket）的默认端口，**8000** 是 HTTP 路由（WebUI）的默认端口。
+- **原因**：两个常用默认端口被其他程序占了：**8095** 是 OneBot 适配器的默认端口（[SnowLuma](/docs/guides/glossary#snowluma)、[NapCat](/docs/guides/glossary#napcat) 等协议端通过反向 WebSocket 来连它），**8000** 是 HTTP 路由（WebUI）的默认端口。
 - **解决步骤**：
   1. 找出占用进程：Windows 用 `netstat -ano | findstr 8095`，Linux 用 `lsof -i :8095`；
   2. 关掉占用进程，或改端口：
      - 8095 → `config/plugins/onebot_adapter/config.toml` 的 `[onebot_server]` → `port`；
      - 8000 → `config/core.toml` 的 `[http_router]` → `http_router_port`；
-  3. 改完记得把 NapCat 那边的反向 WS 地址也改成新端口。
+  3. 改完记得把协议端（SnowLuma / NapCat）那边的反向 WS 地址也改成新端口。
 
 ## 模型类
 
@@ -101,7 +101,7 @@
 
 按顺序排查，最常见的是前两条：
 
-1. **反向 WebSocket 没连上**：检查 NapCat 的网络配置，反向 WS 地址应为 `ws://<Bot 主机 IP>:8095`（IP 和端口要和 Bot 侧 `config/plugins/onebot_adapter/config.toml` 里 `[onebot_server]` 的 `host`、`port` 一致，`mode` 保持 `reverse`）；Bot 启动日志里应有适配器连接成功的记录。
+1. **反向 WebSocket 没连上**：检查协议端的反向 WS 配置——SnowLuma 在「节点配置 → WS 客户端」，NapCat 在网络配置。反向 WS 地址应为 `ws://<Bot 主机 IP>:8095`（IP 和端口要和 Bot 侧 `config/plugins/onebot_adapter/config.toml` 里 `[onebot_server]` 的 `host`、`port` 一致，`mode` 保持 `reverse`）；Bot 启动日志里应有适配器连接成功的记录。
 2. **qq_id 没填**：同一个文件的 `[bot]` 节里，`qq_id`（Bot 的 QQ 号）和 `qq_nickname` 是必填项，留空 Bot 不知道自己是谁。
 3. **Bot 被禁言**：`mute_guard` 插件检测到 Bot 在群里被禁言时会暂时阻断回复，解禁后自动恢复——看看 Bot 是不是被群管理员禁言了。
 4. **名单权限组不对**：同一配置文件的 `[features]` 节管着谁能触发 Bot：
@@ -109,18 +109,19 @@
    - 私聊默认 `whitelist` 模式：只有 `private_list` 里的 QQ **才**回复；
    - 另有 `ban_user_id` 全局封禁名单，名单内用户一律不理。
 
-![图片：NapCat 反向 WebSocket 配置位置](/guide/faq/napcat-reverse-ws.png)
+反向 WS 连上之后，SnowLuma 的「节点配置 → WS 客户端」里会显示「已连接」，长这样（地址因部署方式而异）：
 
-<!-- TODO-SCREENSHOT: NapCat WebUI 网络配置页截图，圈出反向 WebSocket 连接项：地址 ws://127.0.0.1:8095 -->
+![图片：SnowLuma 节点配置中的 WS 客户端，反向 WebSocket 已连接](/guide/snowluma/snowluma_node_config.png)
 
 ### 频繁掉线
 
 - **现象**：Bot 时而在线时而失联，或干脆反复掉线。
-- **原因**：多半是协议端（NapCat 等）自己掉线，其次是网络不稳定。
+- **原因**：多半是协议端（SnowLuma / NapCat）自己掉线，其次是网络不稳定。
+
 - **解决步骤**：
-  1. 看 NapCat 自身日志，确认掉线原因（账号风控、异地登录验证等要去 QQ 官方渠道处理）；
+  1. 看协议端自身日志确认掉线原因（SnowLuma 的「日志」页 / NapCat 日志；账号风控、异地登录验证等要去 QQ 官方渠道处理）；
   2. 检查服务器网络：家用宽带、跨境服务器都容易断长连接；
-  3. 反向 WS 由 NapCat 发起，断开后一般会自动重连；若频繁重连失败，回到上一条检查地址和端口。
+  3. 反向 WS 由协议端发起，断开后一般会自动重连；若频繁重连失败，回到上一条检查地址和端口。
 
 ## WebUI 类
 

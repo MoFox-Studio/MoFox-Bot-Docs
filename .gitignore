@@ -4,4 +4,4 @@
 .vitepress/cache/
 /cache/
 dist/
-.agents/.playwright-mcp/
+.playwright-mcp/

@@ -314,16 +314,23 @@ model_list = ["my-model"]                  # 这个任务用哪些模型（填�
 
 ## 接入 QQ
 
-机器人自己上不了 QQ，需要一个「代练」帮它登录 QQ、收发消息，这个代练就叫[协议端](/docs/guides/glossary#协议端)。Neo-MoFox 和协议端通过[反向 WebSocket](/docs/guides/glossary#反向-websocket) 连接：Neo-MoFox 在本机开一个服务端口等着，协议端主动连上来。好消息是：Neo-MoFox 这边已经内置了 QQ 适配器并默认开好了端口，你只需要做两步。
+机器人自己上不了 QQ，需要一个「代练」帮它登录 QQ、收发消息，这个代练就叫[协议端](/docs/guides/glossary#协议端)。Neo-MoFox 和协议端通过[反向 WebSocket](/docs/guides/glossary#反向-websocket) 连接：Neo-MoFox 在本机开一个服务端口等着，协议端主动连上来。好消息是：Neo-MoFox 这边已经内置了 QQ 适配器并默认开好了端口，你只需要做三步。
 
-### 第 1 步：安装协议端，配置反向 WebSocket
+### 第 1 步：安装协议端（SnowLuma）
 
-下面两个任选其一，都免费开源：
+本篇以 [SnowLuma](https://snowluma.github.io/) 为例——它自带网页管理界面，配置直观，也是官方 Docker 方案的默认搭配。SnowLuma 的安装部署有自己的官方文档，覆盖 Windows、Linux、Docker 等各种环境，写得很全，照着它装即可，本篇不再重复展开：
 
-- **NapCat**：基于 QQ 官方客户端的协议端。官方文档：<https://napneko.github.io/> ，安装包在 [Releases 页面](https://github.com/NapNeko/NapCatQQ/releases)下载。
-- **SnowLuma**：独立的协议端，自带网页管理界面。官方文档：<https://snowluma.github.io/> ，安装包在 [Releases 页面](https://github.com/SnowLuma/SnowLuma/releases)下载；解压后运行 `launcher.bat`（Windows）或 `launcher.sh`（Linux），浏览器打开 `http://localhost:5099` 进入管理页。
+→ **SnowLuma 官方部署文档**：<https://snowluma.github.io/zh/docs/guide/deploy/>
 
-装好并登录 QQ 后，在协议端的**网络配置**里添加一个「反向 WebSocket 客户端」（有的叫 Reverse WebSocket / 反向 WS），地址填：
+也可以换用 NapCat 等其他 [OneBot 11](/docs/guides/glossary#onebot) 协议端，对 Neo-MoFox 来说效果一样，但各有各的装法，本篇不展开——装好后按下面两步配置即可。
+
+### 第 2 步：登录 QQ，配置反向 WebSocket
+
+装好 SnowLuma 后先登录 QQ：用**机器人要用的那个 QQ 号**（强烈建议小号）在 SnowLuma 里扫码登录。登录状态可以在 SnowLuma 的网页管理界面（默认 `http://localhost:5099`）的「进程注入」页确认，显示「qq 已在线」就行：
+
+![图片：SnowLuma 进程注入页显示 qq 已在线](/guide/snowluma/snowluma_processes.png)
+
+然后在 SnowLuma 的「节点配置 → WS 客户端」里新建一个反向 WebSocket 客户端（有的叫 Reverse WebSocket / 反向 WS），地址填：
 ```
 
 ws://127.0.0.1:8095
@@ -331,11 +338,15 @@ ws://127.0.0.1:8095
 
 > `127.0.0.1` 表示「这台电脑自己」，`8095` 是 Neo-MoFox QQ 适配器的默认监听端口。访问令牌（access token）先两边都留空。
 
+![图片：SnowLuma 节点配置中的 WS 客户端列表](/guide/snowluma/snowluma_node_config.png)
+
+![图片：SnowLuma 新建反向 WS 客户端表单](/guide/snowluma/snowluma_ws_client_form.png)
+
 ::: tip 协议端和 Neo-MoFox 装在不同电脑？
 把 `127.0.0.1` 换成运行 Neo-MoFox 那台电脑的局域网 IP（例如 `ws://192.168.1.10:8095`），并确认那台电脑的防火墙放行了 8095 端口。
 :::
 
-### 第 2 步：告诉 Neo-MoFox 它的 QQ 号
+### 第 3 步：告诉 Neo-MoFox 它的 QQ 号
 
 ![图片：文本编辑器打开 onebot_adapter 插件配置文件](/guide/manual/onebot-config-editor.png)
 <!-- TODO-SCREENSHOT: 用文本编辑器打开 config/plugins/onebot_adapter/config.toml 的截图：可见 [bot] 小节，qq_id 一行处于选中或高亮状态；标题栏或文件管理器地址栏能看到完整路径，方便读者在层层文件夹里找到它。 -->

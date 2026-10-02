@@ -74,7 +74,7 @@ compose 文件会把 `eula.md`、`PRIVACY.md`、`LICENSE` 以"单文件挂载"�
 
 ## 第二步：设置 VNC 密码（必改项）
 
-compose 文件里有一个必须由你自己提供的 [环境变量](/docs/guides/glossary#环境变量)：`SNOWLUMA_VNC_PASSWORD`。它是 SnowLuma WebUI 的登录密码——不设置的话，执行 `docker compose up` 时会直接报错拒绝启动，这是官方故意的，防止你用公开的默认密码裸奔。
+compose 文件里有一个必须由你自己提供的 [环境变量](/docs/guides/glossary#环境变量)：`SNOWLUMA_VNC_PASSWORD`。它是 SnowLuma 远程桌面（noVNC，`6081` 端口）的登录密码，第四步登录 QQ 时要用它——不设置的话，执行 `docker compose up` 时会直接报错拒绝启动，这是官方故意的，防止你用公开的默认密码裸奔。
 
 在 compose 文件同目录下创建一个 `.env` 文件写入密码即可（`docker compose` 会自动读取它）：
 ```bash
@@ -84,7 +84,7 @@ echo 'SNOWLUMA_VNC_PASSWORD=换成你的强密码' > .env
 ```
 
 ::: warning 这是保密码，不是随便填的
-`5099` 和 `6081` 端口开放在公网上，任何拿到这个密码的人都能进入你的 SnowLuma 管理界面。请务必用足够长的随机密码，并建议在云服务器安全组里限制这两个端口只允许你自己的 IP 访问。
+`5099` 和 `6081` 端口开放在公网上，任何拿到这个密码的人都能连上你的远程桌面、进到 SnowLuma 管理界面。请务必用足够长的随机密码，并建议在云服务器安全组里限制这两个端口只允许你自己的 IP 访问。
 :::
 
 **数据放在哪？** 之后的聊天记录、配置、日志都会落在 compose 文件旁边的这几个文件夹里：`config/`、`data/`、`logs/`、`plugins/`（首次启动时自动创建）。SnowLuma 自己的数据则存放在 Docker 命名卷里，不需要你操心。备份时把整个部署目录打包即可。
@@ -111,11 +111,33 @@ docker compose logs -f mofox # 持续查看 Neo-MoFox 的日志，按 Ctrl+C 退
 compose 文件里已经设置了 `MOFOX_ACCEPT_STARTUP_AGREEMENTS=1`，代表自动同意用户协议，所以你不会看到协议确认界面。协议内容就是部署目录里的 `eula.md`，有空的可以读一读。
 :::
 
-## 第四步：接入 QQ（SnowLuma WebUI）
+## 第四步：登录 QQ，接入 Neo-MoFox
 
-现在两个容器都跑起来了，接下来告诉 SnowLuma："把 QQ 收到的消息发给 Neo-MoFox"。这一步用到的就是[反向 WebSocket](/docs/guides/glossary#反向-websocket)——简单说，由 SnowLuma 主动连到 Neo-MoFox 留好的接口上。
+现在两个容器都跑起来了。接下来做两件事：先让 SnowLuma 里的 QQ 登录上号，再告诉 SnowLuma「把 QQ 收到的消息发给 Neo-MoFox」。第二步用到的就是[反向 WebSocket](/docs/guides/glossary#反向-websocket)——由 SnowLuma 主动连到 Neo-MoFox 留好的接口上。
 
-1. 在自己电脑的浏览器打开 `http://服务器IP:5099`，进入 SnowLuma WebUI，用上面设置的 `SNOWLUMA_VNC_PASSWORD` 登录。
+### 第 1 步：进 noVNC，扫码登录 QQ
+
+SnowLuma 只支持扫码登录，没有账号密码登录。SnowLuma 容器里自带一台「虚拟电脑」（Linux 桌面），QQ 已经在里面自动启动了；你要做的是用浏览器看到它的屏幕，然后扫码：
+
+1. 浏览器打开 `http://服务器IP:6081`，进入 noVNC 远程桌面页，点「连接」，密码填第二步设置的 `SNOWLUMA_VNC_PASSWORD`；
+2. 连上后会看到一台 Linux 桌面，QQ 已经自动启动，弹窗里就是登录二维码（没看到就等几秒，或点一下桌面里的 QQ 窗口）；
+3. 用**手机 QQ**（就是 Bot 要登录的那个号，强烈建议小号）扫这个码，在 QQ 里确认登录；
+4. 登录完成后不用守着桌面：容器启动时已经自动把 hook 注入 QQ 进程，扫码成功后自动开始工作，把 QQ 窗口最小化即可。
+
+> 第二步设置的 VNC 密码忘了？查看部署目录下的 `.env` 文件即可找回；也可以执行 `docker logs snowluma 2>&1 | grep -E "远程桌面密码:|remote desktop password:" | tail -n 1` 碰碰运气（密码在生成或更换时打印一次，重启后日志里找不到是正常的，用第一次记下的那串）。
+
+::: tip noVNC 里是什么样？
+一台完整的 Linux 桌面（画面因机器而异，这里就不放截图了）。只要能连上并看到 QQ 窗口和二维码，这一步就成功了。
+:::
+
+### 第 2 步：在 WebUI 配置反向 WebSocket
+
+1. 浏览器打开 `http://服务器IP:5099`，进入 SnowLuma WebUI。首次登录的密码**不在第二步的 `.env` 里**，而是 SnowLuma 第一次启动时在日志里打印的一次性临时密码：
+```bash
+
+docker logs snowluma 2>&1 | grep -E "临时密码|initial credentials" | tail -n 1
+```
+   它只在全新数据目录的第一次启动时输出一次，**看到就存好**，之后重启不会再打印。
 
 ![图片：浏览器打开 SnowLuma WebUI（5099 端口）的登录页](/guide/snowluma/login.png)
 
@@ -125,12 +147,16 @@ compose 文件里已经设置了 `MOFOX_ACCEPT_STARTUP_AGREEMENTS=1`，代表自
    - **Neo-MoFox 跑在宿主机**（没走 Docker）：填 `ws://<宿主机IP>:8095`。
 4. 保存后，客户端列表里显示「已连接」即接入成功。
 
-![SnowLuma 节点配置中的 WS 客户端列表](/guide/snowluma/snowluma_config_ws_clients.png)
+![SnowLuma 节点配置中的 WS 客户端列表](/guide/snowluma/snowluma_node_config.png)
 
 ![新建 WebSocket 反向客户端表单](/guide/snowluma/snowluma_ws_client_form.png)
 
-::: tip QQ 登录在哪里操作？
-QQ 账号本身的登录（扫码等）是在 SnowLuma 里完成的。如果需要扫码或过验证，通常要进 `6081` 端口的 noVNC 页面，在"虚拟电脑"的屏幕上操作。<!-- VERIFY: noVNC 中 QQ 扫码登录的具体操作流程是否另有文档页 --> 
+两边都就绪，接入就完成了：QQ 侧在「进程注入」页显示「qq 已在线」，WS 客户端显示「已连接」。
+
+![图片：SnowLuma 进程注入页显示 qq 已在线](/guide/snowluma/snowluma_processes.png)
+
+::: tip 更多 SnowLuma 的用法
+SnowLuma 有自己的[官方文档](https://snowluma.github.io/zh/)，多账号、环境变量自启、WebUI 的其他功能都在那里讲，本篇只覆盖接入 Neo-MoFox 所需的最少步骤。
 :::
 
 ## 第五步：配置模型
@@ -252,7 +278,9 @@ compose 文件已给 mofox 容器设置 `TZ: Asia/Shanghai`（东八区），正
 
 ### 忘了 SNOWLUMA_VNC_PASSWORD
 
-查看部署目录下的 `.env` 文件即可找回。改密码也是编辑这个文件，然后 `docker compose up -d` 重建 snowluma 容器生效。
+它是 noVNC 远程桌面的密码（不是 SnowLuma WebUI 的登录密码）。查看部署目录下的 `.env` 文件即可找回；也可以执行 `docker logs snowluma 2>&1 | grep -E "远程桌面密码:|remote desktop password:" | tail -n 1` 碰碰运气（密码在生成或更换时打印一次，之后日志里没有是正常的）。改密码也是编辑 `.env`，然后 `docker compose up -d` 重建 snowluma 容器生效。
+
+另外注意：SnowLuma WebUI 的登录密码是首次启动日志里的一次性临时密码，和这个 VNC 密码是两回事，第一次启动时看到就要存好。
 
 ## 下一步
 

@@ -110,9 +110,9 @@
 
 ## onebot_adapter — OneBot 11 适配器
 
-**一句话定位**：Bot 与 QQ 之间的"翻译官"，通过 [OneBot 11](/docs/guides/glossary#onebot) 协议对接 NapCat 等协议端，收发消息、图片、视频、戳一戳。
+**一句话定位**：Bot 与 QQ 之间的"翻译官"，通过 [OneBot 11](/docs/guides/glossary#onebot) 协议对接 SnowLuma、NapCat 等协议端，收发消息、图片、视频、戳一戳。
 
-**怎么用**：装好协议端（常见搭配 NapCat），然后必填 Bot 自己的 QQ 号和昵称，把两边连上即可。这是 8 个内置插件里唯一一个"不填就跑不通"的。
+**怎么用**：装好协议端（官方 Docker 方案默认搭配 SnowLuma），然后必填 Bot 自己的 QQ 号和昵称，把两边连上即可。这是 8 个内置插件里唯一一个"不填就跑不通"的。
 ```toml
 
 # config/plugins/onebot_adapter/config.toml
@@ -123,7 +123,7 @@ qq_nickname = "小狐狸"      # Bot 的昵称，必填
 [onebot_server]
 mode = "reverse"           # reverse=Bot 开服务端等协议端来连（默认）；direct=Bot 主动去连协议端
 host = "127.0.0.1"
-port = 8095                # NapCat 里反向 WebSocket 地址填 ws://<这台机器IP>:8095
+port = 8095                # SnowLuma 里反向 WebSocket 地址填 ws://<这台机器IP>:8095
 access_token = ""          # 可选鉴权令牌
 ```
 
@@ -140,7 +140,7 @@ access_token = ""          # 可选鉴权令牌
 | `enable_video_processing` | `true` | 下载并解析视频消息（`video_max_size_mb` 默认 100MB 上限） |
 | `forward_image_threshold` | `5` | 转发消息里图片太多时用占位符，防止刷屏 |
 
-**需要额外条件吗**：需要一个 OneBot 11 协议端（如 NapCat）并保持在线；Python 依赖 pillow 会自动安装。连接排障见[常见问题](/docs/guides/faq)。
+**需要额外条件吗**：需要一个 OneBot 11 协议端（如 SnowLuma、NapCat）并保持在线；Python 依赖 pillow 会自动安装。连接排障见[常见问题](/docs/guides/faq)。
 
 
 ## booku_memory — Booku 记忆

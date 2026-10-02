@@ -6,3 +6,12 @@
 dist/
 .playwright-mcp/
 /docs/.vitepress/cache/
+
+# OAuth 本地配置与 Worker secrets；仅公开配置示例可提交
+.env
+.env.*
+!.env.example
+.dev.vars
+.dev.vars.*
+.wrangler/
+worker/node_modules/

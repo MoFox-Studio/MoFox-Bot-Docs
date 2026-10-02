@@ -28,6 +28,7 @@ import DocButtons from "./components/content/DocButtons.vue";
 
 // 页面级组件
 import NotFound from "./components/pages/NotFound.vue";
+import GitHubCallback from "./components/pages/GitHubCallback.vue";
 
 import { h } from "vue";
 import {
@@ -89,6 +90,7 @@ const theme: Theme = {
     app.component("BackToTop", BackToTop);
     app.component("BackgroundLogo", BackgroundLogo);
     app.component("ReportIssue", ReportIssue);
+    app.component("GitHubCallback", GitHubCallback);
     app.component("DocButtons", DocButtons);
     app.use(NolebaseInlineLinkPreviewPlugin);
   },

@@ -82,7 +82,7 @@ VitePress 完整支持 CommonMark + GFM，常用语法如下：
 [链接文本](./other-page)        <!-- 站内链接省略 .md -->
 [外部链接](https://vitepress.dev)
 
-![图片替代文字](/logo.png)       <!-- public 下的图片用绝对路径 -->
+![图片替代文字](/logos/logo.png)       <!-- public 下的图片用绝对路径 -->
 ```
 
 ::: tip 站内链接规则

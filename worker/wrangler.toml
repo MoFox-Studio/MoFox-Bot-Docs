@@ -1,0 +1,19 @@
+name = "mofox-docs-github-oauth"
+main = "src/index.js"
+compatibility_date = "2026-10-01"
+workers_dev = true
+
+[vars]
+# GitHub OAuth App 的 Client ID 是公开值。
+GH_CLIENT_ID = "Ov23liZzZNWHwnLCalx5"
+
+# GH_CLIENT_SECRET 仅通过 `wrangler secret put GH_CLIENT_SECRET` 设置。
+# 不要将 Secret 放进 vars、前端 VITE_* 变量或 Git 跟踪的文件。
+
+[observability]
+enabled = false
+
+[dev]
+ip = "127.0.0.1"
+port = 8787
+local_protocol = "http"

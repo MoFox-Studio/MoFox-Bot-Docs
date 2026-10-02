@@ -1,0 +1,13 @@
+{
+  "name": "mofox-docs-github-oauth",
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "wrangler": "^4.147.0"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "dev": "wrangler dev --local",
+    "deploy": "wrangler deploy"
+  }
+}

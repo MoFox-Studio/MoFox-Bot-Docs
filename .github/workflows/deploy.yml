@@ -46,6 +46,10 @@ jobs:
       - name: Install dependencies
         run: npm ci -force # 或 pnpm install / yarn install / bun install
       - name: Build with VitePress
+        # 只注入公开配置；GH_CLIENT_SECRET 仅保存在 Cloudflare Worker。
+        env:
+          VITE_GH_CLIENT_ID: ${{ vars.VITE_GH_CLIENT_ID }}
+          VITE_GH_TOKEN_URL: ${{ vars.VITE_GH_TOKEN_URL }}
         run: npm run docs:build # 或 pnpm docs:build / yarn docs:build / bun run docs:build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

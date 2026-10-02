@@ -181,6 +181,7 @@ const devSidebar: DefaultTheme.SidebarItem[] = [
         link: "/docs/development/docs-editing/edit-docs",
       },
       { text: "启动与预览", link: "/docs/development/docs-editing/run-server" },
+      { text: "GitHub 登录与文档反馈", link: "/docs/development/github-feedback" },
       {
         text: "侧边栏与顶栏配置",
         link: "/docs/development/docs-editing/sidebar-nav-config",
@@ -635,8 +636,12 @@ const splashScript = `(function(){
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  // 旧版用户文档已归档到仓库根 _archive/，不参与构建
-  srcExclude: ["_archive/**"],
+  // OAuth App 固定使用目录回调地址，GitHub Pages 需要对应的 index.html。
+  rewrites: {
+    "docs/feedback/callback.md": "docs/feedback/callback/index.md",
+  },
+  // 旧版归档与独立 Worker 项目不作为文档页面构建。
+  srcExclude: ["_archive/**", "worker/**"],
   // ── 构建结束后自动生成 catalog.json ──────────────────────────
   async buildEnd(siteConfig) {
     const sidebar = siteConfig.site.themeConfig.sidebar || {};
@@ -669,6 +674,23 @@ export default defineConfig({
     },
   },
   vite: {
+    // 仅 docs:dev 使用：本地 OAuth App 回调到本地站点，再由开发代理访问
+    // wrangler dev。Worker 的线上来源校验保持严格；此代理不会进入静态产物。
+    server: {
+      proxy: {
+        "^/__github-oauth/token$": {
+          target: "http://127.0.0.1:8787",
+          changeOrigin: true,
+          rewrite: () => "/token",
+          configure(proxy) {
+            proxy.on("proxyReq", (request) => {
+              request.setHeader("Origin", "https://docs.mofox.chat");
+              request.setHeader("Referer", "https://docs.mofox.chat/docs/feedback/callback/");
+            });
+          },
+        },
+      },
+    },
     plugins: [
       GitChangelog({
         // 在此处填写你的仓库 URL

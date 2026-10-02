@@ -18,6 +18,12 @@ const startGuides = [
     title: '一张表帮你选出最适合自己的安装方式',
     link: './choose'
   },
+  {
+    avatar: '<iconify-icon icon="mdi:mouse-pointer-click-outline"></iconify-icon>',
+    name: '文档使用指南',
+    title: '每页右上角那排按钮怎么用？搜索、深色模式、报告问题一篇讲清',
+    link: './docs-guide'
+  },
 ]
 
 const deployGuides = [

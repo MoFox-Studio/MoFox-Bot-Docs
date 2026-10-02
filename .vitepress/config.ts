@@ -764,6 +764,7 @@ export default defineConfig({
           collapsed: false,
           items: [
             { text: "指南主页", link: "/docs/guides/" },
+            { text: "文档使用指南", link: "/docs/guides/docs-guide" },
             { text: "Neo-MoFox 是什么", link: "/docs/guides/about" },
             { text: "新手名词小课堂", link: "/docs/guides/glossary" },
           ],
@@ -784,9 +785,17 @@ export default defineConfig({
           text: "进阶",
           collapsed: false,
           items: [
-            { text: "核心配置要点", link: "/docs/guides/core-config" },
-            { text: "人设指南", link: "/docs/guides/persona" },
-            { text: "进阶模型配置", link: "/docs/guides/advanced-model" },
+            {
+              text: "配置相关",
+              collapsed: false,
+              items: [
+                { text: "TOML 与编辑器", link: "/docs/guides/toml" },
+                { text: "核心配置要点", link: "/docs/guides/core-config" },
+                { text: "人设指南", link: "/docs/guides/persona" },
+                { text: "进阶模型配置", link: "/docs/guides/advanced-model" },
+                { text: "插件配置怎么改", link: "/docs/guides/plugin-config" },
+              ],
+            },
             { text: "内置插件一览", link: "/docs/guides/builtin" },
             { text: "更新与回滚", link: "/docs/guides/update" },
             { text: "更新通道：main 与 dev", link: "/docs/guides/channels" },

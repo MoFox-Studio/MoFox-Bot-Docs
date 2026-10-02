@@ -24,6 +24,7 @@ import MoFoxTeamCard from "./components/content/MoFoxTeamCard.vue";
 import PluginStats from "./components/content/PluginStats.vue";
 import ContributePluginGuide from "./components/content/ContributePluginGuide.vue";
 import ReadingTime from "./components/content/ReadingTime.vue";
+import DocButtons from "./components/content/DocButtons.vue";
 
 // 页面级组件
 import NotFound from "./components/pages/NotFound.vue";
@@ -88,6 +89,7 @@ const theme: Theme = {
     app.component("BackToTop", BackToTop);
     app.component("BackgroundLogo", BackgroundLogo);
     app.component("ReportIssue", ReportIssue);
+    app.component("DocButtons", DocButtons);
     app.use(NolebaseInlineLinkPreviewPlugin);
   },
 };

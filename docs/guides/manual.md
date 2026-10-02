@@ -119,7 +119,6 @@ uv run main.py       # 启动 Neo-MoFox
 你的选择会记录在 `data/system/agreements/` 文件夹里，之后启动不会再问。
 
 ![图片：终端中 Neo-MoFox 首次启动时的协议确认界面](/guide/manual/first-start-agreement.png)
-<!-- TODO-SCREENSHOT: PowerShell/终端窗口截图，展示首次启动的协议确认阶段：出现「EULA」分节标题、"请先阅读协议文件：……eula.md"的提示行，底部是"[EULA] 请输入 view / agree / decline:"的等待输入状态。使用默认主题即可，让读者一眼认出"该我输入了"的样子。 -->
 
 ::: warning 服务器/进阶用户：一键跳过协议确认
 启动前在 PowerShell 里设置环境变量 `MOFOX_ACCEPT_STARTUP_AGREEMENTS=1`，程序会自动视为「已同意全部协议」。注意：只要**设置了这个变量**就会自动同意（与值是多少无关），并且**会同时自动打开云端遥测**，介意的话请走手动确认流程。
@@ -140,7 +139,6 @@ uv run main.py                               # 启动
 4. 最后日志里出现 **「Neo-MoFox Bot 启动成功」** 和 **「输入 /help 查看可用命令」**——看到这两行，就成了。
 
 ![图片：终端中 Neo-MoFox 启动成功后的日志输出](/guide/manual/first-start-success.png)
-<!-- TODO-SCREENSHOT: 启动成功状态的终端截图：阶段面板各步骤显示"已初始化/已启动"，插件加载列表完整可见，最后一屏能同时看到"Neo-MoFox Bot 启动成功"与"输入 /help 查看可用命令"两行日志。 -->
 
 ::: tip 现在机器人还不会回 QQ 消息，是正常的
 此刻它有了「大脑」，但还没有「耳朵和嘴」（QQ 协议端）。按 `Ctrl+C` 把它先关掉，我们继续往下配置。
@@ -170,7 +168,6 @@ uv run main.py                               # 启动
 机器人「思考」靠的是大语言模型（LLM）服务，你需要去模型服务商那里申请一个 [API Key](/docs/guides/glossary#api-key)——它就像一把钥匙，程序拿着它才能调用模型，费用按用量记在你的账户上。项目的默认配置以硅基流动（SiliconFlow）为例，注册后在后台就能创建 Key。
 
 ![图片：文本编辑器打开 config/model.toml 文件](/guide/manual/model-toml-editor.png)
-<!-- TODO-SCREENSHOT: 用记事本或 VS Code 打开 config/model.toml 的截图：窗口标题栏能看到文件名，页面滚动到 [[api_providers]] 一节，api_key = "your-siliconflow-api-key-here" 一行处于选中或高亮状态，方便读者对照自己手里的文件。 -->
 
 <MethodTabs dimension="config" :options="[{ value: 'file', label: '配置文件', icon: 'mdi:file-document-outline' }, { value: 'webui', label: 'WebUI', icon: 'mdi:monitor-dashboard' }]">
 
@@ -270,7 +267,6 @@ ws://127.0.0.1:8095
 ### 告诉 Neo-MoFox 它的 QQ 号
 
 ![图片：文本编辑器打开 onebot_adapter 插件配置文件](/guide/manual/onebot-config-editor.png)
-<!-- TODO-SCREENSHOT: 用文本编辑器打开 config/plugins/onebot_adapter/config.toml 的截图：可见 [bot] 小节，qq_id 一行处于选中或高亮状态；标题栏或文件管理器地址栏能看到完整路径，方便读者在层层文件夹里找到它。 -->
 
 首次启动后，程序会在 `config/plugins/onebot_adapter/config.toml` 生成适配器配置。用文本编辑器打开它：
 ```toml
@@ -299,7 +295,6 @@ access_token = ""          # 可选：访问令牌，两边留空，或两边填
 用文本编辑器打开 `config/core.toml`，找到 `[permissions]` 一节：
 
 ![图片：文本编辑器打开 config/core.toml 并定位到 permissions 一节](/guide/manual/core-toml-owner.png)
-<!-- TODO-SCREENSHOT: 用文本编辑器打开 config/core.toml 的截图：页面滚动定位到 [permissions] 小节，owner_list = [] 一行可见并处于选中状态；编辑器侧边能看到文件所在路径更佳。 -->
 ```toml
 
 [permissions]
@@ -490,7 +485,6 @@ uv run main.py       # 启动 Neo-MoFox
 你的选择会记录在 `data/system/agreements/` 文件夹里，之后启动不会再问。
 
 ![图片：终端中 Neo-MoFox 首次启动时的协议确认界面](/guide/manual/first-start-agreement.png)
-<!-- TODO-SCREENSHOT: 终端窗口截图，展示首次启动的协议确认阶段：出现「EULA」分节标题、"请先阅读协议文件：……eula.md"的提示行，底部是"[EULA] 请输入 view / agree / decline:"的等待输入状态。 -->
 
 ::: warning 服务器/进阶用户：一键跳过协议确认
 启动前设置环境变量 `MOFOX_ACCEPT_STARTUP_AGREEMENTS=1`，程序会自动视为「已同意全部协议」。注意：只要**设置了这个变量**就会自动同意（与值是多少无关），并且**会同时自动打开云端遥测**，介意的话请走手动确认流程。
@@ -510,7 +504,6 @@ MOFOX_ACCEPT_STARTUP_AGREEMENTS=1 uv run main.py   # 临时设置环境变量并
 4. 最后日志里出现 **「Neo-MoFox Bot 启动成功」** 和 **「输入 /help 查看可用命令」**——看到这两行，就成了。
 
 ![图片：终端中 Neo-MoFox 启动成功后的日志输出](/guide/manual/first-start-success.png)
-<!-- TODO-SCREENSHOT: 启动成功状态的终端截图：阶段面板各步骤显示"已初始化/已启动"，插件加载列表完整可见，最后一屏能同时看到"Neo-MoFox Bot 启动成功"与"输入 /help 查看可用命令"两行日志。 -->
 
 ::: tip 现在机器人还不会回 QQ 消息，是正常的
 此刻它有了「大脑」，但还没有「耳朵和嘴」（QQ 协议端）。按 `Ctrl+C` 把它先关掉，我们继续往下配置。
@@ -540,7 +533,6 @@ MOFOX_ACCEPT_STARTUP_AGREEMENTS=1 uv run main.py   # 临时设置环境变量并
 机器人「思考」靠的是大语言模型（LLM）服务，你需要去模型服务商那里申请一个 [API Key](/docs/guides/glossary#api-key)——它就像一把钥匙，程序拿着它才能调用模型，费用按用量记在你的账户上。项目的默认配置以硅基流动（SiliconFlow）为例，注册后在后台就能创建 Key。
 
 ![图片：文本编辑器打开 config/model.toml 文件](/guide/manual/model-toml-editor.png)
-<!-- TODO-SCREENSHOT: 用文本编辑器（如 VS Code、gedit）打开 config/model.toml 的截图：窗口标题栏能看到文件名，页面滚动到 [[api_providers]] 一节，api_key = "your-siliconflow-api-key-here" 一行处于选中或高亮状态，方便读者对照自己手里的文件。 -->
 
 <MethodTabs dimension="config" :options="[{ value: 'file', label: '配置文件', icon: 'mdi:file-document-outline' }, { value: 'webui', label: 'WebUI', icon: 'mdi:monitor-dashboard' }]">
 
@@ -640,7 +632,6 @@ ws://127.0.0.1:8095
 ### 告诉 Neo-MoFox 它的 QQ 号
 
 ![图片：文本编辑器打开 onebot_adapter 插件配置文件](/guide/manual/onebot-config-editor.png)
-<!-- TODO-SCREENSHOT: 用文本编辑器打开 config/plugins/onebot_adapter/config.toml 的截图：可见 [bot] 小节，qq_id 一行处于选中或高亮状态；标题栏或文件管理器地址栏能看到完整路径，方便读者在层层文件夹里找到它。 -->
 
 首次启动后，程序会在 `config/plugins/onebot_adapter/config.toml` 生成适配器配置。用文本编辑器打开它：
 ```toml
@@ -669,7 +660,6 @@ access_token = ""          # 可选：访问令牌，两边留空，或两边填
 用文本编辑器打开 `config/core.toml`，找到 `[permissions]` 一节：
 
 ![图片：文本编辑器打开 config/core.toml 并定位到 permissions 一节](/guide/manual/core-toml-owner.png)
-<!-- TODO-SCREENSHOT: 用文本编辑器打开 config/core.toml 的截图：页面滚动定位到 [permissions] 小节，owner_list = [] 一行可见并处于选中状态；编辑器侧边能看到文件所在路径更佳。 -->
 ```toml
 
 [permissions]

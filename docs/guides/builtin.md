@@ -8,29 +8,7 @@
 
 ## 插件配置在哪改？
 
-所有插件的配置文件都在 `config/plugins/<插件名>/config.toml`，插件**第一次被加载时**会自动生成带注释的默认配置文件，不用手动建。两种改法选你顺手的：
-
-<MethodTabs dimension="config" :options="[{ value: 'file', label: '配置文件', icon: 'mdi:file-document-outline' }, { value: 'webui', label: 'WebUI', icon: 'mdi:monitor-dashboard' }]">
-
-<MethodTab value="file">
-
-1. 用任意文本编辑器（记事本、VS Code 都行）打开 `config/plugins/<插件名>/config.toml`，直接改字段。
-2. 保存后重启 Bot 生效；核心升级带来新配置字段时，文件也会自动补上，不用手动合并。
-
-</MethodTab>
-
-<MethodTab value="webui">
-
-1. 打开 WebUI 的「插件配置」页面（WebUI 本身怎么装见 [WebUI 指南](/docs/guides/webui)），选择要改的插件。
-2. 在表单里修改、保存，重启 Bot 生效。
-
-![图片：WebUI 插件配置页，选择插件后在表单里修改](/guide/webui/config-plugins.png)
-
-</MethodTab>
-
-</MethodTabs>
-
-插件声明的 Python 依赖会自动安装：`core.toml` 里 `[plugin_deps]` 的 `enabled` 默认开启，只在缺包时才装；某个插件依赖装失败且它要求严格时会被跳过，启动日志里能看到原因（详见[核心配置要点](/docs/guides/core-config)）。
+所有插件的配置文件都在 `config/plugins/<插件名>/config.toml`，手动改文件、WebUI 表单两种改法，详见专门的[插件配置怎么改](/docs/guides/plugin-config)页。
 
 ## 速查表
 
@@ -45,7 +23,7 @@
 | perm_plugin | 聊天框里管权限（`/权限`） | 零配置 | [深度文档](/docs/builtin_plugins/) |
 | utility_commands | 实用运维命令（`/清空上下文`） | 零配置 | [深度文档](/docs/builtin_plugins/) |
 
-> 下表「常用配置」里的字段名与配置文件一致，改法见上文「插件配置在哪改」，改完重载或重启生效。
+> 下表「常用配置」里的字段名与配置文件一致，改法见[插件配置怎么改](/docs/guides/plugin-config)，改完重载或重启生效。
 
 
 ## default_chatter — 默认聊天器

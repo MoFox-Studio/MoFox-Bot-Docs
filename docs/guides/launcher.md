@@ -134,6 +134,8 @@ nightly 是自动构建出来的**预发布测试版本**，更新很勤但可�
 2. 选择 **新鲜安装**（另一项「手动导入」是用来登记电脑里已有的 Neo-MoFox 目录的，新手用不上）；
 3. 进入安装向导，一共四个阶段：**协议 → 配置 → 确认 → 安装**。
 
+![添加实例弹窗：新建实例选择「新鲜安装」，已有 Bot 目录才选择「手动导入」](/guide/launcher/add-instance-dialog.png)
+
 ### 1. 阅读并同意协议
 
 向导会展示 MoFox 的**用户许可协议（EULA）**和**隐私政策**两份文本。看完勾选同意，点继续进入配置。
@@ -203,9 +205,13 @@ nightly 是自动构建出来的**预发布测试版本**，更新很勤但可�
 - 也可以点浏览按钮换一个地方。启动器会检查这个目录能不能写入、硬盘剩余空间够不够；
 - 装好后，实例文件在 `你选的目录/<实例 ID>/` 下面，其中 `mofox` 是机器人本体、`platform` 是适配器（SnowLuma 装在这里）。
 
+![安装向导的安装位置区块：选择安装根目录，实例会放入自动创建的子文件夹](/guide/launcher/install-config-location.png)
+
 ### 3. 确认
 
 五个区块都亮起「已就绪」后，点继续进入确认页。这里用卡片汇总了你填的所有信息（实例信息、网络配置、安装选项、API Key、安装目录），**最后核对一遍**，没问题就点 **开始安装**。
+
+![安装前的确认页：核对实例账号、平台与网络、可选组件和安装目录后，再开始安装](/guide/launcher/install-summary.png)
 
 ### 4. 看进度
 
@@ -235,18 +241,20 @@ nightly 是自动构建出来的**预发布测试版本**，更新很勤但可�
 
 ![图片：实例列表页，实例卡片与启动按钮](/guide/launcher/instances.png)
 
-![图片：日志页双标签终端](/guide/launcher/logs-tabs.png)
+![启动器的实际日志界面：MoFox 和 SnowLuma 两个标签、分别控制进程的按钮，以及搜索、复制和导出工具](/guide/launcher/logs-tabs.png)
 
 ## 第五步：QQ 登录，让 Bot 上线
 
 机器人程序跑起来了，但它的 QQ 还没登录——就像手机开机了还没插卡。选了 SnowLuma 的话，登录是这样完成的：
 
 1. **确认桌面版 QQ 已经打开**，停在登录窗口就行。SnowLuma 的工作方式是自动发现正在运行的 QQ 进程并注入 hook，所以 QQ 得先开着；
-2. 点实例卡片上的 **查看日志**，切到 **SnowLuma** 标签。SnowLuma 首次启动时会在这里打印两样东西：**WebUI 的网址**（默认 `http://127.0.0.1:5099`）和**初始登录凭据**（`initial credentials: user=admin password=...` 那两行）。**把密码记下来**——它只在首次启动时出现一次；
+2. 点实例卡片上的 **查看日志**，切到 **SnowLuma** 标签。找到 `listening ...` 后的 **WebUI 地址**（默认 `http://127.0.0.1:5099`，以本机日志为准），以及 `initial credentials: user=admin password=...` 这行 **初始登录凭据**。复制 `password=` 后的值，下一步要用；
 
-![图片：SnowLuma 标签日志里打印的 WebUI 初始登录凭据](/guide/launcher/snowluma-credentials.png)
+![启动器 SnowLuma 日志的局部截图：listening 后是管理页面地址，initial credentials 行的 password 后是初始登录密码；图中为演示值](/guide/launcher/snowluma-credentials.png)
 
-3. 点日志里的那个**网址**（链接可以直接点，会打开浏览器；点不动就复制到浏览器），用记下的密码登录（初始用户名是 `admin`），**登录后立即改密码**——不改的话，下次启动会换成一个新的随机密码；
+图中使用演示实例与示例密码，登录时请复制**你本机日志**中的实际值。初始凭据只在终端输出，不会写入 SnowLuma 的日志文件。
+
+3. 点日志里的那个**网址**（链接可以直接点，会打开浏览器；点不动就复制到浏览器）。下图的登录页只有一个 **「输入访问令牌」** 框，把刚才 `password=` 后的值粘贴进去，点 **进入控制台**，无需填写用户名。**登录后按提示修改初始密码**；没有完成改密就重启时，SnowLuma 会重新生成密码，需要再从日志中取一次；
 
 ![图片：浏览器打开 SnowLuma WebUI（5099 端口）的登录页](/guide/snowluma/login.png)
 
@@ -263,7 +271,7 @@ nightly 是自动构建出来的**预发布测试版本**，更新很勤但可�
 SnowLuma 支持 Windows x64 和 Linux x64/arm64。安装向导里已经按你的系统过滤了可选平台，能选的就能装。Linux 无头服务器（没有桌面、看不到 QQ 窗口）属于进阶玩法，需要 VNC 等额外设置，见 [SnowLuma 官方文档](https://snowluma.github.io/zh/)。
 :::
 
-<!-- 已核实（Neo-MoFox-Launcher-Next 源码 + SnowLuma v1.12.1 发行包）：SnowLuma 本体不输出终端二维码，QQ 登录在桌面 QQ 窗口扫码完成；启动器不会自动打开平台 WebUI，但日志终端里的链接可点击（xterm WebLinksAddon，点击用系统浏览器打开）；安装时启动器写 SnowLuma 的 config/onebot_<QQ号>.json（WS 客户端名「MoFox」，url=ws://127.0.0.1:<WebSocket端口>）和 MoFox 侧 config/plugins/onebot_adapter/config.toml（reverse，port=<WebSocket端口>）；平台目录名固定为 platform；WebUI 初始凭据只在全新数据目录首次启动时打印一次，跳过改密则下次启动生成新随机密码。 -->
+<!-- 已核实：Launcher 源码中的 xterm WebLinksAddon 支持点击链接，安装时配置 SnowLuma 与 OneBot 连接；平台目录为 platform。SnowLuma v1.14.19 的 packages/common/src/logger.ts、packages/core/src/webui/auth.ts 与 server.ts、packages/webui/src/components/pages/login-page.tsx 确认：初始凭据仅写终端；「访问令牌」框提交 password，不填用户名；未完成首次改密时，下次启动会生成新密码。源码版本：https://github.com/SnowLuma/SnowLuma/tree/v1.14.19。日志配图来自 Launcher renderer 演示模式，凭据为示例，不包含真实用户数据。 -->
 
 ## 第六步：验证 Bot 活着
 

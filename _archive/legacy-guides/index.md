@@ -1,76 +1,42 @@
 <script setup>
-const startGuides = [
-  {
-    avatar: '<iconify-icon icon="material-symbols:psychology"></iconify-icon>',
-    name: 'Neo-MoFox 是什么',
-    title: '先花五分钟搞懂它能干什么、怎么工作的',
-    link: './about'
-  },
-  {
-    avatar: '<iconify-icon icon="mdi:book-open-page-variant"></iconify-icon>',
-    name: '新手名词小课堂',
-    title: '配置文件？终端？API Key？看不懂的词都在这里',
-    link: './glossary'
-  },
-  {
-    avatar: '<iconify-icon icon="mdi:compass-outline"></iconify-icon>',
-    name: '部署方式怎么选',
-    title: '一张表帮你选出最适合自己的安装方式',
-    link: './choose'
-  },
-]
+import { VPTeamMembers } from 'vitepress/theme'
 
-const deployGuides = [
+const myGuides = [
   {
-    avatar: '<iconify-icon icon="mdi:rocket-launch-outline"></iconify-icon>',
-    name: '启动器部署（推荐）',
-    title: '点鼠标就能装好，新手首选，全流程一条龙',
-    link: './launcher'
+    avatar: '<iconify-icon icon="material-symbols:window-sharp"></iconify-icon>',
+    name: 'Windows 部署指南',
+    title: '为 Windows 用户准备的图形化界面部署教程...',
+    link: './deployment/deployment_guide'
+  },
+  {
+    avatar: '<iconify-icon icon="mdi:linux"></iconify-icon>',
+    name: 'Linux 部署指南',
+    title: '为 Linux 用户准备的命令行部署教程...',
+    link: './deployment/mmc_deploy_linux'
   },
   {
     avatar: '<iconify-icon icon="material-symbols:android"></iconify-icon>',
-    name: '安卓 App 部署',
-    title: '用手机或平板把 Bot 装进兜里，随时挂机',
-    link: './android'
+    name: 'Android 官方部署指南',
+    title: '使用 MoFox Android App 完成正式版部署...',
+    link: './deployment/mmc_deploy_android_app'
   },
   {
     avatar: '<iconify-icon icon="mdi:docker"></iconify-icon>',
-    name: 'Docker 部署',
-    title: '服务器用户的最爱，一条命令拉起全部服务',
-    link: './docker'
+    name: 'Docker 部署指南',
+    title: '为 Docker 用户准备的部署教程...',
+    link: './deployment/mmc_deploy_docker'
   },
   {
-    avatar: '<iconify-icon icon="mdi:console"></iconify-icon>',
-    name: '手动命令行部署',
-    title: '自己动手装，最灵活，也最懂你的 Bot',
-    link: './manual'
-  },
-]
-
-const advancedGuides = [
-  {
-    avatar: '<iconify-icon icon="mdi:cog-outline"></iconify-icon>',
-    name: '核心配置要点',
-    title: 'core.toml 里哪些值得改、哪些不用碰',
-    link: './core-config'
+    avatar: '<iconify-icon icon="material-symbols:package-2"></iconify-icon>',
+    name: 'Launcher 部署指南',
+    title: '为 Launcher 用户准备的部署教程...',
+    link: './deployment/launcher_deployment_guide'
   },
   {
-    avatar: '<iconify-icon icon="mdi:face-woman-shimmer-outline"></iconify-icon>',
-    name: '人设指南',
-    title: '手把手调教出你喜欢的性格',
-    link: './persona'
-  },
-  {
-    avatar: '<iconify-icon icon="mdi:puzzle-outline"></iconify-icon>',
-    name: '安装插件',
-    title: '从插件市场给 Bot 添加新能力',
-    link: './plugins'
-  },
-  {
-    avatar: '<iconify-icon icon="mdi:update"></iconify-icon>',
-    name: '更新与回滚',
-    title: '保持最新，也可能随时后悔（有后悔药）',
-    link: './update'
+    avatar: '<iconify-icon icon="mdi:account-group"></iconify-icon>',
+    name: '社区部署方式',
+    title: '社区贡献的自动化部署脚本和工具...',
+    link: './community_way/'
   },
 ]
 
@@ -182,29 +148,13 @@ const artists = [
 
 <BibleDisplay />
 
-# Neo-MoFox 指南
+# 部署指南
 
-欢迎来到 Neo-MoFox 的官方使用文档。这里没有门槛——哪怕你从没碰过命令行，跟着文档一步一步走，也能把自己的 AI Bot 跑起来。
+欢迎来到 Neo-MoFox 部署指南。请根据你的操作系统选择对应的指南开始部署。
 
-我们建议按下面的顺序学习，每一步都有对应的文档：
+## 选择你的部署平台
 
-1. **认识它**：先看看 [Neo-MoFox 是什么](./about)，再翻翻[新手名词小课堂](./glossary)，把"配置文件""API Key"这些词搞明白。
-2. **装起来**：在[部署方式怎么选](./choose)里挑一条路线（推荐用[启动器](./launcher)），那篇文档会从零带你走到 Bot 上线。
-3. **用起来**：了解[核心配置](./core-config)、写一份[人设](./persona)、装几个[插件](./plugins)，把 Bot 调教成你喜欢的样子。
-
-## 开始之前
-
-<GuideCards :guides="startGuides" />
-
-## 选择你的部署方式
-
-四条路线都能到达终点，区别只是"你愿意动手多少"。不确定就选第一个。
-
-<GuideCards :guides="deployGuides" />
-
-## 装好之后
-
-<GuideCards :guides="advancedGuides" />
+<GuideCards :guides="myGuides" />
 
 ## 团队成员
 
@@ -229,6 +179,7 @@ Neo-MoFox 的前身是 MoFox-Bot，一个社区驱动的 AI 聊天机器人项�
 <br/>
 <MoFoxTeamCard :members="artists" size="large" />
 
+---
 
 <details>
 <summary>👇 戳一戳，看看开发者们不为人知的故事？</summary>

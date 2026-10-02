@@ -635,6 +635,8 @@ const splashScript = `(function(){
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
+  // 旧版用户文档已归档到仓库根 _archive/，不参与构建
+  srcExclude: ["_archive/**"],
   // ── 构建结束后自动生成 catalog.json ──────────────────────────
   async buildEnd(siteConfig) {
     const sidebar = siteConfig.site.themeConfig.sidebar || {};
@@ -758,120 +760,59 @@ export default defineConfig({
     sidebar: {
       "/docs/guides/": [
         {
-          text: "开始",
-          items: [{ text: "指南主页", link: "/docs/guides/" }],
-        },
-        {
-          text: "部署指南",
+          text: "认识 Neo-MoFox",
           collapsed: false,
           items: [
-            {
-              text: "Launcher 部署指南",
-              link: "/docs/guides/deployment/launcher_deployment_guide",
-            },
-            {
-              text: "Windows部署指南",
-              link: "/docs/guides/deployment/deployment_guide",
-            },
-            { text: "Linux部署指南", link: "/docs/guides/deployment/mmc_deploy_linux" },
-            {
-              text: "Docker部署指南",
-              link: "/docs/guides/deployment/mmc_deploy_docker",
-            },
-            {
-              text: "Android 官方部署指南",
-              link: "/docs/guides/deployment/mmc_deploy_android_app",
-            },
-            {
-              text: "社区安装方式",
-              collapsed: true,
-              items: [
-                {
-                  text: "社区部署方式介绍",
-                  link: "/docs/guides/deployment/community_way/",
-                },
-                {
-                  text: "MoFox-Community 安装器",
-                  link: "/docs/guides/deployment/community_way/mofox-community-installer",
-                },
-              ],
-            },
+            { text: "指南主页", link: "/docs/guides/" },
+            { text: "Neo-MoFox 是什么", link: "/docs/guides/about" },
+            { text: "新手名词小课堂", link: "/docs/guides/glossary" },
           ],
         },
         {
-          text: "配置指南",
+          text: "部署与安装",
           collapsed: false,
           items: [
-            {
-              text: "模型配置快速上手",
-              link: "/docs/guides/configuration/quick_start_model_config",
-            },
-            {
-              text: "Bot配置文件指南",
-              link: "/docs/guides/configuration/bot_config_guide",
-            },
-            {
-              text: "人格编写指南",
-              link: "/docs/guides/configuration/personality-writing-guide",
-            },
-            {
-              text: "模型配置指南(进阶)",
-              link: "/docs/guides/configuration/model_configuration_guide",
-            },
-            {
-              text: "MCP 使用教程",
-              link: "/docs/guides/configuration/mcp_guide",
-            },
+            { text: "部署方式怎么选", link: "/docs/guides/choose" },
+            { text: "启动器部署（推荐）", link: "/docs/guides/launcher" },
+            { text: "安卓 App 部署", link: "/docs/guides/android" },
+            { text: "Docker 部署", link: "/docs/guides/docker" },
+            { text: "手动命令行部署", link: "/docs/guides/manual" },
+            { text: "WebUI 安装与使用", link: "/docs/guides/webui" },
           ],
         },
         {
-          text: "常见问题与帮助",
+          text: "进阶",
           collapsed: false,
           items: [
-            { text: "模型配置FAQ", link: "/docs/guides/configuration/model_config_faq" },
-            { text: "如何更换端口", link: "/docs/guides/configuration/how_to_change_port" },
-            { text: "维护指南", link: "/docs/guides/usage/maintenance_guide" },
+            { text: "核心配置要点", link: "/docs/guides/core-config" },
+            { text: "人设指南", link: "/docs/guides/persona" },
+            { text: "进阶模型配置", link: "/docs/guides/advanced-model" },
+            { text: "内置插件一览", link: "/docs/guides/builtin" },
+            { text: "更新与回滚", link: "/docs/guides/update" },
+            { text: "更新通道：main 与 dev", link: "/docs/guides/channels" },
+            { text: "维护：备份、迁移与日志", link: "/docs/guides/maintenance" },
           ],
         },
         {
-          text: "功能使用",
+          text: "扩展",
           collapsed: false,
           items: [
-            {
-              text: "插件安装指南",
-              link: "/docs/guides/usage/plugin-installation-guide",
-            },
-            { text: "指令权限系统", link: "/docs/guides/usage/permission_usage" },
-            { text: "WebUI 使用指南", link: "/docs/guides/usage/webui_guide" },
-            { text: "Skill 使用教程", link: "/docs/guides/usage/skill_guide" },
+            { text: "安装插件", link: "/docs/guides/plugins" },
+            { text: "MCP 接入", link: "/docs/guides/mcp" },
           ],
         },
         {
-          text: "适配器",
+          text: "附录",
           collapsed: false,
           items: [
-            { text: "适配器介绍", link: "/docs/guides/adapter_list" },
-            {
-              text: "OneBot 适配器配置",
-              link: "/docs/guides/adapter_list/onebot_v11_config",
-            },
-            {
-              text: "QQ Bot 适配器配置（社区）",
-              link: "/docs/guides/adapter_list/qqbot_adapter_config",
-            },
-          ],
-        },
-        {
-          text: "其他",
-          collapsed: false,
-          items: [
+            { text: "常见问题 FAQ", link: "/docs/guides/faq" },
             { text: "最终用户许可协议", link: "/docs/guides/misc/eula" },
             {
               text: "如何高效提问",
               link: "/docs/guides/misc/how-to-ask-questions-efficiently",
             },
             {
-              text: "提问的智慧(精简版)",
+              text: "提问的智慧（精简版）",
               link: "/docs/guides/misc/how-to-ask-questions-the-smart-way",
             },
           ],

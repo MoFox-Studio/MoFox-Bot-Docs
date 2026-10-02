@@ -13,6 +13,8 @@ import ThemeToggleAnimation from "./components/ui/ThemeToggleAnimation.vue";
 import AiAssistant from "./components/ui/AiAssistant.vue";
 
 // 内容/功能组件
+import MethodTabs from "./components/content/MethodTabs.vue";
+import MethodTab from "./components/content/MethodTab.vue";
 import MermaidRenderer from "./components/content/MermaidRenderer.vue";
 import Giscus from "./components/content/Giscus.vue";
 import GuideCards from "./components/content/GuideCards.vue";
@@ -75,6 +77,8 @@ const theme: Theme = {
     app.use(NolebaseGitChangelogPlugin);
     app.component("GuideCards", GuideCards);
     app.component("BibleDisplay", BibleDisplay);
+    app.component("MethodTabs", MethodTabs);
+    app.component("MethodTab", MethodTab);
     app.component("ReadingTime", ReadingTime);
     app.component("PluginStats", PluginStats);
     app.component("MoFoxTeamCard", MoFoxTeamCard);

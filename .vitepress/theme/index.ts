@@ -11,6 +11,7 @@ import ReadingProgress from "./components/ui/ReadingProgress.vue";
 import CodeCopyEnhancer from "./components/ui/CodeCopyEnhancer.vue";
 import ThemeToggleAnimation from "./components/ui/ThemeToggleAnimation.vue";
 import AiAssistant from "./components/ui/AiAssistant.vue";
+import ReportIssue from "./components/ui/ReportIssue.vue";
 
 // 内容/功能组件
 import MethodTabs from "./components/content/MethodTabs.vue";
@@ -49,6 +50,7 @@ const theme: Theme = {
       "doc-after": () => [h(MermaidRenderer), h(Giscus)],
       "nav-bar-content-after": () => [
         h(NolebaseEnhancedReadabilitiesMenu),
+        h(ReportIssue),
       ],
       "nav-screen-content-after": () =>
         h(NolebaseEnhancedReadabilitiesScreenMenu),
@@ -85,6 +87,7 @@ const theme: Theme = {
     app.component("ContributePluginGuide", ContributePluginGuide);
     app.component("BackToTop", BackToTop);
     app.component("BackgroundLogo", BackgroundLogo);
+    app.component("ReportIssue", ReportIssue);
     app.use(NolebaseInlineLinkPreviewPlugin);
   },
 };

@@ -22,7 +22,7 @@
 
 <MethodTab value="file">
 
-用编辑器打开 `config/model.toml`。每一段 `[[api_providers]]`（注意是双方括号，可以写多段）描述一家服务商：请求发到哪个网址、用什么密钥、超时重试怎么算。
+用编辑器打开 `config/model.toml`。每一段 `[[api_providers]]`（双方括号是 TOML 的[数组节](/docs/guides/toml#节与数组节-展开说说)，可以写多段）描述一家服务商：请求发到哪个网址、用什么密钥、超时重试怎么算。
 
 | 字段 | 默认值 | 说明 |
 | --- | --- | --- |

@@ -4,7 +4,7 @@
 Neo-MoFox 的所有配置都能在 [WebUI](/docs/guides/webui) 的表单里点几下改好，不需要碰任何文件。这一页是「直接改配置文件」的地基——**如果你是纯 WebUI 用户，可以放心跳过**，等哪天想手动改文件了再回来看也不迟。
 :::
 
-接下来的几篇——[核心配置要点](/docs/guides/core-config)、[人设指南](/docs/guides/persona)、[进阶模型配置](/docs/guides/advanced-model)、[插件配置怎么改](/docs/guides/plugin-config)——都绕不开同一件事：和 `.toml` 配置文件打交道。这一页就把 TOML 怎么写一次讲清——从最基本的规则，到三引号多行字符串——最后再说说用什么软件改最省心。
+接下来的几篇——[核心配置要点](/docs/guides/core-config)、[人设指南](/docs/guides/persona)、[进阶模型配置](/docs/guides/advanced-model)、[插件配置怎么改](/docs/guides/plugin-config)——都绕不开同一件事：和 `.toml` 配置文件打交道。这一页就把 TOML 怎么写一次讲清——从最基本的规则，到三引号多行字符串——最后再说说用什么软件改最省心。后面的配置教程不再重复解释语法，遇到看不懂的写法，直接跳回这一页就行。
 
 ## TOML 是什么
 

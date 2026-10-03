@@ -6,6 +6,8 @@
                输入 capture.py 产出的整屏快照 + 逐格颜色，颜色按「显示单元格」精确还原。
   log 模式     render.py log <日志.txt> <out.html> [标题] [--rows 起:止]
                纯文本日志直接渲染；日志里自带 ANSI 颜色码会自动转成对应颜色。
+  editor 模式  render.py editor <配置.toml> <out.html> [标题] [--start-line N] [--highlight 15,19]
+               TOML 配置渲染成 VS Code 风格窗口（行号、语法高亮、可标注面包屑和高亮行）。
 
 产出是一个深色圆角的「终端窗口」HTML。用浏览器打开看看效果，
 然后按 README 的方法用 playwright 对 body > div 做元素截图，即得最终 PNG。
@@ -217,17 +219,25 @@ def toml_line_html(line: str) -> str:
     return "".join(out)
 
 
-def render_editor(path: str) -> str:
+def render_editor(path: str, start_line: int = 1, highlight: frozenset[int] = frozenset()) -> str:
+    """start_line：首行显示的行号（模拟编辑器滚到文件中部时行号不从 1 开始）；
+    highlight：要高亮的行号集合（display 行号），画成 VS Code 的选中蓝条。"""
     with open(path, encoding="utf-8") as f:
         lines = f.read().rstrip("\n").split("\n")
     rows = []
-    for no, line in enumerate(lines, 1):
-        rows.append(f'<div class="row"><div class="gln">{no}</div>'
+    for no, line in enumerate(lines, start_line):
+        hl = " hl" if no in highlight else ""
+        rows.append(f'<div class="row{hl}"><div class="gln">{no}</div>'
                     f'<div class="code">{toml_line_html(line)}</div></div>')
     return "\n".join(rows)
 
 
-def editor_frame(title: str, tab: str, rows: str) -> str:
+def editor_frame(title: str, tab: str, rows: str, crumbs: str | None = None,
+                 min_width: int | None = None) -> str:
+    """VS Code 风格外框。crumbs：面包屑路径（None 则不显示）；
+    min_width：编辑器最小宽度（像素），用于让窗口比代码宽、接近真实编辑器观感。"""
+    style_extra = f"    min-width: {min_width}px;\n" if min_width else ""
+    crumbs_html = f'  <div class="crumbs">{html.escape(crumbs)}</div>\n' if crumbs else ""
     return f"""<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -240,46 +250,58 @@ def editor_frame(title: str, tab: str, rows: str) -> str:
     border-radius: 10px;
     box-shadow: 0 0 0 1px #2a2a2a;
     font-family: {MONO};
-    font-size: 14px;
-  }}
+    width: fit-content;
+{style_extra}  }}
   .titlebar {{
-    height: 38px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #323233;
+    background: #3c3c3c;
     color: #cccccc;
-    font-size: 13px;
+    font-size: 14px;
     user-select: none;
   }}
-  .tabs {{ display: flex; background: #252526; font-size: 13px; user-select: none; }}
-  .tab {{
-    padding: 8px 18px;
-    color: #969696;
-    background: #2d2d2d;
-    border-top: 1px solid transparent;
+  .filetab {{
+    height: 26px;
+    display: flex;
+    align-items: center;
+    background: #252526;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 13px;
+    padding: 0 16px;
+    user-select: none;
   }}
-  .tab.active {{ background: #1e1e1e; color: #ffffff; border-top-color: #0078d4; }}
-  .codearea {{ padding: 8px 0 14px; }}
-  .row {{ display: flex; line-height: 1.6; min-height: 1.6em; }}
+  .crumbs {{
+    height: 22px;
+    display: flex;
+    align-items: center;
+    color: #8a8a8a;
+    font-size: 12.5px;
+    padding: 0 16px;
+    user-select: none;
+  }}
+  .codearea {{ padding: 6px 0 10px; }}
+  .row {{ display: flex; line-height: 18px; min-height: 18px; font-size: 12.5px; }}
+  .row.hl {{ background: #264f78; }}
   .gln {{
     flex: none;
     width: 44px;
     text-align: right;
-    padding-right: 24px;
+    padding-right: 16px;
     color: #858585;
     user-select: none;
   }}
   .code {{ white-space: pre; color: {EDITOR_FG}; padding-right: 24px; }}
   .statusbar {{
-    height: 26px;
+    height: 22px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    background: #007acc;
+    background: #0e639c;
     color: #ffffff;
     font-size: 12px;
-    padding: 0 14px;
+    padding: 0 12px;
     user-select: none;
   }}
 </style>
@@ -287,11 +309,11 @@ def editor_frame(title: str, tab: str, rows: str) -> str:
 <body>
 <div class="editor">
   <div class="titlebar">{html.escape(title)}</div>
-  <div class="tabs"><div class="tab active">{html.escape(tab)}</div></div>
-  <div class="codearea">
+  <div class="filetab">{html.escape(tab)}</div>
+{crumbs_html}  <div class="codearea">
 {rows}
   </div>
-  <div class="statusbar"><span>Neo-MoFox</span><span>UTF-8&nbsp;&nbsp;LF&nbsp;&nbsp;TOML</span></div>
+  <div class="statusbar"><span>UTF-8&nbsp;&nbsp;LF&nbsp;&nbsp;TOML</span></div>
 </div>
 </body>
 </html>
@@ -363,6 +385,14 @@ def main():
     p3.add_argument("config_file")
     p3.add_argument("out_html")
     p3.add_argument("title", nargs="?", default=None, help="窗口标题（默认「文件名 — Neo-MoFox」）")
+    p3.add_argument("--start-line", type=int, default=1, metavar="N",
+                    help="首行显示的行号（模拟滚动到文件中部，默认 1）")
+    p3.add_argument("--highlight", default=None, metavar="行号,行号",
+                    help="要高亮（选中蓝条）的行号列表，逗号分隔，如 15,19；行号按 --start-line 后的显示行号算")
+    p3.add_argument("--breadcrumb", default=None, metavar="路径",
+                    help="面包屑路径（如 Neo-MoFox > config > core.toml），不传则不显示")
+    p3.add_argument("--width", type=int, default=None, metavar="PX",
+                    help="编辑器最小宽度（像素），让窗口比代码宽、接近真实编辑器观感")
 
     args = ap.parse_args()
     if args.mode == "screen":
@@ -379,7 +409,11 @@ def main():
     else:
         name = os.path.basename(args.config_file)
         title = args.title or f"{name} — Neo-MoFox"
-        page = editor_frame(title, name, render_editor(args.config_file))
+        highlight = frozenset()
+        if args.highlight:
+            highlight = frozenset(int(x) for x in re.split(r"[,\s]+", args.highlight.strip()) if x)
+        rows = render_editor(args.config_file, start_line=args.start_line, highlight=highlight)
+        page = editor_frame(title, name, rows, crumbs=args.breadcrumb, min_width=args.width)
     with open(args.out_html, "w", encoding="utf-8") as f:
         f.write(page)
     print(f"[render] 已写出 {args.out_html}")

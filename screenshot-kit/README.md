@@ -97,12 +97,20 @@ python3 render.py screen captures/success.screen.txt captures/success.colors.jso
 # log 模式：纯日志文件 → HTML（自带 ANSI 颜色码的日志会自动上色）
 python3 render.py log logs/mofox_2026-01-01.log mofox-log.html "logs/mofox_2026-01-01.log"
 
-# editor 模式：TOML 配置 → VS Code 风格 HTML（标签页、行号、语法高亮）
+# editor 模式：TOML 配置 → VS Code 风格 HTML（文件名标签、面包屑、行号、语法高亮）
 python3 render.py editor config/model.toml model-editor.html "model.toml — Neo-MoFox"
+
+# 也可以模拟「滚到文件中部」的观感：行号从 5 起算、标注面包屑、
+# 给指定行画 VS Code 选中蓝条（行号按 --start-line 之后的显示行号算）、加宽窗口
+python3 render.py editor /tmp/kit-run/config.toml onebot-editor.html \
+    "config.toml — Neo-MoFox — Visual Studio Code" \
+    --start-line 5 --highlight 15,19 \
+    --breadcrumb "Neo-MoFox > config > plugins > onebot_adapter > config.toml" --width 900
 ```
 
 editor 模式的限制：多行字符串（`"""…"""`）不参与高亮，内容按普通文本渲染——截图足够用；
 标题默认是「文件名 — Neo-MoFox」，第三个位置参数可以改。
+注意高亮行号是**显示行号**（受 `--start-line` 影响），想看清源文件第几行就别和 `--start-line` 混用。
 
 ## 第三步：HTML → PNG
 
@@ -155,5 +163,6 @@ with sync_playwright() as p:
 ## 成品对照
 
 `docs/public/guide/manual/` 下的 `first-start-agreement.png`、`first-start-success.png`
-是 screen 模式产的；`model-toml-editor.png` 等配置文件截图是 editor 模式产的；
+是 screen 模式产的；`model-toml-editor.png`、`onebot-config-editor.png`（`qq_id`、
+`qq_nickname` 两行带选中蓝条）等配置文件截图是 editor 模式产的；
 其余页面（`docker.md`、`faq.md` 等）引用的日志截图用 log 模式即可。

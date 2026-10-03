@@ -35,6 +35,8 @@
 2. 在 **WebUI / HTTP 路由访问密钥** 一栏设置一个至少 8 位的密钥（这就是之后的登录密码）。
 3. 继续安装，启动器会自动从 GitHub Release 下载 WebUI 插件包放进 `plugins/` 目录。
 
+![图片：启动器安装向导的可选组件区块，勾选「安装 WebUI」并设置 WebUI / HTTP 路由访问密钥](/guide/launcher/install-config-webui.png)
+
 装完直接去「[打开 WebUI 并登录](#打开-webui-并登录)」。
 
 ### 方式二：Release 下载 .mfp 放进 plugins/
@@ -42,9 +44,11 @@
 不使用启动器的用户，最简单的方法是下载现成的插件包：
 
 1. 打开 WebUI 的 GitHub Releases 页面：`https://github.com/ikun-1145141/Neo-MoFox-Webui/releases`。
-2. 在最新版本中找到以 **`.mfp`** 结尾的插件包并下载（`.mfp` 是 Neo-MoFox 的插件包格式）。
+2. 下载**排在列表最上面**的那个版本——通常是个带 **Pre-release** 标签的 `-dev` 预发布版，别犹豫：WebUI 的正式版往往很久才发一次，最新的修复都在预发布版里。点开它的 **Assets** 附件区，找到以 **`.mfp`** 结尾的插件包并下载（`.mfp` 是 Neo-MoFox 的插件包格式）。
 3. 把 `.mfp` 文件放进 Neo-MoFox 的 `plugins/` 目录，**保持文件名不变**（插件加载器靠文件名识别插件）。
 4. 重启 Neo-MoFox。
+
+![图片：WebUI 的 GitHub Releases 页面，排在最前面的是带 Pre-release 标签的 -dev 版本，展开它的 Assets 附件区即可下载 .mfp 插件包](/guide/webui/download-releases.png)
 
 ::: details 想改 WebUI 界面代码？
 那需要走完整开发环境部署：克隆整个仓库、安装 Node.js、`npm install` 后用 `npm run dev` 启动前端开发服务器。这属于开发者玩法，普通用户用不到，详见 WebUI 仓库的 INSTALL.md。

@@ -3,7 +3,7 @@
 不管是你 clone 下来就自带的[内置插件](/docs/guides/builtin)，还是从[插件市场](/docs/guides/plugins)装的第三方插件，配置方式都是同一套：配置文件统一放在 `config/plugins/<插件名>/config.toml`，插件**第一次被加载时**会自动生成带注释的默认配置文件，不用手动建。
 
 ::: tip 看不懂某个词？
-文中出现的 [TOML](/docs/guides/glossary#toml) 等术语，都收录在[名词小课堂](/docs/guides/glossary)里，随时可以翻。
+文中出现的 [TOML](/docs/guides/glossary#toml) 等术语，都收录在[名词小课堂](/docs/guides/glossary)里；TOML 具体怎么写（包括三引号多行字符串），见 [TOML 与编辑器](/docs/guides/toml)。
 :::
 
 两种改法选你顺手的：
@@ -46,3 +46,4 @@
 
 - **还没装插件**：看[插件市场使用](/docs/guides/plugins)。
 - **想知道内置插件都能干嘛**：看[内置插件一览](/docs/guides/builtin)。
+- **想把 TOML 学得更扎实、配个好编辑器**：看 [TOML 与编辑器](/docs/guides/toml)。

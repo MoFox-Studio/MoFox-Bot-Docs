@@ -14,9 +14,10 @@
 | `neo_default_chatter:action:send_text` | Action | 标准文本发送（含打字延迟 / reply_to / at） |
 | `neo_default_chatter:action:pass_and_wait` | Action | 本轮挂起等待恢复 |
 | `neo_default_chatter:action:stop_conversation` | Action | 结束本轮对话 |
-| `neo_default_chatter:event_handler:probability_bypass` | EventHandler | `:preprocess` 概率直通门（weight=100） |
-| `neo_default_chatter:event_handler:sub_agent_decision` | EventHandler | `:preprocess` SubAgent 轻量 LLM 判定（weight=50） |
-| `neo_default_chatter:event_handler:<seam>_default` × 15 | EventHandler | 15 个 Tier II seam 的默认实现（均 weight=0） |
+| `neo_default_chatter:event_handler:private_chat_bypass` | EventHandler | `:preprocess` 私聊直接放行（weight=2） |
+| `neo_default_chatter:event_handler:probability_bypass` | EventHandler | `:preprocess` 概率直通门（weight=1） |
+| `neo_default_chatter:event_handler:sub_agent_decision` | EventHandler | `:preprocess` SubAgent 轻量 LLM 判定（weight=0） |
+| `neo_default_chatter:event_handler:<seam>_default` × 16 | EventHandler | 16 个 Tier II seam 的默认实现（均 weight=0） |
 
 ## 跨插件调用约定
 
@@ -152,10 +153,10 @@ NDFC 的核心扩展能力。全部 42 个可替换 seam 分三层覆盖：
 | 层级 | 来源 | 数量 | 第三方订阅方式 |
 | --- | --- | --- | --- |
 | Tier I | 框架已发布的系统事件 | 7（覆盖 8 个 seam） | 订阅 `EventType` 枚举值，按 payload 标识符过滤 NDFC |
-| Tier II | NDFC 自定义事件 | 15（覆盖 18 个 seam） | 订阅 `NdfcEvent.<X>` 或字符串字面量 |
+| Tier II | NDFC 自定义事件 | 16（覆盖 18 个 seam） | 订阅 `NdfcEvent.<X>` 或字符串字面量 |
 | Tier III | 已有 `:preprocess` 事件 | 1（覆盖 5 个 seam） | 订阅 `NdfcEvent.PREPROCESS` |
 
-合计 17 个 NDFC 事件（15 Tier II + 1 Tier III + 1 `preprocess`）+ 7 个系统事件，覆盖 42 个 seam。所有 16 个 Tier II + Tier III 事件**统一由 `NdfcPublisher` 发布**。
+合计 17 个 NDFC 事件（16 Tier II + 1 Tier III）+ 7 个系统事件，覆盖 42 个 seam。全部 17 个事件**统一由 `NdfcPublisher` 发布**。
 
 ### 核心机制速览
 
@@ -198,7 +199,7 @@ class NdfcEvent(StrEnum):
 
 ### `NdfcPublisher` 发布器
 
-封装 `publish_event + payload 预填 + result 读回` 样板，让 session.py 调用点保持单行。**共 16 个静态方法**（15 Tier II + 1 Tier III `:preprocess`）。
+封装 `publish_event + payload 预填 + result 读回` 样板，让 session.py 调用点保持单行。**共 17 个静态方法**（16 Tier II + 1 Tier III `:preprocess`）。
 
 调用约定：每次 `await NdfcPublisher.X(...)` 调用点的上一行**必须**写行内注释指向默认 handler 文件路径，便于跳转：
 
@@ -482,10 +483,11 @@ class PreprocessDecision:
     raw_params: dict[str, Any] = field(default_factory=dict)
 ```
 
-**已有内置 handler**（保持独立，不归入 `defaults/`）：
+**已有内置 handler**（保持独立，不归入 `defaults/`，位于 `defaults/preprocess/` 子包）：
 
-- `ProbabilityBypassHandler`（weight=100）——可能返回 `STOP` 阻断后续
-- `SubAgentDecisionHandler`（weight=50）——总是 `SUCCESS`，修改 `proceed` / `reason` / `mutations`
+- `PrivateChatBypassHandler`（weight=2）——私聊场景直接放行并 `STOP` 阻断后续处理器
+- `ProbabilityBypassHandler`（weight=1）——命中放行概率即 `STOP` 阻断后续处理器
+- `SubAgentDecisionHandler`（weight=0）——概率直通未命中时发起轻量 LLM 单轮判定，总是 `SUCCESS`，修改 `proceed` / `reason` / `mutations`
 
 第三方可在更高 weight（如 200）订阅 `NdfcEvent.PREPROCESS`，先于内置 handler 执行。
 

@@ -11,9 +11,9 @@ Neo-MoFox 内置了一系列官方插件，提供核心功能和扩展能力。
 | **权限管理** (perm_plugin) | 聊天内 `/perm` 命令，查询和修改用户权限 | [查看文档](./perm/) |
 | **OneBot 适配器** (onebot_adapter) | OneBot 11 协议适配器，接入 QQ 等平台 | [查看文档](./onebot/) |
 | **Skill 管理器** (skill_manager) | 技能索引与按需加载，LLM 可调用外部程序 | [查看文档](./skill/) |
-| **表情插件** (emoji_like / emoji_sender) | 智能贴表情回应与表情包收藏发送 | [查看文档](./emoji/) |
+| **表情插件** (emoji_sender) | 表情包收藏入库与按情感检索发送，支持 direct / picker 两种模式（picker 为 dev 分支新功能） | [查看文档](./emoji/) |
 | **默认聊天器** (default_chatter / DFC) | 默认聊天执行核心，可复用的会话引擎 | [查看文档](./dfc/) |
-| **Neo-Default-Chatter** (neo_default_chatter / NDFC) | 新一代事件驱动会话核心，全部 seam 经 EventBus 暴露 | [查看文档](./ndfc/) |
+| **Neo-Default-Chatter** (neo_default_chatter / NDFC) | 新一代事件驱动会话核心，全部 seam 经 EventBus 暴露（**dev 分支专属**） | [查看文档](./ndfc/) |
 | **实用命令** (utility_commands) | 常用运维命令集合，如 `/清空上下文` | [查看文档](./ut/) |
 
 

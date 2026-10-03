@@ -73,6 +73,8 @@
 2. 重启 Bot。
 3. 看启动日志，出现「在 …/plugins 中发现 N 个插件」就说明识别到了。
 
+![图片：文件管理器中 Bot 目录下的 plugins 文件夹，.mfp 插件包已放入其中](/guide/plugins/plugins-folder.png)
+
 ::: details 什么样的包能被识别？
 `.mfp` 本质是 ZIP 包，包内**必须有 `manifest.json`**（放在包根级或一级子目录里都行）。缺清单的包不会被加载，日志会报「manifest.json 不存在」。
 :::

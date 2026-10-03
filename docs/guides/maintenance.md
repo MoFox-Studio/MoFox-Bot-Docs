@@ -48,6 +48,7 @@ robocopy "D:\Neo-MoFox\plugins" "E:\mofox-backup\plugins" /E
 
 Docker 部署同理：新机器上把 compose 文件准备好，三个目录拷到它旁边，`docker compose up -d` 就接上了。
 
+![图片：文件管理器里展开 Neo-MoFox 根目录，config、data、plugins 三个文件夹高亮显示](/guide/maintenance/backup-dirs.png)
 <!-- TODO-SCREENSHOT: 文件管理器里展开 Neo-MoFox 根目录，高亮 config、data、plugins 三个文件夹 -->
 
 ## 日志

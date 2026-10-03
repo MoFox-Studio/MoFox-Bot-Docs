@@ -309,6 +309,9 @@ Neo-MoFox 的前身是 MoFox-Bot，一个社区驱动的 AI 聊天机器人项�
 <br/>
 <MoFoxTeamCard :members="artists" size="large" />
 
+站内与项目里的 Q 版角色美术都出自这套设计，下面是其中一幅：
+
+<img src="/logos/logo-3.png" alt="MoFox 的 Q 版角色立绘：白发狐耳少女抱着小狐狸玩偶" width="360" />
 
 <details>
 <summary>👇 戳一戳，看看开发者们不为人知的故事？</summary>

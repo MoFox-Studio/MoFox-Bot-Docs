@@ -104,6 +104,7 @@ docker compose logs -f mofox # 持续查看 Neo-MoFox 的日志，按 Ctrl+C 退
 
 启动过程中你还会看到 `LLM 预检` 相关日志——这是程序在试着连一次你配置的 AI 接口。**首次启动时你还没填 API Key，预检失败是正常的**，配置好模型后它会变绿。
 
+![图片：终端运行 docker compose logs -f mofox，日志完整出现「Neo-MoFox Bot 启动成功」与「输入 /help 查看可用命令」两行](/guide/docker/docker-first-start-logs.png)
 <!-- TODO-SCREENSHOT: 终端运行 docker compose logs -f mofox 的截图，需完整显示「Neo-MoFox Bot 启动成功」与「输入 /help 查看可用命令」两行日志，深色终端主题，字体清晰。 -->
 
 ::: tip 关于用户协议

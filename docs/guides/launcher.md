@@ -90,7 +90,13 @@ nightly 是自动构建出来的**预发布测试版本**，更新很勤但可�
 - 三项都齐了：直接点 **继续**。
 - 有缺的：点 **安装缺失依赖**，进度走完后每项会变成 **已安装**。
 
-![图片：OOBE 依赖检查与安装页](/guide/launcher/oobe-dependencies.png)
+三项都齐时页面如下，点 **继续** 进入下一步：
+
+![图片：OOBE 依赖检查页，Git、Python、uv 三项均已安装](/guide/launcher/oobe-installing.png)
+
+有缺项时会出现「发现缺失依赖」区块，点 **安装缺失依赖** 一键补齐：
+
+![图片：OOBE 依赖检查与安装页，Python 与 uv 尚未安装](/guide/launcher/oobe-dependencies.png)
 
 ::: details Linux 用户注意：可能需要输入 sudo 密码
 在 Linux 上安装系统级依赖时，启动器会请你输入 **sudo 密码**（也就是你的管理员密码，输入时屏幕不显示是正常的）。密码只在本次安装期间保留在内存里，装完立即清除，不会写进硬盘。
@@ -145,6 +151,8 @@ nightly 是自动构建出来的**预发布测试版本**，更新很勤但可�
 ### 2. 配置：五个区块，一次填一个
 
 配置阶段有五个可展开的区块，右上角会显示「几 / 5 已就绪」，填好一个收起一个即可。
+
+![图片：安装向导配置页总览，五个区块逐个展开填写，右上角显示已就绪进度](/guide/launcher/install-config.png)
 
 #### 区块一：实例身份
 
@@ -302,6 +310,8 @@ SnowLuma 支持 Windows x64 和 Linux x64/arm64。安装向导里已经按你的
 
 后面的配置教程经常提到 `config/core.toml`、`config/model.toml` 或 `config/plugins/`。对于启动器用户，这些路径都以**当前实例的 Neo-MoFox 主程序目录**为起点。每个实例各有一份配置，先确认自己打开的是要修改的那个实例。
 
+![启动器实例管理的「信息查看」页：实例 ID、运行状态、创建时间、MoFox 安装目录、平台种类与版本等信息；图中路径为演示值](/guide/launcher/instance-manage.png)
+
 ### 从启动器打开配置文件夹
 
 1. 点左侧 **实例**，找到目标实例卡片，点 **管理实例**（滑杆图标）。
@@ -313,7 +323,7 @@ SnowLuma 支持 Windows x64 和 Linux x64/arm64。安装向导里已经按你的
 
 如果不知道实例放在哪里，可以切到 **信息查看**，查看 **MoFox 安装目录**；点目录条目可以复制路径。新鲜安装通常是 `你选的安装根目录/<实例 ID>/mofox/`，配置则在它的 `config/` 里。手动导入的实例以信息页显示的目录为准。
 
-例如，图中的演示实例使用 `D:\MoFox\docs-demo\mofox` 作为主程序目录，教程里的 `config/core.toml` 对它来说就是 `D:\MoFox\docs-demo\mofox\config\core.toml`。这个路径仅作说明，实际操作请用自己的实例路径。
+例如，「更多」截图中的演示实例使用 `D:\MoFox\docs-demo\mofox` 作为主程序目录，教程里的 `config/core.toml` 对它来说就是 `D:\MoFox\docs-demo\mofox\config\core.toml`。这个路径仅作说明，实际操作请用自己的实例路径。
 
 ### 「更多」里的几个文件入口
 

@@ -159,8 +159,8 @@ session 的显式配置入口（`DefaultChatterSessionOptions`，dataclass）：
 | `enable_action_suspend` | `bool` | `True` | 是否在 action-only 回合注入 suspend 占位 |
 | `enable_programmatic_controller` | `bool` | `True` | 是否启用程序化前置控制（sub-agent 场景概率直通） |
 | `enable_sub_agent_collaboration` | `bool` | `False` | 是否启用子代理协作能力 |
-| `enable_stop_direct_message_wake` | `bool` | `False` | `Stop` 时是否允许私聊直唤重新激活 |
-| `stop_direct_message_wake_probability` | `float` | `0.0` | Stop 状态下私聊直唤概率（0.0~1.0） |
+| `enable_stop_direct_message_wake` | `bool` | `False` | `Stop` 时是否允许私聊 / @Bot 消息按概率提前唤醒（直唤）重新激活 |
+| `stop_direct_message_wake_probability` | `float` | `0.0` | Stop 状态下私聊 / @Bot 消息直唤概率（0.0~1.0） |
 | `native_multimodal` | `bool` | `False` | 是否让 unread 合并路径直接承载图片等多模态内容 |
 | `theme_guide` | `dict[str, str]` | `{}` | 按场景区分的主题引导文本，通常含 `private` / `group` |
 | `negative_behavior_reinforcement` | `bool` | `True` | 是否在 prompt 中追加负面行为强化 |

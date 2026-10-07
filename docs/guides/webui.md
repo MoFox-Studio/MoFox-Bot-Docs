@@ -113,7 +113,7 @@ Neo-MoFox 本身也会防你一手：启动时检测到「对外开放 + 没有�
    http://localhost:8000
    ```
 
-   端口换成你 core.toml 里实际配置的数字。`localhost` 意思是「这台电脑自己」。
+   端口换成你 core.toml 里 http_router_port 实际配置的数字。`localhost` 意思是「这台电脑自己」。
 3. 在登录页输入你设置的 `api_keys` 中的任意一个密钥。
 4. 点击 **登录**，进入 WebUI 主界面。
 

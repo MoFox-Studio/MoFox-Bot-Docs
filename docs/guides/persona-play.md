@@ -372,7 +372,20 @@ safety_guidelines = [
 
 ### 6. 放进目录不等于生效
 
-把文档放进配置指定的目录（默认 `data/booku_memory/knowledges`），重启 bot 自动导入。支持 txt、md 等格式，可以带子目录。
+把文档放进配置指定的目录，重启 bot 自动导入。支持 txt、md 等格式，可以带子目录。
+
+目录在 `config/plugins/booku_memory/config.toml` 的 `[startup_ingest]` 里配置，默认值是：
+
+```toml
+[startup_ingest]
+paths = ["data\\booku_memory\\knowledges"]
+```
+
+::: warning 这个默认值只有 Windows 认得
+反斜杠在 Linux 和 macOS 上是普通字符，不是路径分隔符。整串会被当成一个文件名去找，找不到就跳过（`skip_missing_paths` 默认开着，只留一条警告），表现就是"文件放进去了，知识库一直不生效"。
+
+非 Windows 系统上把这一行改成斜杠写法：`["data/booku_memory/knowledges"]`
+:::
 
 不过有三件事得提前知道，不然很容易出现"文件明明放了却没生效"。
 

@@ -131,7 +131,7 @@ retry_interval = 10
 | `force_stream_mode` | `false` | 强制流式输出，部分只支持流式的接口才需要 |
 | `max_context` | `131072` | 模型最大输入上下文（Token 数），按服务商标注填 |
 | `tool_call_compat` | `false` | Tool Call 兼容模式，模型不支持原生工具调用时开启 |
-| `extra_params` | `{}` | 额外参数：`headers`（注入请求头）、`query`（URL 参数）、`body`（合并进请求体），其余键原样透传给 API |
+| `extra_params` | `{}` | 额外参数：标准请求参数、服务商扩展参数，以及 `headers` / `query` / `body` 三个 HTTP 特殊键 |
 | `anti_truncation` | `false` | 反截断功能（回复被截断时尝试续写） |
 
 ```toml
@@ -179,12 +179,288 @@ max_context = 131072
 | 最大上下文长度 | `max_context` | 按服务商标注填 |
 | 强制流式输出模式 | `force_stream_mode` | 部分只支持流式输出的接口才勾 |
 | Tool Call 兼容模式 | `tool_call_compat` | 模型不支持原生工具调用时才勾 |
-| 额外参数 | `extra_params` | 高级选项，支持 TOML 写法或 JSON，一般留空 |
+| 额外参数 | `extra_params` | 高级选项，支持 TOML inline object 或 JSON；`headers` / `query` / `body` 在下面三个独立输入框填写 |
 | 启用反截断 | `anti_truncation` | 回复被截断时尝试续写，一般不勾 |
 
 3. 点对话框右下角「添加」，再点右上角「保存」写入配置，重启 Bot 生效。
 
 模型卡片上的**测试按钮会真实调用这个模型**：发一句「你好」，然后显示延迟和回复内容（或报错）。配完新模型先点一下测试，比重启之后才发现配错了强得多。
+
+</MethodTab>
+
+</MethodTabs>
+
+## 模型级高级参数
+
+模型卡片里的「额外参数」属于**模型级配置**：同一个模型被 `actor`、`tool_use` 或其他任务使用时，都会使用这些配置。任务卡片里的 `max_tokens` 和 `temperature` 属于**任务级配置**，决定这次任务的输出上限和采样温度。建议在任务中设置这两个字段；OpenAI 兼容客户端会用 `extra_params` 中的同名字段覆盖任务提供的值。
+
+### 参数说明
+
+<a id="advanced-standard-params"></a>
+
+#### 1. 标准采样参数
+
+OpenAI 兼容客户端会把 `extra_params` 中的标准字段放在请求顶层；模型服务商支持哪些字段，以服务商的接口文档为准。最常用的字段如下：
+
+| 参数 | 示例 | 作用 | 使用建议 |
+| --- | --- | --- | --- |
+| `top_p` | `0.9` | 核采样范围，越低越保守 | 已调 `temperature` 时通常保持默认 |
+| `presence_penalty` | `0.2` | 鼓励引入新主题，减少重复话题 | 聊天重复明显时小幅增加 |
+| `frequency_penalty` | `0.2` | 惩罚重复词语和短语 | 复读明显时小幅增加 |
+| `seed` | `42` | 部分服务商支持的随机种子 | 仅用于尽量复现结果，不能保证完全一致 |
+| `stop` | `["<END>"]` | 遇到指定序列时停止 | 只有接口明确支持时才使用 |
+| `user` | `"mofox-bot"` | 传给服务商的调用方标识 | 用于审计、限流或用量统计 |
+| `stream_options` | `{ include_usage = true }` | 流式响应附带用量信息 | 服务商兼容时可开启 |
+| `reasoning_effort` | `"high"` | 部分推理模型的推理强度 | 只对支持该字段的渠道生效 |
+
+配置文件和 WebUI 的具体填写方式见下方「按方法配置」菜单。配置文件菜单包含完整 TOML 示例；WebUI 菜单说明每个输入框对应这里的哪一组参数。
+
+<a id="advanced-headers"></a>
+
+#### 2. headers：注入 HTTP 请求头
+
+`extra_params.headers` 会透传为 SDK 的 `extra_headers`，最终加入实际 HTTP 请求头。它适合服务商要求的版本头、租户头、路由头或自定义鉴权头。
+
+请求头的值会转换为字符串；`null` 值会被忽略。`headers` 必须是对象，不能写成字符串、数组或单个值。
+
+如果服务商的 SDK 已经自动生成 `Authorization`、`Content-Type` 等头，通常不需要重复设置。只有服务商文档要求覆盖它们时才手动添加，并确认不会覆盖 SDK 的鉴权行为。
+
+<a id="advanced-query"></a>
+
+#### 3. query：注入 URL 查询参数
+
+`extra_params.query` 会透传为 SDK 的 `extra_query`，附加到请求 URL 的查询字符串。
+
+`query` 的值可以是字符串、数字、布尔值或嵌套对象，具体是否被服务商接受取决于它的 API。它适合版本号、部署名、路由选项等 URL 层参数，不适合放 JSON 请求体字段。
+
+<a id="advanced-body"></a>
+
+#### 4. body：合并请求体字段
+
+`extra_params.body` 会合并进请求体，适合服务商扩展字段、元数据、服务端内置工具或其他非标准请求选项。
+
+OpenAI 兼容客户端会把 `extra_params` 中无法识别为标准参数的其他键也放进请求体；显式写在 `body` 中的同名字段优先级更高。`body` 必须是对象，支持嵌套对象和数组。
+
+在配置文件菜单的完整示例中，`response_format` 作为请求顶层参数，`metadata` 通过 `body` 合并到请求体扩展字段。
+
+<a id="advanced-tools"></a>
+
+#### 5. Tool Call、结构化输出与联网搜索
+
+##### Tool Call
+
+支持原生工具调用的模型可以使用 `tool_choice` 和 `parallel_tool_calls` 控制工具调用策略，具体写法见配置文件菜单。
+
+- `tool_choice = "auto"`：让模型自行决定是否调用工具。
+- `tool_choice = "none"`：禁止模型调用工具，前提是服务商支持该值。
+- `parallel_tool_calls = true`：允许模型并行发起多个工具调用，服务商不支持时删除这一项。
+- `tool_call_compat = true`：模型没有原生 Tool Call 能力时，使用兼容提示词模式；它不是原生工具调用，效果和稳定性取决于模型。
+
+`tool_use` 任务仍应选择支持原生工具调用的模型。`tool_call_compat` 只作为没有合适模型时的兼容手段。
+
+##### 结构化输出
+
+服务商支持 JSON 模式时，可以把 `response_format` 放入额外参数，具体写法见配置文件菜单。
+
+部分服务商支持 JSON Schema；字段名和严格模式要以服务商文档为准，完整写法见配置文件菜单。
+
+##### 服务端联网搜索
+
+某些 Responses API 服务商把内置 `web_search` 工具放在请求体的 `tools` 字段中，具体写法见配置文件菜单。
+
+WebUI 在支持该预设的 DeepSeek 服务商上会提供「快捷添加联网搜索」按钮。这个能力由服务商计费和权限控制，按钮可用不代表当前模型一定支持。
+
+<a id="advanced-tokens"></a>
+
+#### 6. Token、上下文和费用怎么配
+
+Neo-MoFox 里有三种容易混淆的 Token 设置：
+
+| 配置 | 所在位置 | 控制什么 |
+| --- | --- | --- |
+| `max_context` | `[[models]]` | 模型一次请求能接收的最大上下文 Token，按服务商标注填写 |
+| `max_tokens` | `[model_tasks.<任务名>]` | 这类任务单次最多生成的输出 Token |
+| `price_in` / `cache_hit_price_in` / `price_out` | `[[models]]` | 每百万输入、缓存命中输入、输出 Token 的统计价格 |
+
+`max_context` 是输入上下文总容量，包含系统提示词、历史消息、工具描述、用户消息和模型输出所需空间。它不是“单次回复长度”。单次回复长度由任务的 `max_tokens` 控制，配置位置见配置文件菜单。
+
+如果 `actor` 回复经常在半句话处截断，先提高 `model_tasks.actor.max_tokens`；如果请求因为上下文太长失败，再检查 `max_context` 是否按官方值填写，并减少历史消息或工具描述。
+
+##### 为输出和工具调用预留上下文
+
+可以在 `extra_params` 中使用 `context_reserve_ratio` 和 `context_reserve_tokens` 两个框架级参数，为输出或后续工具调用预留空间，配置写法见配置文件菜单。
+
+两者取计算结果中较大的值，实际可用于上下文的预算是 `max_context - max(比例预留, 固定预留)`。这两个键由框架的上下文预算逻辑使用，不会透传给模型 API。
+
+##### 费用统计
+
+- `price_in`、`cache_hit_price_in`、`price_out` 的单位是每百万 Token。
+- 它们只影响 WebUI 的 LLM 统计和费用估算，不会改变服务商真实账单，也不会改变模型输出。
+- 不收费或本地模型可全部填写 `0`。
+- 服务商没有返回缓存命中 Token 时，统计会按普通输入 Token 计算；价格没填时，缓存命中输入价格回退到 `price_in`。
+
+<a id="advanced-network"></a>
+
+#### 7. 网络与兼容性开关
+
+以下键也可以放进 `extra_params`，但它们由 Neo-MoFox 的 HTTP 层消费，不会发给模型：
+
+| 参数 | 默认值 | 作用 |
+| --- | --- | --- |
+| `trust_env` | `true` | 是否信任 `HTTP_PROXY` / `HTTPS_PROXY` 等系统代理环境变量；直连环境遇到代理干扰时可设为 `false` |
+| `force_ipv4` | `false` | 强制使用 IPv4 出口；IPv6 路由不稳定时尝试开启 |
+| `force_sync_http` | 已废弃 | 历史兼容键，会被忽略，不要再新增 |
+
+这些开关可以和 `headers/query/body` 同时使用，填写方式见下方菜单。
+
+::: warning 额外参数不会替服务商做兼容转换
+Neo-MoFox 会把标准字段、HTTP 特殊键和服务商扩展字段分流到对应位置，但不会把某家服务商的字段自动翻译成另一家的字段。比如 `reasoning_effort`、`response_format`、`service_tier` 是否可用，最终由当前 `client_type`、模型和服务商决定。
+:::
+
+### 按方法配置
+
+下面两个标签只展示“怎么填”。参数含义和兼容性说明见上面的[标准采样参数](#advanced-standard-params)、[headers](#advanced-headers)、[query](#advanced-query)、[body](#advanced-body)、[工具与结构化输出](#advanced-tools)、[Token 与费用](#advanced-tokens)、[网络与兼容性](#advanced-network)。
+
+<MethodTabs dimension="advanced-model" :options="[{ value: 'file', label: '配置文件', icon: 'mdi:file-document-outline' }, { value: 'webui', label: 'WebUI', icon: 'mdi:monitor-dashboard' }]">
+
+<MethodTab value="file">
+
+在 `config/model.toml` 中找到要修改的 `[[models]]` 条目，按下面示例合并字段。模型 ID、已配置的服务商名称和价格请替换为自己的值；仅保留接口支持且需要的参数。已有 `extra_params = { ... }` 时，将其中的内容移入下面的 `[models.extra_params]`，避免重复定义。
+
+对应关系：
+
+- [标准采样参数](#advanced-standard-params)：`top_p`、`presence_penalty`、`frequency_penalty`、`seed`、`reasoning_effort`
+- [headers](#advanced-headers)：`extra_params.headers`
+- [query](#advanced-query)：`extra_params.query`
+- [body](#advanced-body)：`extra_params.body`
+- [工具与结构化输出](#advanced-tools)：`tool_choice`、`parallel_tool_calls`、`response_format`
+- [Token 与费用](#advanced-tokens)：`max_context`、任务级 `max_tokens`、三个价格字段
+- [网络与兼容性](#advanced-network)：`trust_env`、`force_ipv4`
+
+```toml
+[[models]]
+model_identifier = "provider/model-id"
+name = "my-advanced-model"
+api_provider = "MyProvider"
+price_in = 2.0
+cache_hit_price_in = 0.2
+price_out = 8.0
+max_context = 131072
+force_stream_mode = false
+tool_call_compat = false
+anti_truncation = false
+
+[models.extra_params]
+# 对应「1. 标准采样参数」
+top_p = 0.9
+presence_penalty = 0.1
+frequency_penalty = 0.1
+seed = 42
+reasoning_effort = "high"
+stream_options = { include_usage = true }
+
+# 对应「5. Tool Call、结构化输出与联网搜索」
+tool_choice = "auto"
+parallel_tool_calls = true
+response_format = { type = "json_object" }
+
+# 对应「6. Token、上下文和费用」与「7. 网络与兼容性开关」
+context_reserve_ratio = 0.10
+context_reserve_tokens = 4096
+trust_env = false
+force_ipv4 = true
+
+# 对应「2. headers」
+[models.extra_params.headers]
+"X-API-Version" = "2024-06"
+
+# 对应「3. query」
+[models.extra_params.query]
+version = "2024-01-01"
+
+# 对应「4. body」
+[models.extra_params.body]
+metadata = { source = "mofox" }
+custom_flag = true
+
+# 对应「6. Token、上下文和费用」：修改已有任务节中的字段
+[model_tasks.actor]
+model_list = ["my-advanced-model"]
+max_tokens = 2000
+temperature = 0.8
+```
+
+**JSON Schema 写法**（对应[工具与结构化输出](#advanced-tools)）：需要 Schema 时，用下面的子表替换示例中的 `response_format = { type = "json_object" }`。将它放在该模型的其他子表之后、下一个 `[[models]]` 或任务节之前。
+
+```toml
+[models.extra_params.response_format]
+type = "json_schema"
+
+[models.extra_params.response_format.json_schema]
+name = "answer"
+strict = true
+
+[models.extra_params.response_format.json_schema.schema]
+type = "object"
+properties = { answer = { type = "string" } }
+required = ["answer"]
+additionalProperties = false
+```
+
+**服务端联网搜索写法**（对应[工具与结构化输出](#advanced-tools)）：在支持该功能的接口上，把下面字段合并到该模型已有的 `[models.extra_params.body]` 中。
+
+```toml
+[models.extra_params.body]
+tools = [{ type = "web_search" }]
+```
+
+</MethodTab>
+
+<MethodTab value="webui">
+
+输入框与上方说明的对应关系如下；点击说明名称可以跳回查看含义。
+
+| WebUI 位置 | 对应外部说明 | 填写内容 |
+| --- | --- | --- |
+| 模型编辑 → 额外参数 | [标准采样参数](#advanced-standard-params)、[工具与结构化输出](#advanced-tools) | `top_p`、`seed`、`tool_choice`、`response_format` 等 |
+| 模型编辑 → headers | [headers](#advanced-headers) | 请求头对象 |
+| 模型编辑 → query | [query](#advanced-query) | URL 参数对象 |
+| 模型编辑 → body | [body](#advanced-body)、[联网搜索](#advanced-tools) | 请求体扩展字段；支持时可填写 `tools` |
+| 模型编辑 → 最大上下文长度、价格 | [Token 与费用](#advanced-tokens) | `max_context` 和三个价格字段 |
+| 任务编辑 → 最大 Tokens、温度 | [Token 与费用](#advanced-tokens)、[标准采样参数](#advanced-standard-params) | `max_tokens`、`temperature` |
+| 模型编辑 → 额外参数 | [上下文预留](#advanced-tokens)、[网络与兼容性](#advanced-network) | `context_reserve_ratio`、`context_reserve_tokens`、`trust_env`、`force_ipv4` |
+
+在 WebUI 中打开「配置 → 模型配置 → 模型配置」，点模型卡片的「编辑」即可看到参数区。下面这张图来自正在运行的 WebUI，模型名称和提供商已经替换为演示数据，API Key 和实际请求内容不会写入截图：
+
+![WebUI 模型编辑器的高级参数区：额外参数、HTTP headers、query、body，以及上下文长度和价格配置](/guide/webui/config-model-advanced-params.png)
+
+按下面的顺序填写：
+
+1. 在「额外参数」中填写[标准采样参数](#advanced-standard-params)和[工具与结构化输出](#advanced-tools)，例如 `{ "top_p": 0.9, "seed": 42 }`，或 TOML 写法 `{ top_p = 0.9, seed = 42 }`。
+2. 在「HTTP 请求头（headers）」中填写对应[headers 说明](#advanced-headers)的请求头对象，例如 `{ "X-API-Version": "2024-06" }`。
+3. 在「URL 查询参数（query）」中填写对应[query 说明](#advanced-query)的 URL 参数，例如 `{ "version": "2024-01-01" }`。
+4. 在「请求体字段（body）」中填写对应[body 说明](#advanced-body)的请求体字段，例如 `{ "metadata": { "source": "mofox" } }`。使用服务端联网搜索时，按接口要求合并 `"tools": [{ "type": "web_search" }]`。
+5. 点弹窗底部「保存」，再点模型配置页面右上角「保存」。启用保存后自动热重载时会自动应用，否则按页面提示重启 Bot。
+
+三个 HTTP 特殊键在 WebUI 中分开编辑，但最终都会写入同一个模型的 `extra_params`。留空表示不启用；输入内容必须是对象，解析失败时页面会提示检查 TOML 或 JSON 格式。
+
+上下文预留和网络开关也直接填在「额外参数」中，与已有参数合并。例如，下面的 JSON 对应[标准采样参数](#advanced-standard-params)、[Token 与费用](#advanced-tokens)和[网络与兼容性](#advanced-network)：
+
+```json
+{
+  "top_p": 0.9,
+  "context_reserve_ratio": 0.10,
+  "context_reserve_tokens": 4096,
+  "trust_env": false,
+  "force_ipv4": true
+}
+```
+
+结构化输出对应[工具与结构化输出](#advanced-tools)：在「额外参数」对象中合并 `"response_format": { "type": "json_object" }`；需要 JSON Schema 时，在同一位置填写 `response_format` 对象及其 `json_schema` 子对象。
+
+`max_context`、价格、Tool Call 兼容模式和反截断在模型编辑弹窗的对应字段填写；`max_tokens` 和 `temperature` 在「任务配置 → 对应任务 → 编辑」中填写。
+
+保存后点模型卡片上的「测试」按钮验证调用，再到「请求检视」查看最终请求参数。
 
 </MethodTab>
 

@@ -772,8 +772,8 @@ export default defineConfig({
             link: "https://github.com/MoFox-Studio/MoFox-Bot-Docs",
           },
           {
-            text: "Neo-MoFox-Bot-QQ群",
-            link: "https://qm.qq.com/q/jfeu7Dq7VS",
+            text: "QQ群号：1130433589",
+            link: "https://qm.qq.com/q/LOxRpyzMoa",
           },
         ],
       },

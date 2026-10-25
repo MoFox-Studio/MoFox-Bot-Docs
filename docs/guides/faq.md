@@ -171,4 +171,4 @@
 
 提问前先看这篇：[如何高效地提问](/docs/guides/misc/how-to-ask-questions-efficiently)——把现象、复现步骤、日志一起给出来，能省下大家来回猜的时间。
 
-也可以加入 QQ 交流群：**169850076**。
+也可以点击 QQ 群号 [1130433589](https://qm.qq.com/q/LOxRpyzMoa) 加入交流群。

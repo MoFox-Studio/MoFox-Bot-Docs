@@ -13,11 +13,11 @@ Neo-MoFox 的官方文档站。包含部署指南、配置说明、插件开发�
 
 ## 文档
 
-有关完整文档，请访问 [Neo-MoFox Docs](https://docs.mofox-sama.com/)。
+有关完整文档，请访问 [Neo-MoFox Docs](https://docs.mofox.chat/)。
 
 ## 快速开始
 
-通过 [部署指南](https://docs.mofox-sama.com/docs/guides/) 快速开始。
+通过 [部署指南](https://docs.mofox.chat/docs/guides/) 快速开始。
 
 ## 为此文档做出贡献
 
@@ -62,7 +62,7 @@ npm run docs:build
 
 - **Neo-MoFox GitHub**: [https://github.com/MoFox-Studio/Neo-MoFox](https://github.com/MoFox-Studio/Neo-MoFox)
 - **MoFox_Docs GitHub**: [https://github.com/MoFox-Studio/MoFox-Bot-Docs](https://github.com/MoFox-Studio/MoFox-Bot-Docs)
-- **MoFox-Bot QQ 交流群**: 169850076
+- **MoFox-Bot QQ 交流群**: [1130433589](https://qm.qq.com/q/LOxRpyzMoa)
 
 ## 许可证
 

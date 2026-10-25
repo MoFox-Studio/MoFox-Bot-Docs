@@ -46,7 +46,7 @@ const communityGuides = [
 
 1. 首先查看对应工具的详细文档
 2. 检查工具维护者提供的联系方式（通常在文档中注明）
-3. 加入 [MoFox-Bot QQ 群](https://qm.qq.com/q/jfeu7Dq7VS) 寻求帮助
+3. 点击 QQ 群号 [1130433589](https://qm.qq.com/q/LOxRpyzMoa) 加入群聊并寻求帮助
 4. 在 GitHub 上提交 Issue
 
 ## 与官方部署方式的区别

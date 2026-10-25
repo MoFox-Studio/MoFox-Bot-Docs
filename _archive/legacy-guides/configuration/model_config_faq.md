@@ -402,7 +402,7 @@ price_in = 0.5
    - 按启动会话命名：`mofox_YYYYMMDD_HHMMSS_<微秒>_<会话ID>_<YYYY-MM-DD>.log`
 
 2. **加入社区求助**
-   - 💬 QQ 交流群：[点击加入](https://qm.qq.com/q/jfeu7Dq7VS)
+   - 💬 QQ 交流群：[1130433589](https://qm.qq.com/q/LOxRpyzMoa)
    - 🐙 GitHub Issues：[提交问题](https://github.com/MoFox-Studio/Neo-MoFox/issues)
 
 3. **提问时请附上：**

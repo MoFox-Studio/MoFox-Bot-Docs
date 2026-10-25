@@ -118,7 +118,7 @@ Neo-MoFox 通过组件化的插件系统实现功能扩展，但这需要你承�
 我们希望你能在合法、安全、理性的前提下，享受与你的 AI 伙伴相处的美好时光。如果你同意以上所有条款，就可以开始你的数字生命体之旅了！
 
 如有任何疑问，欢迎访问我们的：
-- 官方文档：https://docs.mofox-sama.com
+- 官方文档：https://docs.mofox.chat
 - GitHub 仓库：https://github.com/MoFox-Studio/Neo-MoFox
 
 **版权所有 © 2026 Neo-MoFox 项目团队**

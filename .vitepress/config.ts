@@ -814,6 +814,7 @@ export default defineConfig({
                 { text: "TOML 与编辑器", link: "/docs/guides/toml" },
                 { text: "核心配置要点", link: "/docs/guides/core-config" },
                 { text: "人设指南", link: "/docs/guides/persona" },
+                { text: "扮演篇：像这个角色的 OC", link: "/docs/guides/persona-play" },
                 { text: "进阶模型配置", link: "/docs/guides/advanced-model" },
                 { text: "插件配置怎么改", link: "/docs/guides/plugin-config" },
               ],

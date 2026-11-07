@@ -317,9 +317,29 @@ Neo-MoFox 里有三种容易混淆的 Token 设置：
 Neo-MoFox 会把标准字段、HTTP 特殊键和服务商扩展字段分流到对应位置，但不会把某家服务商的字段自动翻译成另一家的字段。比如 `reasoning_effort`、`response_format`、`service_tier` 是否可用，最终由当前 `client_type`、模型和服务商决定。
 :::
 
+<a id="advanced-reasoning-history"></a>
+
+#### 8. 思考历史回传（reasoning_content）
+
+思考模型会在回复里额外返回 `reasoning_content`（思考过程）。不同服务商对「后续请求要不要把历史思考再传回去」的要求不一样，`extra_params.reasoning_history_mode` 就是用来显式选择这一行为，与模型名称无关，只有两个取值：
+
+| 值 | 行为 | 适用场景 |
+| --- | --- | --- |
+| `on_tool`（默认） | 仅当本次请求携带 `tools` 时回传历史 `reasoning_content`；普通对话则移除 | DeepSeek 思考模式：请求带工具时历史思考必须完整回传，否则接口会返回 400 |
+| `all` | 不论是否携带 `tools`，都把历史 `reasoning_content` 回传 | Kimi K2/K3 等强制保留历史思考的模型 |
+
+不写这个参数时就按 `on_tool` 处理。如果不需要针对它做特殊配置，直接不写这个参数即可。回传时，缺失该字段的 assistant 历史会用其正文内容兜底填充。
+
+::: tip 怎么判断该选哪个
+看服务商文档里「多轮对话 / 工具调用」对 `reasoning_content` 的说明：
+
+- 只在「带 tools」时要求回传（例如 DeepSeek），保持默认 `on_tool` 即可，不用写。
+- 要求每一轮都保留（例如 Kimi K2 Thinking），设为 `all`。
+:::
+
 ### 按方法配置
 
-下面两个标签只展示“怎么填”。参数含义和兼容性说明见上面的[标准采样参数](#advanced-standard-params)、[headers](#advanced-headers)、[query](#advanced-query)、[body](#advanced-body)、[工具与结构化输出](#advanced-tools)、[Token 与费用](#advanced-tokens)、[网络与兼容性](#advanced-network)。
+下面两个标签只展示“怎么填”。参数含义和兼容性说明见上面的[标准采样参数](#advanced-standard-params)、[headers](#advanced-headers)、[query](#advanced-query)、[body](#advanced-body)、[工具与结构化输出](#advanced-tools)、[Token 与费用](#advanced-tokens)、[网络与兼容性](#advanced-network)、[思考历史回传](#advanced-reasoning-history)。
 
 <MethodTabs dimension="advanced-model" :options="[{ value: 'file', label: '配置文件', icon: 'mdi:file-document-outline' }, { value: 'webui', label: 'WebUI', icon: 'mdi:monitor-dashboard' }]">
 
@@ -336,6 +356,7 @@ Neo-MoFox 会把标准字段、HTTP 特殊键和服务商扩展字段分流到�
 - [工具与结构化输出](#advanced-tools)：`tool_choice`、`parallel_tool_calls`、`response_format`
 - [Token 与费用](#advanced-tokens)：`max_context`、任务级 `max_tokens`、三个价格字段
 - [网络与兼容性](#advanced-network)：`trust_env`、`force_ipv4`
+- [思考历史回传](#advanced-reasoning-history)：`reasoning_history_mode`
 
 ```toml
 [[models]]
@@ -369,6 +390,9 @@ context_reserve_ratio = 0.10
 context_reserve_tokens = 4096
 trust_env = false
 force_ipv4 = true
+
+# 对应「8. 思考历史回传」：默认 on_tool，不需要时整行删掉即可
+reasoning_history_mode = "on_tool"
 
 # 对应「2. headers」
 [models.extra_params.headers]
@@ -429,6 +453,7 @@ tools = [{ type = "web_search" }]
 | 模型编辑 → 最大上下文长度、价格 | [Token 与费用](#advanced-tokens) | `max_context` 和三个价格字段 |
 | 任务编辑 → 最大 Tokens、温度 | [Token 与费用](#advanced-tokens)、[标准采样参数](#advanced-standard-params) | `max_tokens`、`temperature` |
 | 模型编辑 → 额外参数 | [上下文预留](#advanced-tokens)、[网络与兼容性](#advanced-network) | `context_reserve_ratio`、`context_reserve_tokens`、`trust_env`、`force_ipv4` |
+| 模型编辑 → 额外参数 | [思考历史回传](#advanced-reasoning-history) | `reasoning_history_mode`（`on_tool` / `all`） |
 
 在 WebUI 中打开「配置 → 模型配置 → 模型配置」，点模型卡片的「编辑」即可看到参数区。下面这张图来自正在运行的 WebUI，模型名称和提供商已经替换为演示数据，API Key 和实际请求内容不会写入截图：
 
@@ -457,6 +482,8 @@ tools = [{ type = "web_search" }]
 ```
 
 结构化输出对应[工具与结构化输出](#advanced-tools)：在「额外参数」对象中合并 `"response_format": { "type": "json_object" }`；需要 JSON Schema 时，在同一位置填写 `response_format` 对象及其 `json_schema` 子对象。
+
+思考历史回传对应[思考历史回传](#advanced-reasoning-history)：默认不需要填写；只有需要每轮都保留历史思考的模型（例如 Kimi K2 Thinking）才在「额外参数」中加上 `"reasoning_history_mode": "all"`。
 
 `max_context`、价格、Tool Call 兼容模式和反截断在模型编辑弹窗的对应字段填写；`max_tokens` 和 `temperature` 在「任务配置 → 对应任务 → 编辑」中填写。
 

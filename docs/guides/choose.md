@@ -12,7 +12,7 @@
 
 | 你的环境与习惯 | 推荐阅读 | 操作方式 | 开始前确认 |
 | --- | --- | --- | --- |
-| **Windows / Linux 桌面电脑**，希望用图形界面安装和管理 | [启动器部署](/docs/guides/launcher) | 安装向导、实例卡片、日志与更新按钮 | 电脑能运行桌面 QQ；启动器教程使用 SnowLuma 接入 QQ |
+| **Windows / Linux 桌面电脑**，希望用图形界面安装和管理 | [启动器部署](/docs/guides/launcher) | 安装向导、实例卡片、日志与更新按钮 | 电脑能运行桌面 QQ；协议端需自己准备（启动器不再提供下载） |
 | **安卓手机 / 平板**，希望在手机里管理 Bot | [安卓 App 部署](/docs/guides/android) | APK、首次引导、实例向导与日志面板 | Android 13 或更高、arm64；至少 2 GB 存储与 1 GB 可用内存，并完成后台保活设置 |
 | **Linux 服务器**，能使用终端，准备通过容器管理服务 | [Docker 部署](/docs/guides/docker) | Docker Compose、网页管理和日志命令 | 安装 Docker Engine 与 Compose；确认管理端口、持久化目录与网络连接 |
 | **Windows / Linux**，想自行管理环境或修改源码 | [手动命令行部署](/docs/guides/manual) | 自己安装 Python、uv、Git，修改配置并启动 | 愿意使用终端，知道项目文件放在哪里，并能保存和备份配置 |
@@ -27,7 +27,7 @@ NAS 如果提供合适的 Linux 与 Docker 环境，可以先按 Docker 教程�
 
 ![启动器的实例列表截图：从卡片进入各实例的管理和运行页面](/guide/launcher/instances.png)
 
-**适合你，如果**你有 Windows 或 Linux 桌面环境，希望按向导填写 Bot QQ、主人 QQ、模型 API Key 和安装位置。QQ 接入按教程使用 SnowLuma，还需要桌面 QQ。
+**适合你，如果**你有 Windows 或 Linux 桌面环境，希望按向导填写 Bot QQ、主人 QQ、模型 API Key 和安装位置。QQ 接入按教程以 SnowLuma 为例，还需要桌面 QQ。**注意：SnowLuma 与 NapCat 的仓库已归档，启动器暂时无法一键安装它们**——安装实例时选「不安装平台」，协议端自己找来源下载，装好后在实例的「修改实例信息」里指定平台种类与路径。
 
 启动器的安装包与 Bot 本体的更新通道是两回事：启动器教程目前介绍 nightly 预发布包，Bot 实例则可以选择 `main` 或 `dev`。新手的 Bot 通道先选 `main`，详情见 [更新通道](/docs/guides/channels)。
 

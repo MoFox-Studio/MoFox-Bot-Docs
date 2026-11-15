@@ -96,7 +96,7 @@
 
 **一句话定位**：Bot 与 QQ 之间的"翻译官"，通过 [OneBot 11](/docs/guides/glossary#onebot) 协议对接 SnowLuma、NapCat 等协议端，收发消息、图片、视频、戳一戳。
 
-**怎么用**：装好协议端（官方 Docker 方案默认搭配 SnowLuma），然后必填 Bot 自己的 QQ 号和昵称，把两边连上即可。这是 8 个内置插件里唯一一个"不填就跑不通"的。
+**怎么用**：装好协议端（SnowLuma、NapCat 等，需自行寻找安装来源），然后必填 Bot 自己的 QQ 号和昵称，把两边连上即可。这是 8 个内置插件里唯一一个"不填就跑不通"的。
 ```toml
 
 # config/plugins/onebot_adapter/config.toml

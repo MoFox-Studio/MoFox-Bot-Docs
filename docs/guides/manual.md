@@ -216,13 +216,13 @@ model_list = ["my-model"]                  # 这个任务用哪些模型（填�
 
 机器人自己上不了 QQ，需要一个「代练」帮它登录 QQ、收发消息，这个代练就叫[协议端](/docs/guides/glossary#协议端)。Neo-MoFox 和协议端通过[反向 WebSocket](/docs/guides/glossary#反向-websocket) 连接：Neo-MoFox 在本机开一个服务端口等着，协议端主动连上来。好消息是：Neo-MoFox 这边已经内置了 QQ 适配器并默认开好了端口，你只需要做三件事：**装好协议端 → 登录 QQ 并把反向 WS 指向 Neo-MoFox → 告诉 Neo-MoFox 它的 QQ 号**。
 
-### 安装协议端（SnowLuma）
+### 自己准备协议端（SnowLuma）
 
-本篇以 [SnowLuma](https://snowluma.github.io/) 为例——它自带网页管理界面，配置直观，也是官方 Docker 方案的默认搭配。SnowLuma 的安装部署有自己的官方文档，覆盖 Windows、Linux、Docker 等各种环境，写得很全，照着它装即可，本篇不再重复展开：
+本篇以 SnowLuma 为例——它自带网页管理界面，配置直观。**注意：SnowLuma 与 NapCat 的上游仓库已经归档，原有的官方下载页和 Release 都已不可用**，所以这里没法再给出固定的下载地址，需要你自己去找一份可用的安装包：社区分流、历史镜像、别人打包的完整发行版都可以，**请自行确认来源可信**。
 
-→ **SnowLuma 官方部署文档**：<https://snowluma.github.io/zh/docs/guide/deploy/>
+拿到安装包后解压到本地一个固定的目录（例如 `D:\MoFox\snowluma` 或 `/opt/snowluma`），确认根目录里有 `index.mjs` 以及 `launcher.bat` / `launcher.sh` 之类的启动入口。本篇不展开协议端自身的安装细节——装好后按下面两小节配置即可。
 
-也可以换用 NapCat 等其他 [OneBot 11](/docs/guides/glossary#onebot) 协议端，对 Neo-MoFox 来说效果一样，但各有各的装法，本篇不展开——装好后按下面两小节配置即可。
+也可以换用 NapCat 等其他 [OneBot 11](/docs/guides/glossary#onebot) 协议端，对 Neo-MoFox 来说效果一样，同样需要自己找来源。
 
 ### 登录 QQ，配置反向 WebSocket
 
@@ -567,13 +567,13 @@ model_list = ["my-model"]                  # 这个任务用哪些模型（填�
 
 机器人自己上不了 QQ，需要一个「代练」帮它登录 QQ、收发消息，这个代练就叫[协议端](/docs/guides/glossary#协议端)。Neo-MoFox 和协议端通过[反向 WebSocket](/docs/guides/glossary#反向-websocket) 连接：Neo-MoFox 在本机开一个服务端口等着，协议端主动连上来。好消息是：Neo-MoFox 这边已经内置了 QQ 适配器并默认开好了端口，你只需要做三件事：**装好协议端 → 登录 QQ 并把反向 WS 指向 Neo-MoFox → 告诉 Neo-MoFox 它的 QQ 号**。
 
-### 安装协议端（SnowLuma）
+### 自己准备协议端（SnowLuma）
 
-本篇以 [SnowLuma](https://snowluma.github.io/) 为例——它自带网页管理界面，配置直观，也是官方 Docker 方案的默认搭配。SnowLuma 的安装部署有自己的官方文档，覆盖 Windows、Linux、Docker 等各种环境，写得很全，照着它装即可，本篇不再重复展开：
+本篇以 SnowLuma 为例——它自带网页管理界面，配置直观。**注意：SnowLuma 与 NapCat 的上游仓库已经归档，原有的官方下载页和 Release 都已不可用**，所以这里没法再给出固定的下载地址，需要你自己去找一份可用的安装包：社区分流、历史镜像、别人打包的完整发行版都可以，**请自行确认来源可信**。
 
-→ **SnowLuma 官方部署文档**：<https://snowluma.github.io/zh/docs/guide/deploy/>
+拿到安装包后解压到本地一个固定的目录（例如 `D:\MoFox\snowluma` 或 `/opt/snowluma`），确认根目录里有 `index.mjs` 以及 `launcher.bat` / `launcher.sh` 之类的启动入口。本篇不展开协议端自身的安装细节——装好后按下面两小节配置即可。
 
-也可以换用 NapCat 等其他 [OneBot 11](/docs/guides/glossary#onebot) 协议端，对 Neo-MoFox 来说效果一样，但各有各的装法，本篇不展开——装好后按下面两小节配置即可。
+也可以换用 NapCat 等其他 [OneBot 11](/docs/guides/glossary#onebot) 协议端，对 Neo-MoFox 来说效果一样，同样需要自己找来源。
 
 ### 登录 QQ，配置反向 WebSocket
 

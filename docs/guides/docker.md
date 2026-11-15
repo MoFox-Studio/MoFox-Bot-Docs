@@ -157,7 +157,7 @@ docker logs snowluma 2>&1 | grep -E "临时密码|initial credentials" | tail -n
 ![图片：SnowLuma 进程注入页显示 qq 已在线](/guide/snowluma/snowluma_processes.png)
 
 ::: tip 更多 SnowLuma 的用法
-SnowLuma 有自己的[官方文档](https://snowluma.github.io/zh/)，多账号、环境变量自启、WebUI 的其他功能都在那里讲，本篇只覆盖接入 Neo-MoFox 所需的最少步骤。
+SnowLuma 的 GitHub 仓库已归档。这里用的 Docker 镜像仍可直接拉取，多账号、环境变量自启、WebUI 的其他功能属进阶用法，本篇只覆盖接入 Neo-MoFox 所需的最少步骤。
 :::
 
 ## 第五步：配置模型

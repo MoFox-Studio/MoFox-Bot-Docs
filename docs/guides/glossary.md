@@ -81,7 +81,7 @@ Neo-MoFox/
 
 替机器人登录 QQ、收发消息的工具。QQ 官方没有给聊天机器人开正式入口，所以需要这么一个「代为进出」的角色。打个比方：机器人不自己拿手机，雇了个 24 小时盯着手机的秘书——消息来了递进来，要回复的发出去。在 Neo-MoFox 体系里，常用的协议端是 **SnowLuma** 和 **NapCat**，它们都遵循 OneBot v11 这个「通用插座标准」，所以核心自带的适配器能即插即用；Docker 方案里，协议端和机器人本体会作为两个搭档一起启动。
 
-<!-- 已核实：Neo-MoFox 官方 Docker Compose 默认搭配 SnowLuma；启动器平台下拉里两种都支持（SnowLuma 默认推荐，NapCat 仅 Windows x64），故 NapCat 作为常见协议端之一列出。 -->
+<!-- 已核实：Neo-MoFox 官方 Docker Compose 默认搭配 SnowLuma；启动器平台下拉里两种都保留，但安装向导会提示两者暂时无法直接下载安装（上游仓库已归档），需自行准备平台目录后在「修改实例信息」中指定。 -->
 
 ## 适配器
 
@@ -135,11 +135,11 @@ Large Language Model，大语言模型，就是驱动 Bot 思考的「云端大�
 
 ## NapCat
 
-目前最流行的 QQ 协议端之一，基于 QQ 官方客户端改造，让机器人能收发 QQ 消息。它本身不是 Neo-MoFox 的一部分，需要单独安装，然后通过反向 WebSocket 和 Neo-MoFox「握手」。见 [QQ 登录步骤](/docs/guides/launcher#第五步-qq-登录-让-bot-上线)。
+目前最流行的 QQ 协议端之一，基于 QQ 官方客户端改造，让机器人能收发 QQ 消息。它本身不是 Neo-MoFox 的一部分，需要单独安装，然后通过反向 WebSocket 和 Neo-MoFox「握手」。NapCat 与 SnowLuma 的仓库均已归档，启动器不再提供一键下载，协议端需要自己找来源准备。见 [启动器部署指南](/docs/guides/launcher#第五步-添加协议端自己准备-snowluma) 与 [QQ 登录步骤](/docs/guides/launcher#第七步-qq-登录-让-bot-上线)。
 
 ## SnowLuma
 
-另一个 QQ 协议端，自带网页管理界面（浏览器打开 5099 端口即可操作），Docker 部署方式里官方打包的就是它。角色和 NapCat 一样：替机器人进出 QQ。
+另一个 QQ 协议端，自带网页管理界面（浏览器打开 5099 端口即可操作），Docker 部署方式里打包的协议端就是它。角色和 NapCat 一样：替机器人进出 QQ。该项目的 GitHub 仓库已归档，Docker 镜像仍可用，但桌面端需要自己寻找安装包，再在启动器的「修改实例信息」里指定平台路径。
 
 ## OneBot
 

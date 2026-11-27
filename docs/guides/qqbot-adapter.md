@@ -10,7 +10,7 @@ outline: [2, 3]
 
 `qqbot_adapter` 是社区插件，直连 QQ 官方机器人开放平台，不需要 NapCat、OneBot 等协议端。插件由社区开发者独立维护，不属于 Neo-MoFox 核心内置组件：
 
-- [插件市场中的 `qqbot_adapter`](https://39.96.71.162/plugin/qqbot_adapter)
+- [插件市场中的 `qqbot_adapter`](https://market.mofox.chat/plugin/qqbot_adapter)
 - [插件源代码仓库](https://github.com/qingfeng66640/qqbot_adapter)
 
 ::: warning 安全提醒
@@ -82,7 +82,7 @@ AppSecret 是机器人凭据。不要把它发到群聊、提交到公开仓库�
 
 ### 1. 打开插件详情页
 
-打开 [Neo-MoFox 插件市场中的 `qqbot_adapter`](https://39.96.71.162/plugin/qqbot_adapter)。如果没有直接打开详情页，也可以在插件市场搜索 `qqbot_adapter`。
+打开 [Neo-MoFox 插件市场中的 `qqbot_adapter`](https://market.mofox.chat/plugin/qqbot_adapter)。如果没有直接打开详情页，也可以在插件市场搜索 `qqbot_adapter`。
 
 下载前核对：
 

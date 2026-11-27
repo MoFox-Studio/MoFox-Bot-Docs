@@ -55,10 +55,10 @@
 import { ref, onMounted, defineCustomElement } from 'vue';
 
 /** 新插件市场地址 */
-const pluginMarketUrl = 'https://39.96.71.162/';
+const pluginMarketUrl = 'https://market.mofox.chat/';
 
 /** 新插件市场 API 基地址 */
-const marketApiBase = 'https://39.96.71.162/api/v1';
+const marketApiBase = 'https://market.mofox.chat/api/v1';
 
 const totalPlugins = ref<number | string>(0);
 const totalDownloads = ref<number | string>(0);

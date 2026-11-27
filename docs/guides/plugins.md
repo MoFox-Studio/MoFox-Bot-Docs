@@ -38,7 +38,7 @@
 
 **打开市场，找到插件**
 
-1. 浏览器打开[插件市场](https://39.96.71.162/)。第一次进入会先看到**「首次使用安全提示」**弹窗，仔细阅读后点右下角**「我已知悉」**；随后可能再弹一个公告弹窗，点**「知道了，不再提示」**即可进入首页。
+1. 浏览器打开[插件市场](https://market.mofox.chat/)。第一次进入会先看到**「首次使用安全提示」**弹窗，仔细阅读后点右下角**「我已知悉」**；随后可能再弹一个公告弹窗，点**「知道了，不再提示」**即可进入首页。
 
 ![图片：插件市场首页](/guide/plugins/market-home.png)
 
@@ -124,7 +124,7 @@
 :::
 
 ::: details 市场地址在哪改？
-WebUI 的插件市场地址在 WebUI「设置」页里可以改，默认是官方市场的 API 地址 `https://39.96.71.162`。一般不用动它。
+WebUI 的插件市场地址在 WebUI「设置」页里可以改，默认是官方市场的 API 地址 `https://market.mofox.chat`。一般不用动它。
 :::
 
 </MethodTab>
@@ -152,7 +152,7 @@ WebUI 的插件市场地址在 WebUI「设置」页里可以改，默认是官�
 
 浏览、下载插件不需要登录；要订阅更新、让主程序同步订阅，才需要先登录拿凭据：
 
-1. 打开[官方插件市场](https://39.96.71.162/)，点右上角**「GitHub 登录」**，在 GitHub 页面登录并授权后会自动跳回市场——右上角显示你的用户名就说明登录成功了。
+1. 打开[官方插件市场](https://market.mofox.chat/)，点右上角**「GitHub 登录」**，在 GitHub 页面登录并授权后会自动跳回市场——右上角显示你的用户名就说明登录成功了。
 
 ![图片：通过 GitHub 登录插件市场](/guide/plugins/market-login.png)
 
@@ -181,7 +181,7 @@ WebUI 的插件市场地址在 WebUI「设置」页里可以改，默认是官�
 ```toml
 [plugin_market]
 enabled = true
-base_url = "https://39.96.71.162"
+base_url = "https://market.mofox.chat"
 user_id = "github:你的GitHub用户名小写"
 access_token = "mfox_粘贴你复制的令牌"
 ```
@@ -205,7 +205,7 @@ access_token = "mfox_粘贴你复制的令牌"
 | 字段 | 默认值 | 作用 |
 |------|--------|------|
 | `enabled` | `true` | 总开关。设为 `false` 完全跳过市场同步流程 |
-| `base_url` | `https://39.96.71.162` | 插件市场地址，一般不用改 |
+| `base_url` | `https://market.mofox.chat` | 插件市场地址，一般不用改 |
 | `user_id` | 空 | 市场用户 ID（`github:用户名小写`），用于拉取你的订阅列表 |
 | `access_token` | 空 | 市场访问令牌（`mfox_xxx`），与用户 ID 配对使用 |
 | `auto_update_mfp` | `true` | 已安装的市场 `.mfp` 插件自动更新到新版本 |
@@ -229,7 +229,7 @@ access_token = "mfox_粘贴你复制的令牌"
 
 ## 从哪里找插件？
 
-- **官方插件市场**：入口 [39.96.71.162](https://39.96.71.162/)，WebUI 插件市场页浏览的就是这个市场（MoFox 官方唯一域名是 mofox-sama.com，其他相似域名均非官方）。
+- **官方插件市场**：入口 [market.mofox.chat](https://market.mofox.chat/)，WebUI 插件市场页浏览的就是这个市场（MoFox 项目官网域名是 mofox-sama.com；插件市场使用 market.mofox.chat，其他仿冒域名均非官方）。
 - **GitHub**：搜「mofox 插件」「mfp」等关键词，注意甄别来源。
 
 ::: warning 安全提示

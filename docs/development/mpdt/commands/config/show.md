@@ -25,7 +25,7 @@ mpdt config show
 ┡━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
 │ 配置文件       │ /home/yishan/.mpdt/config.toml   │
 │ Neo-MoFox 路径 │ /home/yishan/developer/Neo-MoFox │
-│ 市场地址       │ http://39.96.71.162              │
+│ 市场地址       │ https://market.mofox.chat        │
 │ GitHub Token   │ 已配置                           │
 │ 自动重载       │ 是                               │
 │ 重载延迟       │ 0.3秒                            │

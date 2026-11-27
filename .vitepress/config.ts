@@ -829,6 +829,7 @@ export default defineConfig({
           collapsed: false,
           items: [
             { text: "插件市场使用", link: "/docs/guides/plugins" },
+            { text: "QQ Bot 适配器接入", link: "/docs/guides/qqbot-adapter" },
             { text: "MCP 接入", link: "/docs/guides/mcp" },
           ],
         },

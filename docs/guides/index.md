@@ -100,6 +100,12 @@ const extensionGuides = [
     link: './plugins'
   },
   {
+    avatar: '<iconify-icon icon="mdi:robot-outline"></iconify-icon>',
+    name: 'QQ Bot 适配器接入',
+    title: '从注册 QQ Bot 到配置社区 qqbot_adapter',
+    link: './qqbot-adapter'
+  },
+  {
     avatar: '<iconify-icon icon="mdi:view-grid-outline"></iconify-icon>',
     name: '内置插件一览',
     title: '了解已有插件，按需查看各插件的使用文档',
